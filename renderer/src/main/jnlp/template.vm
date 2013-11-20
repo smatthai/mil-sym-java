@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jnlp spec="1.0+" href="$outputFile">
+    <information>
+        <title>SECRenderer</title>
+        <vendor>SEC</vendor>
+        <offline-allowed/>
+    </information>
+    
+    <security>
+        <all-permissions/>
+    </security>
+    
+    <resources os="Windows">
+    	<property name="jnlp.versionEnabled" value="false" />
+    </resources>
+    <resources>
+        <j2se href="http://java.sun.com/products/autodl/j2se" version="1.5+" initial-heap-size="512m" max-heap-size="512m"/>
+        <property name="sun.java2d.noddraw" value="true"/>
+        $dependencies
+    </resources>
+
+    <!--<application-desc main-class="$mainClass">
+    <application-desc>-->
+    
+    
+    <!-- Width and height are overridden by the containing web page. -->
+    <applet-desc
+        name="SECRenderer"
+        main-class="$mainClass"
+        width="800" height="500">
+        <param name="MAYSCRIPT" value="true"/>
+        <param name="separate_jvm" value="true"/>
+    </applet-desc>
+</jnlp>
