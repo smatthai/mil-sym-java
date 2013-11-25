@@ -64,7 +64,9 @@ mvn clean install
 License
 ----
 
-Apache v2
+Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
 
   [http://mil-sym-renderer.missioncommand.cloudbees.net/]: http://mil-sym-renderer.missioncommand.cloudbees.net/
   [Maven]: http://maven.apache.org/
