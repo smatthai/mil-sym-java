@@ -51,8 +51,8 @@
 								<td>byte[]</td>
 								<td class="urlField">
 									<ul>
-										<li style="padding-bottom:8px;"><a href="http://localhost:8080/mil-symbology-renderer/renderer/image/SFGP-----------?T=uniquedesignation&n=ENY&h=USA" target="_blank">http://localhost:8080/mil-symbology-renderer/renderer/image/SFGP-----------?T=uniquedesignation&amp;n=ENY&amp;h=USA</a></li>
-										<li><a href="http://localhost:8080/mil-symbology-renderer/renderer/image/GFGPGPP-------X?T=uniquedesignation&n=ENY&h=USA" target="_blank">http://localhost:8080/mil-symbology-renderer/renderer/image/GFGPGPP-------X?T=uniquedesignation&amp;n=ENY&amp;h=USA</a></li>
+										<li style="padding-bottom:8px;"><a href="http://localhost:8080/mil-sym-service/renderer/image/SFGP-----------?T=uniquedesignation&n=ENY&h=USA" target="_blank">http://localhost:8080/mil-sym-service/renderer/image/SFGP-----------?T=uniquedesignation&amp;n=ENY&amp;h=USA</a></li>
+										<li><a href="http://localhost:8080/mil-sym-service/renderer/image/GFGPGPP-------X?T=uniquedesignation&n=ENY&h=USA" target="_blank">http://localhost:8080/mil-sym-service/renderer/image/GFGPGPP-------X?T=uniquedesignation&amp;n=ENY&amp;h=USA</a></li>
 									</ul>
 								</td>
 							</tr>
@@ -63,7 +63,7 @@
 								<td>byte[]</td>
 								<td class="urlField">									
 									<ul>
-										<li><a href="http://localhost:8080/mil-symbology-renderer/renderer/kml/SFGP-----------?name=testKML&description=globeView&lat=-39&lon=-78&alt=25000&id=test1" target="_blank">localhost:8080/mil-symbology-renderer/renderer/kml/SFGP-----------?name=testKML&amp;description=globeView&amp;lat=-39&amp;lon=-78&amp;alt=25000&amp;id=test1</a></li>
+										<li><a href="http://localhost:8080/mil-sym-service/renderer/kml/SFGP-----------?name=testKML&description=globeView&lat=-39&lon=-78&alt=25000&id=test1" target="_blank">localhost:8080/mil-sym-service/renderer/kml/SFGP-----------?name=testKML&amp;description=globeView&amp;lat=-39&amp;lon=-78&amp;alt=25000&amp;id=test1</a></li>
 									</ul>
 								</td>
 							</tr>
@@ -74,7 +74,7 @@
 								<td>comma delimited String</td>
 								<td class="urlField">
 									<ul>
-										<li><a href="http://localhost:8080/mil-symbology-renderer/renderer/pluginList" target="_blank">http://localhost:8080/mil-symbology-renderer/renderer/pluginList</a></li>
+										<li><a href="http://localhost:8080/mil-sym-service/renderer/pluginList" target="_blank">http://localhost:8080/mil-sym-service/renderer/pluginList</a></li>
 									</ul>
 								</td>
 							</tr>
@@ -85,7 +85,7 @@
 								<td>comma delimited String</td>
 								<td class="urlField">									
 									<ul>
-										<li><a href="http://localhost:8080/mil-symbology-renderer/directoryReader" target="_blank">http://localhost:8080/mil-symbology-renderer/directoryReader</a></li>
+										<li><a href="http://localhost:8080/mil-sym-service/directoryReader" target="_blank">http://localhost:8080/mil-sym-service/directoryReader</a></li>
 									</ul>
 								</td>
 							</tr>
@@ -116,15 +116,15 @@
 						</tfoot>
 						<tbody>
 							<tr>
-								<td><a href="http://localhost:8080/mil-symbology-renderer/singlePoints.html" target="_blank">SinglePoints Test Page</a></td>
+								<td><a href="http://localhost:8080/mil-sym-service/singlePoints.html" target="_blank">SinglePoints Test Page</a></td>
 								<td>test single point graphic creation</td>
-								<td><a href="http://localhost:8080/mil-symbology-renderer/singlePoints.html" target="_blank">http://localhost:8080/mil-symbology-renderer/singlePoints.html</a></td>
-								<td><img src="http://localhost:8080/mil-symbology-renderer/renderer/image/GFGPGPP-------X?T=uniquedesignation&n=ENY&h=USA" alt="GFGPGPP-------X"/> </td>
+								<td><a href="http://localhost:8080/mil-sym-service/singlePoints.html" target="_blank">http://localhost:8080/mil-sym-service/singlePoints.html</a></td>
+								<td><img src="http://localhost:8080/mil-sym-service/renderer/image/GFGPGPP-------X?T=uniquedesignation&n=ENY&h=USA" alt="GFGPGPP-------X"/> </td>
 							</tr>
 							<tr>
-								<td><a href="http://localhost:8080/mil-symbology-renderer/multiPoints.html" target="_blank">MultiPoints Test Page</a></td>
+								<td><a href="http://localhost:8080/mil-sym-service/multiPoints.html" target="_blank">MultiPoints Test Page</a></td>
 								<td>test multiple points graphic creation</td>
-								<td><a href="http://localhost:8080/mil-symbology-renderer/multiPoints.html" target="_blank">http://localhost:8080/mil-symbology-renderer/multiPoints.html</a></td>
+								<td><a href="http://localhost:8080/mil-sym-service/multiPoints.html" target="_blank">http://localhost:8080/mil-sym-service/multiPoints.html</a></td>
 								<td>N/A</td>
 							</tr>
 						</tbody>
@@ -167,14 +167,14 @@
 			
 			
 			<script type="text/javascript">		
-				var baseUrl = "http://localhost:8080/mil-symbology-renderer/renderer/";
+				var baseUrl = "http://localhost:8080/mil-sym-service/renderer/";
 				
 				$(function() {
 					$("#symbolCodeFetcher").button()
 						.click( function( event ) {
 							event.preventDefault();							
 							$("#result").empty();
-							var baseUrl = "http://localhost:8080/mil-symbology-renderer/renderer/";
+							var baseUrl = "http://localhost:8080/mil-sym-service/renderer/";
 							var retType = $('input:radio[name=returnType]:checked').val();
 							var symbolInfo = $('#symbolCode').val();
 							var url = baseUrl + retType + '/' +  symbolInfo;							
