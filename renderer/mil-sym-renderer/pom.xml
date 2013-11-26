@@ -110,7 +110,7 @@
 					<!-- <resourcesDirectory>${project.basedir}/src/main/jnlp/lib</resourcesDirectory> -->
 
 					<jnlp>
-						<outputFile>SECRenderer_launch.jnlp</outputFile>
+						<outputFile>mil-sym-renderer_Launch.jnlp</outputFile>
 						<mainClass>sec.web.renderer.SECWebRenderer</mainClass>
 					</jnlp>
 					<!-- <libPath>lib</libPath> -->

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jnlp codebase="" spec="1.0+" href="mil-sym-renderer.jnlp">
+    <information>
+        <title>mil-sym-renderer</title>
+        <vendor>SEC</vendor>
+        <offline-allowed/>
+    </information>
+    
+    <security>
+        <all-permissions/>
+    </security>
+
+    <resources>            
+		<jar href="mil-sym-renderer-0.0.31-SNAPSHOT.jar"/>
+		<jar href="JavaRenderer-0.0.31-SNAPSHOT.jar"/>
+		<jar href="JavaRendererServer-0.0.31-SNAPSHOT.jar"/>
+		<jar href="JavaLineArray-0.0.31-SNAPSHOT.jar"/>
+		<jar href="JavaRendererUtils-0.0.31-SNAPSHOT.jar"/>
+		<jar href="RendererPluginInterface-0.0.31-SNAPSHOT.jar"/>
+    </resources>
+
+	<component-desc />
+</jnlp>
