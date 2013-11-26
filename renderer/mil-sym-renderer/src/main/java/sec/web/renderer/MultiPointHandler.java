@@ -2867,8 +2867,8 @@ public class MultiPointHandler {
                     if(normalize)
                         geoCoord=NormalizeCoordToGECoord(geoCoord);
 
-                    double latitude = Math.round(geoCoord.getY() * 10000000.0)/10000000.0;
-                    double longitude = Math.round(geoCoord.getX() * 10000000.0)/10000000.0;
+                    double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
+                    double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
 
                     kml.append(longitude);
                     kml.append(",");
@@ -2902,8 +2902,8 @@ public class MultiPointHandler {
                     //if(normalize)
                         //geoCoord=NormalizeCoordToGECoord(geoCoord);
 
-                    double latitude = Math.round(geoCoord.getY() * 10000000.0)/10000000.0;
-                    double longitude = Math.round(geoCoord.getX() * 10000000.0)/10000000.0;
+                    double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
+                    double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
 
                     kml.append(longitude);
                     kml.append(",");
@@ -2991,8 +2991,8 @@ public class MultiPointHandler {
                 //M. Deutch 9-26-11
                 if(normalize)
                     geoCoord=NormalizeCoordToGECoord(geoCoord);
-                double latitude = Math.round(geoCoord.getY() * 10000000.0)/10000000.0;
-                double longitude = Math.round(geoCoord.getX() * 10000000.0)/10000000.0;
+                double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
+                double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
                 long angle = Math.round(shapeInfo.getModifierStringAngle());
 
                 String text = shapeInfo.getModifierString();
@@ -3265,8 +3265,8 @@ public class MultiPointHandler {
                 //M. Deutch 9-27-11
                 if(normalize)
                     geoCoord=NormalizeCoordToGECoord(geoCoord);
-                double latitude = Math.round(geoCoord.getY() * 10000000.0)/10000000.0;
-                double longitude = Math.round(geoCoord.getX() * 10000000.0)/10000000.0;
+                double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
+                double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
                 
                 //diagnostic M. Deutch 10-18-11
                 //set the point as geo so that the 
@@ -3328,8 +3328,8 @@ public class MultiPointHandler {
         //M. Deutch 9-26-11
         if(normalize)
             geoCoord=NormalizeCoordToGECoord(geoCoord);
-        double latitude = Math.round(geoCoord.getY() * 10000000.0)/10000000.0;
-        double longitude = Math.round(geoCoord.getX() * 10000000.0)/10000000.0;
+        double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
+        double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
         long angle = Math.round(shapeInfo.getModifierStringAngle());
 
         String text = shapeInfo.getModifierString();
@@ -3391,8 +3391,8 @@ public class MultiPointHandler {
         //M. Deutch 9-27-11
         if(normalize)
             geoCoord=NormalizeCoordToGECoord(geoCoord);
-        double latitude = Math.round(geoCoord.getY() * 10000000.0)/10000000.0;
-        double longitude = Math.round(geoCoord.getX() * 10000000.0)/10000000.0;
+        double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
+        double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
         double angle = shapeInfo.getModifierStringAngle();
         coord.setLocation(longitude, latitude);
         

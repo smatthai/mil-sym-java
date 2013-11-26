@@ -76,6 +76,12 @@ public class ImagingUtils {
 				pngInfo = pngInfo.centerImage();
 			}
 		}
+                else if (symbolInfoMap.containsKey("SQUARE")) {
+			tempModifierVal = symbolInfoMap.get("SQUARE");
+			if (tempModifierVal != null && tempModifierVal.toLowerCase().equals("true") == true) {
+				pngInfo = pngInfo.squareImage();
+			}
+		}
 
 		if (symbolInfoMap.containsKey("META")) {
 			tempModifierVal = symbolInfoMap.get("META");

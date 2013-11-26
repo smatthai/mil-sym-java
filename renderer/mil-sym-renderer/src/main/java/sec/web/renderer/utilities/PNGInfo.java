@@ -239,11 +239,9 @@ public class PNGInfo
 
     }
     
-            /**
+     /**
      * Takes an image and a center point and generates a new, bigger image
      * that has the symbol centered in it
-     * @param image
-     * @param point
      * @return
      */
     public PNGInfo centerImage()
@@ -265,7 +263,7 @@ public class PNGInfo
             point = _centerPoint;
             height = image.getHeight();
             width = image.getWidth();
-        
+            
             if(point.getY() > height - point.getY())
             {
                 height = (int)(point.getY() * 2.0);
@@ -312,6 +310,74 @@ public class PNGInfo
             
             Graphics2D g2d =  bi.createGraphics();
             g2d.drawImage(image, x, y, null);
+            pi = new PNGInfo(bi, newCenter, bounds);
+        }
+        catch(Exception exc)
+        {
+            ErrorLogger.LogException("ImageInfo", "CenterImage", exc);
+        }
+        return pi;
+    }
+    
+    /**
+     * Returns an image with empty space as needed to make sure the size 
+     * represents a square.
+     * @return 
+     */
+    public PNGInfo squareImage()
+    {
+        BufferedImage image = null;
+        Point2D point = null;
+        Point2D newCenter = null;
+        PNGInfo pi = null;
+        BufferedImage bi = null;
+        double x = 0;
+        double y = 0;
+        int height = 0;
+        int width = 0;
+        
+
+        try
+        {
+            image = _image;
+            point = _centerPoint;
+            height = image.getHeight();
+            width = image.getWidth();
+        
+            int newSize = height;
+            if(width > height)
+                newSize = width;
+            
+            if(width < newSize)
+                x = (newSize - width)/2.0;
+            
+            if(height < newSize)
+                y = (newSize - height)/2.0;
+                
+
+            
+            
+            bi = new BufferedImage(newSize, newSize, BufferedImage.TYPE_INT_ARGB);
+            newCenter = new Point2D.Double(_centerPoint.getX() + x, _centerPoint.getY() + y);
+            
+            double bx=_symbolBounds.getX();
+            double by=_symbolBounds.getY();
+            
+            if(newCenter.getX() > bx)
+            {
+                bx = bx + x;
+            }
+            if(newCenter.getY() > by)
+            {
+                by = by + y;
+            }
+                
+            Rectangle2D bounds = new Rectangle2D.Double(bx,by,
+                    this.getSymbolBounds().getWidth(), 
+                    this.getSymbolBounds().getHeight());
+            
+            Graphics2D g2d =  bi.createGraphics();
+            g2d.drawImage(image, (int)x, (int)y, null);
             pi = new PNGInfo(bi, newCenter, bounds);
         }
         catch(Exception exc)
