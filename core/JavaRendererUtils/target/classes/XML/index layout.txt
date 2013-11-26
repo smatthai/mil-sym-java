@@ -1,0 +1,72 @@
+Force Elements
+
+770-799: small fills, inside the frame
+
+800-900: regular fills with solid & dashed frame
+
+1000 - 3000?: Warfighting - A - 
+
+3000 - 3200?: SigInt - D - 80 only need fill/frame/symbol
+
+
+3200? - 3400?: Stability Operations Symbology - E - 60 w/ 6 that need 4 symbols & 6 with secondary symbol / fill
+
+4000+: Emergency Management Symbols - G - 
+________________________________________________________________________________
+Tactical Graphic Single Points
+
+1900-1990: symbol fills
+
+1999-2999: single point present
+
+3000-3999: single point planned anticipated.
+
+4000-4499: 2525Bch2 single point present
+
+4500-4999: 2525Bch2 single point planned anticipated
+
+5000: METOC single point
+
+6000: EMS Natural Events
+________________________________________________________________________________
+
+2525C vs 13-14 versions specifics
+<DESCRIPTION>Suppress</DESCRIPTION><!-- USAS 13-14 only -->
+<DESCRIPTION>Entry Control Point</DESCRIPTION><!-- USAS 13-14 only -->
+
+<!-- goes away in 2525C, symbol used by new symbol
+  <SYMBOL>
+    <SYMBOLID>G*G*GPAM__****X</SYMBOLID>
+    <GEOMETRY>point</GEOMETRY>
+    <DRAWCATEGORY>8</DRAWCATEGORY>
+    <MAXPOINTS>1</MAXPOINTS>
+    <MINPOINTS>1</MINPOINTS>
+    <HASWIDTH>no</HASWIDTH>
+    <MODIFIERS></MODIFIERS>
+    <DESCRIPTION>Air Control Marshall</DESCRIPTION>
+    <HIERARCHY>2.X.2.1.1.7.10</HIERARCHY>
+    <ALPHAHIERARCHY></ALPHAHIERARCHY>
+    <PATH>Tactical Graphics/Command and Control and General Maneuver/General/Points/Air Control</PATH>
+  </SYMBOL>
+-->
+
+<!-- goes away in 2525C, symbol used by new symbol
+  <SYMBOL>
+    <SYMBOLID>G*G*GPAC__****X</SYMBOLID>
+    <GEOMETRY>point</GEOMETRY>
+    <DRAWCATEGORY>8</DRAWCATEGORY>
+    <MAXPOINTS>1</MAXPOINTS>
+    <MINPOINTS>1</MINPOINTS>
+    <HASWIDTH>no</HASWIDTH>
+    <MODIFIERS></MODIFIERS>
+    <DESCRIPTION>Air Control Corridor TAB</DESCRIPTION>
+    <HIERARCHY>2.X.2.1.1.7.12</HIERARCHY>
+    <ALPHAHIERARCHY></ALPHAHIERARCHY>
+    <PATH>Tactical Graphics/Command and Control and General Maneuver/General/Points/Air Control</PATH>
+  </SYMBOL>
+-->
+
+<!--  No ATI Circular in 2525C - still in USAS 13-14 -->
+<!-- no CFFZ Circular in 2525C - still in USAS 13-14 -->
+<!-- no circular CZ in 2525C, leave in for USAS 13-14 -->
+<!-- no  CFZ circular in 2525C - still in USAS 13-14 -->

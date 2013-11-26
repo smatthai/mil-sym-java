@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>sec.web.renderer</groupId>
+	<artifactId>mil-sym-java</artifactId>
+	<version>0.0.31-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<name>mil-sym-java Master Pom</name>
+	<description>mil-sym-java Master Pom</description>
+
+	<modules>
+		<module>core/pom.xml</module>
+		<module>renderer/pom.xml</module>
+		<module>service/pom.xml</module>
+	</modules>
+
+	<build>
+	</build>
+		
+</project>

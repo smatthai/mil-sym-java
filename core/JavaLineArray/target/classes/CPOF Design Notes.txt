@@ -1,0 +1,22 @@
+CPOF Notes
+
+CONTAIN: use N modifier or "ENY" for the label
+LC: the only linetype whose shapes linecolor get set in Channels (red for style==25)
+
+FONT property in props.set_Attribute is a Font object and not a string, per Peter's example
+
+CElineArray.CGetLinetypeFromString added section at the top for generic symbol names for test purposes. These strings will not be passed byt the CPOF client.
+
+Modifier2.AddModifiers adds the modifiers based on the client pixels. Addmodifiers2 adds modifiers based on the calculated pixels. For Example BLOCK requires the calculated pixels.
+clsRenderGraphic.render is the render function for which the plugin is a pass-thru
+
+
+Areas: Only one shape object is used for both fill and the outline. Some lines have additional shapes for fill, e.g. FERRY has 2 additional fill shapes for the 9,9,10 style sequence for the arrowheads.
+
+
+clsRenderer2.ResolveModifierShape
+ is an override for shapes requiring specific styles. In general shape styles are set using tg properties. But some tg's have multiple shapes so the style cannot be set until after arraysupport or Channels has calculated the pixels and built the shapes based on the those pixels. The flag that is set by these functions is shape type which ResolveModifierShape uses to determine if it is a fill or an outline.
+
+Shapes are built from calculated pixels at the bottom of these functions: Channels.GetChannel1Double, arraysupport.GetLineArray2Double, and clsUtility.Change1TacticalAreas. The general approach is to loop through the pixels looking for linestyles which determine whether it is a new shape, start of a new line (moveTo),continuation of a line, (lineTo), or the completion of a shape (shapes.add(Shape)). It sets the shape type as a flag for subsequent functions.
+
+32 bits. If clean and build fails and it says it cannot compile one of the occulus clases it is because of the wrong version of Java (1.5). Must set the jdk to 1.6.

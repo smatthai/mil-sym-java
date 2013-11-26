@@ -1,0 +1,193 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>sec.web.renderer</groupId>
+	<artifactId>mil-sym-renderer</artifactId>
+	<packaging>jar</packaging>
+	<version>0.0.31-SNAPSHOT</version>
+
+	<name>mil-sym-renderer</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<securityDir>${basedir}/src/main/resources/security</securityDir>
+		<sec.dependency.version>0.0.31-SNAPSHOT</sec.dependency.version>
+		<mainClass>sec.web.renderer.portable.PortableWrapper</mainClass>
+        <zip.assembly>${project.basedir}/src/main/resources/assembly/zipAssembly.xml</zip.assembly>
+	</properties>
+
+	<build>
+		<finalName>${project.artifactId}</finalName> 
+		
+		<resources>
+	        <resource>
+	            <directory>src/main/jnlp/resources</directory>
+	            <filtering>true</filtering>
+	        </resource>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	            <filtering>true</filtering>
+	        </resource>
+        </resources>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>${mainClass}</mainClass>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Title>SEC Renderer</Implementation-Title>
+							<Class-Path>.</Class-Path>
+						</manifestEntries>
+					</archive>
+					<descriptorRefs>
+						<descriptorRefs>jar-with-dependencies</descriptorRefs>
+					</descriptorRefs>
+					<!-- <appendAssemblyId>false</appendAssemblyId> <finalName>${project.artifactId}</finalName> -->
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<index>false</index>
+						<manifest>
+							<addClasspath>false</addClasspath>
+						</manifest>
+						<manifestEntries>
+							<Main-Class>${mainClass}</Main-Class>
+							<Implementation-Title>SEC Renderer</Implementation-Title>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>webstart-maven-plugin</artifactId>
+				<version>1.0-beta-3</version>
+				<executions>
+					<execution>
+						<id>package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jnlp-inline</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<jarPath>${project.basedir}/src/main/resources/lib</jarPath>
+					<!-- <resourcesDirectory>${project.basedir}/src/main/jnlp/lib</resourcesDirectory> -->
+
+					<jnlp>
+						<outputFile>SECRenderer_launch.jnlp</outputFile>
+						<mainClass>sec.web.renderer.SECWebRenderer</mainClass>
+					</jnlp>
+					<!-- <libPath>lib</libPath> -->
+					<unsign>true</unsign>
+					<sign>
+						<keystore>${securityDir}/cpcegeo.jks</keystore>
+						<alias>cpcegeo</alias>
+						<storepass>changeit</storepass>
+						<keypass>changeit</keypass>
+					</sign>
+
+					<pack200>false</pack200>
+					<gzip>true</gzip>
+					<OutputJarVersions>true</OutputJarVersions>
+					<verbose>false</verbose>
+					<install>true</install>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<!-- SEC UTILITIES -->
+		<dependency>
+			<groupId>sec.web.renderer</groupId>
+			<artifactId>JavaRenderer</artifactId>
+			<version>${sec.dependency.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>sec.web.renderer</groupId>
+			<artifactId>RendererPluginInterface</artifactId>
+			<version>${sec.dependency.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- TEST -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>build-portable</id>
+			<build>
+				<plugins>		
+					<plugin>
+						<groupId>org.bluestemsoftware.open.maven.plugin</groupId>
+						<artifactId>launch4j-plugin</artifactId>
+						<version>1.5.0.0</version>
+						<executions>
+							<execution>
+								<id>l4j-portable-renderer</id>
+								<phase>package</phase>
+								<goals>
+									<goal>launch4j</goal>
+								</goals>
+								<configuration>
+									<headerType>console</headerType>
+									<outfile>target/portableSecRenderer.exe</outfile>
+									<jar>target/${project.build.finalName}-jar-with-dependencies.jar</jar>
+									<errTitle>This typically happens when the JRE can NOT be found - check to see if the jre6 folder is located at the same level as the .exe</errTitle>
+									<jre>
+										<path>jre6</path>
+										<dontUsePrivateJres>false</dontUsePrivateJres>
+									</jre>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>				
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

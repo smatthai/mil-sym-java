@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jnlp codebase="" spec="1.0+" href="secrenderer.jnlp">
+    <information>
+        <title>SECRenderer</title>
+        <vendor>SEC</vendor>
+        <offline-allowed/>
+    </information>
+    
+    <security>
+        <all-permissions/>
+    </security>
+
+    <resources>            
+		<jar href="SECRenderer-0.0.30.jar"/>
+		<jar href="JavaRenderer-0.0.30.jar"/>
+		<jar href="JavaRendererServer-0.0.30.jar"/>
+		<jar href="JavaLineArray-0.0.30.jar"/>
+		<jar href="JavaRendererUtils-0.0.30.jar"/>
+		<jar href="JavaRendererPluginInterface-0.0.30.jar"/>
+    </resources>
+
+	<component-desc />
+</jnlp>
