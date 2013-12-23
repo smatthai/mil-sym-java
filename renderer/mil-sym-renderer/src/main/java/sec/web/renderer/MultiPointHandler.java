@@ -2144,6 +2144,13 @@ public class MultiPointHandler {
                     altitudes.add(jsonAltitudeArray.getDouble(i));
                 }
             }
+            else if (jsonModifiersArray.has("X") && !jsonModifiersArray.isNull("X")) {
+                JSONArray jsonAltitudeArray = jsonModifiersArray.getJSONArray("X");
+                altitudes = new ArrayList<Double>();
+                for (int i = 0; i < jsonAltitudeArray.length(); i++) {
+                    altitudes.add(jsonAltitudeArray.getDouble(i));
+                }
+            }
             
             if (jsonModifiersArray.has(DISTANCE) && !jsonModifiersArray.isNull(DISTANCE)) {
                 JSONArray jsonDistanceArray = jsonModifiersArray.getJSONArray(DISTANCE);
