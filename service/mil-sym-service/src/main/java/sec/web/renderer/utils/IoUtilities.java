@@ -25,7 +25,7 @@ public class IoUtilities {
 	private String pluginDirectory;
 	private String localPluginPath;
 	private final String DEFAULT_DIRECTORY_NAME = "plugins";
-	private final String DEFAULT_SERVICE_NAME = "mil-symbology-renderer";
+	private final String DEFAULT_SERVICE_NAME = "mil-sym-service";
 
 	public IoUtilities() {
 		props = loadResource("properties/prop.properties", this.getClass().getClassLoader());
