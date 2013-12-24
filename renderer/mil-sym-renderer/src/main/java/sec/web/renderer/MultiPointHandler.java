@@ -2912,6 +2912,15 @@ public class MultiPointHandler {
                     double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
                     double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
 
+                    //fix for fill crossing DTL
+                    if(normalize)
+                    {
+                        if(longitude > 0)
+                        {
+                            longitude -= 360;
+                        }
+                    }
+                    
                     kml.append(longitude);
                     kml.append(",");
                     kml.append(latitude);
@@ -3275,6 +3284,14 @@ public class MultiPointHandler {
                 double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
                 double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
                 
+                //fix for fill crossing DTL
+                if(normalize && fillColor != null)
+                {
+                    if(longitude > 0)
+                    {
+                        longitude -= 360;
+                    }
+                }
                 //diagnostic M. Deutch 10-18-11
                 //set the point as geo so that the 
                 //coord.setLocation(longitude, latitude);
