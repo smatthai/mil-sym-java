@@ -32,6 +32,7 @@ import ArmyC2.C2SD.Utilities.PointConversion;
 import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.ShapeInfo;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
+import JavaLineArray.TacticalLines;
 import JavaTacticalRenderer.TGLight;
 import RenderMultipoints.clsRenderer;
 
@@ -2774,6 +2775,47 @@ public class MultiPointHandler {
         
         //return tempModifier;
     }
+    private static Boolean IsOnePointSymbolCode(String symbolCode)        
+    {   
+        int symStd = RendererSettings.getInstance().getSymbologyStandard();
+        int linetype=JavaLineArray.CELineArray.CGetLinetypeFromString(symbolCode,symStd);
+        switch(linetype)
+        {
+            case TacticalLines.FFA_CIRCULAR:
+            case TacticalLines.FSA_CIRCULAR:  //FSA_CIRCULAR
+            case TacticalLines.RFA_CIRCULAR:  //RFA_CIRCULAR
+            case TacticalLines.PAA_CIRCULAR:  //PAA_CIRCULAR
+            case TacticalLines.ATI_CIRCULAR:  //ATI_CIRCULAR
+            case TacticalLines.CFFZ_CIRCULAR:  //CFFZ_CIRCULAR
+            case TacticalLines.SENSOR_CIRCULAR:  //SENSOR_CIRCULAR
+            case TacticalLines.CENSOR_CIRCULAR:  //CENSOR_CIRCULAR
+            case TacticalLines.DA_CIRCULAR:  //DA_CIRCULAR
+            case TacticalLines.CFZ_CIRCULAR:  //CFZ_CIRCULAR
+            case TacticalLines.ZOR_CIRCULAR:  //ZOR_CIRCULAR
+            case TacticalLines.TBA_CIRCULAR:  //TBA_CIRCULAR
+            case TacticalLines.TVAR_CIRCULAR:  //TVAR_CIRCULAR
+            case TacticalLines.ACA_CIRCULAR:  //ACA_CIRCULAR
+            case TacticalLines.NFA_CIRCULAR:  //NFA_CIRCULAR
+            case TacticalLines.CIRCULAR:  //CIRCULAR
+            case TacticalLines.RECTANGULAR:  //RECTANGULAR
+            case TacticalLines.KILLBOXBLUE_CIRCULAR:  //KILLBOXBLUE_CIRCULAR
+            case TacticalLines.KILLBOXPURPLE_CIRCULAR:  //KILLBOXPURPLE_CIRCULAR
+            case TacticalLines.RANGE_FAN: //RANGE_FAN
+            case TacticalLines.RANGE_FAN_SECTOR: //SECTOR
+                return true;
+            default:
+                break;
+        }
+        //some airspaces affected
+        if(symbolCode.equals("CAKE-----------"))
+            return true;
+        else if(symbolCode.equals("CYLINDER-------"))
+            return true;
+        else if(symbolCode.equals("RADARC---------"))
+            return true;
+        
+        return false;
+    }
     
     private static String ShapeToKMLString(String id, 
             String name, 
@@ -2900,6 +2942,31 @@ public class MultiPointHandler {
                 kml.append("<altitudeMode>clampToGround</altitudeMode>");
                 kml.append("<tessellate>1</tessellate>");
                 kml.append("<coordinates>");
+                
+                //this section is a workaround for a google earth bug. Issue 417 was closed
+                //for linestrings but they did not fix the smae issue for fills. If Google fixes the issue
+                //for fills then this section will need to be commented or it will induce an error.
+                double lastLongitude=Double.MIN_VALUE;
+                if( normalize==false && IsOnePointSymbolCode(symbolCode) )
+                {
+                    for (int j = 0; j < shape.size (); j++) 
+                    {                        
+                        Point2D coord = (Point2D)shape.get (j);                    
+                        Point2D geoCoord = ipc.PixelsToGeo(coord);
+                        //var longitude = geoCoord.getX().toFixed(_decimalAccuracy);
+                        double longitude = geoCoord.getX();
+                        if(lastLongitude!=Double.MIN_VALUE)
+                        {
+                            if( Math.abs(longitude-lastLongitude) > 180d)
+                            {
+                                normalize=true;
+                                break;
+                            }
+                        }
+                        lastLongitude=longitude;
+                    }
+                }
+                //end section
 
                 for (int j = 0; j < shape.size(); j++) {
                     Point2D coord = (Point2D) shape.get(j);
@@ -3285,13 +3352,13 @@ public class MultiPointHandler {
                 double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
                 
                 //fix for fill crossing DTL
-                if(normalize && fillColor != null)
-                {
-                    if(longitude > 0)
-                    {
-                        longitude -= 360;
-                    }
-                }
+//                if(normalize && fillColor != null)
+//                {
+//                    if(longitude > 0)
+//                    {
+//                        longitude -= 360;
+//                    }
+//                }
                 //diagnostic M. Deutch 10-18-11
                 //set the point as geo so that the 
                 //coord.setLocation(longitude, latitude);
