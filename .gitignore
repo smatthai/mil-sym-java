@@ -10,3 +10,7 @@ target/
 build/
 dist/
 tester/
+
+*.settings
+*.project
+*.classpath
