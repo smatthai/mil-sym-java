@@ -35,6 +35,8 @@ import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import JavaLineArray.TacticalLines;
 import JavaTacticalRenderer.TGLight;
 import RenderMultipoints.clsRenderer;
+import JavaLineArray.POINT2;
+import JavaTacticalRenderer.mdlGeodesic;
 
 
 @SuppressWarnings({"unused","rawtypes","unchecked"})
@@ -589,6 +591,33 @@ public class MultiPointHandler {
                 ipc = new PointConverter(left, top, scale);
             }
 
+            //sanity check
+            //when spanning the IDL sometimes they send a bad bbox with 0 width
+            //this check assumes a valid left, top, and valid scale
+            if(Math.abs(left-right)<1/Double.MAX_VALUE)
+            {
+                //try for a theoretical 1000x1000 pixels bounding area
+                //so for metric width or height:
+                //distance in meters=1000 pixels * 1 inch/96 pixels * 1 meter/39.37 inch *scale(meters/meters)
+                double dist=1000.0*(1.0/96.0)*(1.0/39.37)*scale;
+                POINT2 ptLeft=new POINT2(left,top);
+                POINT2 ptRight=mdlGeodesic.geodesic_coordinate(ptLeft,dist,90.0);
+                right=ptRight.x;
+                if(right>180)
+                    right-=360;
+                else
+                    if(right<-180)
+                        right+=360;
+            }
+            if(Math.abs(top-bottom)<1/Double.MAX_VALUE)
+            {
+                double dist=1000.0*(1.0/96.0)*(1.0/39.37)*scale;
+                POINT2 ptTop=new POINT2(left,top);
+                POINT2 ptBottom=mdlGeodesic.geodesic_coordinate(ptTop,dist,180.0);
+                bottom=ptBottom.y;
+            }
+            //end section
+            
             // move these inside the bbox block above
             //left = Double.valueOf(bounds[0]).doubleValue();
             //right = Double.valueOf(bounds[2]).doubleValue();
