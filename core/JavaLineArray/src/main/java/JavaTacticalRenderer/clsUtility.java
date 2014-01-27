@@ -398,7 +398,8 @@ public final class clsUtility {
      */
     public static boolean isClosedPolygon(int linetype) {
         boolean result = false;
-        switch (linetype) {                
+        switch (linetype) {    
+            case TacticalLines.BBS_AREA:
             case TacticalLines.AT:
             case TacticalLines.DEPICT:
             case TacticalLines.DZ:
@@ -2161,6 +2162,13 @@ public final class clsUtility {
             linetypes.put("BS_RECTANGLE---", TacticalLines.BS_RECTANGLE);
             //end basic shapes
             
+            //buffered shapes
+            linetypes.put("BBS_LINE-------", TacticalLines.BBS_LINE);
+            linetypes.put("BBS_AREA-------", TacticalLines.BBS_AREA);
+            linetypes.put("BBS_POINT------", TacticalLines.BBS_POINT);
+            linetypes.put("BBS_RECTANGLE--", TacticalLines.BBS_RECTANGLE);
+            //end basic shapes
+            
             linetypes.put("G*MPOHO---****X", TacticalLines.OVERHEAD_WIRE);
             
             //Tasks
@@ -2628,11 +2636,23 @@ public final class clsUtility {
             {
                 strMask=str;
             }
+            else if(str.equalsIgnoreCase("BBS_LINE-------"))
+            {
+                strMask=str;
+            }
             else if(str.equalsIgnoreCase("BS_AREA--------"))
             {
                 strMask=str;
             }
+            else if(str.equalsIgnoreCase("BBS_AREA-------"))
+            {
+                strMask=str;
+            }
             else if(str.equalsIgnoreCase("BS_CROSS-------"))
+            {
+                strMask=str;
+            }
+            else if(str.equalsIgnoreCase("BBS_POINT------"))
             {
                 strMask=str;
             }
@@ -2641,6 +2661,10 @@ public final class clsUtility {
                 strMask=str;
             }
             else if(str.equalsIgnoreCase("BS_RECTANGLE---"))
+            {
+                strMask=str;
+            }
+            else if(str.equalsIgnoreCase("BBS_RECTANGLE--"))
             {
                 strMask=str;
             }

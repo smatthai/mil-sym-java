@@ -602,6 +602,47 @@ public final class clsRenderer
                 }
             }
             int j=0;
+            //these have a buffer value in meters which we'll stuff tg.H2
+            //and use the style member of tg.Pixels to stuff the buffer width in pixels
+            switch(lineType)
+            {
+                case TacticalLines.BBS_AREA:
+                case TacticalLines.BBS_LINE:
+                case TacticalLines.BBS_POINT:
+                case TacticalLines.BBS_RECTANGLE:
+                    String H2=null;
+                    double dist=0;
+                    POINT2 pt0;
+                    POINT2 pt1;//45 is arbitrary
+                    ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
+                    if(AM != null && AM.size()>0)
+                    {
+                        H2=AM.get(0).toString();
+                        tg.set_H2(H2);
+                    }                    
+                    for(j=0;j<tg.LatLongs.size();j++)
+                    {
+                        if(tg.LatLongs.size()>j)
+                        {
+                            if(!Double.isNaN(Double.parseDouble(H2)))                                    
+                            {
+                                if(j==0)
+                                {
+                                    dist=Double.parseDouble(H2);
+                                    pt0=tg.LatLongs.get(0);
+                                    pt1=mdlGeodesic.geodesic_coordinate(pt0, dist, 45);//45 is arbitrary
+                                    dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                                }
+                                tg.Pixels.get(j).style=(int)dist;
+                            }
+                            else
+                                tg.Pixels.get(j).style=0;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
             switch(lineType)
             {
                 case TacticalLines.ROZ:

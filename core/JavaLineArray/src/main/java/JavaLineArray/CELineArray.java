@@ -195,6 +195,16 @@ public final class CELineArray {
                     return TacticalLines.BS_CROSS;
                 if(strLine.equalsIgnoreCase("BS_RECTANGLE"))
                     return TacticalLines.BS_RECTANGLE;
+                //buffered lines
+                if(strLine.equalsIgnoreCase("BBS_LINE"))
+                    return TacticalLines.BBS_LINE;
+                if(strLine.equalsIgnoreCase("BBS_AREA"))
+                    return TacticalLines.BBS_AREA;
+                if(strLine.equalsIgnoreCase("BBS_POINT"))
+                    return TacticalLines.BBS_POINT;
+                if(strLine.equalsIgnoreCase("BBS_RECTANGLE"))
+                    return TacticalLines.BBS_RECTANGLE;
+                
                 if(strLine.equalsIgnoreCase("BS_ELLIPSE"))
                     return TacticalLines.BS_ELLIPSE;
                 if(strLine.equalsIgnoreCase("OVERHEAD_WIRE"))
@@ -814,6 +824,15 @@ public final class CELineArray {
                 return TacticalLines.BS_ELLIPSE;
             if(strLine.equalsIgnoreCase("BS_RECTANGLE---"))
                 return TacticalLines.BS_RECTANGLE;
+            //buffered shapes
+            if(strLine.equalsIgnoreCase("BBS_LINE-------"))
+                return TacticalLines.BBS_LINE;
+            if(strLine.equalsIgnoreCase("BBS_AREA-------"))
+                return TacticalLines.BBS_AREA;
+            if(strLine.equalsIgnoreCase("BBS_POINT------"))
+                return TacticalLines.BBS_POINT;
+            if(strLine.equalsIgnoreCase("BBS_RECTANGLE--"))
+                return TacticalLines.BBS_RECTANGLE;
             
             //METOCs
             if (c0.equals("W") && c1.equals("A"))

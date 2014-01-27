@@ -1370,6 +1370,8 @@ public final class clsUtilityCPOF {
             //arraysupport is using linestyle for these to set the segment width         
             switch(tg.get_LineType())
             {
+                case TacticalLines.BBS_AREA:
+                case TacticalLines.BBS_LINE:
                 case TacticalLines.UAV:
                 case TacticalLines.MRR:
                 case TacticalLines.UAV_USAS:
@@ -1737,6 +1739,8 @@ public final class clsUtilityCPOF {
                 case TacticalLines.GENERAL:
                 case TacticalLines.BS_AREA:
                 case TacticalLines.BS_LINE:
+                case TacticalLines.BBS_LINE:
+                case TacticalLines.BBS_AREA:
                 case TacticalLines.ASSY:
                 case TacticalLines.EA:
                 case TacticalLines.EA1:

@@ -2549,6 +2549,8 @@ public class Modifier2 {
                 case TacticalLines.GENERIC:
                 case TacticalLines.BS_LINE:
                 case TacticalLines.BS_AREA:
+                case TacticalLines.BBS_LINE:
+                case TacticalLines.BBS_AREA:
                 //case TacticalLines.LAA:
                     break;
                 default:    //exit early for those not applicable
@@ -3289,10 +3291,12 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, label + tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast,false);
                     break;
                 case TacticalLines.BS_LINE:
+                case TacticalLines.BBS_LINE:
                     AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, pt0, pt1,false);
                     AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast,false);
                     break;
                 case TacticalLines.BS_AREA:
+                case TacticalLines.BBS_AREA:
                     AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, ptCenter, ptCenter,false);
                     break;
                 case TacticalLines.LOA:

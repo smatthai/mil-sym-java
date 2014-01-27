@@ -2357,6 +2357,10 @@ public final class arraysupport
             //for the specified non-channel line type
             switch(lineType)
             {
+                case TacticalLines.BBS_AREA:
+                    lineutility.getExteriorPoints(pLinePoints, vblSaveCounter, lineType, false);
+                    acCounter=vblSaveCounter;
+                    break;
                 case TacticalLines.BS_CROSS:
                     pt0=new POINT2(pLinePoints[0]);
                     pLinePoints[0]=new POINT2(pt0);
