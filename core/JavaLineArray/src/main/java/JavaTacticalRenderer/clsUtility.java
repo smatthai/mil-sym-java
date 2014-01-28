@@ -162,6 +162,7 @@ public final class clsUtility {
             case TacticalLines.RECTANGULAR:
                 result = 1; //was 3
                 break;
+            case TacticalLines.BBS_POINT:
             case TacticalLines.CIRCULAR:
             case TacticalLines.FSA_CIRCULAR:
             case TacticalLines.FFA_CIRCULAR:
@@ -788,6 +789,7 @@ public final class clsUtility {
                         {
                             case TacticalLines.BS_ELLIPSE:
                             case TacticalLines.BS_RECTANGLE:
+                            case TacticalLines.BBS_RECTANGLE:
                                 shape.set_Fillstyle(tg.get_FillStyle());
                                 shape.setFillColor(tg.get_FillColor());
                                 break;
@@ -1332,6 +1334,7 @@ public final class clsUtility {
                     return false;
                 case TacticalLines.RECTANGULAR:
                 case TacticalLines.CIRCULAR:
+                case TacticalLines.BBS_POINT:
                 case TacticalLines.FSA_CIRCULAR:
                 case TacticalLines.FFA_CIRCULAR:
                 case TacticalLines.NFA_CIRCULAR:
@@ -2803,6 +2806,8 @@ public final class clsUtility {
             {
                 case TacticalLines.BS_ELLIPSE:
                 case TacticalLines.BS_RECTANGLE:
+                case TacticalLines.BBS_RECTANGLE:
+                case TacticalLines.BBS_POINT:
                 case TacticalLines.BS_CROSS:
                 //the Tasks
                 case TacticalLines.CORDONKNOCK:

@@ -221,6 +221,7 @@ public final class clsUtilityCPOF {
         try {
             switch (lineType) {
                 case TacticalLines.CIRCULAR:
+                case TacticalLines.BBS_POINT:
                 case TacticalLines.FSA_CIRCULAR:
                 case TacticalLines.FFA_CIRCULAR:
                 case TacticalLines.NFA_CIRCULAR:
@@ -302,6 +303,7 @@ public final class clsUtilityCPOF {
             length.value = new double[1];
             switch (lineType) {
                 case TacticalLines.CIRCULAR:
+                case TacticalLines.BBS_POINT:
                 case TacticalLines.FSA_CIRCULAR:
                 case TacticalLines.FFA_CIRCULAR:
                 case TacticalLines.NFA_CIRCULAR:
@@ -585,6 +587,7 @@ public final class clsUtilityCPOF {
                     tg.Pixels.add(new POINT2(tg.Pixels.get(0).x,tg.Pixels.get(0).y));
                     break;
                 case TacticalLines.CIRCULAR:
+                case TacticalLines.BBS_POINT:
                 case TacticalLines.FSA_CIRCULAR:
                 case TacticalLines.ACA_CIRCULAR:
                 case TacticalLines.FFA_CIRCULAR:
@@ -1372,6 +1375,8 @@ public final class clsUtilityCPOF {
             {
                 case TacticalLines.BBS_AREA:
                 case TacticalLines.BBS_LINE:
+                case TacticalLines.BBS_RECTANGLE:
+                //case TacticalLines.BBS_POINT:
                 case TacticalLines.UAV:
                 case TacticalLines.MRR:
                 case TacticalLines.UAV_USAS:

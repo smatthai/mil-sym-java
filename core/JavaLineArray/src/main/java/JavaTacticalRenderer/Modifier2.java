@@ -379,7 +379,7 @@ public class Modifier2 {
                 case TacticalLines.TBA_CIRCULAR:
                 case TacticalLines.TBA_RECTANGULAR:
                     label = "TBA";
-                    break;
+                    break;                
                 case TacticalLines.TVAR:
                 case TacticalLines.TVAR_CIRCULAR:
                 case TacticalLines.TVAR_RECTANGULAR:
@@ -3805,6 +3805,7 @@ public class Modifier2 {
                     break;
                 case TacticalLines.RECTANGULAR:
                 case TacticalLines.CIRCULAR:
+                case TacticalLines.BBS_POINT:
                     ptCenter = lineutility.CalcCenterPointDouble2(tg.Pixels.toArray(), tg.Pixels.size());
                     AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, ptCenter, ptCenter,false);
                     break;

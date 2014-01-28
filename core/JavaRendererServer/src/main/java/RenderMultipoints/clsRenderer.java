@@ -608,7 +608,7 @@ public final class clsRenderer
             {
                 case TacticalLines.BBS_AREA:
                 case TacticalLines.BBS_LINE:
-                case TacticalLines.BBS_POINT:
+                //case TacticalLines.BBS_POINT:
                 case TacticalLines.BBS_RECTANGLE:
                     String H2=null;
                     double dist=0;
@@ -857,6 +857,7 @@ public final class clsRenderer
                 case TacticalLines.KILLBOXPURPLE_CIRCULAR:
                 case TacticalLines.KILLBOXBLUE_RECTANGULAR:
                 case TacticalLines.KILLBOXPURPLE_RECTANGULAR:
+                case TacticalLines.BBS_POINT:
                     ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                     if(AM != null && AM.size()>0)
                     {

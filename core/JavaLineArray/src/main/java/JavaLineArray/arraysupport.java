@@ -2388,6 +2388,32 @@ public final class arraysupport
                     pLinePoints[4]=new POINT2(pt0);
                     acCounter=5;
                     break;
+                case TacticalLines.BBS_RECTANGLE:  
+                    double xmax=pLinePoints[0].x,xmin=pLinePoints[1].x,ymax=pLinePoints[0].y,ymin=pLinePoints[1].y;
+                    double buffer=pLinePoints[0].style;
+                    if(pLinePoints[0].x<pLinePoints[1].x)
+                    {
+                        xmax=pLinePoints[1].x;
+                        xmin=pLinePoints[0].x;
+                    }
+                    if(pLinePoints[0].y<pLinePoints[1].y)
+                    {
+                        ymax=pLinePoints[1].y;
+                        ymin=pLinePoints[0].y;
+                    }                    
+                    pt0=new POINT2(xmin-buffer,ymin-buffer);
+                    pt2=new POINT2(xmax+buffer,ymax+buffer);
+                    pt1=new POINT2(pt0);
+                    pt1.y=pt2.y;
+                    pt3=new POINT2(pt2);
+                    pt3.y=pt0.y;
+                    pLinePoints[0]=new POINT2(pt0);
+                    pLinePoints[1]=new POINT2(pt1);
+                    pLinePoints[2]=new POINT2(pt2);
+                    pLinePoints[3]=new POINT2(pt3);
+                    pLinePoints[4]=new POINT2(pt0);
+                    acCounter=5;
+                    break;
                 case TacticalLines.BS_ELLIPSE:
                     pt0=pLinePoints[0];//the center of the ellipse
                     pt1=pLinePoints[1];//the width of the ellipse

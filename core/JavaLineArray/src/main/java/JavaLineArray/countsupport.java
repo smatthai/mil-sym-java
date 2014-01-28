@@ -72,6 +72,7 @@ public final class countsupport
                     count=4;
                     break;
                 case TacticalLines.BS_RECTANGLE:
+                case TacticalLines.BBS_RECTANGLE:
                     count=5;
                     break;
                 case TacticalLines.OVERHEAD_WIRE:

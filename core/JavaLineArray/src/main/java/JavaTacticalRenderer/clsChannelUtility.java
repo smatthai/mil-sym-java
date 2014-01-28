@@ -458,7 +458,7 @@ public final class clsChannelUtility {
                 case TacticalLines.BBS_LINE:
                     //diagnostic 9-27-11
                     //clsUtility.MovePixels(pixels, pixels.length / 2);
-                    channelWidth = tg.Pixels.get(0).style;  //was 20 1-10-13
+                    channelWidth = 2*tg.Pixels.get(0).style;  //was 20 1-10-13
                     //if(Channels.getShiftLines())
                     //    channelWidth=60;//was 40
                     pixels2 = new double[pixels.length];
