@@ -631,9 +631,17 @@ public final class clsRenderer
                                     dist=Double.parseDouble(H2);
                                     pt0=tg.LatLongs.get(0);
                                     pt1=mdlGeodesic.geodesic_coordinate(pt0, dist, 45);//45 is arbitrary
+                                    Point2D pt02d=new Point2D.Double(pt0.x,pt0.y);
+                                    Point2D pt12d=new Point2D.Double(pt1.x,pt1.y);
+                                    pt02d=converter.GeoToPixels(pt02d);
+                                    pt12d=converter.GeoToPixels(pt12d);
+                                    pt0.x=pt02d.getX();
+                                    pt0.y=pt02d.getY();
+                                    pt1.x=pt12d.getX();
+                                    pt1.y=pt12d.getY();
                                     dist=lineutility.CalcDistanceDouble(pt0, pt1);
                                 }
-                                tg.Pixels.get(j).style=(int)dist;
+                                tg.Pixels.get(j).style=Math.round((float)dist);
                             }
                             else
                                 tg.Pixels.get(j).style=0;

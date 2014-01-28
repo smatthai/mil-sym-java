@@ -387,6 +387,10 @@ public final class clsUtility {
             case TacticalLines.BS_CROSS:
             case TacticalLines.BS_ELLIPSE:
             case TacticalLines.BS_RECTANGLE:
+            case TacticalLines.BBS_AREA:
+            case TacticalLines.BBS_LINE:
+            case TacticalLines.BBS_POINT:
+            case TacticalLines.BBS_RECTANGLE:
                 return true;
             default:
                 return false;
@@ -1085,7 +1089,7 @@ public final class clsUtility {
             {
                 return;
             }
-
+            
             int j = 0;
             Shape2 shape = null;
             BasicStroke stroke = null;
@@ -1116,7 +1120,7 @@ public final class clsUtility {
 
                 //if(lineType != TacticalLines.LEADING_LINE)
                 ResolveModifierShape(tg, shape);
-
+                
                 shapeType = shape.getShapeType();
 
                 if (lineType == TacticalLines.LC) {
@@ -1253,6 +1257,7 @@ public final class clsUtility {
                 //the switch statement below will override specific properties as needed
                 //stroke = new BasicStroke(lineThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, dash, 0);
                 //replaced above dash pattern with getLineStroke function requested by the client   9/9/11
+                BasicStroke saveStroke=(BasicStroke)shape.getStroke();
                 stroke=getLineStroke(lineThickness,shape.get_Style(),BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
                 if(tg.get_Client().equalsIgnoreCase("ge"))
                 {
@@ -1260,7 +1265,7 @@ public final class clsUtility {
                         shape.set_Style(1);
 
                     stroke=getLineStroke2(lineThickness,shape.get_Style(),BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
-                }
+                }                
                 //stroke special cases
 //                switch(tg.get_LineType())
 //                {
@@ -1279,7 +1284,16 @@ public final class clsUtility {
                     //shape.setStroke(new BasicStroke(0));
                 }
                 shape.setStroke(stroke);
-
+                switch(lineType)
+                {
+                    case TacticalLines.BBS_LINE:
+                        shape.setStroke(saveStroke);
+                        if(j==shapes.size()-1)//2nd shape is the interior of the thick line
+                            shape.setLineColor(tg.get_FillColor());
+                        break;
+                    default:
+                        break;
+                }
 //                if(tg.get_LineType()==TacticalLines.DIRATKGND && j==1)
 //                {
 //                    if(lineThickness>=2)

@@ -4586,6 +4586,33 @@ public final class arraysupport
                         
                     shapes.add(shape);                    
                     break;
+                case TacticalLines.BBS_LINE:
+                    Shape2 outerShape=new Shape2(Shape2.SHAPE_TYPE_POLYLINE);//line color
+                    Shape2 innerShape=new Shape2(Shape2.SHAPE_TYPE_POLYLINE);//fill color
+                    BasicStroke wideStroke=new BasicStroke(pLinePoints[0].style);
+                    BasicStroke thinStroke=new BasicStroke(pLinePoints[0].style-1);
+                    for(k=0;k<vblSaveCounter;k++)
+                    {
+                        if(k==0)
+                        {
+                            outerShape.moveTo(pLinePoints[k]);
+                            innerShape.moveTo(pLinePoints[k]);
+                        }
+                        else
+                        {
+                            outerShape.lineTo(pLinePoints[k]);
+                            innerShape.lineTo(pLinePoints[k]);
+                        }
+                    }
+                    //Shape outlineShape=wideStroke.createStrokedShape(wideShape.getShape());
+                    //outline.setShape(outlineShape);
+                    //BasicStroke outlineStroke=new BasicStroke(1);
+                    //outline.setStroke(outlineStroke);
+                    outerShape.setStroke(wideStroke);
+                    innerShape.setStroke(thinStroke);
+                    shapes.add(outerShape);
+                    shapes.add(innerShape);
+                    break;
                 case TacticalLines.DEPTH_AREA:
                     paleBlueShape=new Shape2(Shape2.SHAPE_TYPE_FILL);//use for symbol
                     paleBlueShape.setFillColor(new Color(153,204,255));

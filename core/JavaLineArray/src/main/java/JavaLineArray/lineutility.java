@@ -4699,7 +4699,7 @@ public final class lineutility {
         //ref<double[]> m1 = new ref(), m2 = new ref();
         ArrayList<POINT2> intersectPoints = new ArrayList();
         double b01, b12;	//the y intercepts for the lines corresponding to m1,m2 
-        double dist = 10;
+        double dist = pLinePoints[0].style;
         for (j = 0; j < vblCounter; j++) {
             if (j == 0 || j == vblCounter - 1) {
                 pt0 = new POINT2(pLinePoints[vblCounter - 2]);
