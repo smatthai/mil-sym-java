@@ -1376,7 +1376,6 @@ public final class clsUtilityCPOF {
                 case TacticalLines.BBS_AREA:
                 case TacticalLines.BBS_LINE:
                 case TacticalLines.BBS_RECTANGLE:
-                //case TacticalLines.BBS_POINT:
                 case TacticalLines.UAV:
                 case TacticalLines.MRR:
                 case TacticalLines.UAV_USAS:

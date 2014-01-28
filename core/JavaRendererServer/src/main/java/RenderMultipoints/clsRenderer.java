@@ -608,7 +608,6 @@ public final class clsRenderer
             {
                 case TacticalLines.BBS_AREA:
                 case TacticalLines.BBS_LINE:
-                //case TacticalLines.BBS_POINT:
                 case TacticalLines.BBS_RECTANGLE:
                     String H2=null;
                     double dist=0;
@@ -863,6 +862,12 @@ public final class clsRenderer
                     {
                         String strT1=Double.toString(AM.get(0));
                         //set width for rectangles or radius for circles
+                        tg.set_T1(strT1);
+                    }
+                    else if(lineType==TacticalLines.BBS_POINT && tg.LatLongs.size()>1)
+                    {
+                        double dist=mdlGeodesic.geodesic_distance(tg.LatLongs.get(0), tg.LatLongs.get(1), null, null);
+                        String strT1=Double.toString(dist);
                         tg.set_T1(strT1);
                     }
                     break;
