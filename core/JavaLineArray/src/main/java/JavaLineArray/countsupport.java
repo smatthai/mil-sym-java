@@ -461,6 +461,9 @@ public final class countsupport
                 case TacticalLines.DFENCE:
                     count = Channels.GetTripleCountDouble(pLinePoints, vblCounter, vbiDrawThis);
                     break;
+                case TacticalLines.BBS_LINE:
+                    count=2*vblCounter;
+                    break;
                 case TacticalLines.LC:
                     pUpperLinePoints = Channels.GetChannelArray2Double(1,pUpperLinePoints,1,vblCounter,vbiDrawThis,20);
                     pLowerLinePoints = Channels.GetChannelArray2Double(1,pLowerLinePoints,0,vblCounter,vbiDrawThis,20);

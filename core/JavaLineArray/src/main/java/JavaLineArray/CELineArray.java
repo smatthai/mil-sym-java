@@ -2506,6 +2506,7 @@ public final class CELineArray {
                 case TacticalLines.DOUBLEA:
                 case TacticalLines.LWFENCE:
                 case TacticalLines.HWFENCE:
+                case TacticalLines.BBS_LINE:
                 case TacticalLines.SINGLEC:
                 case TacticalLines.SINGLEC2:
                 case TacticalLines.DOUBLEC:
