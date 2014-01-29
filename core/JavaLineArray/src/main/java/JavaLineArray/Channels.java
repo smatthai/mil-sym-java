@@ -1476,7 +1476,7 @@ public final class Channels {
             //end declarations
 
             //initializations
-            if (vblChannelWidth < 5) {
+            if (vblChannelWidth < 5 && vbiDrawThis != TacticalLines.BBS_LINE) {
                 vblChannelWidth = 5;
             }
 
