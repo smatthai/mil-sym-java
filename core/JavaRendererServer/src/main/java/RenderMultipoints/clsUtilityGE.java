@@ -1167,7 +1167,9 @@ public final class clsUtilityGE {
     {
         try
        {
-           
+            if(shapes==null || shapes.size()==0)
+                return;
+            
             int lineType=tg.get_LineType();            
             int hatch=tg.get_FillStyle();
             int j=0,hatch2=0;

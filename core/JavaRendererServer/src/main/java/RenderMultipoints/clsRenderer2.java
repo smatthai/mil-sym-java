@@ -399,6 +399,9 @@ public final class clsRenderer2 {
     {
         try
         {            
+            if(shapes==null || shapes.size()==0)
+                return;
+            
             int linetype=tg.get_LineType();
             int j=0;
             Shape2 shape=new Shape2(Shape2.SHAPE_TYPE_FILL);
