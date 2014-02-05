@@ -401,6 +401,8 @@ public final class clsRenderer2 {
         {            
             if(shapes==null || shapes.size()==0)
                 return;
+            if(tg.Pixels==null || tg.Pixels.size()==0)
+                return;
             
             int linetype=tg.get_LineType();
             int j=0;

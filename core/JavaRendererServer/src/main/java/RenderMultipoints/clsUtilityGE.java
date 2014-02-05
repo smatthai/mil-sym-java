@@ -1169,6 +1169,8 @@ public final class clsUtilityGE {
        {
             if(shapes==null || shapes.size()==0)
                 return;
+            if(tg.Pixels==null || tg.Pixels.size()==0)
+                return;
             
             int lineType=tg.get_LineType();            
             int hatch=tg.get_FillStyle();
