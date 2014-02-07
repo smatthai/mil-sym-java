@@ -122,6 +122,11 @@ public class SymbolUtilities {
            StringBuilder sb = new StringBuilder("");
             char codingScheme = symbolID.charAt(0);
             
+            if(symbolID.startsWith("BS_") || symbolID.startsWith("BBS_"))
+            {
+                return symbolID;
+            }
+            
             if(symbolID.length() < 15)
             {
                 while (symbolID.length() < 15)
