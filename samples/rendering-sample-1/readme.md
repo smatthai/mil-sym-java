@@ -1,6 +1,6 @@
 
 
-# mil-sym-java-renderer
+# Renderer sample project 1
 
 ## About
 
