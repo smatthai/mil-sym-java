@@ -31,6 +31,8 @@ import ArmyC2.C2SD.Utilities.ModifiersTG;
 import ArmyC2.C2SD.Utilities.PointConversion;
 import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.ShapeInfo;
+import ArmyC2.C2SD.Utilities.SymbolDef;
+import ArmyC2.C2SD.Utilities.SymbolDefTable;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import JavaLineArray.TacticalLines;
 import JavaTacticalRenderer.TGLight;
@@ -461,7 +463,6 @@ public class MultiPointHandler {
                 scale, bbox, symbolModifiers, format, 
                 RendererSettings.getInstance().getSymbologyStandard());
     }
-    
     /**
      * Deutch updated version
      * @param id
@@ -2807,34 +2808,16 @@ public class MultiPointHandler {
     private static Boolean IsOnePointSymbolCode(String symbolCode)        
     {   
         int symStd = RendererSettings.getInstance().getSymbologyStandard();
-        int linetype=JavaLineArray.CELineArray.CGetLinetypeFromString(symbolCode,symStd);
-        switch(linetype)
+        String basicCode = SymbolUtilities.getBasicSymbolID(symbolCode);
+        SymbolDef sd = null;
+        if(SymbolDefTable.getInstance().HasSymbolDef(basicCode, symStd))
         {
-            case TacticalLines.FFA_CIRCULAR:
-            case TacticalLines.FSA_CIRCULAR:  //FSA_CIRCULAR
-            case TacticalLines.RFA_CIRCULAR:  //RFA_CIRCULAR
-            case TacticalLines.PAA_CIRCULAR:  //PAA_CIRCULAR
-            case TacticalLines.ATI_CIRCULAR:  //ATI_CIRCULAR
-            case TacticalLines.CFFZ_CIRCULAR:  //CFFZ_CIRCULAR
-            case TacticalLines.SENSOR_CIRCULAR:  //SENSOR_CIRCULAR
-            case TacticalLines.CENSOR_CIRCULAR:  //CENSOR_CIRCULAR
-            case TacticalLines.DA_CIRCULAR:  //DA_CIRCULAR
-            case TacticalLines.CFZ_CIRCULAR:  //CFZ_CIRCULAR
-            case TacticalLines.ZOR_CIRCULAR:  //ZOR_CIRCULAR
-            case TacticalLines.TBA_CIRCULAR:  //TBA_CIRCULAR
-            case TacticalLines.TVAR_CIRCULAR:  //TVAR_CIRCULAR
-            case TacticalLines.ACA_CIRCULAR:  //ACA_CIRCULAR
-            case TacticalLines.NFA_CIRCULAR:  //NFA_CIRCULAR
-            case TacticalLines.CIRCULAR:  //CIRCULAR
-            case TacticalLines.RECTANGULAR:  //RECTANGULAR
-            case TacticalLines.KILLBOXBLUE_CIRCULAR:  //KILLBOXBLUE_CIRCULAR
-            case TacticalLines.KILLBOXPURPLE_CIRCULAR:  //KILLBOXPURPLE_CIRCULAR
-            case TacticalLines.RANGE_FAN: //RANGE_FAN
-            case TacticalLines.RANGE_FAN_SECTOR: //SECTOR
+            sd = SymbolDefTable.getInstance().getSymbolDef(basicCode, symStd);
+
+            if(symbolCode.charAt(0) == 'G' && sd.getMaxPoints() == 1)
                 return true;
-            default:
-                break;
         }
+
         //some airspaces affected
         if(symbolCode.equals("CAKE-----------"))
             return true;
@@ -2844,8 +2827,23 @@ public class MultiPointHandler {
             return true;
         
         return false;
-    }
-    
+    }   
+    private static Boolean normalizePoints(ArrayList<Point2D.Double> shape, IPointConversion ipc)
+    {
+        ArrayList geoCoords = new ArrayList();
+        for (int j = 0; j < shape.size (); j++) 
+        {
+            Point2D coord = shape.get (j);
+            Point2D geoCoord = ipc.PixelsToGeo(coord);
+            geoCoord = sec.web.renderer.MultiPointHandler.NormalizeCoordToGECoord(geoCoord);
+            double latitude = geoCoord.getY();
+            double longitude = geoCoord.getX();
+            Point2D pt2d=new Point2D.Double(longitude,latitude);
+            geoCoords.add(pt2d);
+        }        
+        Boolean normalize=sec.web.renderer.MultiPointHandler.crossesIDL(geoCoords);
+        return normalize;
+    }    
     private static String ShapeToKMLString(String id, 
             String name, 
             String description, 
@@ -2930,7 +2928,7 @@ public class MultiPointHandler {
 
         for (int i = 0; i < len; i++) {
             ArrayList shape = (ArrayList) shapesArray.get(i);
-            
+            normalize=normalizePoints(shape,ipc);
             if (lineColor != null)
             {
                 kml.append("<LineString>");
