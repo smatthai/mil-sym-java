@@ -39,6 +39,7 @@ import JavaTacticalRenderer.TGLight;
 import RenderMultipoints.clsRenderer;
 import JavaLineArray.POINT2;
 import JavaTacticalRenderer.mdlGeodesic;
+import java.util.logging.Level;
 
 
 @SuppressWarnings({"unused","rawtypes","unchecked"})
@@ -737,7 +738,18 @@ public class MultiPointHandler {
             else
                 mSymbol.setFillColor(null);
 
-            //RendererSettings.getInstance().setTextRenderMethod(RendererSettings.TextBackgroundMethod_NONE);
+            //check for required points & parameters
+            
+            String symbolIsValid = canRenderMultiPoint(mSymbol);
+            if(symbolIsValid.equals("true") == false)
+            {
+                String ErrorOutput = "";
+                ErrorOutput += ("{\"type\":\"error\",\"error\":\"There was an error creating the MilStdSymbol " + symbolCode + ": " + "- ");
+                ErrorOutput += (symbolIsValid + " - ");
+                ErrorOutput += ("\"}");
+                //ErrorLogger.LogMessage("MultiPointHandler","RenderSymbol",symbolIsValid,Level.WARNING);
+                return ErrorOutput;
+            }//*/
             
             //get pixel values in case we need to do a fill.
             if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
@@ -1204,6 +1216,7 @@ public class MultiPointHandler {
                 fillColor = Integer.toHexString(fc.getRGB());                
             }
 
+            
             //get pixel values in case we need to do a fill.
             if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
                     mSymbol.getModifierMap().containsKey(SYMBOL_LINE_IDS))
@@ -1508,6 +1521,18 @@ public class MultiPointHandler {
                 rect = new Rectangle(leftX, topY, width, height);
             }
 
+            //check for required points & parameters
+            
+            String symbolIsValid = canRenderMultiPoint(mSymbol);
+            if(symbolIsValid.equals("true") == false)
+            {
+                String ErrorOutput = "";
+                ErrorOutput += ("{\"type\":\"error\",\"error\":\"There was an error creating the MilStdSymbol " + symbolCode + ": " + "- ");
+                ErrorOutput += (symbolIsValid + " - ");
+                ErrorOutput += ("\"}");
+                //ErrorLogger.LogMessage("MultiPointHandler","RenderSymbol",symbolIsValid,Level.WARNING);
+                return ErrorOutput;
+            }//*/
             
             if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
                         mSymbol.getModifierMap().containsKey(SYMBOL_LINE_IDS))
@@ -1583,6 +1608,162 @@ public class MultiPointHandler {
 
         return jsonOutput.toString();
 
+    }
+
+    /**
+     * 
+     * @param {armyc2.c2sd.renderer.utilities.MilStdSymbol} symbol 
+     * @returns {String} "true" OR "reason why can't render"}
+     */
+    static String canRenderMultiPoint(MilStdSymbol symbol)
+    {
+        int symStd = symbol.getSymbologyStandard();
+        String symbolID = symbol.getSymbolID();
+        String basicID = SymbolUtilities.getBasicSymbolID(symbolID);
+        SymbolDef sd = null;
+        int dc = 99;
+        int coordCount = symbol.getCoordinates().size();
+
+        try
+        {
+            
+            String message = "";
+            if(SymbolDefTable.getInstance().HasSymbolDef(basicID, symStd))
+            {
+                sd = SymbolDefTable.getInstance().getSymbolDef(basicID, symStd);
+            }
+
+            if(sd != null)
+            {
+                dc = sd.getDrawCategory();
+                if(coordCount < sd.getMinPoints())
+                {
+                    message = ("symbolID: \"" + symbolID  + "\" requires a minimum of " + String.valueOf(sd.getMinPoints()) + " points. " + String.valueOf(coordCount) + " are present.");
+                    return message;
+                }
+            }
+            else if(symbolID.startsWith("BS_") || symbolID.startsWith("BBS_"))
+            {
+                //Will need to be updated to do a more thorough check for
+                //basic shapes and buffered basic shapes.
+                //Return true for now.
+                return "true";
+            }
+            else
+            {
+                return ("symbolID: \"" + symbolID  + "\" not recognized.");    
+            }
+
+            //now check for required modifiers\
+            ArrayList<Double> AM = symbol.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
+            ArrayList<Double>  AN = symbol.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
+            String result = hasRequiredModifiers(symbolID, dc, AM, AN);
+
+            if(result.equals("true")==false)
+            {
+                return result;
+            }
+            else
+            {
+                return "true";
+            }
+        }
+        catch(Exception exc)
+        {
+            ErrorLogger.LogException("MultiPointHandler", "canRenderMultiPoint", exc);
+            return "true";
+        }
+    }
+    
+        /**\
+     * 
+     * @param {String} symbolID
+     * @param {Number} dc draw category
+     * @param {Array} AM contains distance values
+     * @param {Array} AN contains azimuth values
+     * if return value was false;
+     * @returns {String} 
+     * message will be set to "" if any required values are present.  
+     * Otherwise, it will be populated with a message explaining what values 
+     * may be missing.
+     */      
+    static private String hasRequiredModifiers(String symbolID, int dc, ArrayList<Double> AM, ArrayList<Double> AN)
+    {
+        
+        String message = symbolID;
+        try
+        {
+            if((dc >= 16 && dc <= 20))
+            {
+                if(dc == SymbolDef.DRAW_CATEGORY_CIRCULAR_PARAMETERED_AUTOSHAPE)//16
+                {
+                    if(AM != null && AM.size() > 0)
+                        return "true";
+                    else
+                    {
+                        message += " requires a modifiers object that has 1 distance/AM value.";
+                        return message;
+                    }
+                }
+                else if(dc == SymbolDef.DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE)//17
+                {
+                    if(AM != null && AM.size() >= 2 &&
+                        AN != null && AN.size() >= 1)
+                        return "true";
+                    else
+                    {
+                        message += (" requires a modifiers object that has 2 distance/AM values and 1 azimuth/AN value.");
+                        return message;
+                    }
+                }
+                else if(dc == SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE)//18
+                {
+                    if(AM != null && AM.size() >= 2 &&
+                        AN != null && AN.size() >= 2)
+                        return "true";
+                    else
+                    {
+                        message += (" requires a modifiers object that has 2 distance/AM values and 2 azimuth/AN values per sector.  The first sector can have just one AM value although it is recommended to always use 2 values for each sector.");
+                        return message;
+                    }
+                }
+                else if(dc == SymbolDef.DRAW_CATEGORY_CIRCULAR_RANGEFAN_AUTOSHAPE)//19
+                {
+                    if(AM != null && AM.size() > 0)
+                        return "true";
+                    else
+                    {
+                        message += (" requires a modifiers object that has at least 1 distance/AM value");
+                        return message;
+                    }
+                }
+                else if(dc == SymbolDef.DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE)//20
+                {
+                    if(AM != null && AM.size() > 0)
+                        return "true";
+                    else
+                    {
+                        message += (" requires a modifiers object that has 1 distance/AM value.");
+                        return message;
+                    }
+                }
+                else
+                {
+                    //should never get here
+                    return "true";
+                }
+            }
+            else
+            {
+                //no required parameters
+                return "true";
+            }   
+        }
+        catch(Exception exc)
+        {
+            ErrorLogger.LogException("MultiPointHandler", "hasRequiredModifiers", exc);
+            return "true";
+        }
     }
     
     /**
@@ -3362,6 +3543,8 @@ public class MultiPointHandler {
         for (int i = 0; i < shapesArray.size(); i++) {
             ArrayList shape = (ArrayList) shapesArray.get(i);
 
+            normalize = normalizePoints(shape, ipc);
+            
             if (fillColor != null) {
                 JSONed.append("{\"polygon\":[");
             } else {
@@ -3379,13 +3562,14 @@ public class MultiPointHandler {
                 double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
                 
                 //fix for fill crossing DTL
-//                if(normalize && fillColor != null)
-//                {
-//                    if(longitude > 0)
-//                    {
-//                        longitude -= 360;
-//                    }
-//                }
+                if(normalize && fillColor != null)
+                {
+                    if(longitude > 0)
+                    {
+                        longitude -= 360;
+                    }
+                }
+                
                 //diagnostic M. Deutch 10-18-11
                 //set the point as geo so that the 
                 //coord.setLocation(longitude, latitude);
