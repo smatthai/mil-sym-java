@@ -5,18 +5,20 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>sec.web.renderer</groupId>
-	<artifactId>mil-sym-java</artifactId>
+	<artifactId>mil-sym-samples-parent</artifactId>
 	<version>0.0.31-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
-	<name>mil-sym-java Master Pom</name>
-	<description>mil-sym-java Master Pom</description>
+	<name>mil-sym-samples Pom</name>
+	<description>mil-sym-samples Parent Pom</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<sec.core.version>0.0.31-SNAPSHOT</sec.core.version>
+	</properties>	
 
 	<modules>
-		<module>core/pom.xml</module>
-		<module>renderer/pom.xml</module>
-		<module>service/pom.xml</module>
-		<module>samples/pom.xml</module>
+		<module>rendering-sample-1</module>
 	</modules>
 
 	<build>
