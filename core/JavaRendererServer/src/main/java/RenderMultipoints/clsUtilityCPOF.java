@@ -27,6 +27,7 @@ import java.awt.geom.PathIterator;
 import java.awt.Shape;
 import ArmyC2.C2SD.Utilities.IPointConversion;
 import ArmyC2.C2SD.Utilities.ShapeInfo;
+import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import java.util.Map;
 
 /**
@@ -321,14 +322,18 @@ public final class clsUtilityCPOF {
                 case TacticalLines.ACA_CIRCULAR:
                 case TacticalLines.KILLBOXBLUE_CIRCULAR:
                 case TacticalLines.KILLBOXPURPLE_CIRCULAR:
-                    radius.value[0] = Double.parseDouble(tg.get_T1());
+                    if(SymbolUtilities.isNumber(tg.get_T1()))
+                        radius.value[0] = Double.parseDouble(tg.get_T1());
                     break;
                 case TacticalLines.RECTANGULAR:
-                    length.value[0] = Double.parseDouble(tg.get_T1());
-                    width.value[0] = Double.parseDouble(tg.get_H());
+                    if(SymbolUtilities.isNumber(tg.get_T1()))
+                        length.value[0] = Double.parseDouble(tg.get_T1());
+                    if(SymbolUtilities.isNumber(tg.get_H()))
+                        width.value[0] = Double.parseDouble(tg.get_H());
                     //assume that attitude was passed in mils
                     //so we must multiply by 360/6400 to convert to degrees
-                    attitude.value[0] = Double.parseDouble(tg.get_H2())*(360d/6400d);
+                    if(SymbolUtilities.isNumber(tg.get_H2()))
+                        attitude.value[0] = Double.parseDouble(tg.get_H2())*(360d/6400d);
                     break;
                 case TacticalLines.PAA_RECTANGULAR_REVC:
                 case TacticalLines.FSA_RECTANGULAR:
@@ -358,7 +363,8 @@ public final class clsUtilityCPOF {
                             attitude.value[0] = a12.value[0];
                         }
                     }
-                    width.value[0] = Double.parseDouble(tg.get_T1());
+                    if(SymbolUtilities.isNumber(tg.get_T1()))
+                        width.value[0] = Double.parseDouble(tg.get_T1());
                     break;
                 default:
                     break;
