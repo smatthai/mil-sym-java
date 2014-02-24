@@ -29,7 +29,183 @@ function formatKMLForHTML(kml)
 	
 	return formattedKML;
 }
-function testRender()
+function cleartext()
+{
+	//alert('clr');
+	document.getElementById("contentSpan").innerHTML = "";
+	return;
+}
+function testAmbushKML()
+{
+	
+	var bbox = "66.25,30.60,66.28,30.65";
+	//var bbox = "-180.0,-90.0,180.0,90.0";
+	var scale = 50000.0;
+	
+	var formatJSON = 1;
+	var formatKML = 0;
+	var pixelWidth = 800;
+	var pixelHeight = 600;
+	
+	//change this to format JSON to see the different output.
+	var format = formatJSON;
+	
+	
+	//Not meant to be changed on the fly.
+	//Let's user choose between 2525Bch2 and 2525C.
+	var ms2525Bch2 = 0;
+	var ms2525C = 1;
+	var symStd = ms2525Bch2;
+		
+	////////////////////////////////////////////////////////////////////////////////////////
+	
+	//SECTOR RANGE FAN EXAMPLE USING WEB SERVICE
+	//https://localhost:8443/mil-sym-service/test-index.jsp
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//AMBUSH EXAMPLE
+	var symbolCode4 = "GHGPSLA-------X";//ambush
+
+	var controlPoints4 = "66.26700036208742,30.62755038706961 66.27555681517738,30.64727776502703 66.25654247497746,30.64632704801704";
+	var bbox4 = "66.25,30.60,66.28,30.65";
+	//var bbox2 = "-180.0,-90.0,180.0,90.0";
+	var scale4 = 50000.0;
+	//distance (AM), azimuth (AN), and altitudeDepth (X) can all have multiple values so they are enclosed in brackets.
+	var modifiers4 = "";
+	
+	format = formatKML;
+	//format = formatKML;
+	var json4;
+	
+	//get via POST
+	var http = new XMLHttpRequest();
+	//var url = "http://localhost:8080/mil-sym-service/renderer/mp3d/" + symbolCode4;
+	
+	//for rendering on 3d google earth//////////////////////////////////////////////////
+	format = formatKML;
+	var url = "renderer/mp3d/" + symbolCode4;
+	var params = BuildParams3D("ID","Name","Description", symbolCode4,controlPoints4, "clampToGround",scale4, bbox4, modifiers4,format,symStd);
+	//*///////////////////////////////////////////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////////////////////////////////////////
+	//for rendering on a 2d map
+	/*format = formatJSON;
+	var url = "renderer/mp2d/" + symbolCode4;
+	var params = BuildParams2D("ID","Name","Description", symbolCode4,controlPoints4, pixelWidth, pixelHeight, bbox4, modifiers4,format,0);
+	//*///////////////////////////////////////////////////////////////////////////////////////
+	document.getElementById("contentSpan").innerHTML += "<br/><br/>Ambush KML:   <br/>";
+	callWebService(url, params, format);
+}
+function testAmbushJSON()
+{
+	
+	var bbox = "66.25,30.60,66.28,30.65";
+	//var bbox = "-180.0,-90.0,180.0,90.0";
+	var scale = 50000.0;
+	
+	var formatJSON = 1;
+	var formatKML = 0;
+	var pixelWidth = 800;
+	var pixelHeight = 600;
+	
+	//change this to format JSON to see the different output.
+	var format = formatJSON;
+	
+	
+	//Not meant to be changed on the fly.
+	//Let's user choose between 2525Bch2 and 2525C.
+	var ms2525Bch2 = 0;
+	var ms2525C = 1;
+	var symStd = ms2525Bch2;
+		
+	////////////////////////////////////////////////////////////////////////////////////////
+	
+	//SECTOR RANGE FAN EXAMPLE USING WEB SERVICE
+	//https://localhost:8443/mil-sym-service/test-index.jsp
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//AMBUSH EXAMPLE
+	var symbolCode4 = "GHGPSLA-------X";//ambush
+
+	var controlPoints4 = "66.26700036208742,30.62755038706961 66.27555681517738,30.64727776502703 66.25654247497746,30.64632704801704";
+	var bbox4 = "66.25,30.60,66.28,30.65";
+	//var bbox2 = "-180.0,-90.0,180.0,90.0";
+	var scale4 = 50000.0;
+	//distance (AM), azimuth (AN), and altitudeDepth (X) can all have multiple values so they are enclosed in brackets.
+	var modifiers4 = "";
+	
+	format = formatJSON;
+	
+	var json4;
+	
+	//get via POST
+	var http = new XMLHttpRequest();
+	//var url = "http://localhost:8080/mil-sym-service/renderer/mp3d/" + symbolCode4;
+	
+	//for rendering on 3d google earth//////////////////////////////////////////////////
+	/*format = formatKML;
+	var url = "renderer/mp3d/" + symbolCode4;
+	var params = BuildParams3D("ID","Name","Description", symbolCode4,controlPoints4, "clampToGround",scale4, bbox4, modifiers4,format,symStd);
+	//*///////////////////////////////////////////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////////////////////////////////////////
+	//for rendering on a 2d map
+	format = formatJSON;
+	var url = "renderer/mp2d/" + symbolCode4;
+	var params = BuildParams2D("ID","Name","Description", symbolCode4,controlPoints4, pixelWidth, pixelHeight, bbox4, modifiers4,format,0);
+	//*///////////////////////////////////////////////////////////////////////////////////////
+	document.getElementById("contentSpan").innerHTML += "<br/><br/>Ambush JSON:   <br/>";
+	callWebService(url, params, format);
+}
+function testAxisOfAdvance()
+{
+	var formatJSON = 1;
+	var formatKML = 0;
+	
+	//change this to format JSON to see the different output.
+	var format = formatKML;
+	
+	
+	//Not meant to be changed on the fly.
+	//Let's user choose between 2525Bch2 and 2525C.
+	var ms2525Bch2 = 0;
+	var ms2525C = 1;
+	var symStd = ms2525Bch2;
+		
+	////////////////////////////////////////////////////////////////////////////////////////
+	
+	//SECTOR RANGE FAN EXAMPLE USING WEB SERVICE
+	//https://localhost:8443/mil-sym-service/test-index.jsp
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//AOA EXAMPLE
+	var symbolCode4 = "GFGPOLAGM-****X";//Axis of Advance Ground Main Attack
+
+	var controlPoints4 = "-96,-68,0 -95.37721031688045,-67.50564676142983,0 -94.80261082916915,-66.8525859524669,0 -95.34501213073854,-67.89145017922694,0";
+	var bbox4 = "-99.9198454040672,-68.2537501554183,-91.28311615789315,-65.55725973843599";
+	//var bbox2 = "-180.0,-90.0,180.0,90.0";
+	var scale4 = 814129.2;
+	//distance (AM), azimuth (AN), and altitudeDepth (X) can all have multiple values so they are enclosed in brackets.
+	var modifiers4 = "";
+	
+	format = formatKML;
+	//format = formatKML;
+	var json4;
+	
+	//get via POST
+	var http = new XMLHttpRequest();
+	//var url = "http://localhost:8080/mil-sym-service/renderer/mp3d/" + symbolCode4;
+	
+	//for rendering on 3d google earth//////////////////////////////////////////////////
+	format = formatKML;
+	var url = "renderer/mp3d/" + symbolCode4;
+	var params = BuildParams3D("ID","Axis of Advance Ground Main Attack","Axis of Advance Ground Main Attack", symbolCode4,controlPoints4, "clampToGround",scale4, bbox4, modifiers4,format,symStd);
+	//*///////////////////////////////////////////////////////////////////////////////////////
+	
+	document.getElementById("contentSpan").innerHTML += "<br/><br/>Axis of Advance KML:   <br/>";
+	callWebService(url, params, format);
+}
+function testRangeFan()
 {
 
 	var bbox = "66.25,30.60,66.28,30.65";
@@ -70,8 +246,7 @@ function testRender()
 	//format = formatKML;
 	var json4;
 	
-	//get via POST
-	var http = new XMLHttpRequest();
+	
 	//var url = "http://localhost:8080/mil-sym-service/renderer/mp3d/" + symbolCode4;
 	
 	//for rendering on 3d google earth//////////////////////////////////////////////////
@@ -86,7 +261,16 @@ function testRender()
 	var url = "renderer/mp2d/" + symbolCode4;
 	var params = BuildParams2D("ID","Name","Description", symbolCode4,controlPoints4, pixelWidth, pixelHeight, bbox4, modifiers4,format,0);
 	//*///////////////////////////////////////////////////////////////////////////////////////
-	
+	document.getElementById("contentSpan").innerHTML += "<br/><br/>Sector Range Fan:   <br/>";
+	callWebService(url, params, format);
+}
+
+function callWebService(url, params, format){
+
+	var formatJSON = 1;
+	var formatKML = 0;
+	//get via POST
+	var http = new XMLHttpRequest();
 	http.open("POST",url,true);
 
 	//First 2 header lines critical!
@@ -101,8 +285,8 @@ function testRender()
 		
 			json4 = http.responseText;
 			
-			document.getElementById("contentSpan").innerHTML += "<br/><br/>Sector Range Fan:   <br/>";
-			document.getElementById("contentSpan").innerHTML += http.getAllResponseHeaders() + "<br/>";
+			
+			document.getElementById("contentSpan").innerHTML += "<br/>" + http.getAllResponseHeaders() + "<br/>";
 			if(format == formatJSON)
 			{
 				document.getElementById("contentSpan").innerHTML += "JSON Format:<br/>";
@@ -203,8 +387,11 @@ function BuildParams2D(id, name, description, symbolID, points, pixelWidth, pixe
 </head>
 <body>
 
-    <button type='button' onclick='testRender()'>Test Multipoint</button>
-
+    <button type='button' onclick='testRangeFan()'>Test Sector Range Fan</button>
+	<button type='button' onclick='testAmbushKML()'>Ambush KML</button>
+	<button type='button' onclick='testAmbushJSON()'>Ambush JSON</button>
+	<button type='button' onclick='testAxisOfAdvance()'>Axis of Advance</button>
+	<button type='button' onclick='cleartext()'>Clear</button>
 	
    <span id='contentSpan'/>
    
