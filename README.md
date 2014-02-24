@@ -1,6 +1,9 @@
 mil-sym-java
 =========
-mil-sym-java is a well worn set of java libraries that have been used in US Army Mission Command software for years.  In November 2013 Mission Command was given the approval to release and maintain these libraries as public open source. 
+mil-sym-java is a well worn set of java libraries that have been used in US Army Mission Command software for years.  In November 2013 Mission Command was given the approval to release and maintain these libraries as public open source.  
+
+[Web Service Developer's Guide Wiki](https://github.com/missioncommand/mil-sym-java/wiki/Developer's-Guide)
+[Developer's Guide Word Docs](https://github.com/missioncommand/mil-sym-java/blob/master/documentation)
 
 MIL-STD-2525
 -----------
