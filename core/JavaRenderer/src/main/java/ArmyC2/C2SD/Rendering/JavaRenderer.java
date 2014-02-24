@@ -161,7 +161,17 @@ public class JavaRenderer implements IJavaRenderer {
                         pointCount = coords.size();
                     }
 
-                    if(sd.getMaxPoints() > 1 || sd.HasWidth() == true)
+                    int dc = sd.getDrawCategory();
+                    if (dc == SymbolDef.DRAW_CATEGORY_POINT)//make sure we can find the character in the font.
+                    {
+                        int index = -1;
+                        index = SinglePointLookup.getInstance().getCharCodeFromSymbol(symbolCode,symStd);
+                        if(index > 0)
+                            return true;
+                        else
+                            message = "Bad font lookup for: " + symbolCode + " (" + basicSymbolID + ")";
+                    }
+                    else if(dc > 0 && dc < 99)
                     {
                         if(sd.getMinPoints() == sd.getMaxPoints())
                         {    //complex graphic like ambush
@@ -184,15 +194,6 @@ public class JavaRenderer implements IJavaRenderer {
                         {
                              message = symbolCode + " had less than the required number of points. Had: " + String.valueOf(coords.size()) + " Needed: " + String.valueOf(sd.getMinPoints());
                         }
-                    }
-                    else if (sd.getMaxPoints() == 1)//make sure we can find the character in the font.
-                    {
-                        int index = -1;
-                        index = SinglePointLookup.getInstance().getCharCodeFromSymbol(symbolCode,symStd);
-                        if(index > 0)
-                            return true;
-                        else
-                            message = "Bad font lookup for: " + symbolCode + " (" + basicSymbolID + ")";
                     }
                     else
                     {
@@ -442,7 +443,7 @@ public class JavaRenderer implements IJavaRenderer {
             if(SymbolUtilities.isTacticalGraphic(symbolID))
             {
                 sd = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(symbolID),symStd);
-                if(sd!=null && (sd.HasWidth()==true || sd.getMinPoints() > 1))
+                if(sd!=null && (sd.getDrawCategory() != SymbolDef.DRAW_CATEGORY_POINT))
                 {
                     //call TG icon renderer for multipoints
                     ii = _TGIR.getIcon(symbolID,iconSize);
@@ -864,13 +865,12 @@ public class JavaRenderer implements IJavaRenderer {
                      
                      if(symbolDef != null)
                      {
-                         if(symbolDef.getMaxPoints() <= 1 && symbolDef.HasWidth()==false)
+                         if(symbolDef.getDrawCategory() == SymbolDef.DRAW_CATEGORY_POINT)
                          {
                             _SPR.ProcessSPSymbol(symbol, converter);
                          }
                          else
                          {
-
                              //send to multipointRendering
                              _MPR.render(symbol, converter, clipBounds);
                              //ProcessTGSymbol(symbol, converter,clipBounds);

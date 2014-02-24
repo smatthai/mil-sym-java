@@ -673,9 +673,7 @@ symbology.symbolDefTable = (function () {
                     data.minPoints = parseInt(symbols[i].children[4].textContent, 10); //MINPOINTS
                     data.maxPoints = parseInt(symbols[i].children[3].textContent, 10); //MAXPOINTS
                     data.drawCategory = parseInt(symbols[i].children[2].textContent, 10); //DRAWCATEGORY
-                    data.hasWidth = symbols[i].children[5].textContent; //HASWIDTH
                     data.modifiers = symbols[i].children[6].textContent; //MODIFIERS
-                    //i = count;
                     break;
                 } else if (IEnodeID === basicID) {
                     data = {};
@@ -683,7 +681,6 @@ symbology.symbolDefTable = (function () {
                     data.minPoints = parseInt(symbols[i].childNodes[4].text, 10); //MINPOINTS
                     data.maxPoints = parseInt(symbols[i].childNodes[3].text, 10); //MAXPOINTS
                     data.drawCategory = parseInt(symbols[i].childNodes[2].text, 10); //DRAWCATEGORY
-                    data.hasWidth = symbols[i].childNodes[5].text; //HASWIDTH
                     data.modifiers = symbols[i].childNodes[6].text; //MODIFIERS
                     break;
                 }
@@ -700,7 +697,8 @@ symbology.symbolDefTable = (function () {
                     response.minPoints = sd.minPoints;
                     response.maxPoints = sd.maxPoints;
 
-                    if (sd.maxPoints > 1 || sd.hasWidth === "yes") {
+                    if (sd.drawCategory !== this.DRAW_CATEGORY_POINT && 
+                            sd.drawCategory !== this.DRAW_CATEGORY_DONOTDRAW) {
                         response.isMulti = true;
                         return response;
                     } else {

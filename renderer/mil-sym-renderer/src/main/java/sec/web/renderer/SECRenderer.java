@@ -1110,12 +1110,14 @@ public class SECRenderer {
 			sd = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(symbolID), symStd);
 		}
 		if (sd != null) {
-			if (sd.getMaxPoints() == 1 && sd.HasWidth() == false)
-				return false;
-			else
-				return true;
+                    if(sd.getMaxPoints() == 1 && sd.getDrawCategory() == SymbolDef.DRAW_CATEGORY_POINT){
+                        return false;
+                    }
+                    else{
+                        return true;
+                    }
 		} else {
-			return false;
+                    return false;
 		}
 	}
 

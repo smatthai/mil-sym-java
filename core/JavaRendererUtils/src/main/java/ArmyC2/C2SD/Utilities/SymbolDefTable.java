@@ -138,190 +138,16 @@ public class SymbolDefTable {
     }
 
   }
-/*
-    private void Init()
-    {
-        try
-        {
 
-            InputStream xmlStream = this.getClass().getClassLoader().getResourceAsStream("XML/SymbolConstants.xml");
-
-            _SymbolDefinitions = new HashMap<String, SymbolDef>();
-            // Create a DocumentBuilderFactory
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            //File xmlFile = new File("D:/xml/symbolconstants.xml");//("xml/SymbolConstants.xml");
-            // Create a DocumentBuilder
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            // Parse an XML document
-            Document document = null;
-            //document = builder.parse(xmlFile);
-
-            if(xmlStream != null)
-                document = builder.parse(xmlStream);
-
-            //build map containing symbol definitions
-            ProcessXML(document);
-
-            //System.out.println("success! " + String.valueOf(_SymbolDefinitions.size()));
-
-        } catch (SAXException e) {
-                System.out.println(e.getMessage());
-
-        } catch (ParserConfigurationException e) {
-                System.out.println(e.getMessage());
-
-        } catch (IOException e) {
-                System.out.println(e.getMessage());
-        }
-    }
-
-    private static void ProcessXML(Document doc)
-    {
-        doc.normalizeDocument();
-        //Node SymbolConstants = doc.getFirstChild();
-
-        //System.out.println(SymbolConstants.getNodeName());//SYMBOLCONSTANTS
-
-        //NodeList symbols = SymbolConstants.getChildNodes();
-        NodeList symbols = doc.getElementsByTagName("SYMBOL");
-        NodeList properties = null;
-
-        Node temp = null;
-        Node symbol = null;
-
-        SymbolDef newSymbolDef = null;
-        int lcv = symbols.getLength();
-
-        String name = null;
-        String value = "";
-
-        //loop through symbols
-        for (int i = 0; i < lcv; i++)
-        {
-            newSymbolDef = new SymbolDef();
-            symbol = symbols.item(i);
-            properties = symbol.getChildNodes();
-
-            Element eSymbol = null;
-            Element property = null;
-            //NodeList properties = null;
-            if(symbol.getNodeType() == Node.ELEMENT_NODE)
-            {
-               //symbol element
-               eSymbol = (Element)symbol;
-
-               //get properties
-               //SymbolID
-               properties = eSymbol.getElementsByTagName(propSymbolID);
-               property = (Element)properties.item(0);
-               properties = property.getChildNodes();
-               temp = properties.item(0);
-               if(temp != null)
-                    newSymbolDef.setBasicSymbolId(temp.getNodeValue());
-               else
-                    newSymbolDef.setBasicSymbolId("");
-
-               //geometry
-               properties = eSymbol.getElementsByTagName(propGeometry);
-               property = (Element)properties.item(0);
-               properties = property.getChildNodes();
-               temp = properties.item(0);
-               if(temp != null)
-                    newSymbolDef.setGeometry(temp.getNodeValue());
-               else
-                    newSymbolDef.setGeometry("");
-
-               //draw category
-               properties = eSymbol.getElementsByTagName(propDrawCategory);
-               property = (Element)properties.item(0);
-               properties = property.getChildNodes();
-               temp = properties.item(0);
-               if(temp != null)
-                    newSymbolDef.setDrawCategory(temp.getNodeValue());
-               else
-                   newSymbolDef.setDrawCategory("");
-
-               //max points
-               properties = eSymbol.getElementsByTagName(propMaxPoint);
-               property = (Element)properties.item(0);
-               properties = property.getChildNodes();
-               temp = properties.item(0);
-               if(temp != null)
-               {
-                   value = temp.getNodeValue();
-                   newSymbolDef.setMaxPoints(Integer.parseInt(value));
-               }
-               else
-                   newSymbolDef.setMaxPoints(0);
-
-
-               //min points
-               properties = eSymbol.getElementsByTagName(propMinPoints);
-               property = (Element)properties.item(0);
-               properties = property.getChildNodes();
-               temp = properties.item(0);
-               if(temp != null)
-               {
-                    value = temp.getNodeValue();
-                    newSymbolDef.setMinPoints(Integer.parseInt(value));
-               }
-               else
-                    newSymbolDef.setMinPoints(0);
-
-               //modifiers
-               properties = eSymbol.getElementsByTagName(propModifiers);
-
-               property = (Element)properties.item(0);
-               properties = property.getChildNodes();
-               temp = properties.item(0);
-               if(temp != null)
-               {
-                   newSymbolDef.setModifiers(temp.getNodeValue());
-               }
-               else
-                   newSymbolDef.setModifiers("");
-
-               //description
-               properties = eSymbol.getElementsByTagName(propDescription);
-               property = (Element)properties.item(0);
-               properties = property.getChildNodes();
-               temp = properties.item(0);
-               if(temp != null)
-                   newSymbolDef.setDescription(temp.getNodeValue());
-               else
-                   newSymbolDef.setDescription("");
-
-               //hierarchy
-               properties = eSymbol.getElementsByTagName(propHierarchy);
-               property = (Element)properties.item(0);
-               properties = property.getChildNodes();
-               temp = properties.item(0);
-               if(temp != null)
-                    newSymbolDef.setHierarchy(temp.getNodeValue());
-               else
-                   newSymbolDef.setHierarchy("");
-
-               /*
-               properties = eSymbol.getElementsByTagName(propHasWidth);
-               property = (Element)properties.item(0);
-               properties = property.getChildNodes();
-               temp = properties.item(0);
-               newSymbolDef.setHasWidth(temp.getNodeValue());*/
-/*            }
-
-            name = newSymbolDef.getBasicSymbolId();
-            if(!(name.matches("")))
-                _SymbolDefinitions.put(newSymbolDef.getBasicSymbolId(), newSymbolDef);
-
-        }
-    }
-*/
     /**
      * @name getSymbolDef
      *
      * @desc Returns a SymbolDef from the SymbolDefTable that matches the passed in Symbol Id
      *
-     * @param strBasicSymbolID - IN - A 15 character MilStd code
+     * @param basicSymbolID - IN - A 15 character MilStd code
+     * @param symStd 0 or 1.  
+     * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525Bch2_USAS_13_14 
+     * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525C
      * @return SymbolDef whose Symbol Id matches what is passed in
      */
     public SymbolDef getSymbolDef(String basicSymbolID, int symStd)
@@ -336,6 +162,9 @@ public class SymbolDefTable {
 
     /**
      * Returns a Map of all the symbol definitions, keyed on basic symbol code.
+     * @param symStd 0 or 1.  
+     * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525Bch2_USAS_13_14 
+     * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525C
      * @return
      */
     public Map<String, SymbolDef> GetAllSymbolDefs(int symStd)
@@ -350,7 +179,9 @@ public class SymbolDefTable {
     
     /**
      * SymbolIDs are no longer unique.  
-     * @param symStd
+     * @param symStd 0 or 1.  
+     * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525Bch2_USAS_13_14 
+     * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525C
      * @return 
      */
     public ArrayList GetAllSymbolDefDups(int symStd)
@@ -366,6 +197,9 @@ public class SymbolDefTable {
     /**
      * 
      * @param basicSymbolID
+     * @param symStd 0 or 1.  
+     * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525Bch2_USAS_13_14 
+     * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525C
      * @return
      */
     public Boolean HasSymbolDef(String basicSymbolID, int symStd)

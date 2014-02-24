@@ -68,7 +68,7 @@ public class SinglePoint2525Renderer implements ISinglePointRenderer {
                 sd = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(ms.getSymbolID()),ms.getSymbologyStandard());
             }
             
-            if(sd!=null && (sd.HasWidth()==true || sd.getMinPoints() > 1))
+            if(sd != null && sd.getDrawCategory() != SymbolDef.DRAW_CATEGORY_POINT)
             {
                 //call TG icon renderer for multipoints
                 ii = tgir.getIcon(ms.getSymbolID(),ms.getUnitSize(),ms.getLineColor());

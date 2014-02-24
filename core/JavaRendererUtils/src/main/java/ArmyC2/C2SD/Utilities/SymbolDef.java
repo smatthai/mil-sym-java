@@ -82,15 +82,33 @@ public class SymbolDef {
      *
      */
     static public final int DRAW_CATEGORY_SUPERAUTOSHAPE = 15;
-    
+     /**
+     * Circle that requires 1 AM modifier value.
+     * See ModifiersTG.java for modifier descriptions and constant key strings.
+     */
     static public final int DRAW_CATEGORY_CIRCULAR_PARAMETERED_AUTOSHAPE = 16;
-		
+    /**
+     * Rectangle that requires 2 AM modifier values and 1 AN value.";
+     * See ModifiersTG.java for modifier descriptions and constant key strings.
+     */
     static public final int DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE = 17;
-
+    /**
+     * Requires 2 AM values and 2 AN values per sector.  
+     * The first sector can have just one AM value although it is recommended 
+     * to always use 2 values for each sector.  X values are not required
+     * as our rendering is only 2D for the Sector Range Fan symbol.
+     * See ModifiersTG.java for modifier descriptions and constant key strings.
+     */
     static public final int DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE = 18;
-
+    /**
+     *  Requires at least 1 distance/AM value"
+     *  See ModifiersTG.java for modifier descriptions and constant key strings.
+     */
     static public final int DRAW_CATEGORY_CIRCULAR_RANGEFAN_AUTOSHAPE = 19;
-
+    /**
+     * Requires 1 AM value.
+     * See ModifiersTG.java for modifier descriptions and constant key strings.
+     */
     static public final int DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE = 20;
     
     /**
@@ -221,11 +239,19 @@ public class SymbolDef {
             _intMaxPoints = value;
     }
 
+    /**
+     * @deprecated
+     * @return 
+     */
     public Boolean HasWidth()
     {
         return _hasWidth;
     }
 
+    /**
+     * @deprecated
+     * @param value 
+     */
     public void HasWidth(Boolean value)
     {
         _hasWidth = value;
