@@ -26,6 +26,7 @@ import java.awt.Rectangle;
 import java.awt.geom.PathIterator;
 import java.awt.Shape;
 import ArmyC2.C2SD.Utilities.IPointConversion;
+import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.ShapeInfo;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import java.util.Map;
@@ -331,9 +332,14 @@ public final class clsUtilityCPOF {
                     if(SymbolUtilities.isNumber(tg.get_H()))
                         width.value[0] = Double.parseDouble(tg.get_H());
                     //assume that attitude was passed in mils
-                    //so we must multiply by 360/6400 to convert to degrees
+                    //so we must multiply by 360/6400 to convert to degrees                    
                     if(SymbolUtilities.isNumber(tg.get_H2()))
-                        attitude.value[0] = Double.parseDouble(tg.get_H2())*(360d/6400d);
+                    {
+                        //value passed in mils, convert mils to degrees
+                        attitude.value[0] = Double.parseDouble(tg.get_H2())*(360d/6400d);   
+                        if(RendererSettings.getInstance().getSymbologyStandard()==RendererSettings.Symbology_2525C) //value passed in degrees
+                            attitude.value[0] = Double.parseDouble(tg.get_H2());
+                    }
                     break;
                 case TacticalLines.PAA_RECTANGULAR_REVC:
                 case TacticalLines.FSA_RECTANGULAR:
