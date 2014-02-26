@@ -740,6 +740,32 @@ public class SymbolUtilities {
            }
            return returnVal;
        }
+       
+       public static Boolean hasModifier(String symbolID, String modifier)
+       {
+           return hasModifier(symbolID, modifier, RendererSettings.getInstance().getSymbologyStandard());
+       }
+       
+       /**
+        * 
+        * @param symbolID
+        * @param modifier - from the constants ModifiersUnits or ModifiersTG
+        * @param symStd - 0=2525B, 1=2525C.  Constants available in RendererSettings.
+        * @return
+        */
+        public static Boolean hasModifier(String symbolID, String modifier, int symStd){
+           Boolean returnVal = false;
+           
+           if(isTacticalGraphic(symbolID) == true)
+           {
+               returnVal = canSymbolHaveModifier(symbolID, modifier, symStd);
+           }
+           else
+           {
+               returnVal = canUnitHaveModifier(symbolID, modifier);
+           }
+           return returnVal;
+       };
 
        /**
         * Checks if a tactical graphic has the passed modifier.
@@ -759,7 +785,7 @@ public class SymbolUtilities {
         * @param symStd - like RendererSettings.Symbology_2525C
         * @return 
         */
-       public static boolean canSymbolHaveModifier(String symbolID, String tgModifier, int SymStd)
+       public static boolean canSymbolHaveModifier(String symbolID, String tgModifier, int symStd)
        {
            String basic = null;
            SymbolDef sd = null;
@@ -767,29 +793,48 @@ public class SymbolUtilities {
            
             try
             {
+                 
                 basic = SymbolUtilities.getBasicSymbolID(symbolID);
-                sd = SymbolDefTable.getInstance().getSymbolDef(basic, SymStd);
+                sd = SymbolDefTable.getInstance().getSymbolDef(basic, symStd);
                 if(sd != null)
                 {
+                    int dc = sd.getDrawCategory();
                     if(tgModifier.equals(ModifiersTG.AM_DISTANCE))
                     {
-                        if(hasAMmodifierRadius(symbolID)||
-                                hasAMmodifierWidth(symbolID));
+                        switch(dc)
+                        {
+                            case SymbolDef.DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE:
+                            case SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE:
+                            case SymbolDef.DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE: 
                                 returnVal = true;
+                                break;
+                            case SymbolDef.DRAW_CATEGORY_CIRCULAR_PARAMETERED_AUTOSHAPE:
+                            case SymbolDef.DRAW_CATEGORY_CIRCULAR_RANGEFAN_AUTOSHAPE:
+                                returnVal = true;
+                                break;
+                            default:
+                                returnVal = false;
+                        }
                     }
-                    else if(tgModifier.equals(ModifiersTG.AN_AZIMUTH) ||
-                            tgModifier.equals(ModifiersTG.X_ALTITUDE_DEPTH))
+                    else if(tgModifier.equals(ModifiersTG.AN_AZIMUTH))
                     {
-                        if(sd.getModifiers().contains(tgModifier))
-                            returnVal = true;
+                        switch(dc)
+                        {
+                            case SymbolDef.DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE:
+                            case SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE:
+                                returnVal = true;
+                                break;
+                            default:
+                                returnVal = false;
+                        }
                     }
                     else
                     {
-                        if(sd.getModifiers().contains(tgModifier + "."))
+                        if(sd.getModifiers().indexOf(tgModifier + ".")>0)
                             returnVal = true;
                     }
                 }
-                
+
                 return returnVal;
                 
 
@@ -3371,60 +3416,95 @@ public class SymbolUtilities {
           return false;
   }
 
-  public static Boolean hasAMmodifierWidth(String strSymbolID)
+  public static Boolean hasAMmodifierWidth(String symbolID)
   {
-      String strBasicSymbolID = getBasicSymbolID(strSymbolID);
-      boolean blRetVal = (strBasicSymbolID.equals("G*F*ACSR--****X")//FSA
-        || strBasicSymbolID.equals("G*F*ATR---****X")//rectangular target
-        || strBasicSymbolID.equals("G*F*ACFR--****X")//FFA
-        || strBasicSymbolID.equals("G*F*ACAR--****X")//ACA
-        || strBasicSymbolID.equals("G*F*ACNR--****X")//NFA
-        || strBasicSymbolID.equals("G*F*ACPR--****X")//PAA
-        || strBasicSymbolID.equals("G*F*ACRR--****X")//RFA
-        || strBasicSymbolID.equals("G*F*AZIR--****X")//ATI
-        || strBasicSymbolID.equals("G*F*AZXR--****X")//CFF
-        || strBasicSymbolID.equals("G*F*AZSR--****X")//Sensor Zone2525B
-        || strBasicSymbolID.equals("G*F*ACER--****X")//2525C
-        || strBasicSymbolID.equals("G*F*AZCR--****X")//Censor Zone
-        || strBasicSymbolID.equals("G*F*AZDR--****X")//Dead Space Area 2525B
-        || strBasicSymbolID.equals("G*F*ACDR--****X")//2525C
-        || strBasicSymbolID.equals("G*F*AZFR--****X")//CFZ
-        || strBasicSymbolID.equals("G*F*AZZR--****X")//ZOR 2525B
-        || strBasicSymbolID.equals("G*F*ACZR--****X")//ZOR 2525C
-        || strBasicSymbolID.equals("G*F*AZBR--****X")//TBA 2525B
-        || strBasicSymbolID.equals("G*F*ACBR--****X")//TBA 2525C
-        || strBasicSymbolID.equals("G*F*ACVR--****X")//TVAR 2525C
-        || strBasicSymbolID.equals("G*F*AZVR--****X"));//TVAR 2525B
-
-        return blRetVal;
+      return hasAMmodifierWidth(symbolID, RendererSettings.getInstance().getSymbologyStandard());
+  }
+  
+  public static Boolean hasAMmodifierWidth(String symbolID, int symStd)
+  {
+        SymbolDef sd = null;
+        Boolean returnVal = false;
+        String basic = SymbolUtilities.getBasicSymbolID(symbolID);
+            
+        sd = SymbolDefTable.getInstance().getSymbolDef(basic, symStd);
+        if(sd != null)
+        {
+            int dc = sd.getDrawCategory();
+        
+            switch(dc)
+            {
+                case SymbolDef.DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE://width
+                case SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE:
+                case SymbolDef.DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE: 
+                    returnVal = true;
+                    break;
+                default:
+                    returnVal = false;
+            }
+        }
+        
+        return returnVal;
+  }
+  
+  public static Boolean hasANmodifier(String symbolID)
+  {
+      return hasANmodifier(symbolID, RendererSettings.getInstance().getSymbologyStandard());
+  }
+  
+  public static Boolean hasANmodifier(String symbolID, int symStd)
+  {
+        SymbolDef sd = null;
+        Boolean returnVal = false;
+        String basic = SymbolUtilities.getBasicSymbolID(symbolID);
+            
+        sd = SymbolDefTable.getInstance().getSymbolDef(basic, symStd);
+        if(sd != null)
+        {
+            int dc = sd.getDrawCategory();
+        
+            switch(dc)
+            {
+                case SymbolDef.DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE://width
+                case SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE:
+                    returnVal = true;
+                    break;
+                default:
+                    returnVal = false;
+            }
+        }
+        
+        return returnVal;
+  }
+  
+  public static Boolean hasAMmodifierRadius(String symbolID)
+  {
+      return hasAMmodifierRadius(symbolID, RendererSettings.getInstance().getSymbologyStandard());
   }
 
-  public static Boolean hasAMmodifierRadius(String strSymbolID)
+  public static Boolean hasAMmodifierRadius(String symbolID, int symStd)
   {
-      String strBasicSymbolID = getBasicSymbolID(strSymbolID);
-      boolean blRetVal = (strBasicSymbolID.equals("G*F*ATC---****X")//circular target
-        || strBasicSymbolID.equals("G*F*ACSC--****X")//FSA
-        || strBasicSymbolID.equals("G*F*ACAC--****X")//ACA
-        || strBasicSymbolID.equals("G*F*ACFC--****X")//FFA
-        || strBasicSymbolID.equals("G*F*ACNC--****X")//NFA
-        || strBasicSymbolID.equals("G*F*ACRC--****X")//RFA
-        || strBasicSymbolID.equals("G*F*ACPC--****X")//PAA
-        || strBasicSymbolID.equals("G*F*AZIC--****X")//ATI 2525B
-        || strBasicSymbolID.equals("G*F*AZXC--****X")//CFF 2525B
-        || strBasicSymbolID.equals("G*F*AZSC--****X")//Sensor Zone 2525B
-        || strBasicSymbolID.equals("G*F*ACEC--****X")//2525C
-        || strBasicSymbolID.equals("G*F*AZCC--****X")//censor zone 2525B
-        || strBasicSymbolID.equals("G*F*AZDC--****X")//Dead Space Area 2525B
-        || strBasicSymbolID.equals("G*F*ACDC--****X")//Dead Space Area 2525C
-        || strBasicSymbolID.equals("G*F*AZFC--****X")//CFZ 2525B
-        || strBasicSymbolID.equals("G*F*AZZC--****X")//ZOR 2525B
-        || strBasicSymbolID.equals("G*F*ACZC--****X")//ZOR 2525C
-        || strBasicSymbolID.equals("G*F*AZBC--****X")//TBA 2525B
-        || strBasicSymbolID.equals("G*F*ACBC--****X")//TBA 2525C
-        || strBasicSymbolID.equals("G*F*ACVC--****X")//TVAR 2525C
-        || strBasicSymbolID.equals("G*F*AZVC--****X"));//TVAR 2525B
-
-        return blRetVal;
+        SymbolDef sd = null;
+        Boolean returnVal = false;
+        String basic = SymbolUtilities.getBasicSymbolID(symbolID);
+            
+        sd = SymbolDefTable.getInstance().getSymbolDef(basic, symStd);
+        if(sd != null)
+        {
+            int dc = sd.getDrawCategory();
+        
+            switch(dc)
+            {
+                case SymbolDef.DRAW_CATEGORY_CIRCULAR_PARAMETERED_AUTOSHAPE://radius
+                case SymbolDef.DRAW_CATEGORY_CIRCULAR_RANGEFAN_AUTOSHAPE:
+                    returnVal = true;
+                    break;
+                default:
+                    returnVal = false;
+            }
+        }
+        
+        return returnVal;
   }
 
   /**
