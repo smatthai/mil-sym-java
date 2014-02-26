@@ -99,7 +99,6 @@ public class SymbolDefTable {
       String drawCategory = XMLUtil.parseTagValue(data, "<DRAWCATEGORY>", "</DRAWCATEGORY>");
       String maxpoints = XMLUtil.parseTagValue(data, "<MAXPOINTS>", "</MAXPOINTS>");
       String minpoints = XMLUtil.parseTagValue(data, "<MINPOINTS>", "</MINPOINTS>");
-      String haswidth = XMLUtil.parseTagValue(data, "<HASWIDTH>", "</HASWIDTH>");
       String modifiers = XMLUtil.parseTagValue(data, "<MODIFIERS>", "</MODIFIERS>");
       String description = XMLUtil.parseTagValue(data, "<DESCRIPTION>", "</DESCRIPTION>");
       description = description.replaceAll("&amp;", "&");
@@ -117,8 +116,7 @@ public class SymbolDefTable {
       sd.setMaxPoints(Integer.valueOf(maxpoints));
       sd.setModifiers(modifiers);
       sd.setFullPath(path);
-      if(haswidth.equalsIgnoreCase("yes"))
-        sd.HasWidth(Boolean.TRUE);
+
 
       boolean isMCSSpecific = SymbolUtilities.isMCSSpecificTacticalGraphic(sd);
       if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)

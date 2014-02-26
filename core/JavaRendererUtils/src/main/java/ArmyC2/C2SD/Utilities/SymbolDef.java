@@ -22,7 +22,6 @@ public class SymbolDef {
     String _strModifiers = "";
     String _strHierarchy = "";
     String _strFullPath = "";
-    Boolean _hasWidth = false;
 
 
 
@@ -240,22 +239,31 @@ public class SymbolDef {
     }
 
     /**
-     * @deprecated
+     * Checks if the symbol has required modifiers that influence the shape of the symbol.
+     * @deprecated  Use the draw category to determine if the symbol has a 
+     * channel width point or required modifiers (AM or AN) that affect how
+     * the symbol is rendered.
      * @return 
      */
     public Boolean HasWidth()
     {
-        return _hasWidth;
+        Boolean returnVal = false;
+        switch(_intDrawCategory)
+        {
+            case SymbolDef.DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE:
+            case SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE:
+            case SymbolDef.DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE: 
+            case SymbolDef.DRAW_CATEGORY_CIRCULAR_PARAMETERED_AUTOSHAPE:
+            case SymbolDef.DRAW_CATEGORY_CIRCULAR_RANGEFAN_AUTOSHAPE:
+            case SymbolDef.DRAW_CATEGORY_ROUTE:
+                returnVal = true;
+                break;
+            default:
+                returnVal = false;
+        }
+        return returnVal;
     }
 
-    /**
-     * @deprecated
-     * @param value 
-     */
-    public void HasWidth(Boolean value)
-    {
-        _hasWidth = value;
-    }
 
     /**
      *
