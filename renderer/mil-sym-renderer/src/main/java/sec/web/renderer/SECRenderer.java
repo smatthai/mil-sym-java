@@ -1110,7 +1110,11 @@ public class SECRenderer {
 			sd = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(symbolID), symStd);
 		}
 		if (sd != null) {
-                    if(sd.getMaxPoints() == 1 && sd.getDrawCategory() == SymbolDef.DRAW_CATEGORY_POINT){
+                    if(sd.getMaxPoints() > 1)
+                    {
+                        return true;
+                    }
+                    else if(sd.getMaxPoints() == 1 && sd.getDrawCategory() == SymbolDef.DRAW_CATEGORY_POINT){
                         return false;
                     }
                     else{
