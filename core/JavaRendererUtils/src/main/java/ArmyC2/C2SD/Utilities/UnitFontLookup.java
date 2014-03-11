@@ -194,7 +194,7 @@ public class UnitFontLookup {
    * @param SymbolID 15 character symbol ID
    * @return fill character index
    */
-  public static int getFillCode(String SymbolID)
+  public static int getFillCode(String SymbolID, int symStd)
   {
       int returnVal = -1;
 
@@ -252,7 +252,7 @@ public class UnitFontLookup {
                       }
                       else if(battleDimension=='U')//Subsurface
                       {
-                          returnVal = getSubSurfaceFill(SymbolID);
+                          returnVal = getSubSurfaceFill(SymbolID, symStd);
                       }
                       else if(battleDimension=='P')//space
                       {
@@ -279,7 +279,7 @@ public class UnitFontLookup {
                       }
                       else if(battleDimension=='U')//Subsurface
                       {
-                          returnVal = getSubSurfaceFill(SymbolID);
+                          returnVal = getSubSurfaceFill(SymbolID, symStd);
                       }
                       else if(battleDimension=='P')//space
                       {
@@ -306,7 +306,7 @@ public class UnitFontLookup {
                       }
                       else if(battleDimension=='U')//Subsurface
                       {
-                          returnVal = getSubSurfaceFill(SymbolID);
+                          returnVal = getSubSurfaceFill(SymbolID, symStd);
                       }
                       else if(battleDimension=='P')//space
                       {
@@ -339,7 +339,7 @@ public class UnitFontLookup {
                       }
                       else if(battleDimension=='U')//Subsurface
                       {
-                          returnVal = getSubSurfaceFill(SymbolID);
+                          returnVal = getSubSurfaceFill(SymbolID, symStd);
                       }
                       else if(battleDimension=='P')//space
                       {
@@ -605,7 +605,7 @@ public class UnitFontLookup {
       }
       if(SymbolUtilities.isSubSurface(SymbolID))
       {
-          returnVal = getSubSurfaceFrame(SymbolID, FillCode);
+          returnVal = getSubSurfaceFrame(SymbolID, FillCode, symStd);
       }
 
       return returnVal;
@@ -663,7 +663,7 @@ public class UnitFontLookup {
       return FillIndexUG;
   }
   
-  private static int getSubSurfaceFill(String SymbolID)
+  private static int getSubSurfaceFill(String SymbolID, int symStd)
   {
       char affiliation = 0;
       char status = 0;
@@ -791,7 +791,7 @@ public class UnitFontLookup {
       return returnVal;
   }
   
-  private static int getSubSurfaceFrame(String SymbolID, int fillCode)
+  private static int getSubSurfaceFrame(String SymbolID, int fillCode, int symStd)
   {
       int returnVal = 0;
 

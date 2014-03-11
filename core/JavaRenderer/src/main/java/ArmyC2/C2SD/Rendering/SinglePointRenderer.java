@@ -169,7 +169,7 @@ public class SinglePointRenderer {
 
             //2525C/USAS
             //get fill character
-            int charFillIndex = UnitFontLookup.getFillCode(symbolID);
+            int charFillIndex = UnitFontLookup.getFillCode(symbolID, symStd);
             //get frame character
             int charFrameIndex = UnitFontLookup.getFrameCode(symbolID, charFillIndex,symStd);
             
