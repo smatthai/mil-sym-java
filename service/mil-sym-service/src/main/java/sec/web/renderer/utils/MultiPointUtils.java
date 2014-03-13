@@ -5,7 +5,9 @@
 package sec.web.renderer.utils;
 
 import ArmyC2.C2SD.Utilities.ErrorLogger;
+
 import java.util.Map;
+
 import sec.web.renderer.SECRenderer;
 
 /**
@@ -69,6 +71,7 @@ public class MultiPointUtils {
 		return returnVal;
 	}
 
+	@SuppressWarnings("unused")
 	public static String RenderSymbol2D(String symbolID, Map<String, String> params) {
 		String returnVal = "";
 		String id = "ID";

@@ -57,13 +57,7 @@ public class DirectoryReaderServlet extends HttpServlet {
 			
 		} catch (Exception e) {
 			LOGGER.log(Level.WARNING, e.getMessage());
-		}
-		
-		/* HTML list response returned */
-		// writer.println(makeHtmlResponse( utils.getDirContent(filePath.toString(), urlStr) ));
-		/* add to request */
-		// request.setAttribute("jarList", utils.getDirContent(filePath.toString(), urlStr));
-		// String json = utils.getDirContentAsJson(filePath.toString(), urlStr);		
+		}	
 	}
 
 	private String buildURL(String serverName, String port) {

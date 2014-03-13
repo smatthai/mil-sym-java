@@ -3,7 +3,6 @@ package sec.web.renderer.utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -13,9 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import com.google.gson.Gson;
-
 import sec.web.renderer.model.CommonURL;
+
+import com.google.gson.Gson;
 
 public class IoUtilities {
 	private final static Logger LOGGER = Logger.getLogger(IoUtilities.class.getName());	
@@ -26,10 +25,13 @@ public class IoUtilities {
 	private String localPluginPath;
 	private final String DEFAULT_DIRECTORY_NAME = "plugins";
 	private final String DEFAULT_SERVICE_NAME = "mil-sym-service";
+	private boolean enablePlugins = true;
 
 	public IoUtilities() {
-		props = loadResource("properties/prop.properties", this.getClass().getClassLoader());
-		loadCurrentWorkingDirectory();		
+		props = ResourceUtils.loadResource("properties/prop.properties", this.getClass().getClassLoader());
+		Boolean enabled = Boolean.valueOf((String)props.get("enablePlugins"));
+		enablePlugins = (enabled == null) ? true : enabled;	
+		loadCurrentWorkingDirectory();
 	}
 	
 	public IoUtilities(Properties props) {				
@@ -64,32 +66,8 @@ public class IoUtilities {
 		}
 		
 		this.baseURL = new CommonURL(prot, host, port, ctx);
-	}
-	
-	public Properties loadResource(String fileName, ClassLoader loader) {
-		Properties props = new Properties();
-		if (fileName == null || fileName.equals("")) {
-			throw new IllegalArgumentException("null reference: " + fileName);
-		}
-		if (fileName.startsWith("/")) {
-			fileName = fileName.substring(1);
-		}
+	}	
 
-		InputStream inStream = null;
-		try {
-			if (loader == null) {
-				loader = ClassLoader.getSystemClassLoader();
-			}
-
-			inStream = loader.getResourceAsStream(fileName);
-			props.load(inStream);
-
-		} catch (IOException ioe) {
-			LOGGER.log(Level.WARNING, ioe.getMessage());
-			ioe.printStackTrace();
-		}
-		return props;
-	}
 	
 	public ArrayList<String> getDirContent(String filePath) throws FileNotFoundException, URISyntaxException, MalformedURLException {		
 		File dir;
@@ -151,8 +129,10 @@ public class IoUtilities {
 	}
 	
 	private void reloadPlugins() {
-		this.plugins.clear();
-		loadDirContent(baseURL.toString());
+		if (this.enablePlugins) {
+			this.plugins.clear();
+			loadDirContent(baseURL.toString());
+		}
 	}
 			
 	public String getContentAsString(char delimiter) throws IOException {
@@ -245,15 +225,17 @@ public class IoUtilities {
 	}
 	
 	public String loadCurrentWorkingDirectory() {
-		String curLoc = ""; //"C:\\DeveloperTools\\tools\\webservers\\apache-tomcat-6.0.32\\webapps";
+		String curLoc = ""; 
 		try {
-			curLoc = System.getProperty("user.dir");		
-			curLoc = modifyCurrentLocation(curLoc);
-			System.out.println(curLoc);
-			createDirectories(curLoc);
-			
-			baseURL = new CommonURL();
-			baseURL.setContextPath(curLoc);		
+			if (this.enablePlugins) {
+				curLoc = System.getProperty("user.dir");			
+				curLoc = modifyCurrentLocation(curLoc);
+				System.out.println(curLoc);
+				createDirectories(curLoc);
+				
+				baseURL = new CommonURL();
+				baseURL.setContextPath(curLoc);
+			}		
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -265,28 +247,11 @@ public class IoUtilities {
 	 * @param curLoc
 	 * 			String representation of current working directory to mold it into application directory
 	 * */
-	private String modifyCurrentLocation(String curLoc) {
-//		curLoc = correctPath(curLoc, File.separator);
-//		int i = curLoc.indexOf("apache-tomcat-");
-//		int j = curLoc.lastIndexOf(File.separator);
-		
+	private String modifyCurrentLocation(String curLoc) {		
 		props.setProperty("directoryName", DEFAULT_DIRECTORY_NAME);
 		String newLoc = (curLoc.endsWith(File.separator)) ? curLoc + DEFAULT_SERVICE_NAME + File.separator + DEFAULT_DIRECTORY_NAME
 				: (curLoc + File.separator + DEFAULT_SERVICE_NAME + File.separator + DEFAULT_DIRECTORY_NAME);		
 		props.setProperty("directoryPath", newLoc);
-		
-		
-		
-//		if (i > 0) {
-//			newLoc = curLoc.substring(0, ++j);
-//			newLoc += "webapps" + File.separator;			
-//			System.out.println(props.getProperty("directoryPath"));			
-//			props.setProperty("directoryPath", newLoc);
-//		}	 
-//
-//		newLoc += props.getProperty("serviceName") + File.separator + props.getProperty("directoryName");
-//		System.out.println("NEW LOCATION:\t" + newLoc);
-//		props.setProperty("directoryPath", newLoc);
 		
 		return newLoc;
 	}

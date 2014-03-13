@@ -17,11 +17,11 @@ public class ReadDirectoryTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		try {
-			// retain old list of plugins////////////////////////////
+			// retain old list of plugins
 			ArrayList<String> oldList = new ArrayList<String>();
 			oldList.addAll(fileNames);
 
-			// clear current list and rebuild////////////////////////
+			// clear current list and rebuild
 			clear();
 			File dirToRead = new File(this.directoryPath);
 			File[] files = dirToRead.listFiles();

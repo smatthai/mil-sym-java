@@ -18,10 +18,8 @@ import sec.web.renderer.utils.IoUtilities;
 
 @Controller
 public class DirectoryReaderController {
-//	private IoUtilities utils = new IoUtilities();
 
-	public DirectoryReaderController() {
-	}
+	public DirectoryReaderController() { }
 	
 	@RequestMapping(value="/pluginList", method = RequestMethod.GET)
 	@ResponseBody

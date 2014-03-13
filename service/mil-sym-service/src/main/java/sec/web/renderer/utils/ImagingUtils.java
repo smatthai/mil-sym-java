@@ -103,22 +103,20 @@ public class ImagingUtils {
 		return kmlInfo.getBytes();
 	}
         
-        public static String getKmlString(String url, String symbolId, HashMap<String, String> symbolInfoMap) {
-		return sr.getSymbolImageKML(url, symbolId, symbolInfoMap);		
+	public static String getKmlString(String url, String symbolId, HashMap<String, String> symbolInfoMap) {
+		return sr.getSymbolImageKML(url, symbolId, symbolInfoMap);
 	}
-	
+
 	public static void reloadPlugins() {
 		ImagingUtils iUtils = new ImagingUtils();
 		ArrayList<String> latestPluginContent = io.getPlugins();
 
 		if (!iUtils.getPreviousPluginContent().equals(latestPluginContent)) {
 			File f = new File(io.loadCurrentWorkingDirectory());
-			//System.out.println("\n\nLoading plugins from:\t" + f.getAbsolutePath() + "\n\n");
+
 			sr.loadPluginsFromDirectory(f);
 			sr.refreshPlugins();
-			//System.out.println("\n\nRefreshing SR plugins");
 		}
-
 	}
 	
 	public ArrayList<String> getPreviousPluginContent() {
