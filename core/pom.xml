@@ -53,6 +53,14 @@
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<autoVersionSubModules>true</autoVersionSubModules>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -91,5 +99,13 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>	
+	
+	
+	
+	<scm>
+		<connection>scm:git:https://github.com/missioncommand/mil-sym-java.git</connection>
+		<developerConnection>scm:git:https://github.com/missioncommand/mil-sym-java.git</developerConnection>
+		<url>https://github.com/missioncommand/mil-sym-java</url>
+	</scm>
 	
 </project>
