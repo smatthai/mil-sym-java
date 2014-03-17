@@ -6,7 +6,7 @@
 
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>sec-core-parent</artifactId>
-	<version>0.0.31-SNAPSHOT</version>
+	<version>0.0.32-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>sec-core-parent</name>
@@ -14,7 +14,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<core.jar.version>0.0.14-SNAPSHOT</core.jar.version>
+		<core.jar.version>0.0.31</core.jar.version>
 	</properties>	
 
 	<modules>

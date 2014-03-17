@@ -6,7 +6,7 @@
 
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>mil-sym-renderer-parent</artifactId>
-	<version>0.0.31-SNAPSHOT</version>
+	<version>0.0.32-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>mil-sym-renderer Parent Pom</name>
@@ -14,7 +14,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sec.core.version>0.0.31-SNAPSHOT</sec.core.version>
+		<sec.core.version>0.0.31</sec.core.version>
         <zip.assembly>${project.basedir}/src/main/resources/assembly/zip.xml</zip.assembly>
         <webapp.path>${project.basedir}/src/main/webapp/</webapp.path>	
         <wro4j.version>1.6.0</wro4j.version>
