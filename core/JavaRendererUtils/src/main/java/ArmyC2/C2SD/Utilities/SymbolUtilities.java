@@ -830,7 +830,7 @@ public class SymbolUtilities {
                     }
                     else
                     {
-                        if(sd.getModifiers().indexOf(tgModifier + ".")>0)
+                        if(sd.getModifiers().indexOf(tgModifier + ".")>-1)
                             returnVal = true;
                     }
                 }
