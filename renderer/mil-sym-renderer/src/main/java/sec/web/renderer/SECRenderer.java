@@ -915,23 +915,81 @@ public class SECRenderer {
 			String controlPoints, String altitudeMode, double scale, String bbox, String modifiers, int format, int symStd) {
 		// System.out.println("RenderSymbol called");
 		String output = "";
-		try {
+            try {                
 
-			if (JavaRendererUtilities.is3dSymbol(symbolCode, modifiers)) {
-				output = SECWebRenderer.RenderMilStd3dSymbol(name, id, symbolCode, description, altitudeMode, controlPoints,
-						modifiers);
-			} else {
-				output = MultiPointHandler.RenderSymbol(id, name, description, symbolCode, controlPoints, scale, bbox,
-						modifiers, format, symStd);
-			}
+                if (JavaRendererUtilities.is3dSymbol(symbolCode, modifiers))
+                {
 
-		} catch (Exception ea) {
-			output = "{\"type\":'error',error:'There was an error creating the MilStdSymbol - " + ea.toString() + "'}";
-			ErrorLogger.LogException("SECRenderer", "RenderSymbol", ea, Level.WARNING);
-		}
-		// System.out.println(output);
-		// System.out.println("RenderSymbol exit");
-		return output;
+                    output = SECWebRenderer.RenderMilStd3dSymbol(name, id, symbolCode, description, altitudeMode, controlPoints,
+                            modifiers);
+    //                System.out.println("old kml without modifiers: ");
+    //                System.out.println(output);
+
+                    //get modifiers/////////////////////////////////////////////////
+                    String modifierKML = MultiPointHandler.getModififerKML(id, name, description, symbolCode, controlPoints,
+                            scale, bbox, modifiers, format,symStd);
+
+                    modifierKML += "</Folder>";
+
+                    output = output.replaceFirst("</Folder>", modifierKML);
+
+    //                System.out.println("new kml with modifiers: ");
+    //                System.out.println(output);
+                    ////////////////////////////////////////////////////////////////
+
+
+
+                    // Check the output of the 3D Symbol Drawing.  If this returned an error
+                    // it should either be "" or it should be a JSON string starting with "{".
+                    // This really is not a good solution, but was up to 13.0.6 and had to make
+                    // this bug fix in quick turnaround.  More consistent error handling should
+                    // be done through code.
+
+                    if (output.equals("") || output.startsWith("{")) {
+                        output = MultiPointHandler.RenderSymbol(id, name, description, symbolCode, controlPoints,
+                            scale, bbox, modifiers, format,symStd);
+                    }
+                }
+                else
+                {            
+                    output = MultiPointHandler.RenderSymbol(id, name, description, symbolCode, controlPoints,
+                            scale, bbox, modifiers, format,symStd);
+
+                    //DEBUGGING
+                    if(ErrorLogger.getLevel().intValue() <= Level.FINER.intValue())
+                    {
+                        System.out.println("");
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("\nID: " + id + "\n");
+                        sb.append("Name: " + name + "\n");
+                        sb.append("Description: " + description + "\n");
+                        sb.append("SymbolID: " + symbolCode + "\n");
+                        sb.append("SymStd: " + String.valueOf(symStd) + "\n");
+                        sb.append("Scale: " + String.valueOf(scale) + "\n");
+                        sb.append("BBox: " + bbox + "\n");
+                        sb.append("Coords: " + controlPoints + "\n");
+                        sb.append("Modifiers: " + modifiers + "\n");
+                        ErrorLogger.LogMessage("SECWebRenderer", "RenderSymbol", sb.toString(),Level.FINER);
+                    }
+                    if(ErrorLogger.getLevel().intValue() <= Level.FINEST.intValue())
+                    {
+                        String briefOutput = output.replaceAll("</Placemark>", "</Placemark>\n");
+                        briefOutput = output.replaceAll("(?s)<description[^>]*>.*?</description>", "<description></description>");
+                        ErrorLogger.LogMessage("SECWebRenderer", "RenderSymbol", "Output:\n" + briefOutput,Level.FINEST);
+                    }
+                }
+
+
+            } catch (Exception ea) {
+
+                output = "{\"type\":'error',error:'There was an error creating the MilStdSymbol - " + ea.toString() + "'}";
+                ErrorLogger.LogException("SECWebRenderer", "RenderSymbol", ea, Level.WARNING);
+            }
+            // System.out.println(output);
+                    // System.out.println("RenderSymbol exit");
+            return output;
+		
+		
 	}
         
         /**

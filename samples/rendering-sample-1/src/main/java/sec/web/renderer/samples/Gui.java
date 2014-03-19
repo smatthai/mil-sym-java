@@ -387,7 +387,7 @@ public class Gui extends JFrame {
             String controlPoints = "66.26700036208742,30.62755038706961";
             
         
-            String bbox = "66.25,30.60,66.28,30.65";
+            String bbox = "66.25,30.627,66.27,30.63";
             //var bbox = "-180.0,-90.0,180.0,90.0";
             double scale = 50000.0;
 
