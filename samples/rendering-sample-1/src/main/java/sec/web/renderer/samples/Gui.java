@@ -377,11 +377,12 @@ public class Gui extends JFrame {
 	private void generateSectorRangeFanKML() {
 		try {
             //good modifiers
-            String modifiers = "{\"modifiers\":{\"distance\":[300,1000],\"azimuth\":[315,45],\"altitudeDepth\":[0]}}";
-            //bad modifiers test
-            //String modifiers = "{\"modifiers\":{\"distance\":[300,1000],\"azimuth\":[315],\"altitudeDepth\":[0]}}";
-            //AMBUSH EXAMPLE
-            String symbolCode = "GFFPAXS---****X";//sector range fac
+            //for keys, use the string value constants found in ModifiersTG.java
+            String modifiers = "{\"modifiers\":{\"" + ModifiersTG.AM_DISTANCE + "\":[3000,10000],\"" + 
+                                ModifiersTG.AN_AZIMUTH + "\":[315,45],\"" + 
+                                ModifiersTG.X_ALTITUDE_DEPTH + "\":[0]}}";//*/
+            
+            String symbolCode = "GFFPAXS---****X";//sector range fan
             
             String controlPoints = "66.26700036208742,30.62755038706961";
             
