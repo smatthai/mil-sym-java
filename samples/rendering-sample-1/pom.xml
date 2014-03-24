@@ -10,7 +10,7 @@
 	<version>0.0.32-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
-	<name>rendering-sample-1 Maven Webapp</name>
+	<name>rendering-sample-1</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>

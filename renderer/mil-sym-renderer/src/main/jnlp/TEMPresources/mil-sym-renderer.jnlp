@@ -12,12 +12,12 @@
     </security>
 
     <resources>            
-		<jar href="mil-sym-renderer-0.0.31-SNAPSHOT.jar"/>
-		<jar href="JavaRenderer-0.0.31-SNAPSHOT.jar"/>
-		<jar href="JavaRendererServer-0.0.31-SNAPSHOT.jar"/>
-		<jar href="JavaLineArray-0.0.31-SNAPSHOT.jar"/>
-		<jar href="JavaRendererUtils-0.0.31-SNAPSHOT.jar"/>
-		<jar href="RendererPluginInterface-0.0.31-SNAPSHOT.jar"/>
+		<jar href="mil-sym-renderer-0.0.32-SNAPSHOT.jar"/>
+		<jar href="JavaRenderer-0.0.32-SNAPSHOT.jar"/>
+		<jar href="JavaRendererServer-0.0.32-SNAPSHOT.jar"/>
+		<jar href="JavaLineArray-0.0.32-SNAPSHOT.jar"/>
+		<jar href="JavaRendererUtils-0.0.32-SNAPSHOT.jar"/>
+		<jar href="RendererPluginInterface-0.0.32-SNAPSHOT.jar"/>
     </resources>
 
 	<component-desc />
