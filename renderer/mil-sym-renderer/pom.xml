@@ -15,7 +15,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<securityDir>${project.basedir}/src/main/resources/security</securityDir>
-		<sec.dependency.version>0.0.31</sec.dependency.version>
+		<sec.dependency.version>${project.version}</sec.dependency.version>
 		<mainClass>sec.web.renderer.portable.PortableWrapper</mainClass>
         <zip.assembly>${project.basedir}/src/main/resources/assembly/zipAssembly.xml</zip.assembly>
 	</properties>
