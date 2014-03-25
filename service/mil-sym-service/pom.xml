@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>sec.web.renderer</groupId>
 		<artifactId>mil-sym-svc-parent</artifactId>
-		<version>0.0.32-SNAPSHOT</version>
+		<version>0.0.33-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>			
@@ -14,7 +14,7 @@
 	<name>mil-sym-service</name>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<!-- <finalName>${project.artifactId}</finalName> -->
 
 		<plugins>
 			<plugin>

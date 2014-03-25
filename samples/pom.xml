@@ -6,7 +6,7 @@
 
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>mil-sym-samples-parent</artifactId>
-	<version>0.0.32-SNAPSHOT</version>
+	<version>0.0.33-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>mil-sym-samples Pom</name>
@@ -14,7 +14,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sec.core.version>0.0.31</sec.core.version>
+		<sec.core.version>${project.version}</sec.core.version>
 	</properties>	
 
 	<modules>
