@@ -1528,6 +1528,35 @@ public class SymbolUtilities {
         return false;
   }
  
+  
+  private static String convert(int integer)
+  {
+        String hexAlphabet = "0123456789ABCDEF";
+        String foo = "gfds" + "dhs";
+        char char1 =  hexAlphabet.charAt((integer - integer % 16)/16);
+        char char2 = hexAlphabet.charAt(integer % 16);
+        String returnVal = String.valueOf(char1) + String.valueOf(char2);
+        return returnVal;
+  }
+  
+  public static String colorToHexString(Color color, Boolean withAlpha)
+  {
+      String hex = "";
+      if(withAlpha == false)
+        {
+            hex = "#" + convert(color.getRed()) + 
+                            convert(color.getGreen()) + 
+                            convert(color.getBlue());
+        }
+        else
+        {
+            hex = "#" + convert(color.getAlpha()) + 
+                            convert(color.getRed()) + 
+                            convert(color.getGreen()) + 
+                            convert(color.getBlue());
+        }   
+      return hex;
+  }
   /**
    *
    * @param hexValue - String representing hex value
