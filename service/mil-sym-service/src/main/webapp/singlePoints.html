@@ -47,6 +47,21 @@
 		}
 		http.send(params);
 	}
+	function httpReadyStateToString(status)
+	{
+		if(status===0)
+			return "request not initialized";
+		else if(status===1)
+			return "server connection established";
+		else if(status===2)
+			return "request received";
+		else if(status===3)
+			return "processing request";
+		else if(status===4)
+			return "request finished and response is ready";
+		else
+			return "unknown status: " + status;
+	}
 	function testRender()
 	{
 		batchInfoTest();		
