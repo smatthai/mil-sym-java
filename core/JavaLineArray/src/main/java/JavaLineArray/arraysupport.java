@@ -2400,7 +2400,12 @@ public final class arraysupport
                     {
                         ymax=pLinePoints[1].y;
                         ymin=pLinePoints[0].y;
-                    }                    
+                    }
+                    if(xmax-xmin>ymax-ymin)                    
+                        ymax=ymin+(xmax-xmin);                    
+                    else                    
+                        xmax=xmin+(ymax-ymin);
+                                                                                    
                     pt0=new POINT2(xmin-buffer,ymin-buffer);
                     pt2=new POINT2(xmax+buffer,ymax+buffer);
                     pt1=new POINT2(pt0);
