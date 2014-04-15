@@ -435,7 +435,7 @@ public final class clsUtilityGE {
                     simpleFillShape=createSimpleFillShape(tg,shapeInfo,polylines);
                 
                 fillColor=shapeInfo.getFillColor();
-                if(simpleFillShape!=null || fillColor != null)//the symbol has a basic fill shape
+                if(simpleFillShape!=null)//the symbol has a basic fill shape
                     if(allowFillForThese(tg)==false)
                         shapeInfo.setFillColor(null);
                 
