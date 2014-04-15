@@ -13,7 +13,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.awt.BasicStroke;
 import java.awt.Shape;
-import java.awt.geom.GeneralPath;
+//import java.awt.geom.GeneralPath;
 import java.awt.geom.Area;
 import java.awt.Polygon;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
@@ -2358,7 +2358,7 @@ public final class arraysupport
             switch(lineType)
             {
                 case TacticalLines.BBS_AREA:
-                    lineutility.getExteriorPoints(pLinePoints, vblSaveCounter, lineType, false);
+                    lineutility.getExteriorPoints(pLinePoints, vblSaveCounter, lineType, false);                    
                     acCounter=vblSaveCounter;
                     break;
                 case TacticalLines.BS_CROSS:
@@ -2417,6 +2417,20 @@ public final class arraysupport
                     pLinePoints[2]=new POINT2(pt2);
                     pLinePoints[3]=new POINT2(pt3);
                     pLinePoints[4]=new POINT2(pt0);
+                    //acCounter=4;
+                    pt0=new POINT2(xmin,ymin);
+                    pt2=new POINT2(xmax,ymax);
+                    pt1=new POINT2(pt0);
+                    pt1.y=pt2.y;
+                    pt3=new POINT2(pt2);
+                    pt3.y=pt0.y;
+                    pOriginalLinePoints=new POINT2[5];
+                    pOriginalLinePoints[0]=new POINT2(pt0);
+                    pOriginalLinePoints[1]=new POINT2(pt1);
+                    pOriginalLinePoints[2]=new POINT2(pt2);
+                    pOriginalLinePoints[3]=new POINT2(pt3);
+                    pOriginalLinePoints[4]=new POINT2(pt0);
+                    vblSaveCounter=5;
                     acCounter=5;
                     break;
                 case TacticalLines.BS_ELLIPSE:
@@ -4578,6 +4592,23 @@ public final class arraysupport
             //a loop for the outline shapes
             switch(lineType)
             {
+                case TacticalLines.BBS_AREA:
+                case TacticalLines.BBS_RECTANGLE:
+                    shape=new Shape2(Shape2.SHAPE_TYPE_FILL);
+                    for(j=0;j<vblSaveCounter-1;j++)
+                    {
+                        shape.moveTo(pOriginalLinePoints[j]);
+                        shape.lineTo(pLinePoints[j]);
+                        shape.lineTo(pLinePoints[j+1]);
+                        shape.lineTo(pOriginalLinePoints[j+1]);
+                    }
+                    shapes.add(shape);
+                    shape=new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
+                    shape.moveTo(pOriginalLinePoints[0]);
+                    for(j=1;j<vblSaveCounter;j++)
+                        shape.lineTo(pOriginalLinePoints[j]);
+                    shapes.add(shape);
+                    break;
                 case TacticalLines.DIRATKGND:
                     //create two shapes. the first shape is for the line
                     //the second shape is for the arrow

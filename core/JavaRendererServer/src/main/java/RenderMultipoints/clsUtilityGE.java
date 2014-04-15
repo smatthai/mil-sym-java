@@ -367,6 +367,9 @@ public final class clsUtilityGE {
 
             switch(linetype)
             {
+                case TacticalLines.BBS_AREA:
+                case TacticalLines.BBS_RECTANGLE:
+                    
                 case TacticalLines.CATK:
                 case TacticalLines.CATKBYFIRE:
                 case TacticalLines.AAFNT:
@@ -431,13 +434,14 @@ public final class clsUtilityGE {
                 if(simpleFillShape==null)
                     simpleFillShape=createSimpleFillShape(tg,shapeInfo,polylines);
                 
+                fillColor=shapeInfo.getFillColor();
                 if(simpleFillShape!=null || fillColor != null)//the symbol has a basic fill shape
                     if(allowFillForThese(tg)==false)
                         shapeInfo.setFillColor(null);
                 
                 createDashedPolylines(tg, polylines,shapeInfo);
                 shapeInfo.setPolylines(polylines);
-                fillColor=shapeInfo.getFillColor();
+                //fillColor=shapeInfo.getFillColor();
             }            
             if(simpleFillShape != null)
                 shapeInfos.add(0,simpleFillShape);

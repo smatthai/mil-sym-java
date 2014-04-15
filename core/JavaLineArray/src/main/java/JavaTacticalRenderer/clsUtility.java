@@ -779,19 +779,35 @@ public final class clsUtility {
                         shape.set_Style(lineStyle);
                         if (hasFill || clsUtility.isClosedPolygon(lineType) || clsUtility.IsChange1Area(lineType, null))
                         {
-                            if (lineType != TacticalLines.RANGE_FAN && lineType != TacticalLines.RANGE_FAN_SECTOR)
+//                            if (lineType != TacticalLines.RANGE_FAN && lineType != TacticalLines.RANGE_FAN_SECTOR)
+//                            {
+//                                shape.set_Fillstyle(tg.get_FillStyle());
+//                                shape.setFillColor(tg.get_FillColor());
+//                            }
+                            switch(lineType)
                             {
-                                shape.set_Fillstyle(tg.get_FillStyle());
-                                shape.setFillColor(tg.get_FillColor());
+                                case TacticalLines.RANGE_FAN:
+                                case TacticalLines.RANGE_FAN_SECTOR:
+                                case TacticalLines.BBS_AREA:
+                                case TacticalLines.BBS_RECTANGLE:
+                                    shape.setFillColor(null);
+                                    break;
+                                default:
+                                    shape.set_Fillstyle(tg.get_FillStyle());
+                                    shape.setFillColor(tg.get_FillColor());
+                                    break;
                             }
                         }
                         switch(lineType)
                         {
                             case TacticalLines.BS_ELLIPSE:
                             case TacticalLines.BS_RECTANGLE:
-                            case TacticalLines.BBS_RECTANGLE:
+                            //case TacticalLines.BBS_RECTANGLE:
                                 shape.set_Fillstyle(tg.get_FillStyle());
                                 shape.setFillColor(tg.get_FillColor());
+                                break;
+                            case TacticalLines.BBS_RECTANGLE:
+                                shape.setFillColor(null);
                                 break;
                             default:
                                 break;
