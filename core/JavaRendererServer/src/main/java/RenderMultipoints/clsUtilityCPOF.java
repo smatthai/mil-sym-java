@@ -1940,11 +1940,13 @@ public final class clsUtilityCPOF {
             //case TacticalLines.LZ:
             //case TacticalLines.PZ:
             //case TacticalLines.LAA:
-            //case TacticalLines.AC:
-            //case TacticalLines.MRR:
-            //case TacticalLines.SAAFR:
-            //case TacticalLines.UAV:
-            //case TacticalLines.LLTR:
+            case TacticalLines.AC:
+            case TacticalLines.MRR:
+            case TacticalLines.MRR_USAS:
+            case TacticalLines.SAAFR:
+            case TacticalLines.UAV:
+            case TacticalLines.UAV_USAS:
+            case TacticalLines.LLTR:
             //case TacticalLines.ROZ:
             //case TacticalLines.FAADZ:
             //case TacticalLines.HIDACZ:

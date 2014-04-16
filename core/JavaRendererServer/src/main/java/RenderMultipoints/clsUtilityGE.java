@@ -430,11 +430,10 @@ public final class clsUtilityGE {
                     polylines=createRenderablesFromShape(tg,shape,type,null);
                 //create a simple fill shape here and change the shape type to SHAPE_TYPE_POLYLINE if it has non-null dash
                 //add the simple fill shape to shapeInfos after the loop
-                //simpleFillShape=createSimpleFillShape(tg,shapeInfo,polylines);
-                if(simpleFillShape==null)
-                    simpleFillShape=createSimpleFillShape(tg,shapeInfo,polylines);
+                simpleFillShape=createSimpleFillShape(tg,shapeInfo,polylines);
                 
                 fillColor=shapeInfo.getFillColor();
+                //if(simpleFillShape!=null || fillColor != null)//the symbol has a basic fill shape
                 if(simpleFillShape!=null)//the symbol has a basic fill shape
                     if(allowFillForThese(tg)==false)
                         shapeInfo.setFillColor(null);
