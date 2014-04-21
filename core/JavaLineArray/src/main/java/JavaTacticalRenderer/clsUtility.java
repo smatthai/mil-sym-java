@@ -1139,6 +1139,9 @@ public final class clsUtility {
 
                 //if(lineType != TacticalLines.LEADING_LINE)
                 ResolveModifierShape(tg, shape);
+                if(lineType==TacticalLines.AIRFIELD)
+                    if(j==1)
+                        shape.setFillColor(null);
                 
                 shapeType = shape.getShapeType();
 
