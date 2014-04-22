@@ -69,6 +69,8 @@ public class ImagingUtils {
                 if(icon)
                 {
                     HashMap<String, String> iconInfo = new HashMap<String, String>();
+                    //if icon == true, make sure keepUnitRatio defaults to false.
+                    iconInfo.put(MilStdAttributes.KeepUnitRatio,"false");
                     
                     if(SymbolUtilities.isWarfighting(symbolId))
                     {
