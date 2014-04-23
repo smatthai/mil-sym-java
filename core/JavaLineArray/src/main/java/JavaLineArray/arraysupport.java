@@ -4560,6 +4560,8 @@ public final class arraysupport
                 case TacticalLines.SECURE:
                 case TacticalLines.SEIZE:
                 case TacticalLines.SEIZE_REVC:
+                case TacticalLines.BS_RECTANGLE:
+                case TacticalLines.BBS_RECTANGLE:
                     FillPoints(pLinePoints,acCounter,points);
                     break;
                 default:

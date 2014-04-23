@@ -3681,6 +3681,7 @@ public class Modifier2 {
             if(tg.Pixels.size()>1)
                 pt1=new POINT2(tg.Pixels.get(1));
 
+            POINT2[]pts=null;
             // if the client is the 3d map (CS) then we want to shrink the spacing bnetween 
             // the lines of text
             //if(tg.get_cs())
@@ -3695,6 +3696,14 @@ public class Modifier2 {
             {
                 switch(linetype)
                 {
+                    case TacticalLines.BS_RECTANGLE:
+                    case TacticalLines.BBS_RECTANGLE:
+                        pts=new POINT2[4];
+                        for(j=0;j<4;j++)
+                            pts[j]=tg.Pixels.get(j);
+                        ptCenter=lineutility.CalcCenterPointDouble2(pts, 4);
+                        AddIntegralAreaModifier(tg, tg.get_Name(), area, -0.125*csFactor, ptCenter, ptCenter,false);
+                        break;
                     case TacticalLines.BREACH:
                     case TacticalLines.BYPASS:
                     case TacticalLines.CANALIZE:
