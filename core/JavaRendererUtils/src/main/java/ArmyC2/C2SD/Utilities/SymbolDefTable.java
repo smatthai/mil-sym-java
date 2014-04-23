@@ -214,5 +214,65 @@ public class SymbolDefTable {
         else
             return false;
     }
+    
+    /**
+     * Checks if symbol is a multipoint symbol
+     * @param symbolID
+     * @param symStd
+     * @return 
+     */
+    public Boolean isMultiPoint(String symbolID, int symStd) {
+
+        String basicSymbolID;
+        
+        char codingScheme = symbolID.charAt(0);
+        Boolean returnVal = false;
+        if (codingScheme == 'G' || codingScheme == 'W') 
+        {
+            if(symbolID.charAt(1) != '*')
+            {
+                basicSymbolID = SymbolUtilities.getBasicSymbolID(symbolID);
+            }
+            else
+            {
+                basicSymbolID = symbolID;
+            }
+            SymbolDef sd = this.getSymbolDef(basicSymbolID,symStd);
+            if (sd != null) 
+            {
+                if(sd.getMaxPoints() > 1)
+                {
+                    returnVal = true;
+                }
+                else
+                {
+                    switch(sd.getDrawCategory())
+                    {
+                        case SymbolDef.DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE:
+                        case SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE:
+                        case SymbolDef.DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE: 
+                        case SymbolDef.DRAW_CATEGORY_CIRCULAR_PARAMETERED_AUTOSHAPE:
+                        case SymbolDef.DRAW_CATEGORY_CIRCULAR_RANGEFAN_AUTOSHAPE:
+                        case SymbolDef.DRAW_CATEGORY_ROUTE:
+                            returnVal = true;
+                            break;
+                        default:
+                            returnVal = false;
+                    }
+                }
+                return returnVal;
+            } else {
+                return false;
+            }
+        } 
+        else if(symbolID.startsWith("BS_") || symbolID.startsWith("BBS_"))
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
 
 }

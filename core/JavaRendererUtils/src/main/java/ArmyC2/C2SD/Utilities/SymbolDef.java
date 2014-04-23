@@ -22,6 +22,7 @@ public class SymbolDef {
     String _strModifiers = "";
     String _strHierarchy = "";
     String _strFullPath = "";
+    
 
 
 
@@ -230,6 +231,45 @@ public class SymbolDef {
             return _intMaxPoints;
     }
 
+    public Boolean isMultiPoint()
+    {
+        char codingScheme = _strBasicSymbolId.charAt(0);
+        Boolean returnVal = false;
+        if (codingScheme == 'G' || codingScheme == 'W') 
+        {
+
+            if(_intMaxPoints > 1)
+            {
+                returnVal = true;
+            }
+            else
+            {
+                switch(_intDrawCategory)
+                {
+                    case SymbolDef.DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE:
+                    case SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE:
+                    case SymbolDef.DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE: 
+                    case SymbolDef.DRAW_CATEGORY_CIRCULAR_PARAMETERED_AUTOSHAPE:
+                    case SymbolDef.DRAW_CATEGORY_CIRCULAR_RANGEFAN_AUTOSHAPE:
+                    case SymbolDef.DRAW_CATEGORY_ROUTE:
+                        returnVal = true;
+                        break;
+                    default:
+                        returnVal = false;
+                }
+            }
+            return returnVal;
+        } 
+        else if(_strBasicSymbolId.startsWith("BS_") || _strBasicSymbolId.startsWith("BBS_"))
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
+    
     /**
      * 
      */

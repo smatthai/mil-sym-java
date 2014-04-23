@@ -1163,24 +1163,9 @@ public class SECRenderer {
 	 * @return
 	 */
 	public Boolean isMultiPointSymbol(String symbolID, int symStd) {
-		SymbolDef sd = null;
-		if (SymbolUtilities.isTacticalGraphic(symbolID)) {
-			sd = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(symbolID), symStd);
-		}
-		if (sd != null) {
-                    if(sd.getMaxPoints() > 1)
-                    {
-                        return true;
-                    }
-                    else if(sd.getMaxPoints() == 1 && sd.getDrawCategory() == SymbolDef.DRAW_CATEGORY_POINT){
-                        return false;
-                    }
-                    else{
-                        return true;
-                    }
-		} else {
-                    return false;
-		}
+		
+		return SymbolDefTable.getInstance().isMultiPoint(SymbolUtilities.getBasicSymbolID(symbolID), symStd);
+		
 	}
 
 	// </editor-fold>
