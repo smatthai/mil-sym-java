@@ -47,7 +47,7 @@ public class SymbolExplorerTreeCreator {
         for(Map.Entry<String, UnitDef> entry : UDs.entrySet())
         {
             ud = entry.getValue();
-            if(SymbolUtilities.isMCSSpecificForceElement(ud)==false)
+            if(SymbolUtilities.isMCSSpecificForceElement(ud)==false && ud.getHierarchy().charAt(0) != '0')
             {
                 msd = new MilStdDef(ud.getHierarchy(), ud.getBasicSymbolId(), ud.getDescription(),ud.getDrawCategory());
                 msds.add(msd);
@@ -56,7 +56,7 @@ public class SymbolExplorerTreeCreator {
         //add unit defs with duplicate symbolID
         for (UnitDef udd : UDDups)
         {
-                if(SymbolUtilities.isMCSSpecificForceElement(udd)==false)
+                if(SymbolUtilities.isMCSSpecificForceElement(udd)==false && udd.getHierarchy().charAt(0) != '0')
                 {
                     msd = new MilStdDef(udd.getHierarchy(), udd.getBasicSymbolId(), udd.getDescription(),udd.getDrawCategory());
                     msds.add(msd);
@@ -68,7 +68,7 @@ public class SymbolExplorerTreeCreator {
         for(Map.Entry<String, SymbolDef> entry : SDs.entrySet())
         {
             sd = entry.getValue();
-            if(SymbolUtilities.isMCSSpecificTacticalGraphic(sd)==false)
+            if(SymbolUtilities.isMCSSpecificTacticalGraphic(sd)==false && sd.getHierarchy().charAt(0) != '0')
             {
                 msd = new MilStdDef(sd.getHierarchy(), sd.getBasicSymbolId(), sd.getDescription(),sd.getDrawCategory());
                 msds.add(msd);
@@ -77,7 +77,7 @@ public class SymbolExplorerTreeCreator {
         //add unit defs with duplicate symbolID
         for (SymbolDef sdd : SDDups)
         {
-                if(SymbolUtilities.isMCSSpecificTacticalGraphic(sdd)==false)
+                if(SymbolUtilities.isMCSSpecificTacticalGraphic(sdd)==false && sdd.getHierarchy().charAt(0) != '0')
                 {
                     msd = new MilStdDef(sdd.getHierarchy(), sdd.getBasicSymbolId(), sdd.getDescription(),sdd.getDrawCategory());
                     msds.add(msd);
