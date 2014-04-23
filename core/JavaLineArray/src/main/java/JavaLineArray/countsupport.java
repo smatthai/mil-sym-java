@@ -71,10 +71,10 @@ public final class countsupport
                 case TacticalLines.BS_CROSS:
                     count=4;
                     break;
-                case TacticalLines.BS_RECTANGLE:
-                case TacticalLines.BBS_RECTANGLE:
-                    count=5;
-                    break;
+//                case TacticalLines.BS_RECTANGLE:
+//                case TacticalLines.BBS_RECTANGLE:
+//                    count=5;
+//                    break;
                 case TacticalLines.OVERHEAD_WIRE:
                     count=vblCounter*15;    //15 points per segment
                     break;

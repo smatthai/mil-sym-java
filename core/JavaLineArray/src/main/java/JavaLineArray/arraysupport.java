@@ -2375,12 +2375,16 @@ public final class arraysupport
                     acCounter=4;
                     break;
                 case TacticalLines.BS_RECTANGLE:
-                    pt0=new POINT2(pLinePoints[0]);//the center of the ellipse
-                    pt2=new POINT2(pLinePoints[1]);//the width of the ellipse                    
+                    lineutility.CalcMBRPoints(pLinePoints, pLinePoints.length, pt0, pt2);   //pt0=ul, pt1=lr
+                    //pt0=new POINT2(pLinePoints[0]);
+                    //pt2=new POINT2(pLinePoints[1]);
+                    //pt1=new POINT2(pt0);
+                    //pt1.y=pt2.y;
                     pt1=new POINT2(pt0);
-                    pt1.y=pt2.y;
-                    pt3=new POINT2(pt2);
-                    pt3.y=pt0.y;
+                    pt1.x=pt2.x;
+                    pt3=new POINT2(pt0);
+                    pt3.y=pt2.y;
+                    pLinePoints=new POINT2[5];
                     pLinePoints[0]=new POINT2(pt0);
                     pLinePoints[1]=new POINT2(pt1);
                     pLinePoints[2]=new POINT2(pt2);
@@ -2391,27 +2395,35 @@ public final class arraysupport
                 case TacticalLines.BBS_RECTANGLE:  
                     double xmax=pLinePoints[0].x,xmin=pLinePoints[1].x,ymax=pLinePoints[0].y,ymin=pLinePoints[1].y;
                     double buffer=pLinePoints[0].style;
-                    if(pLinePoints[0].x<pLinePoints[1].x)
-                    {
-                        xmax=pLinePoints[1].x;
-                        xmin=pLinePoints[0].x;
-                    }
-                    if(pLinePoints[0].y<pLinePoints[1].y)
-                    {
-                        ymax=pLinePoints[1].y;
-                        ymin=pLinePoints[0].y;
-                    }
-                    if(xmax-xmin>ymax-ymin)                    
-                        ymax=ymin+(xmax-xmin);                    
-                    else                    
-                        xmax=xmin+(ymax-ymin);
+//                    if(pLinePoints[0].x<pLinePoints[1].x)
+//                    {
+//                        xmax=pLinePoints[1].x;
+//                        xmin=pLinePoints[0].x;
+//                    }
+//                    if(pLinePoints[0].y<pLinePoints[1].y)
+//                    {
+//                        ymax=pLinePoints[1].y;
+//                        ymin=pLinePoints[0].y;
+//                    }
+//                    if(xmax-xmin>ymax-ymin)                    
+//                        ymax=ymin+(xmax-xmin);                    
+//                    else                    
+//                        xmax=xmin+(ymax-ymin);
                                                                                     
+                    //pt0 will be ul, pt1 will be lr
+                    lineutility.CalcMBRPoints(pLinePoints, pLinePoints.length, pt0, pt1);
+                    xmin=pt0.x;
+                    ymin=pt0.y;
+                    xmax=pt1.x;
+                    ymax=pt1.y;
+                    //end section
                     pt0=new POINT2(xmin-buffer,ymin-buffer);
                     pt2=new POINT2(xmax+buffer,ymax+buffer);
                     pt1=new POINT2(pt0);
                     pt1.y=pt2.y;
                     pt3=new POINT2(pt2);
                     pt3.y=pt0.y;
+                    pLinePoints=new POINT2[5];
                     pLinePoints[0]=new POINT2(pt0);
                     pLinePoints[1]=new POINT2(pt1);
                     pLinePoints[2]=new POINT2(pt2);
