@@ -642,6 +642,11 @@ public final class clsUtility {
             //for some of these the style must be dashed
             //clsUtility.WriteFile("ResolveModifierShape before switch " + Integer.toString(lineType));
             switch (tg.get_LineType()) {
+                case TacticalLines.FEBA:
+                    shape.setFillColor(null);
+                    shape.set_Style(tg.get_LineStyle());
+                    shape.setLineColor(tg.get_LineColor());                    
+                    break;
                 case TacticalLines.NFA:
                 case TacticalLines.NFA_CIRCULAR:
                 case TacticalLines.NFA_RECTANGULAR:
