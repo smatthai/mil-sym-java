@@ -2578,7 +2578,7 @@ public final class clsMETOC {
                         break;
                     case TacticalLines.JET_GE:
                     case TacticalLines.STREAM_GE:
-                        if (i == 0)
+                        if (i == 0 && splinePoints.size()>1)
                         {
                             DrawArrow(splinePoints.get(1), splinePoints.get(0), 10, lineObject);
                         }
