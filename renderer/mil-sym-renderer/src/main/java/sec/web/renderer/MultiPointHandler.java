@@ -3765,45 +3765,48 @@ public class MultiPointHandler {
             int pmiEnd = 0;
             int curr = 0;
             int count = 0;
+            String tempPlacemark="";
             while(pmiStart > 0)
             {
                 if(count > 0)
                 {
-                    pmiEnd = output.indexOf("</Placemark>",pmiStart)+12;
-                    placemarks.add(output.substring(pmiStart,pmiEnd));
+                    pmiEnd = output.indexOf("</Placemark>",pmiStart)+12;                   
+                    tempPlacemark=output.substring(pmiStart,pmiEnd);
+                    
+                    if(tempPlacemark.contains("<Point>"))                    
+                        placemarks.add(output.substring(pmiStart,pmiEnd));
                     //System.out.println(placemarks.get(count));
                     //end, check for more
                     pmiStart = output.indexOf("<Placemark",pmiEnd-2);
                 }
                 count++;
             }
-            
             //process placemarks if necessary
-            List<Double> altitudes = null;
-            JSONObject jsonModifiersString = new JSONObject(symbolModifiers);
-            JSONObject jsonModifiersArray =
-            jsonModifiersString.getJSONObject("modifiers");
-            if (jsonModifiersArray.has(ALTITUDE_DEPTH)) {
-                JSONArray jsonAltitudeArray = jsonModifiersArray.getJSONArray(ALTITUDE_DEPTH);
-                altitudes = new ArrayList<Double>();
-                for (int i = 0; i < jsonAltitudeArray.length(); i++) {
-                    altitudes.add(jsonAltitudeArray.getDouble(i));
-                }
-            }
-            
-            int Xcount = altitudes.size()-1;
-            if(Xcount>0)
-            {
-                maxAlt = altitudes.get(Xcount);
-                //cycle through placemarks and add altitude
-                String temp;
-                for(int j = 0; j<placemarks.size();j++)
-                {
-                    temp = placemarks.get(j);
-                    temp.replace("</coordinates>", "," + String.valueOf(maxAlt) + "</coordinates>");
-                    placemarks.set(j, temp);
-                }
-            }
+//            List<Double> altitudes = null;
+//            JSONObject jsonModifiersString = new JSONObject(symbolModifiers);
+//            JSONObject jsonModifiersArray =
+//            jsonModifiersString.getJSONObject("modifiers");
+//            if (jsonModifiersArray.has(ALTITUDE_DEPTH)) {
+//                JSONArray jsonAltitudeArray = jsonModifiersArray.getJSONArray(ALTITUDE_DEPTH);
+//                altitudes = new ArrayList<Double>();
+//                for (int i = 0; i < jsonAltitudeArray.length(); i++) {
+//                    altitudes.add(jsonAltitudeArray.getDouble(i));
+//                }
+//            }
+//            
+//            int Xcount = altitudes.size()-1;
+//            if(Xcount>0)
+//            {
+//                maxAlt = altitudes.get(Xcount);
+//                //cycle through placemarks and add altitude
+//                String temp;
+//                for(int j = 0; j<placemarks.size();j++)
+//                {
+//                    temp = placemarks.get(j);
+//                    temp.replace("</coordinates>", "," + String.valueOf(maxAlt) + "</coordinates>");
+//                    placemarks.set(j, temp);
+//                }
+//            }
             
             StringBuilder sb = new StringBuilder();
             for(String pm : placemarks)
