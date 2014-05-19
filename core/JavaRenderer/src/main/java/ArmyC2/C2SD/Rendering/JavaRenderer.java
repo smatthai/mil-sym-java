@@ -878,8 +878,8 @@ public class JavaRenderer implements IJavaRenderer {
                      }
                      else
                      {
-                         message = "Cannot draw: " + symbol.getSymbolID() + " (" + basicSymbolID + ") lookup failed.";
-                         throw new RendererException(message, null);
+                         message = "Cannot draw: " + symbolID + " (" + basicSymbolID + "), lookup failed.";
+                         throw new RendererException(message);
                      }
                 }
                 else// if(SymbolUtilities.isWarfighting(symbol.getSymbolID()))

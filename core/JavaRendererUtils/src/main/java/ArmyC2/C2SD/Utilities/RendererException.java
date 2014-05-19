@@ -11,10 +11,19 @@ package ArmyC2.C2SD.Utilities;
  */
 public class RendererException extends Exception {
 
+    public RendererException(String message)
+    {
+        super(message);
+    }
+    
     public RendererException(String message, Throwable cause)
     {
         super(cause.getMessage() + " - " + message, cause);
-        this.setStackTrace(cause.getStackTrace());
+    }
+    
+    public RendererException(Throwable cause)
+    {
+        super(cause);
     }
 
 }
