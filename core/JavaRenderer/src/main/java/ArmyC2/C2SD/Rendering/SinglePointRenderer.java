@@ -95,7 +95,7 @@ public class SinglePointRenderer {
         try
         {
             _RendererSettings = RendererSettings.getInstance();
-            _SinglePointFont = SinglePointFont.getInstance().getSPFont(SymbolSizeMedium);
+            _SinglePointFont = SinglePointFont.getInstance().getSPFont(SymbolSizeSmall);
             _UnitFont = SinglePointFont.getInstance().getUnitFont(UnitSizeMedium);
             _ModifierFont = RendererSettings.getInstance().getLabelFont();
             
