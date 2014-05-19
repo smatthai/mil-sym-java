@@ -228,7 +228,6 @@ public class AreaSymbolFill implements ISinglePointRenderer {
 					srcArea = new Area(clipPath);
 
 					if (clipArea.contains(srcArea.getBounds2D()) == false)
-						;
 					{
 						srcArea.intersect(clipArea);
 					}
