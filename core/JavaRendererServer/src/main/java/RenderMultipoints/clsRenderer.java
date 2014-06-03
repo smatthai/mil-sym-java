@@ -602,6 +602,30 @@ public final class clsRenderer
                 }
             }
             int j=0;
+            if(lineType==TacticalLines.BBS_RECTANGLE)
+            {
+                double minLat=tg.LatLongs.get(0).y;
+                double maxLat=tg.LatLongs.get(0).y;
+                double minLong=tg.LatLongs.get(0).x;
+                double maxLong=tg.LatLongs.get(0).x;
+                for(j=1;j<tg.LatLongs.size();j++)
+                {
+                    if(tg.LatLongs.get(j).x<minLong)
+                        minLong=tg.LatLongs.get(j).x;
+                    if(tg.LatLongs.get(j).x>maxLong)
+                        maxLong=tg.LatLongs.get(j).x;
+                    if(tg.LatLongs.get(j).y<minLat)
+                        minLat=tg.LatLongs.get(j).y;
+                    if(tg.LatLongs.get(j).y>maxLat)
+                        maxLat=tg.LatLongs.get(j).y;
+                }
+                tg.LatLongs=new ArrayList();
+                tg.LatLongs.add(new POINT2(minLong,maxLat));
+                tg.LatLongs.add(new POINT2(maxLong,maxLat));
+                tg.LatLongs.add(new POINT2(maxLong,minLat));
+                tg.LatLongs.add(new POINT2(minLong,minLat));
+                tg.Pixels=clsUtility.LatLongToPixels(tg.LatLongs, converter);
+            }
             //these have a buffer value in meters which we'll stuff tg.H2
             //and use the style member of tg.Pixels to stuff the buffer width in pixels
             switch(lineType)
