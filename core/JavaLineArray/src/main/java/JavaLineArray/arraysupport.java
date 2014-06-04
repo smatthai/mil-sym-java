@@ -2394,7 +2394,7 @@ public final class arraysupport
                     break;
                 case TacticalLines.BBS_RECTANGLE:  
                     //double xmax=pLinePoints[0].x,xmin=pLinePoints[1].x,ymax=pLinePoints[0].y,ymin=pLinePoints[1].y;
-                    double xmax=pLinePoints[2].x,xmin=pLinePoints[0].x,ymax=pLinePoints[2].y,ymin=pLinePoints[0].y;
+                    //double xmax=pLinePoints[2].x,xmin=pLinePoints[0].x,ymax=pLinePoints[2].y,ymin=pLinePoints[0].y;
                     double buffer=pLinePoints[0].style;
                                                                                     
                     pOriginalLinePoints=new POINT2[5];
