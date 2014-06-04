@@ -20,7 +20,7 @@ public final class TacticalLines {
     public static final int BBS_AREA=15000001;
     public static final int BBS_POINT=15000002;
     public static final int BBS_RECTANGLE=15000003;
-    public static final int BS_BOX=15000004;
+    public static final int BS_BBOX=15000004;
             
     public static final int PZ = 22138000;
     public static final int LZ = 22137000;

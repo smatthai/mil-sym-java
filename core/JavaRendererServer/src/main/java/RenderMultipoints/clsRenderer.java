@@ -602,7 +602,7 @@ public final class clsRenderer
                 }
             }
             int j=0;
-            if(lineType==TacticalLines.BBS_RECTANGLE || lineType==TacticalLines.BS_BOX)
+            if(lineType==TacticalLines.BBS_RECTANGLE || lineType==TacticalLines.BS_BBOX)
             {
                 double minLat=tg.LatLongs.get(0).y;
                 double maxLat=tg.LatLongs.get(0).y;
@@ -624,7 +624,7 @@ public final class clsRenderer
                 tg.LatLongs.add(new POINT2(maxLong,maxLat));
                 tg.LatLongs.add(new POINT2(maxLong,minLat));
                 tg.LatLongs.add(new POINT2(minLong,minLat));
-                if(lineType==TacticalLines.BS_BOX)
+                if(lineType==TacticalLines.BS_BBOX)
                     tg.LatLongs.add(new POINT2(minLong,maxLat));
                 tg.Pixels=clsUtility.LatLongToPixels(tg.LatLongs, converter);
             }
