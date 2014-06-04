@@ -392,6 +392,7 @@ public final class clsUtility {
             case TacticalLines.BBS_LINE:
             case TacticalLines.BBS_POINT:
             case TacticalLines.BBS_RECTANGLE:
+            case TacticalLines.BS_BOX:
                 return true;
             default:
                 return false;
@@ -405,6 +406,7 @@ public final class clsUtility {
         boolean result = false;
         switch (linetype) {    
             case TacticalLines.BBS_AREA:
+            case TacticalLines.BS_BOX:
             case TacticalLines.AT:
             case TacticalLines.DEPICT:
             case TacticalLines.DZ:
@@ -2210,6 +2212,7 @@ public final class clsUtility {
             linetypes.put("BBS_AREA-------", TacticalLines.BBS_AREA);
             linetypes.put("BBS_POINT------", TacticalLines.BBS_POINT);
             linetypes.put("BBS_RECTANGLE--", TacticalLines.BBS_RECTANGLE);
+            linetypes.put("BS_BOX---------", TacticalLines.BS_BOX);
             //end basic shapes
             
             linetypes.put("G*MPOHO---****X", TacticalLines.OVERHEAD_WIRE);
@@ -2708,6 +2711,10 @@ public final class clsUtility {
                 strMask=str;
             }
             else if(str.equalsIgnoreCase("BBS_RECTANGLE--"))
+            {
+                strMask=str;
+            }
+            else if(str.equalsIgnoreCase("BS_BOX---------"))
             {
                 strMask=str;
             }

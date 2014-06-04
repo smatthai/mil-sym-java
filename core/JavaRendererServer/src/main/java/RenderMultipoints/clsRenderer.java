@@ -602,7 +602,7 @@ public final class clsRenderer
                 }
             }
             int j=0;
-            if(lineType==TacticalLines.BBS_RECTANGLE)
+            if(lineType==TacticalLines.BBS_RECTANGLE || lineType==TacticalLines.BS_BOX)
             {
                 double minLat=tg.LatLongs.get(0).y;
                 double maxLat=tg.LatLongs.get(0).y;
@@ -624,12 +624,13 @@ public final class clsRenderer
                 tg.LatLongs.add(new POINT2(maxLong,maxLat));
                 tg.LatLongs.add(new POINT2(maxLong,minLat));
                 tg.LatLongs.add(new POINT2(minLong,minLat));
+                if(lineType==TacticalLines.BS_BOX)
+                    tg.LatLongs.add(new POINT2(minLong,maxLat));
                 tg.Pixels=clsUtility.LatLongToPixels(tg.LatLongs, converter);
             }
             //these have a buffer value in meters which we'll stuff tg.H2
             //and use the style member of tg.Pixels to stuff the buffer width in pixels
-            switch(lineType)
-            {
+            switch(lineType)   {
                 case TacticalLines.BBS_AREA:
                 case TacticalLines.BBS_LINE:
                 case TacticalLines.BBS_RECTANGLE:
