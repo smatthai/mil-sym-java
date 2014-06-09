@@ -112,6 +112,11 @@ public class SymbolDef {
     static public final int DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE = 20;
     
     /**
+     * 3D airspace, not a milstd graphic.
+     */
+    static public final int DRAW_CATEGORY_3D_AIRSPACE = 40;
+    
+    /**
      * UNKNOWN.
      */
     static public final int DRAW_CATEGORY_UNKNOWN = 99;
