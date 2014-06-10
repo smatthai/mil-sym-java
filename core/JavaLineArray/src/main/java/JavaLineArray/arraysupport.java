@@ -811,7 +811,11 @@ public final class arraysupport
                 pLinePoints[j] = new POINT2(ptsArc[j]);
                 pLinePoints[j].style = 0;
             }
-            lineutility.GetArrowHead4Double(ptsArc[24], ptsArc[25], (int) d / 7, (int) d / 7, pArrowPoints, 0);
+            if(lineType != TacticalLines.OCCUPY)
+                lineutility.GetArrowHead4Double(ptsArc[24], ptsArc[25], (int) d / 7, (int) d / 7, pArrowPoints, 0);
+            else
+                lineutility.GetArrowHead4Double(ptsArc[24], ptsArc[25], (int) d / 7, (int) (1.75*d) / 7, pArrowPoints, 0);
+            
             pLinePoints[25].style = 5;
 
             switch (lineType) {
@@ -845,7 +849,8 @@ public final class arraysupport
                 case TacticalLines.OCCUPY:
                     midPt.x = (pt1.x + ptsArc[25].x) / 2;
                     midPt.y = (pt1.y + ptsArc[25].y) / 2;
-                    lineutility.GetArrowHead4Double(midPt, ptsArc[25], (int) d / 7, (int) d / 7, reversepArrowPoints, 0);
+                    //lineutility.GetArrowHead4Double(midPt, ptsArc[25], (int) d / 7, (int) d / 7, reversepArrowPoints, 0);
+                    lineutility.GetArrowHead4Double(midPt, ptsArc[25], (int) d / 7, (int) (1.75*d) / 7, reversepArrowPoints, 0);
                     for (j = 26; j < 29; j++) {
                         pLinePoints[j] = new POINT2(pArrowPoints[j - 26]);
                     }
