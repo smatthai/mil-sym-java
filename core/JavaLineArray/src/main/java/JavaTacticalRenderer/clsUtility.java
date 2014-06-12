@@ -1149,6 +1149,11 @@ public final class clsUtility {
                 if(lineType==TacticalLines.AIRFIELD)
                     if(j==1)
                         shape.setFillColor(null);
+                //diagnostic
+                if(lineType==TacticalLines.BBS_POINT)
+                    if(j==0)
+                        shape.setLineColor(null);
+                //end section
                 
                 shapeType = shape.getShapeType();
 

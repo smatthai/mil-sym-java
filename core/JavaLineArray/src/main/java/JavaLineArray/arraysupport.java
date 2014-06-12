@@ -4594,23 +4594,31 @@ public final class arraysupport
             {
                 case TacticalLines.BBS_AREA:
                 case TacticalLines.BBS_RECTANGLE:
-                    //shape=new Shape2(Shape2.SHAPE_TYPE_FILL);
-                    for(j=0;j<vblSaveCounter-1;j++)
-                    {
-                        shape=new Shape2(Shape2.SHAPE_TYPE_FILL);
-                        shape.moveTo(pOriginalLinePoints[j]);
+//                    for(j=0;j<vblSaveCounter-1;j++)
+//                    {
+//                        shape=new Shape2(Shape2.SHAPE_TYPE_FILL);
+//                        shape.moveTo(pOriginalLinePoints[j]);
+//                        shape.lineTo(pLinePoints[j]);
+//                        shape.lineTo(pLinePoints[j+1]);
+//                        shape.lineTo(pOriginalLinePoints[j+1]);
+//                        shape.lineTo(pOriginalLinePoints[j]);
+//                        shapes.add(shape);
+//                    }
+//                    
+//                    //shapes.add(shape);
+                    shape=new Shape2(Shape2.SHAPE_TYPE_FILL);
+                    shape.moveTo(pLinePoints[0]);
+                    for(j=0;j<vblSaveCounter;j++)
                         shape.lineTo(pLinePoints[j]);
-                        shape.lineTo(pLinePoints[j+1]);
-                        shape.lineTo(pOriginalLinePoints[j+1]);
-                        shape.lineTo(pOriginalLinePoints[j]);
-                        shapes.add(shape);
-                    }
-                    //shapes.add(shape);
+                    shapes.add(shape);
+                    
                     shape=new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
                     shape.moveTo(pOriginalLinePoints[0]);
                     for(j=1;j<vblSaveCounter;j++)
                         shape.lineTo(pOriginalLinePoints[j]);
                     shapes.add(shape);
+                    
+                    
                     break;
                 case TacticalLines.DIRATKGND:
                     //create two shapes. the first shape is for the line

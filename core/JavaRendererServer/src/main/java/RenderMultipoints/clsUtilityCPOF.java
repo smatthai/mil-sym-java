@@ -514,7 +514,10 @@ public final class clsUtilityCPOF {
                 pt1 = tg.LatLongs.get(0);
             }
             POINT2[]pPoints=null;
-
+            //diagnostic
+            POINT2 ptCenter=PointLatLongToPixels(pt0,converter);
+            //end section
+            
             GetNumericFields(tg, lineType, radius, width, length, attitude);
             switch (lineType) {
                 case TacticalLines.PAA_RECTANGULAR_REVC:
@@ -700,6 +703,17 @@ public final class clsUtilityCPOF {
                 shapes.addAll(shapesLeft);
                 shapes.addAll(shapesRight);
             }
+            //diagnostic
+            if(lineType==TacticalLines.BBS_POINT)
+            {
+                Shape2 shape=new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
+                shape.moveTo(ptCenter);
+                //ptCenter.x+=1;
+                ptCenter.y+=1;
+                shape.lineTo(ptCenter);
+                shapes.add(shape);
+            }
+            //end section
             //general symbols which require fill
             return true;
         } catch (Exception exc) {

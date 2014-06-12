@@ -2852,7 +2852,19 @@ public final class Channels {
             ArrayList<Shape2>fillShapes=getAXADFillShapes(vbiDrawThis, pLinePoints);
             if(fillShapes != null && fillShapes.size()>0)
                 shapes.addAll(0,fillShapes);
-
+            
+            //diagnostic
+            if(vbiDrawThis==TacticalLines.BBS_LINE)
+            {
+                shapes.remove(1);
+                shape=new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
+                shape.moveTo(pOriginalLinePoints[0]);
+                for(j=1;j<pOriginalLinePoints.length;j++)
+                    shape.lineTo(pOriginalLinePoints[j]);
+                shapes.add(shape);
+            }
+            //end section
+            
             lResult=lResultCounter;
             //FillPoints(pLinePoints,pLinePoints.length);
             //clean up
