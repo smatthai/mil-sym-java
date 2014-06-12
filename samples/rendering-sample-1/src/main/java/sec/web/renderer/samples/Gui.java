@@ -153,6 +153,7 @@ public class Gui extends JFrame {
 
     private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
         generateAmbushJSON();
+        //generateMSD();
     }//GEN-LAST:event_button3ActionPerformed
 
     private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
@@ -367,6 +368,46 @@ public class Gui extends JFrame {
 					"uniqueID", "name", "description", symbolCode,
 					controlPoints, pixelWidth, pixelHeight, bbox, modifiers,
 					formatJSON, symStd);
+
+			System.out.println(json);
+		} catch (Exception exc) {
+			ErrorLogger.LogException("gui", "generateAmbushJSON", exc);
+		}
+	}
+        
+        private void generateMSD() {
+            try {
+            String modifiers = "{\"modifiers\":{\"" + ModifiersTG.T_UNIQUE_DESIGNATION_1 + "\":\"-------\",\"" + 
+                                MilStdAttributes.FillColor + "\":\"640000ff\",\"" + 
+                                MilStdAttributes.LineColor + "\":\"ff0000ff\"}}";//*/
+            //AMBUSH EXAMPLE
+            String symbolCode = "GFMPNM--------X";//MSD
+            //var symbolCode = "GHGPGAA-------X"; //assembly area
+            String controlPoints = "-123.0,23.0 -123.00000000000001,23.017986432118377 -123.00000000000001,23.044966080295936 -123.00000000000001,23.0455";
+        
+            //String bbox = " -123.0,23.0,-123.0,23.0455";
+            String bbox = " -123.1,23.0,-122.9,23.0455";
+            //var bbox = "-180.0,-90.0,180.0,90.0";
+            double scale = 50000.0;
+
+            int formatJSON = 1;
+            int formatKML = 0;
+            int pixelWidth = 800;
+            int pixelHeight = 600;
+
+            //change this to format JSON to see the different output.
+            int format = formatKML;
+            //var format = formatKML;
+
+			// Let's user choose between 2525Bch2 and 2525C.
+			int ms2525Bch2 = RendererSettings.Symbology_2525Bch2_USAS_13_14;// 0;
+			int ms2525C = RendererSettings.Symbology_2525C;// 1;
+			int symStd = ms2525Bch2;
+
+			String json = SECRenderer.getInstance().RenderMultiPointSymbol2D(
+					"39f99452-a3eb-4f15-a7f7-9d0f9796694d", "MSD1", "Description", symbolCode,
+					controlPoints, pixelWidth, pixelHeight, bbox, modifiers,
+					format, symStd);
 
 			System.out.println(json);
 		} catch (Exception exc) {
