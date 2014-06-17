@@ -337,6 +337,14 @@ public class ModifiersUnits {
     public static final String AO_ENGAGEMENT_BAR = "AO";
 
     /**
+     * Used internally by the renderer.  This value is set via the 13th & 14th
+     * characters in the symbol id.  There is no formal definition of how
+     * this should be indicated on the symbol in the MilStd or USAS.  
+     * The renderer will place it to the right of the 'H' label.
+     */
+    public static final String CC_COUNTRY_CODE = "CC";
+    
+    /**
      * A generic name label that goes to the right of the symbol and
      * any existing labels.  If there are no existing labels, it goes right
      * next to the right side of the symbol.  This is a CPOF label that applies

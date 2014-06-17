@@ -2821,6 +2821,12 @@ public class SinglePointRenderer {
             Iterator itr = modifiers.keySet().iterator();
             String modifierName = "";
             String modifierValue = "";
+            
+            if(Character.isLetter(symbolID.charAt(12)) && 
+                    Character.isLetter(symbolID.charAt(13)))
+            {
+                modifiers.put(ModifiersUnits.CC_COUNTRY_CODE, symbolID.substring(12, 14));
+            }
 
             //ArrayList<String> modifierNames = ModifiersUnits.GetModifierList();
             
@@ -2910,6 +2916,7 @@ public class SinglePointRenderer {
             if(modifiers.containsKey(ModifiersUnits.H_ADDITIONAL_INFO_1))
             {
                 modifierValue = modifiers.get(ModifiersUnits.H_ADDITIONAL_INFO_1);
+                
                 text = new TextLayout(modifierValue, labelFont, frc);
                 //labelBounds = text.getPixelBounds(null, 0, 0);
                 //labelWidth = labelBounds.width;
@@ -2946,12 +2953,25 @@ public class SinglePointRenderer {
                 }
                 alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
             }
-            if(modifiers.containsKey(ModifiersUnits.M_HIGHER_FORMATION))
+            if(modifiers.containsKey(ModifiersUnits.M_HIGHER_FORMATION) ||
+                       modifiers.containsKey(ModifiersUnits.CC_COUNTRY_CODE))
             {
-                modifierValue = modifiers.get(ModifiersUnits.M_HIGHER_FORMATION);
+                modifierValue = "";
+                String mValue = modifiers.get(ModifiersUnits.M_HIGHER_FORMATION);
+                String ccValue = modifiers.get(ModifiersUnits.CC_COUNTRY_CODE);
+                
+                
+                modifierValue = "";
+                if(mValue != null)
+                    modifierValue += mValue;
+                if(ccValue != null)
+                {
+                    if(mValue != null)
+                        modifierValue += " ";
+                    modifierValue += ccValue;
+                }
+                
                 text = new TextLayout(modifierValue, labelFont, frc);
-                //labelBounds = text.getPixelBounds(null, 0, 0);
-                //labelWidth = labelBounds.width;
 
                 x = bounds.x + bounds.width + bufferXR;
                 if(!byLabelHeight)
