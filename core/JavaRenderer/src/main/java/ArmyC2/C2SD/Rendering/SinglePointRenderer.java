@@ -548,7 +548,8 @@ public class SinglePointRenderer {
             }
             //Process label modifiers///////////////////////////////////////////    
             Map modifiers = symbol.getModifierMap();
-            if(modifiers != null && modifiers.size() > 0)
+            Boolean hasCC = SymbolUtilities.hasValidCountryCode(symbolID);
+            if(hasCC || (modifiers != null && modifiers.size() > 0))
             {
                 //draw direction of movement arrow if angle exists
                 Object odom = modifiers.get(ModifiersUnits.Q_DIRECTION_OF_MOVEMENT);
@@ -2804,7 +2805,7 @@ public class SinglePointRenderer {
 //            int y0 = 0;//W    E/F
 //            int y1 = 0;//X/Y  G
 //            int y2 = 0;//V    H
-//            int y3 = 0;//T    M
+//            int y3 = 0;//T    M CC
 //            int y4 = 0;//Z    J/K/L/N/P
 //
 //            y0 = bounds.y - 0;
@@ -2822,8 +2823,7 @@ public class SinglePointRenderer {
             String modifierName = "";
             String modifierValue = "";
             
-            if(Character.isLetter(symbolID.charAt(12)) && 
-                    Character.isLetter(symbolID.charAt(13)))
+            if(SymbolUtilities.hasValidCountryCode(symbolID))
             {
                 modifiers.put(ModifiersUnits.CC_COUNTRY_CODE, symbolID.substring(12, 14));
             }

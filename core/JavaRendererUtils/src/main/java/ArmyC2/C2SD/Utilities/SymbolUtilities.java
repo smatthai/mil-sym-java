@@ -433,6 +433,14 @@ public class SymbolUtilities {
        }
 
 
+       public static Boolean hasValidCountryCode(String symbolID)
+       {
+           if(Character.isLetter(symbolID.charAt(12)) && 
+                   Character.isLetter(symbolID.charAt(13)))
+               return true;
+           else
+               return false;
+       }
        /**
         * converts a Java Date object into a properly formated String for
         * W or W1
