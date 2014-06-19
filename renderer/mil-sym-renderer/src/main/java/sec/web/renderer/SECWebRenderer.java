@@ -123,7 +123,7 @@ public class SECWebRenderer extends Applet {
             //default label settings
             //RendererSettings.getInstance().setLabelFont("arial", Font.BOLD, 12, false, 0.04f);//default
             //adjusted tracking to give more space between letters.
-            RendererSettings.getInstance().setLabelFont("arial", Font.BOLD, 12, false, 0.05f);
+            RendererSettings.getInstance().setLabelFont("arial", Font.BOLD, 12);//, false, 0.05f);
             ////////////////////////////////////////////////////////////////////
             ErrorLogger.setLevel(Level.FINE);
             

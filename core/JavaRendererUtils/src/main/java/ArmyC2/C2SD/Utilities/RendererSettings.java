@@ -110,7 +110,7 @@ public class RendererSettings {
     private static int _ModifierFontType = Font.BOLD;
     private static int _ModifierFontSize = 12;
     private static int _ModifierFontKerning = 0;//0=off, 1=on (TextAttribute.KERNING_ON)
-    private static float _ModifierFontTracking = TextAttribute.TRACKING_LOOSE;//loose=0.4f;
+    private static float _ModifierFontTracking = 0;//TextAttribute.TRACKING_LOOSE;//loose=0.4f;
     private boolean _scaleEchelon = false;
     private boolean _DrawAffiliationModifierAsLabel = true;
 

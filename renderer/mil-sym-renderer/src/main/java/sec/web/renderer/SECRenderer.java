@@ -164,7 +164,7 @@ public class SECRenderer {
 		RendererSettings.getInstance().setLabelForegroundColor(Color.BLACK);
 		RendererSettings.getInstance().setLabelBackgroundColor(new Color(255, 255, 255, 200));
 		RendererSettings.getInstance().setSymbologyStandard(RendererSettings.Symbology_2525Bch2_USAS_13_14);
-                RendererSettings.getInstance().setLabelFont("arial", Font.BOLD, 12, false, 0.05f);
+                RendererSettings.getInstance().setLabelFont("arial", Font.BOLD, 12);//, false, 0.05f);
 		// RendererSettings.getInstance().setLabelBackgroundColor(Color.WHITE);
 		// RendererSettings.getInstance().setLabelFont("arial",
 		// Font.BOLD, 12);//default
