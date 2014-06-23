@@ -2714,9 +2714,12 @@ public class MultiPointHandler {
 
         ShapeInfo tempModifier = null;        
 
+        String cdataStart = "<![CDATA[";
+        String cdataEnd = "]]>";
+        
         int len = shapes.size();
         kml.append("<Folder id=\"" + id + "\">");
-        kml.append("<name>" + name + "</name>");        
+        kml.append("<name>" + cdataStart + name + cdataEnd + "</name>");        
         kml.append("<visibility>1</visibility>");
         for (int i = 0; i < len; i++) {
 
@@ -3048,8 +3051,11 @@ public class MultiPointHandler {
         
         symbolCode = JavaRendererUtilities.normalizeSymbolCode(symbolCode);
 
+        String cdataStart = "<![CDATA[";
+        String cdataEnd = "]]>";
+        
         kml.append("<Placemark id=\"" + id + "_mg" + "\">");
-        kml.append("<description>" + "<b>" + name + "</b><br/>" + "\n" + description + "</description>");
+        kml.append("<description>" + cdataStart + "<b>" + name + "</b><br/>" + "\n" + description + cdataEnd + "</description>");
         kml.append("<Style id=\"" + lineStyleId + "\">");
 
         lineColor = shapeInfo.getLineColor();
@@ -3636,9 +3642,12 @@ public class MultiPointHandler {
 
         String text = shapeInfo.getModifierString();
 
+        String cdataStart = "<![CDATA[";
+        String cdataEnd = "]]>";
+        
         if (text != null && text.equals("") == false) {
             kml.append("<Placemark id=\"" + id + "_lp" + i + "\">");
-            kml.append("<name>" + text + "</name>");
+            kml.append("<name>" + cdataStart + text + cdataEnd + "</name>");
             kml.append("<Style>");
             kml.append("<IconStyle>");
             kml.append("<scale>.7</scale>");
