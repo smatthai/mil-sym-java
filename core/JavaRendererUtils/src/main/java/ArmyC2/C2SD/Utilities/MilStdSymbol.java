@@ -1476,6 +1476,7 @@ public class MilStdSymbol {
                             }
                         }
                         
+                        Boolean isMultiPoint = false;
                         if(temp.getGlyphPosition()!=null)
                         {
                             centerX = offsetX + (int)temp.getGlyphPosition().getX() - boundsFull.x;
@@ -1485,8 +1486,13 @@ public class MilStdSymbol {
                         {
                             centerX = offsetX + (int)boundsFull.getWidth()/2;
                             centerY = offsetY + (int)boundsFull.getHeight()/2;
+                            isMultiPoint = true;
                         }
 
+                        if(isMultiPoint)
+                        {
+                            bounds = boundsFull;
+                        }
                         returnVal = new ImageInfo(image, newX, newY, centerX, centerY, new Rectangle2D.Double(bounds.getX()-newX, bounds.getY()-newY, bounds.getWidth(), bounds.getHeight()));
                     }
                     
