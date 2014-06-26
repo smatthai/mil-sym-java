@@ -13,6 +13,7 @@ import ArmyC2.C2SD.Rendering.TacticalGraphicIconRenderer;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.IPointConversion;
 import ArmyC2.C2SD.Utilities.ImageInfo;
+import ArmyC2.C2SD.Utilities.MilStdAttributes;
 import ArmyC2.C2SD.Utilities.MilStdSymbol;
 import ArmyC2.C2SD.Utilities.PointConversionDummy;
 import ArmyC2.C2SD.Utilities.SymbolDef;
@@ -75,6 +76,28 @@ public class SinglePoint2525Renderer implements ISinglePointRenderer {
             }
             else
             {
+                jr.Render(ms, pConverter, null);
+                ii = ms.toImageInfo();
+            }
+            
+            //in case rendering on the given symbolID fails.
+            if(ii == null)
+            {
+                String tempID = "S" + symbolID.charAt(1) + "Z" + symbolID.charAt(3) + symbolID.substring(4);
+                tempID = SymbolUtilities.reconcileSymbolID(tempID, false);
+                ms.setSymbolID(tempID);
+                ms.setLineColor(SymbolUtilities.getLineColorOfAffiliation(tempID));
+                ms.setFillColor(SymbolUtilities.getFillColorOfAffiliation(tempID));
+                ms.setOutlineEnabled(false);
+                if(params.containsKey(MilStdAttributes.FillColor))
+                {
+                    ms.setFillColor(SymbolUtilities.getColorFromHexString(params.get(MilStdAttributes.FillColor)));
+                }
+                if(params.containsKey(MilStdAttributes.LineColor))
+                {
+                    ms.setLineColor(SymbolUtilities.getColorFromHexString(params.get(MilStdAttributes.LineColor)));
+                }
+                
                 jr.Render(ms, pConverter, null);
                 ii = ms.toImageInfo();
             }
