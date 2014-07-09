@@ -6,7 +6,7 @@ mil-sym-java is a well worn set of java libraries that have been used in US Army
 [Developer's Guide Word Docs](https://github.com/missioncommand/mil-sym-java/blob/master/documentation)  
 [Multipoint Sample](http://mil-sym-service.spinelli.cloudbees.net/multiPoints.html)  
 [Singlepoint Sample](http://mil-sym-service.spinelli.cloudbees.net/singlePoints.html)  
-Note: Cloudbees apparently doesn't make Arial available so the modifiers are not rendering with the default font.
+[Google Group Discussion Forum](https://groups.google.com/forum/#!forum/mission-command-milstd-renderer)  
 
 MIL-STD-2525
 -----------
