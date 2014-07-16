@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>sec.web.renderer</groupId>
 		<artifactId>sec-core-parent</artifactId>
-		<version>0.0.35-SNAPSHOT</version>
+		<version>0.0.35</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
