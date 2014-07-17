@@ -2495,12 +2495,12 @@ public final class clsMETOC {
                         }
                         break;
                     case TacticalLines.FLOOD_TIDE:
-                        if (i == array.size() - 2)
-                        {
-                            if(splinePoints.size()>=2)
-                                DrawArrow(splinePoints.get(splinePoints.size() - 2), tg.Pixels.get(tg.Pixels.size() - 1), 10, lineObject);
-                        }
-                        else if (i == 0 && splinePoints.size() > 1) {
+//                        if (i == array.size() - 2)
+//                        {
+//                            if(splinePoints.size()>=2)
+//                                DrawArrow(splinePoints.get(splinePoints.size() - 2), tg.Pixels.get(tg.Pixels.size() - 1), 10, lineObject);
+//                        }
+                        if (i == 0 && splinePoints.size() > 1) {
                             //finally get the feather points
                             //must allocate for the feather points, requires 4 additional points
                             pt0 = splinePoints.get(0);
@@ -2521,6 +2521,11 @@ public final class clsMETOC {
                             //second feather line
                             lineObject.moveTo(pt4.x, pt4.y);
                             lineObject.lineTo(pt6.x, pt6.y);
+                        }
+                        if (i == array.size() - 2)
+                        {
+                            if(splinePoints.size()>=2)
+                                DrawArrow(splinePoints.get(splinePoints.size() - 2), tg.Pixels.get(tg.Pixels.size() - 1), 10, lineObject);
                         }
                         break;
                     case TacticalLines.STREAM:
@@ -2532,16 +2537,16 @@ public final class clsMETOC {
                         }
                         break;
                     case TacticalLines.FLOOD_TIDE_GE:
-                        if(i==array.size()-2)//the last point in the array
-                        {
-                            lineObject.moveTo((int)splinePoints2.get(0).x,(int)splinePoints2.get(0).y);
-                            for(j=1;j<splinePoints2.size();j++)
-                                lineObject.lineTo((int)splinePoints2.get(j).x,(int)splinePoints2.get(j).y);
-
-                            if(splinePoints.size()>=2)
-                                DrawArrow(splinePoints.get(splinePoints.size() - 2), tg.Pixels.get(tg.Pixels.size() - 1), 10, lineObject);
-                        }
-                        else if (i == 0 && splinePoints.size() > 1) {
+//                        if(i==array.size()-2)//the last point in the array
+//                        {
+//                            lineObject.moveTo((int)splinePoints2.get(0).x,(int)splinePoints2.get(0).y);
+//                            for(j=1;j<splinePoints2.size();j++)
+//                                lineObject.lineTo((int)splinePoints2.get(j).x,(int)splinePoints2.get(j).y);
+//
+//                            if(splinePoints.size()>=2)
+//                                DrawArrow(splinePoints.get(splinePoints.size() - 2), tg.Pixels.get(tg.Pixels.size() - 1), 10, lineObject);
+//                        }
+                        if (i == 0 && splinePoints.size() > 1) {
                             //finally get the feather points
                             //must allocate for the feather points, requires 4 additional points
                             pt0 = splinePoints.get(0);
@@ -2562,6 +2567,15 @@ public final class clsMETOC {
                             //second feather line
                             lineObject.moveTo(pt4.x, pt4.y);
                             lineObject.lineTo(pt6.x, pt6.y);
+                        }
+                        if(i==array.size()-2)//the last point in the array
+                        {
+                            lineObject.moveTo((int)splinePoints2.get(0).x,(int)splinePoints2.get(0).y);
+                            for(j=1;j<splinePoints2.size();j++)
+                                lineObject.lineTo((int)splinePoints2.get(j).x,(int)splinePoints2.get(j).y);
+
+                            if(splinePoints.size()>=2)
+                                DrawArrow(splinePoints.get(splinePoints.size() - 2), tg.Pixels.get(tg.Pixels.size() - 1), 10, lineObject);
                         }
                         break;
                     case TacticalLines.EBB_TIDE_GE:
