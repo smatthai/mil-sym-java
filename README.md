@@ -47,7 +47,9 @@ will output:![Service call for symbol SHGP-----------](http://mil-sym-renderer.m
 Version
 ----
 
-1.0
+- **Current Development Version** - 0.0.36-SNAPSHOT
+- **Latest Release Version** - 0.0.35
+ 
 
 Tech
 -----------
