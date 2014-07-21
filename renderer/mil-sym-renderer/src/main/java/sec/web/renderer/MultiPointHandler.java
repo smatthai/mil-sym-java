@@ -779,7 +779,7 @@ public class MultiPointHandler {
                 jsonOutput.append("}");
             } else if (format == 0) {
 
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, true, normalize);
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, true, normalize,mSymbol.getLineColor());
                 
                 //if there's a symbol fill or line pattern, add to KML//////////
                 if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
@@ -1558,7 +1558,7 @@ public class MultiPointHandler {
                 String fillColor = null;
                 if(mSymbol.getFillColor() != null)
                     fillColor = Integer.toHexString(mSymbol.getFillColor().getRGB());//Integer.toHexString(shapeInfo.getFillColor().getRGB()
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, false, normalize);
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, false, normalize, mSymbol.getLineColor());
                 
                 //if there's a symbol fill or line pattern, add to KML//////////
                 if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
@@ -1872,7 +1872,7 @@ public class MultiPointHandler {
                 String fillColor = null;
                 if(mSymbol.getFillColor() != null)
                     fillColor = Integer.toHexString(mSymbol.getFillColor().getRGB());//Integer.toHexString(shapeInfo.getFillColor().getRGB()
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, false, normalize);
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, false, normalize, mSymbol.getLineColor());
                 jsonOutput.append(jsonContent);
             }
 
@@ -2708,7 +2708,7 @@ public class MultiPointHandler {
             ArrayList<ShapeInfo> shapes, 
             ArrayList<ShapeInfo> modifiers, 
             IPointConversion ipc, Boolean geMap, 
-            boolean normalize) {
+            boolean normalize, Color textColor) {
         
         StringBuilder kml = new StringBuilder();
 
@@ -2736,7 +2736,7 @@ public class MultiPointHandler {
             if(geMap)//if using google earth
                 AdjustModifierPointToCenter(tempModifier);
 
-            String labelsToAdd = LabelToKMLString(id, j, tempModifier, ipc, normalize);
+            String labelsToAdd = LabelToKMLString(id, j, tempModifier, ipc, normalize,textColor);
             kml.append(labelsToAdd);
         }
 
@@ -2745,6 +2745,68 @@ public class MultiPointHandler {
     }
 
     private static String JSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, Boolean geMap, boolean normalize) {
+        String polygons = "";
+        String lines = "";
+        String labels = "";
+        String jstr = "";
+        ShapeInfo tempModifier = null;
+
+        int len = shapes.size();
+        for (int i = 0; i < len; i++) {
+            if (jstr.length() > 0) {
+                jstr += ",";
+            }
+            String shapesToAdd = ShapeToJSONString(shapes.get(i), ipc, geMap, normalize);
+            if (shapesToAdd.length() > 0) {
+                if (shapesToAdd.startsWith("line", 2)) {
+                    if (lines.length() > 0) {
+                        lines += ",";
+                    }
+
+                    lines += shapesToAdd;
+                } else if (shapesToAdd.startsWith("polygon", 2)) {
+                    if (polygons.length() > 0) {
+                        polygons += ",";
+                    }
+
+                    polygons += shapesToAdd;
+                }
+            }
+        }
+
+        jstr += "\"polygons\": [" + polygons + "],"
+                + "\"lines\": [" + lines + "],";
+        int len2 = modifiers.size();
+        labels = "";
+        for (int j = 0; j < len2; j++) {
+            tempModifier = modifiers.get(j);
+            if(geMap)
+                AdjustModifierPointToCenter(tempModifier);
+            String labelsToAdd = LabelToJSONString(tempModifier, ipc, normalize);
+            if (labelsToAdd.length() > 0) {
+                if (labels.length() > 0) {
+                    labels += ",";
+                }
+
+                labels += labelsToAdd;
+
+            }
+        }
+        jstr += "\"labels\": [" + labels + "]";
+        return jstr;
+    }
+    
+    /**
+     * 
+     * @param shapes
+     * @param modifiers
+     * @param ipc
+     * @param geMap
+     * @param normalize
+     * @deprecated Actually, just not ready yet.
+     * @return 
+     */
+        private static String GeoJSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, Boolean geMap, boolean normalize) {
         String polygons = "";
         String lines = "";
         String labels = "";
@@ -3627,8 +3689,137 @@ public class MultiPointHandler {
 
         return JSONed.toString();
     }
+    
+    /**
+     * 
+     * @param shapeInfo
+     * @param ipc
+     * @param geMap
+     * @param normalize
+     * @deprecated Not yet ready
+     * @return 
+     */
+        private static String ShapeToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, Boolean geMap, boolean normalize) {
+        StringBuilder JSONed = new StringBuilder();
+        /*
+        NOTE: Google Earth / KML colors are backwards.
+        They are ordered Alpha,Blue,Green,Red, not Red,Green,Blue,Aplha like the rest of the world
+         * */
+        String fillColor = null;
+        String lineColor = null;
 
-    private static String LabelToKMLString(String id, int i, ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize) {
+        if (shapeInfo.getLineColor() != null)
+        {
+            lineColor = Integer.toHexString(shapeInfo.getLineColor().getRGB());
+            if (geMap) {
+                lineColor = JavaRendererUtilities.ARGBtoABGR(lineColor);
+            }
+
+        }
+        if (shapeInfo.getFillColor() != null)
+        {
+            fillColor = Integer.toHexString(shapeInfo.getFillColor().getRGB());
+            if (geMap) {
+                fillColor = JavaRendererUtilities.ARGBtoABGR(fillColor);
+            }
+        }
+        
+        BasicStroke stroke = null;
+        stroke = (BasicStroke)shapeInfo.getStroke();
+        int lineWidth = 4;
+
+        if(stroke != null)
+        {
+            lineWidth = (int)stroke.getLineWidth();
+            //lineWidth++;
+            //System.out.println("lineWidth: " + String.valueOf(lineWidth));
+        }
+
+        ArrayList shapesArray = shapeInfo.getPolylines();
+
+        for (int i = 0; i < shapesArray.size(); i++) {
+            ArrayList shape = (ArrayList) shapesArray.get(i);
+
+            normalize = normalizePoints(shape, ipc);
+            
+            if (fillColor != null) {
+                JSONed.append("{\"polygon\":[");
+            } else {
+                JSONed.append("{\"line\":[");
+            }
+
+            //System.out.println("Pixel Coords:");
+            for (int j = 0; j < shape.size(); j++) {
+                Point2D coord = (Point2D) shape.get(j);
+                Point2D geoCoord = ipc.PixelsToGeo(coord);
+                //M. Deutch 9-27-11
+                if(normalize)
+                    geoCoord=NormalizeCoordToGECoord(geoCoord);
+                double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
+                double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
+                
+                //fix for fill crossing DTL
+                if(normalize && fillColor != null)
+                {
+                    if(longitude > 0)
+                    {
+                        longitude -= 360;
+                    }
+                }
+                
+                //diagnostic M. Deutch 10-18-11
+                //set the point as geo so that the 
+                //coord.setLocation(longitude, latitude);
+                coord=new Point2D.Double(longitude,latitude);
+                shape.set(j, coord);
+                //end section
+                
+                JSONed.append("[");
+                JSONed.append(longitude);
+                JSONed.append(",");
+                JSONed.append(latitude);
+                JSONed.append("]");
+
+                if (j < (shape.size() - 1)) {
+                    JSONed.append(",");
+                }
+            }
+
+//            JSONed.append("]");
+//            JSONed.append(",\"color\":\"");
+//            JSONed.append(lineColor);
+//            JSONed.append("\"");
+
+            JSONed.append("]");
+            if(lineColor != null)
+            {
+                JSONed.append(",\"lineColor\":\"");
+                JSONed.append(lineColor);
+
+                    JSONed.append("\"");
+            }
+            if(fillColor != null)
+            {
+                JSONed.append(",\"fillColor\":\"");
+                JSONed.append(fillColor);
+                JSONed.append("\"");
+            }
+            
+            JSONed.append(",\"lineWidth\":\"");
+            JSONed.append(String.valueOf(lineWidth));
+            JSONed.append("\"");
+
+            JSONed.append("}");
+
+            if (i < (shapesArray.size() - 1)) {
+                JSONed.append(",");
+            }
+        }
+
+        return JSONed.toString();
+    }
+
+    private static String LabelToKMLString(String id, int i, ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize, Color textColor) {
         StringBuilder kml = new StringBuilder();
 
         Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getGlyphPosition().getX(), shapeInfo.getGlyphPosition().getY());
@@ -3645,6 +3836,9 @@ public class MultiPointHandler {
         String cdataStart = "<![CDATA[";
         String cdataEnd = "]]>";
         
+        String color = SymbolUtilities.colorToHexString(textColor, true);
+        color = JavaRendererUtilities.ARGBtoABGR(color.substring(1));
+        
         if (text != null && text.equals("") == false) {
             kml.append("<Placemark id=\"" + id + "_lp" + i + "\">");
             kml.append("<name>" + cdataStart + text + cdataEnd + "</name>");
@@ -3657,6 +3851,7 @@ public class MultiPointHandler {
             kml.append("</Icon>");
             kml.append("</IconStyle>");
             kml.append("<LabelStyle>");
+            kml.append("<color>" + color + "</color>");
             kml.append("<scale>.8</scale>");
             kml.append("</LabelStyle>");
             kml.append("</Style>");
@@ -3678,6 +3873,72 @@ public class MultiPointHandler {
     }
 
     private static String LabelToJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize) {
+        StringBuilder JSONed = new StringBuilder();
+        /*
+        NOTE: Google Earth / KML colors are backwards.
+        They are ordered Alpha,Blue,Green,Red, not Red,Green,Blue,Aplha like the rest of the world
+         * */
+        //String lineColor = Integer.toHexString(shapeInfo.getLineColor().getRGB());
+        //lineColor = ARGBtoABGR(lineColor);
+
+
+
+        //ArrayList shapesArray = shapeInfo.getPolylines();
+
+
+        //if(shapesArray.get(i).getClass().getSimpleName().equals("ArrayList") ){
+
+        JSONed.append("{\"label\":");
+
+        //AffineTransform at = shapeInfo.getAffineTransform();
+        //Point2D coord = (Point2D)new Point2D.Double(at.getTranslateX(), at.getTranslateY());
+        Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getGlyphPosition().getX(), shapeInfo.getGlyphPosition().getY());
+        Point2D geoCoord = ipc.PixelsToGeo(coord);
+        //M. Deutch 9-27-11
+        if(normalize)
+            geoCoord=NormalizeCoordToGECoord(geoCoord);
+        double latitude = Math.round(geoCoord.getY() * 100000000.0)/100000000.0;
+        double longitude = Math.round(geoCoord.getX() * 100000000.0)/100000000.0;
+        double angle = shapeInfo.getModifierStringAngle();
+        coord.setLocation(longitude, latitude);
+        
+        //diagnostic M. Deutch 10-18-11
+        shapeInfo.setGlyphPosition(coord);
+
+
+        String text = shapeInfo.getModifierString();
+
+        if (text != null && text.equals("") == false) {
+            JSONed.append("[");
+            JSONed.append(longitude);
+            JSONed.append(",");
+            JSONed.append(latitude);
+            JSONed.append("]");
+
+            JSONed.append(",\"text\":\"");
+            JSONed.append(text);
+            JSONed.append("\"");
+
+            JSONed.append(",\"angle\":\"");
+            JSONed.append(angle);
+            JSONed.append("\"}");
+        } else {
+            return "";
+        }
+
+
+        return JSONed.toString();
+    }
+    
+    /**
+     * 
+     * @param shapeInfo
+     * @param ipc
+     * @param normalize
+     * @deprecated Not yet ready
+     * @return 
+     */
+        private static String LabelToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize) {
         StringBuilder JSONed = new StringBuilder();
         /*
         NOTE: Google Earth / KML colors are backwards.

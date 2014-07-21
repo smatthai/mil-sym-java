@@ -605,14 +605,12 @@ public class SinglePointRenderer {
                 Rectangle bounds = new Rectangle(symbolBounds);
 
                 
-                Color textColor = RendererSettings.getInstance().getLabelForegroundColor();
-                if(textColor==null)
+                Color textColor = Color.BLACK;
+
+                if(RendererSettings.getInstance().getLabelForegroundColor() != null)
                 {
-                    textColor = symbol.getLineColor();
-                    if(textColor==null)
-                    {
-                        textColor = Color.BLACK;
-                    }
+                    textColor = RendererSettings.getInstance().getLabelForegroundColor();
+                    //textColor = symbol.getLineColor();
                 }
                 
                 ArrayList<ShapeInfo> msTemp = GetUnitModifierShape(symbol.getSymbolID(), symbol.getModifierMap(), frc, _ModifierFont, bounds, echelonBounds, affiliationBounds, textColor);
@@ -2008,20 +2006,16 @@ public class SinglePointRenderer {
         {
             textColor = _RendererSettings.getLabelForegroundColor();
         }
-        else
-            if(symbol.getLineColor() != null)
+        else if(SymbolUtilities.isTacticalGraphic(symbol.getSymbolID()) && symbol.getLineColor() != null)
         {
             textColor = symbol.getLineColor();
+            sDef = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(symbol.getSymbolID()),symStd);
+            validModifiers = sDef.getModifiers();
            // ErrorLogger.LogMessage(textColor.toString() ,true);
         }
         else
             textColor = Color.BLACK;
 
-        if(SymbolUtilities.isTacticalGraphic(symbol.getSymbolID()))
-        {
-            sDef = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(symbol.getSymbolID()),symStd);
-            validModifiers = sDef.getModifiers();
-        }
 
         Rectangle symbolBounds = symbol.getSymbolExtent();
         

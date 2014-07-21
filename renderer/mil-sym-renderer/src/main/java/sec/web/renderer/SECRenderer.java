@@ -161,8 +161,8 @@ public class SECRenderer {
 		// RendererSettings.getInstance().setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE);
 		RendererSettings.getInstance().setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE_QUICK);
 		RendererSettings.getInstance().setTextOutlineWidth(2);
-		RendererSettings.getInstance().setLabelForegroundColor(Color.BLACK);
-		RendererSettings.getInstance().setLabelBackgroundColor(new Color(255, 255, 255, 200));
+		//RendererSettings.getInstance().setLabelForegroundColor(Color.BLACK);
+		//RendererSettings.getInstance().setLabelBackgroundColor(new Color(255, 255, 255, 200));
 		RendererSettings.getInstance().setSymbologyStandard(RendererSettings.Symbology_2525Bch2_USAS_13_14);
                 RendererSettings.getInstance().setLabelFont("arial", Font.BOLD, 12);//, false, 0.05f);
 		// RendererSettings.getInstance().setLabelBackgroundColor(Color.WHITE);
@@ -772,6 +772,34 @@ public class SECRenderer {
 		
 		return buildKml(fullURL, id, name, description, lat, lon, alt, altMode, size, pi);
 	}
+        
+        /**
+         * Google likes to resize icons.  Based on patterns I've recognized,
+         * I tried to compensate.
+         * @param width
+         * @param height
+         * @return 
+         */
+        private double getIconScale(double width, double height)
+        {
+            double scale1 = 28;
+            double scale2 = 30;
+            double iconScale = 0;
+            if (width == height) {
+                iconScale = width / scale1;
+            } else if (width > height) {
+                if (height <= scale2)
+                    iconScale = width / scale2;
+                else
+                    iconScale = height / scale2;
+            } else {
+                if (width <= scale2)
+                    iconScale = height / scale2;
+                else
+                    iconScale = width / scale2;
+            }
+            return iconScale;
+        }
 
         /**
          * Builds kml to go along with a single point symbol and its url
@@ -792,24 +820,13 @@ public class SECRenderer {
                 double width =pi.getImage().getWidth();
                 double height =pi.getImage().getHeight();
                 double iconScale = 1.0;
-                double iconPixelSize = width;
-                if(size != null  && size.equals("") == false && SymbolUtilities.isNumber(size))
-                    iconPixelSize = Double.parseDouble(size);
+
                 
                 if(altMode == null || altMode.equals(""))
                     altMode = "relativeToGround";
                 
-                if (width <= 32 && height <= 32) {
-                    iconScale = 1.0;
-                } else if (width == 32 && height > 32) {
-                    iconScale = 1.0;
-                } else if (height >= 32 && width < 32) {
-                    iconScale = Math.round((height / 32) * 100) / 100;
-                } else if (width >= 32 && height < 32) {
-                    iconScale = Math.round((width / 32) * 100) / 100;
-                } else if (width >= iconPixelSize && height >= 32) {
-                    iconScale = Math.round((height / 32) * 100) / 100;
-                }
+                iconScale = getIconScale(width, height);
+
             
                 //Build KML
                 StringBuilder kml = new StringBuilder();

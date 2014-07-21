@@ -1032,8 +1032,8 @@ public class SymbolDraw {
                 int bgDelta = (int)((fgColor.getRed() * 0.299) + (fgColor.getGreen() * 0.587) + (fgColor.getBlue() * 0.114));
                 //ErrorLogger.LogMessage("bgDelta: " + String.valueOf(255-bgDelta));
                 //if less than threshold, black, otherwise white.
-                return (255 - bgDelta < nThreshold) ? Color.BLACK : Color.WHITE;
-
+                //return (255 - bgDelta < nThreshold) ? Color.BLACK : Color.WHITE;//new Color(0, 0, 0, fgColor.getAlpha())
+                return (255 - bgDelta < nThreshold) ? new Color(0, 0, 0, fgColor.getAlpha()) : new Color(255, 255, 255, fgColor.getAlpha());
             }
         }
         catch(Exception exc)
