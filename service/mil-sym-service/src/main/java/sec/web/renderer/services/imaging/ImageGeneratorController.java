@@ -96,7 +96,7 @@ public class ImageGeneratorController {
 			}// */
 
 			PrintWriter out = response.getWriter();
-			out.println(kml);
+			out.print(kml);
 			out.close();
 		}
 	}
@@ -141,7 +141,7 @@ public class ImageGeneratorController {
 			}// */
 
 			PrintWriter out = response.getWriter();
-			out.println(kml);
+			out.print(kml);
 			out.close();
 
 		} catch (Exception exc) {
