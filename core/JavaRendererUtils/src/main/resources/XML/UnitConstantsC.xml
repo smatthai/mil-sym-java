@@ -2258,10 +2258,10 @@
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUA---*****</SYMBOLID>
-    <DESCRIPTION>Combat Support NBC</DESCRIPTION>
+    <DESCRIPTION>Combat Support CBRN</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC</ALPHAHIERARCHY>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN</ALPHAHIERARCHY>
     <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support</PATH>
   </SYMBOL>
   <SYMBOL>
@@ -2269,112 +2269,112 @@
     <DESCRIPTION>Combat Support Chemical</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUACC-*****</SYMBOLID>
     <DESCRIPTION>Smoke/Decon</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1.1</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML.SMKDEC</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support Chemical</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML.SMKDEC</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support Chemical</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUACCK*****</SYMBOLID>
     <DESCRIPTION>Mechanized Smoke/Decon</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1.1.1</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML.SMKDEC.MECH</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support Chemical/Smoke and Decon</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML.SMKDEC.MECH</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support Chemical/Smoke and Decon</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUACCM*****</SYMBOLID>
     <DESCRIPTION>Motorized Smoke/Decon</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1.1.2</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML.SMKDEC.MOT</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support Chemical/Smoke and Decon</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML.SMKDEC.MOT</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support Chemical/Smoke and Decon</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUACS-*****</SYMBOLID>
     <DESCRIPTION>Smoke</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1.2</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML.SMK</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support Chemical</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML.SMK</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support Chemical</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUACSM*****</SYMBOLID>
     <DESCRIPTION>Motorized Smoke</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1.2.1</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML.SMK.MOT</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support Chemical/Smoke</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML.SMK.MOT</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support Chemical/Smoke</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUACSA*****</SYMBOLID>
     <DESCRIPTION>Armor Smoke</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1.2.2</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML.SMK.ARM</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support Chemical/Smoke</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML.SMK.ARM</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support Chemical/Smoke</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUACR-*****</SYMBOLID>
     <DESCRIPTION>Chemical Recon</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1.3</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML.RECON</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support Chemical</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML.RECON</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support Chemical</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUACRW*****</SYMBOLID>
     <DESCRIPTION>Chemical Wheeled Armored Vehicle</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1.3.1</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML.RECON.WARMVH</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support Chemical/Chemical Recon</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML.RECON.WARMVH</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support Chemical/Chemical Recon</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUACRS*****</SYMBOLID>
     <DESCRIPTION>Chemical Wheeled Armored Vehicle Reconnaissance Surveillance</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.1.3.2</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.CML.RECON.WAVS</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support Chemical/Chemical Recon</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.CML.RECON.WAVS</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support Chemical/Chemical Recon</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUAN--*****</SYMBOLID>
     <DESCRIPTION>Combat Support NBC Nuclear</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.2</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.NUC</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.NUC</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUAB--*****</SYMBOLID>
     <DESCRIPTION>Combat Support NBC Biological</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.3</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.BIO</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.BIO</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUABR-*****</SYMBOLID>
     <DESCRIPTION>Recon Equipped</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.3.1</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.BIO.RECEQP</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC/Combat Support NBC Biological</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.BIO.RECEQP</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN/Combat Support NBC Biological</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUAD--*****</SYMBOLID>
     <DESCRIPTION>NBC Decontamination</DESCRIPTION>
     <DRAWCATEGORY>8</DRAWCATEGORY>
     <HIERARCHY>1.X.3.1.2.1.4</HIERARCHY>
-    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.NBC.DECON</ALPHAHIERARCHY>
-    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support NBC</PATH>
+    <ALPHAHIERARCHY>WAR.GRDTRK.UNT.CS.CBRN.DECON</ALPHAHIERARCHY>
+    <PATH>Warfighting Symbology/Ground Track/Unit/Combat Support/Combat Support CBRN</PATH>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>S*G*UUM---*****</SYMBOLID>
