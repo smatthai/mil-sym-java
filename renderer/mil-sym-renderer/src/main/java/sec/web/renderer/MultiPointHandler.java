@@ -3129,7 +3129,7 @@ public class MultiPointHandler {
             if(stroke != null)
             {
                 lineWidth = (int)stroke.getLineWidth();
-                lineWidth++;
+                //lineWidth++;
                 //System.out.println("lineWidth: " + String.valueOf(lineWidth));
             }
                             
@@ -3165,7 +3165,10 @@ public class MultiPointHandler {
             kml.append("<color>" + googleFillColor + "</color>");
             kml.append("<colorMode>normal</colorMode>");
             kml.append("<fill>1</fill>");
-            kml.append("<outline>0</outline>");
+            if(lineColor != null)			
+                kml.append("<outline>1</outline>");
+            else
+                kml.append("<outline>0</outline>");
             kml.append("</PolyStyle>");
         }
 
@@ -3178,7 +3181,7 @@ public class MultiPointHandler {
         for (int i = 0; i < len; i++) {
             ArrayList shape = (ArrayList) shapesArray.get(i);
             normalize=normalizePoints(shape,ipc);
-            if (lineColor != null)
+            if (lineColor != null && fillColor == null)
             {
                 kml.append("<LineString>");
                 kml.append("<tessellate>1</tessellate>");

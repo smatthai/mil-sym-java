@@ -222,7 +222,10 @@ public class MilStdSymbol {
                         
                         int outlineWidth = RendererSettings.getInstance().getSinglePointSymbolOutlineWidth();
                         if(outlineWidth > 0 && SymbolUtilities.isTacticalGraphic(symbolID))
+                        {
                             this.setOutlineEnabled(true, outlineWidth);
+                            this.setOutlineColor(SymbolDraw.getIdealTextBackgroundColor(_LineColor));
+                        }
 		}
                 
                 /**
