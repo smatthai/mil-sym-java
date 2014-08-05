@@ -1615,6 +1615,8 @@ public final class clsRenderer
             {
                 case TacticalLines.RANGE_FAN:
                 case TacticalLines.RANGE_FAN_SECTOR:
+                    if(tg.get_FillColor()==null || tg.get_FillColor().getAlpha()<2)
+                        break;
                     TGLight tg1=clsUtilityCPOF.GetCircularRangeFanFillTG(tg);
                     tg1.set_Fillstyle(savefillStyle);
                     //check assignment (pass which clip object is not null)
