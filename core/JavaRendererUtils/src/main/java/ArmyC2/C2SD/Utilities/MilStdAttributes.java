@@ -64,6 +64,8 @@ public class MilStdAttributes {
     
     public static final String Renderer = "RENDERER";
     
+    public static final String LookAtTag = "LOOKAT";
+    
     public static ArrayList<String> GetModifierList()
     {
         ArrayList<String> list = new ArrayList<String>();

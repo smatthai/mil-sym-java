@@ -26,6 +26,7 @@ import ArmyC2.C2SD.Rendering.MultiPointRenderer;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.IMultiPointRenderer;
 import ArmyC2.C2SD.Utilities.IPointConversion;
+import ArmyC2.C2SD.Utilities.MilStdAttributes;
 import ArmyC2.C2SD.Utilities.MilStdSymbol;
 import ArmyC2.C2SD.Utilities.ModifiersTG;
 import ArmyC2.C2SD.Utilities.PointConversion;
@@ -774,12 +775,20 @@ public class MultiPointHandler {
 
             if (format == 1) {
                 jsonOutput.append("{\"type\":\"symbol\",");
-                jsonContent = JSONize(shapes, modifiers, ipc, true, normalize);
+                jsonContent = JSONize(shapes, modifiers, ipc, normalize);
                 jsonOutput.append(jsonContent);
                 jsonOutput.append("}");
             } else if (format == 0) {
 
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, true, normalize,mSymbol.getLineColor());
+                Color textColor = null;
+                if(symbolCode.charAt(0) == 'G')
+                {
+                    textColor = mSymbol.getLineColor();
+                    String hexColor = SymbolUtilities.colorToHexString(textColor, true);
+                    if(hexColor.equals("#FF000000"))//black
+                        textColor = Color.white;//textColor = "#FFFFFFFF";
+                }
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize,textColor);
                 
                 //if there's a symbol fill or line pattern, add to KML//////////
                 if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
@@ -1551,14 +1560,23 @@ public class MultiPointHandler {
 
             if (format == 1) {
                 jsonOutput.append("{\"type\":\"symbol\",");
-                jsonContent = JSONize(shapes, modifiers, ipc, false, normalize);
+                jsonContent = JSONize(shapes, modifiers, ipc, normalize);
                 jsonOutput.append(jsonContent);
                 jsonOutput.append("}");
             } else if (format == 0) {
                 String fillColor = null;
                 if(mSymbol.getFillColor() != null)
                     fillColor = Integer.toHexString(mSymbol.getFillColor().getRGB());//Integer.toHexString(shapeInfo.getFillColor().getRGB()
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, false, normalize, mSymbol.getLineColor());
+                
+                                Color textColor = null;
+                if(symbolCode.charAt(0) == 'G')
+                {
+                    textColor = mSymbol.getLineColor();
+                    String hexColor = SymbolUtilities.colorToHexString(textColor, true);
+                    if(hexColor.equals("#FF000000"))//black
+                        textColor = Color.white;//textColor = "#FFFFFFFF";
+                }
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize,textColor);
                 
                 //if there's a symbol fill or line pattern, add to KML//////////
                 if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
@@ -1572,6 +1590,17 @@ public class MultiPointHandler {
                 }///end if symbol fill or line pattern//////////////////////////
                 
                 jsonOutput.append(jsonContent);
+                
+                if(mSymbol.getModifierMap().containsKey(MilStdAttributes.LookAtTag) &&
+                        mSymbol.getModifierMap().get(MilStdAttributes.LookAtTag).toLowerCase().equals("true"))
+                {
+                    String LookAtTag = JavaRendererUtilities.generateLookAtTag(geoCoords,mSymbol.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH));
+                    if(LookAtTag != null && LookAtTag.endsWith("</LookAt>") == true)
+                    {
+                        int idx = jsonContent.indexOf("<visibility>");
+                        jsonContent = jsonContent.substring(0,idx) + LookAtTag + jsonContent.substring(idx);
+                    }
+                }
             }
 
         } catch (Exception exc) {
@@ -1865,14 +1894,14 @@ public class MultiPointHandler {
 
             if (format == 1) {
                 jsonOutput.append("{\"type\":\"symbol\",");
-                jsonContent = JSONize(shapes, modifiers, ipc, false, normalize);
+                jsonContent = JSONize(shapes, modifiers, ipc, normalize);
                 jsonOutput.append(jsonContent);
                 jsonOutput.append("}");
             } else if (format == 0) {
                 String fillColor = null;
                 if(mSymbol.getFillColor() != null)
                     fillColor = Integer.toHexString(mSymbol.getFillColor().getRGB());//Integer.toHexString(shapeInfo.getFillColor().getRGB()
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, false, normalize, mSymbol.getLineColor());
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, mSymbol.getLineColor());
                 jsonOutput.append(jsonContent);
             }
 
@@ -2665,7 +2694,7 @@ public class MultiPointHandler {
                 clsRenderer.render_GE(tgl, shapes, modifiers, ipc, bboxCoords);
             
             jsonOutput.append("{\"type\":\"symbol\",");
-            jsonContent = JSONize(shapes, modifiers, ipc, true, normalize);
+            jsonContent = JSONize(shapes, modifiers, ipc, normalize);
             jsonOutput.append(jsonContent);
             jsonOutput.append("}");
 
@@ -2707,7 +2736,7 @@ public class MultiPointHandler {
             String symbolCode,
             ArrayList<ShapeInfo> shapes, 
             ArrayList<ShapeInfo> modifiers, 
-            IPointConversion ipc, Boolean geMap, 
+            IPointConversion ipc,  
             boolean normalize, Color textColor) {
         
         StringBuilder kml = new StringBuilder();
@@ -2723,7 +2752,7 @@ public class MultiPointHandler {
         kml.append("<visibility>1</visibility>");
         for (int i = 0; i < len; i++) {
 
-            String shapesToAdd = ShapeToKMLString(id, name, description, symbolCode, shapes.get(i), ipc, geMap, normalize);
+            String shapesToAdd = ShapeToKMLString(id, name, description, symbolCode, shapes.get(i), ipc, normalize);
             kml.append(shapesToAdd);
         }
 
@@ -2733,7 +2762,8 @@ public class MultiPointHandler {
 
             tempModifier = modifiers.get(j);
 
-            if(geMap)//if using google earth
+            //if(geMap)//if using google earth
+            //assume kml text is going to be centered
                 AdjustModifierPointToCenter(tempModifier);
 
             String labelsToAdd = LabelToKMLString(id, j, tempModifier, ipc, normalize,textColor);
@@ -2744,7 +2774,7 @@ public class MultiPointHandler {
         return kml.toString();
     }
 
-    private static String JSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, Boolean geMap, boolean normalize) {
+    private static String JSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, boolean normalize) {
         String polygons = "";
         String lines = "";
         String labels = "";
@@ -2756,7 +2786,7 @@ public class MultiPointHandler {
             if (jstr.length() > 0) {
                 jstr += ",";
             }
-            String shapesToAdd = ShapeToJSONString(shapes.get(i), ipc, geMap, normalize);
+            String shapesToAdd = ShapeToJSONString(shapes.get(i), ipc, normalize);
             if (shapesToAdd.length() > 0) {
                 if (shapesToAdd.startsWith("line", 2)) {
                     if (lines.length() > 0) {
@@ -2780,8 +2810,9 @@ public class MultiPointHandler {
         labels = "";
         for (int j = 0; j < len2; j++) {
             tempModifier = modifiers.get(j);
-            if(geMap)
-                AdjustModifierPointToCenter(tempModifier);
+            
+            
+            //AdjustModifierPointToCenter(tempModifier);
             String labelsToAdd = LabelToJSONString(tempModifier, ipc, normalize);
             if (labelsToAdd.length() > 0) {
                 if (labels.length() > 0) {
@@ -2800,13 +2831,12 @@ public class MultiPointHandler {
      * 
      * @param shapes
      * @param modifiers
-     * @param ipc
-     * @param geMap
+     * @param ipcgeMap
      * @param normalize
      * @deprecated Actually, just not ready yet.
      * @return 
      */
-        private static String GeoJSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, Boolean geMap, boolean normalize) {
+        private static String GeoJSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, boolean normalize) {
         String polygons = "";
         String lines = "";
         String labels = "";
@@ -2818,7 +2848,7 @@ public class MultiPointHandler {
             if (jstr.length() > 0) {
                 jstr += ",";
             }
-            String shapesToAdd = ShapeToJSONString(shapes.get(i), ipc, geMap, normalize);
+            String shapesToAdd = ShapeToJSONString(shapes.get(i), ipc, normalize);
             if (shapesToAdd.length() > 0) {
                 if (shapesToAdd.startsWith("line", 2)) {
                     if (lines.length() > 0) {
@@ -2842,8 +2872,8 @@ public class MultiPointHandler {
         labels = "";
         for (int j = 0; j < len2; j++) {
             tempModifier = modifiers.get(j);
-            if(geMap)
-                AdjustModifierPointToCenter(tempModifier);
+            
+            
             String labelsToAdd = LabelToJSONString(tempModifier, ipc, normalize);
             if (labelsToAdd.length() > 0) {
                 if (labels.length() > 0) {
@@ -3095,8 +3125,7 @@ public class MultiPointHandler {
             String description, 
             String symbolCode, 
             ShapeInfo shapeInfo, 
-            IPointConversion ipc, 
-            Boolean geMap,              
+            IPointConversion ipc,        
             boolean normalize) {
         
         StringBuilder kml = new StringBuilder();
@@ -3138,9 +3167,9 @@ public class MultiPointHandler {
                 googleLineColor = "0" + googleLineColor;
             }
             
-            if (geMap) {
-                googleLineColor = JavaRendererUtilities.ARGBtoABGR(googleLineColor);
-            } 
+            
+            googleLineColor = JavaRendererUtilities.ARGBtoABGR(googleLineColor);
+            
             
             kml.append("<LineStyle>");
             kml.append("<color>" + googleLineColor + "</color>");
@@ -3157,9 +3186,9 @@ public class MultiPointHandler {
                 googleFillColor = "0" + googleFillColor;
             }
 
-            if (geMap) {
-                googleFillColor = JavaRendererUtilities.ARGBtoABGR(googleFillColor);
-            } 
+            
+            googleFillColor = JavaRendererUtilities.ARGBtoABGR(googleFillColor);
+             
 
             kml.append("<PolyStyle>");
             kml.append("<color>" + googleFillColor + "</color>");
@@ -3573,7 +3602,7 @@ public class MultiPointHandler {
         }
     }
 
-    private static String ShapeToJSONString(ShapeInfo shapeInfo, IPointConversion ipc, Boolean geMap, boolean normalize) {
+    private static String ShapeToJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize) {
         StringBuilder JSONed = new StringBuilder();
         /*
         NOTE: Google Earth / KML colors are backwards.
@@ -3585,17 +3614,10 @@ public class MultiPointHandler {
         if (shapeInfo.getLineColor() != null)
         {
             lineColor = Integer.toHexString(shapeInfo.getLineColor().getRGB());
-            if (geMap) {
-                lineColor = JavaRendererUtilities.ARGBtoABGR(lineColor);
-            }
-
         }
         if (shapeInfo.getFillColor() != null)
         {
             fillColor = Integer.toHexString(shapeInfo.getFillColor().getRGB());
-            if (geMap) {
-                fillColor = JavaRendererUtilities.ARGBtoABGR(fillColor);
-            }
         }
         
         BasicStroke stroke = null;
@@ -3697,12 +3719,11 @@ public class MultiPointHandler {
      * 
      * @param shapeInfo
      * @param ipc
-     * @param geMap
      * @param normalize
      * @deprecated Not yet ready
      * @return 
      */
-        private static String ShapeToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, Boolean geMap, boolean normalize) {
+        private static String ShapeToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize) {
         StringBuilder JSONed = new StringBuilder();
         /*
         NOTE: Google Earth / KML colors are backwards.
@@ -3714,17 +3735,11 @@ public class MultiPointHandler {
         if (shapeInfo.getLineColor() != null)
         {
             lineColor = Integer.toHexString(shapeInfo.getLineColor().getRGB());
-            if (geMap) {
-                lineColor = JavaRendererUtilities.ARGBtoABGR(lineColor);
-            }
 
         }
         if (shapeInfo.getFillColor() != null)
         {
             fillColor = Integer.toHexString(shapeInfo.getFillColor().getRGB());
-            if (geMap) {
-                fillColor = JavaRendererUtilities.ARGBtoABGR(fillColor);
-            }
         }
         
         BasicStroke stroke = null;

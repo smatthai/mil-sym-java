@@ -13,6 +13,7 @@ import ArmyC2.C2SD.Utilities.SymbolDefTable;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import java.awt.Color;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -833,6 +834,106 @@ public class JavaRendererUtilities {
         return pt;
     }
     
+    
+    /**
+     * 
+     * @param latitude1
+     * @param longitude1
+     * @param latitude2
+     * @param longitude2
+     * @param unitOfMeasure meters, kilometers, miles, feet, yards, nautical, nautical miles.
+     * @return 
+     */
+    public static double measureDistance(double latitude1, double longitude1, double latitude2, double longitude2, String unitOfMeasure) 
+    {
+        // latitude1,latitude2 = latitude, longitude1,longitude2 = longitude
+        //Radius is 6378.1 (km), 3963.1 (mi), 3443.9 (nm
 
+        double distance = -1,
+            rad;
+        //if((validateCoordinate(latitude1,longitude1) == true)&&(validateCoordinate(latitude2,longitude2) == true))
+        //{
+
+        String uom = unitOfMeasure.toLowerCase();
+        
+        if (uom.equals("meters"))
+            rad = 6378137;
+        else if(uom.equals("kilometers"))
+            rad = 6378.137;
+        else if(uom.equals("miles"))
+            rad = 3963.1;
+        else if(uom.equals("feet"))
+            rad = 20925524.9;
+        else if(uom.equals("yards"))
+            rad = 6975174.98;
+        else if(uom.equals("nautical"))
+            rad = 3443.9;
+        else if(uom.equals("nautical miles"))
+            rad = 3443.9;
+        else
+            return -1.0;
+
+        
+        latitude1 = latitude1 * (Math.PI / 180);
+        latitude2 = latitude2 * (Math.PI / 180);
+        longitude1 = longitude1 * (Math.PI / 180);
+        longitude2 = longitude2 * (Math.PI / 180);
+        distance = (Math.acos(Math.cos(latitude1) * Math.cos(longitude1) * Math.cos(latitude2) * Math.cos(longitude2) + Math.cos(latitude1) * Math.sin(longitude1) * Math.cos(latitude2) * Math.sin(longitude2) + Math.sin(latitude1) * Math.sin(latitude2)) * rad);
+        
+        return distance;
+    }
+    
+    public static String generateLookAtTag(ArrayList<Point2D.Double> geoCoords, ArrayList<Double> modsAM)
+    {
+                //add <LookAt> tag//////////////////////////////////////////////
+         Boolean doLookAt = true;
+         Rectangle2D controlPointBounds = null;//armyc2.c2sd.renderer.so.Rectangle();
+         Point2D tempPt = null;
+         StringBuilder LookAtTag = new StringBuilder("<LookAt>");
+         if(doLookAt)
+         {
+             for(int j = 0; j < geoCoords.size(); j++)
+             {
+                 tempPt = geoCoords.get(j);
+                 if(controlPointBounds != null)
+                 {
+                     Rectangle2D.union(controlPointBounds, new Rectangle2D.Double(tempPt.getX(),tempPt.getY(),0.00000000000001,0.00000000000001),controlPointBounds);
+                 }
+                 else
+                 {
+                     controlPointBounds = new Rectangle2D.Double(tempPt.getX(),tempPt.getY(),0.00000000000001,0.00000000000001);
+                 }
+             }
+             double distance = 0;
+             //if 1 point circle with width
+             if(geoCoords.size() == 1 && modsAM != null && modsAM.size() > 0)
+             {
+                 distance = (modsAM.get(modsAM.size()-1) * 2);
+             }
+             else
+             {
+                 distance = measureDistance(controlPointBounds.getMinY(),
+                                                     controlPointBounds.getMinX(),
+                                                     controlPointBounds.getMaxY(),
+                                                     controlPointBounds.getMaxX(),
+                                                     "meters");
+             }
+             distance = distance * 1.1;
+
+             double lon = controlPointBounds.getCenterX();
+             double lat = controlPointBounds.getCenterY();
+             LookAtTag.append("<longitude>" + lon + "</longitude>");
+             LookAtTag.append("<latitude>" + lat + "</latitude>");
+             //LookAtTag += "<altitude>" + number + "</altitude>";
+             LookAtTag.append("<heading>" + 0 + "</heading>");
+             LookAtTag.append("<tilt>" + 0 + "</tilt>");
+             LookAtTag.append("<range>" + distance + "</range>");
+             LookAtTag.append("<altitudeMode>" + "absolute" + "</altitudeMode>");
+             LookAtTag.append("</LookAt>");
+
+         }
+         //add <LookAt> tag//////////////////////////////////////////////
+         return LookAtTag.toString();
+    }
     
 }
