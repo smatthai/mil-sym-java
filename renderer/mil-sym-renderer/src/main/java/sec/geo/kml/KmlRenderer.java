@@ -160,7 +160,7 @@ public class KmlRenderer {
                 int descriptionIndex = sb.indexOf(descriptionField);
                 int descriptionLength = descriptionField.length();
                 if(description != null)
-                        sb.replace(descriptionIndex, descriptionIndex + descriptionLength, description);
+                        sb.replace(descriptionIndex, descriptionIndex + descriptionLength, "<![CDATA["  + description + "]]>");
                 int colorIndex = sb.indexOf(colorField);
                 int colorLength = colorField.length();                
                 if(color != null) {
@@ -177,7 +177,7 @@ public class KmlRenderer {
                 int nameIndex = sb.indexOf(nameField);
                 int nameLength = nameField.length();
                 if(name != null)			
-                        sb.replace(nameIndex, nameIndex + nameLength, name);
+                        sb.replace(nameIndex, nameIndex + nameLength, "<![CDATA["  + name + "]]>");
 
                 for(KmlPolygon poly : polys) {			
 
