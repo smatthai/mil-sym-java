@@ -855,7 +855,7 @@ public class SinglePointRenderer {
             if(!(SymbolID.substring(10, 11).equals("M") || SymbolID.substring(10, 11).equals("N")))
             {
                 //Draw Echelon
-                if(SymbolUtilities.isEchelonGraphic(SymbolID,symStd) && !SymbolUtilities.hasInstallationModifier(SymbolID))
+                if(SymbolUtilities.canUnitHaveModifier(SymbolID, ModifiersUnits.B_ECHELON) && !SymbolUtilities.hasInstallationModifier(SymbolID))
                 {
                     String echelon = SymbolID.substring(11, 12);
                     if(!echelon.equals("-") && !echelon.equals("*"))

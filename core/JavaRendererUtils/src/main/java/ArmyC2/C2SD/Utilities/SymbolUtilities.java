@@ -1777,22 +1777,32 @@ public class SymbolUtilities {
 
 
   /**
-   * Determines if graphic can be rendered in 3D
+   * Just checks the symbolID if it could be rendered in 3D.  Does not check
+   * for needed modifiers.
    * @param symbolID
    * @return
    */
   public static Boolean is3dGraphic(String symbolID)
   {
-        String symbolId = symbolID.substring(4, 6);
+        String symbolId = symbolID.substring(4, 10);
 
-        if(symbolId.equals("ACAI--") ||
-            symbolId.equals("ACAR--") ||
-            symbolId.equals("ACAC--") ||
-            symbolId.equals("AXC---") ||
-            symbolId.equals("AXS---") ||
-            symbolId.equals("AKPC--") ||
-            symbolId.equals("AKPI--") ||
-            symbolId.equals("AKPR--"))
+        if (symbolId.equals("ACAI--") || // Airspace Coordination Area Irregular
+            symbolId.equals("ACAR--") || // Airspace Coordination Area Rectangular
+            symbolId.equals("ACAC--") || // Airspace Coordination Area Circular
+            symbolId.equals("AKPC--") || // Kill box circular
+            symbolId.equals("AKPR--") || // Kill box rectangular
+            symbolId.equals("AKPI--") || // Kill box irregular
+            symbolId.equals("ALC---") || // Air corridor
+            symbolId.equals("ALM---") || // 
+            symbolId.equals("ALS---") || // SAAFR
+            symbolId.equals("ALU---") || // UAV
+            symbolId.equals("ALL---") || // Low level transit route
+            symbolId.equals("AAR---") ||
+            symbolId.equals("AAF---") ||
+            symbolId.equals("AAH---") ||
+            symbolId.equals("AAM---") || // MEZ
+            symbolId.equals("AAML--") || // LOMEZ
+            symbolId.equals("AAMH--"))
         {
             return true;
         }
