@@ -144,7 +144,7 @@ public final class countsupport
                     count=vblCounter;
                     break;
                 case TacticalLines.SQUALL:
-                    vblCounter = GetSquallQty(pLinePoints, 6, 30, (int)vblSaveCounter);
+                    vblCounter = GetSquallQty(pLinePoints, 5, 30, (int)vblSaveCounter)+ 2 * vblSaveCounter;
                     count=vblCounter;
                     break;
                 case TacticalLines.USF:
@@ -763,7 +763,7 @@ public final class countsupport
             int numCurves = 0;
             //end declarations
 
-            for (j = 0; j < numPoints - 1; j++) {
+            for (j = 0; j < numPoints-1; j++) {
                 dist = lineutility.CalcDistanceDouble(pLinePoints[j], pLinePoints[j + 1]);
                 numCurves = (int) (dist / (double) length);
                 counter += numCurves * quantity;

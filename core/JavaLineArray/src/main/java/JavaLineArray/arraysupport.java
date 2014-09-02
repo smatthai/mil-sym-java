@@ -1511,14 +1511,19 @@ public final class arraysupport
                 pt0.style=5;
                 squallPts[l++]=new POINT2(pt0);
             }
-
+            if(l>pLinePoints.length)
+                l=pLinePoints.length;
+            
             for (j = 0; j < l; j++)
             {
                 if (j < totalQty)
                 {
                     pLinePoints[j] = new POINT2(squallPts[j]);
                 }
+                else
+                    break;
             }
+            
         } catch (Exception exc) {
             ErrorLogger.LogException(_className, "GetSevereSquall",
                     new RendererException("GetSevereSquall", exc));
