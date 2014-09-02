@@ -2752,7 +2752,7 @@ public class MultiPointHandler {
         kml.append("<visibility>1</visibility>");
         for (int i = 0; i < len; i++) {
 
-            String shapesToAdd = ShapeToKMLString(id, name, description, symbolCode, shapes.get(i), ipc, normalize);
+            String shapesToAdd = ShapeToKMLString(name, description, symbolCode, shapes.get(i), ipc, normalize);
             kml.append(shapesToAdd);
         }
 
@@ -2766,7 +2766,7 @@ public class MultiPointHandler {
             //assume kml text is going to be centered
                 AdjustModifierPointToCenter(tempModifier);
 
-            String labelsToAdd = LabelToKMLString(id, j, tempModifier, ipc, normalize,textColor);
+            String labelsToAdd = LabelToKMLString(tempModifier, ipc, normalize,textColor);
             kml.append(labelsToAdd);
         }
 
@@ -3120,8 +3120,7 @@ public class MultiPointHandler {
         Boolean normalize=sec.web.renderer.MultiPointHandler.crossesIDL(geoCoords);
         return normalize;
     }    
-    private static String ShapeToKMLString(String id, 
-            String name, 
+    private static String ShapeToKMLString(String name, 
             String description, 
             String symbolCode, 
             ShapeInfo shapeInfo, 
@@ -3145,7 +3144,7 @@ public class MultiPointHandler {
         String cdataStart = "<![CDATA[";
         String cdataEnd = "]]>";
         
-        kml.append("<Placemark id=\"" + id + "_mg" + "\">");
+        kml.append("<Placemark>");//("<Placemark id=\"" + id + "_mg" + "\">");
         kml.append("<description>" + cdataStart + "<b>" + name + "</b><br/>" + "\n" + description + cdataEnd + "</description>");
         kml.append("<Style id=\"" + lineStyleId + "\">");
 
@@ -3837,7 +3836,7 @@ public class MultiPointHandler {
         return JSONed.toString();
     }
 
-    private static String LabelToKMLString(String id, int i, ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize, Color textColor) {
+    private static String LabelToKMLString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize, Color textColor) {
         StringBuilder kml = new StringBuilder();
 
         Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getGlyphPosition().getX(), shapeInfo.getGlyphPosition().getY());
@@ -3858,7 +3857,7 @@ public class MultiPointHandler {
         color = JavaRendererUtilities.ARGBtoABGR(color.substring(1));
         
         if (text != null && text.equals("") == false) {
-            kml.append("<Placemark id=\"" + id + "_lp" + i + "\">");
+            kml.append("<Placemark>");//("<Placemark id=\"" + id + "_lp" + i + "\">");
             kml.append("<name>" + cdataStart + text + cdataEnd + "</name>");
             kml.append("<Style>");
             kml.append("<IconStyle>");

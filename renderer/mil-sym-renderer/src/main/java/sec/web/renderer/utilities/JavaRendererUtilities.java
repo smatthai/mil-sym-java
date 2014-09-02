@@ -699,6 +699,12 @@ public class JavaRendererUtilities {
             
         }
         
+    /**
+     * Checks symbolID and if the relevant modifiers are present
+     * @param symbolCode
+     * @param modifiers
+     * @return 
+     */
     public static boolean is3dSymbol(String symbolCode, String modifiers)
     {
         boolean returnValue = false;
@@ -707,24 +713,22 @@ public class JavaRendererUtilities {
         {
             String symbolId = symbolCode.substring(4, 10);
 
-            if(symbolId.equals("ACAI--") ||
-                symbolId.equals("ACAR--") ||
-                symbolId.equals("ACAC--") ||
-                symbolId.equals("AKPC--") ||
-                symbolId.equals("AKPI--") ||
-                symbolId.equals("AKPR--") ||
-                symbolId.equals("AKPI--") ||
-                symbolId.equals("ALC---") ||
-                symbolId.equals("ALM---") ||
-                symbolId.equals("ALS---") ||
-                symbolId.equals("ALU---") ||
-                symbolId.equals("ALL---") ||
+            if (symbolId.equals("ACAI--") || // Airspace Coordination Area Irregular
+                symbolId.equals("ACAR--") || // Airspace Coordination Area Rectangular
+                symbolId.equals("ACAC--") || // Airspace Coordination Area Circular
+                symbolId.equals("AKPC--") || // Kill box circular
+                symbolId.equals("AKPR--") || // Kill box rectangular
+                symbolId.equals("AKPI--") || // Kill box irregular
+                symbolId.equals("ALC---") || // Air corridor
+                symbolId.equals("ALM---") || // 
+                symbolId.equals("ALS---") || // SAAFR
+                symbolId.equals("ALU---") || // UAV
+                symbolId.equals("ALL---") || // Low level transit route
                 symbolId.equals("AAR---") ||
                 symbolId.equals("AAF---") ||
                 symbolId.equals("AAH---") ||
-                symbolId.equals("AAM---") ||
-                symbolId.equals("AAF---") ||
-                symbolId.equals("AAML--") ||
+                symbolId.equals("AAM---") || // MEZ
+                symbolId.equals("AAML--") || // LOMEZ
                 symbolId.equals("AAMH--"))
             {                        
 
