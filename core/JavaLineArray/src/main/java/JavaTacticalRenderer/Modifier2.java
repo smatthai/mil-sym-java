@@ -1498,8 +1498,8 @@ public class Modifier2 {
             if(foundSegment==false)
             {
                 //diagnostic
-                TLineFactor=-1;
-                T1LineFactor=1;
+                //TLineFactor=-1;
+                //T1LineFactor=1;
                 //end section
                 pt0=new POINT2();
                 pt1=new POINT2();
