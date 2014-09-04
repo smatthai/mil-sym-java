@@ -1005,10 +1005,14 @@ public final class arraysupport
             //declarations
             int k=0;
             POINT2 ptCenter = new POINT2();
-            double d = lineutility.MBRDistance(pLinePoints, vblCounter);
+            double d = lineutility.MBRDistance(pLinePoints, vblCounter-4);
             //11-18-2010
             if(d>350)
                 d=350;
+            if(lineType!=TacticalLines.DUMMY)            
+                if(d<50)
+                    d=50;
+            
             //end declarations
 
             for (k = 0; k < vblCounter; k++) {
@@ -1016,28 +1020,32 @@ public final class arraysupport
             }
             switch (lineType) {
                 case TacticalLines.DUMMY:
+                    if(d<25)
+                        d=25;
+                    if(d>50)
+                        d=50;
                     POINT2 ul=new POINT2();
                     POINT2 lr=new POINT2();
-                    lineutility.CalcMBRPoints(pLinePoints, vblCounter-3, ul, lr);
+                    lineutility.CalcMBRPoints(pLinePoints, vblCounter-4, ul, lr);
                     //ul=getDummyHat(pLinePoints);
                     //ul.x-=25;
                     POINT2 ur=new POINT2(lr);
                     ur.y=ul.y;
 
                     pLinePoints[vblCounter-3]=lineutility.MidPointDouble(ur, ul, 0);
-                    pLinePoints[vblCounter-3].x-=25;
-                    pLinePoints[vblCounter-3].y-=10;
+                    pLinePoints[vblCounter-3].x-=d/2;//25;
+                    pLinePoints[vblCounter-3].y-=d/5;//10;
                     pLinePoints[vblCounter-2]=lineutility.MidPointDouble(ur, ul, 0);
-                    pLinePoints[vblCounter-2].y-=35;
+                    pLinePoints[vblCounter-2].y-=d*0.7;//35;
                     pLinePoints[vblCounter-1]=lineutility.MidPointDouble(ur, ul, 0);
-                    pLinePoints[vblCounter-1].x+=25;
-                    pLinePoints[vblCounter-1].y-=10;
+                    pLinePoints[vblCounter-1].x+=d/2;//25;
+                    pLinePoints[vblCounter-1].y-=d/5;//10;
                     pLinePoints[vblCounter-4].style=5;
                     break;
                 case TacticalLines.AIRFIELD:
                     pLinePoints[vblCounter - 5] = new POINT2(pLinePoints[0]);
                     pLinePoints[vblCounter - 5].style = 5;
-                    pLinePoints[vblCounter - 4] = lineutility.CalcCenterPointDouble(pLinePoints, vblCounter - 4);
+                    pLinePoints[vblCounter - 4] = lineutility.CalcCenterPointDouble(pLinePoints, vblCounter - 6);
                     pLinePoints[vblCounter - 4].x -= d / 20;
                     pLinePoints[vblCounter - 4].style = 0;
                     pLinePoints[vblCounter - 3] = new POINT2(pLinePoints[vblCounter - 4]);
@@ -1058,7 +1066,7 @@ public final class arraysupport
                     }
                     pLinePoints[vblCounter - 4] = new POINT2(pLinePoints[0]);
                     pLinePoints[vblCounter - 4].style = 5;
-                    ptCenter = lineutility.CalcCenterPointDouble(pLinePoints, vblCounter - 3);
+                    ptCenter = lineutility.CalcCenterPointDouble(pLinePoints, vblCounter - 4);
                     pLinePoints[vblCounter - 3].x = ptCenter.x - d / 10;
                     pLinePoints[vblCounter - 3].y = ptCenter.y;
                     pLinePoints[vblCounter - 3].style = 18;
@@ -1070,7 +1078,7 @@ public final class arraysupport
                     break;
                 case TacticalLines.DMAF:
                     pLinePoints[vblCounter-4].style=5;
-                    ptCenter = lineutility.CalcCenterPointDouble(pLinePoints, vblCounter - 3);
+                    ptCenter = lineutility.CalcCenterPointDouble(pLinePoints, vblCounter - 4);
                     pLinePoints[vblCounter - 3].x = ptCenter.x - d / 10;
                     pLinePoints[vblCounter - 3].y = ptCenter.y;
                     pLinePoints[vblCounter - 3].style = 18;
