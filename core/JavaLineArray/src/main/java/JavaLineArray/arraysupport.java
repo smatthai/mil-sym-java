@@ -1005,13 +1005,13 @@ public final class arraysupport
             //declarations
             int k=0;
             POINT2 ptCenter = new POINT2();
-            double d = lineutility.MBRDistance(pLinePoints, vblCounter-4);
+            int fLength=4;
+            if(lineType==TacticalLines.AIRFIELD)
+                fLength=5;
+            double d = lineutility.MBRDistance(pLinePoints, vblCounter-fLength);
             //11-18-2010
             if(d>350)
                 d=350;
-            if(lineType!=TacticalLines.DUMMY)            
-                if(d<50)
-                    d=50;
             
             //end declarations
 
@@ -1020,10 +1020,10 @@ public final class arraysupport
             }
             switch (lineType) {
                 case TacticalLines.DUMMY:
-                    if(d<25)
-                        d=25;
-                    if(d>50)
-                        d=50;
+                    if(d<20)
+                        d=20;
+                    if(d>60)
+                        d=60;
                     POINT2 ul=new POINT2();
                     POINT2 lr=new POINT2();
                     lineutility.CalcMBRPoints(pLinePoints, vblCounter-4, ul, lr);
@@ -1043,22 +1043,26 @@ public final class arraysupport
                     pLinePoints[vblCounter-4].style=5;
                     break;
                 case TacticalLines.AIRFIELD:
+                    if(d<100)
+                        d=100;
                     pLinePoints[vblCounter - 5] = new POINT2(pLinePoints[0]);
                     pLinePoints[vblCounter - 5].style = 5;
                     pLinePoints[vblCounter - 4] = lineutility.CalcCenterPointDouble(pLinePoints, vblCounter - 6);
-                    pLinePoints[vblCounter - 4].x -= d / 20;
+                    pLinePoints[vblCounter - 4].x -= d / 10;    //was 20
                     pLinePoints[vblCounter - 4].style = 0;
                     pLinePoints[vblCounter - 3] = new POINT2(pLinePoints[vblCounter - 4]);
-                    pLinePoints[vblCounter - 3].x = pLinePoints[vblCounter - 4].x + d / 10;
+                    pLinePoints[vblCounter - 3].x = pLinePoints[vblCounter - 4].x + d / 5;//was 10
                     pLinePoints[vblCounter - 3].style = 5;
                     pLinePoints[vblCounter - 2] = new POINT2(pLinePoints[vblCounter - 4]);
-                    pLinePoints[vblCounter - 2].y += d / 40;
+                    pLinePoints[vblCounter - 2].y += d / 20;//was 40
                     pLinePoints[vblCounter - 2].style = 0;
                     pLinePoints[vblCounter - 1] = new POINT2(pLinePoints[vblCounter - 3]);
-                    pLinePoints[vblCounter - 1].y -= d / 40;
+                    pLinePoints[vblCounter - 1].y -= d / 20;//was 40
                     pLinePoints[vblCounter - 1].style = 0;
                     break;
                 case TacticalLines.DMA:
+                    if(d<50)
+                        d=50;
                     if (lineType == (long) TacticalLines.DMA) {
                         for (k = 0; k < vblCounter - 4; k++) {
                             pLinePoints[k].style = 14;
@@ -1077,6 +1081,8 @@ public final class arraysupport
                     pLinePoints[vblCounter - 1].y = ptCenter.y;
                     break;
                 case TacticalLines.DMAF:
+                    if(d<50)
+                        d=50;
                     pLinePoints[vblCounter-4].style=5;
                     ptCenter = lineutility.CalcCenterPointDouble(pLinePoints, vblCounter - 4);
                     pLinePoints[vblCounter - 3].x = ptCenter.x - d / 10;
