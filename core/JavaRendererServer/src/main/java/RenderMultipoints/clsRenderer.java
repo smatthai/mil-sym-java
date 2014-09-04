@@ -1470,6 +1470,7 @@ public final class clsRenderer
                 origPixels=(ArrayList<POINT2>)tg.Pixels.clone();
                 origLatLongs=(ArrayList<POINT2>)tg.LatLongs.clone();                
             }
+            ArrayList<POINT2>origFillPixels=(ArrayList<POINT2>)tg.Pixels.clone();
             
             boolean shiftLines=Channels.getShiftLines();
             if(shiftLines)
@@ -1588,6 +1589,11 @@ public final class clsRenderer
             
             ArrayList<Shape2> linesWithFillShapes=null;
             
+            //diagnostic
+            ArrayList<POINT2>savePixels=tg.Pixels;
+            tg.Pixels=origFillPixels;
+            //end section
+            
             //check assignment
             if(clipBounds != null)
                 linesWithFillShapes=clsClipPolygon2.LinesWithFill(tg, clipBounds);
@@ -1595,6 +1601,10 @@ public final class clsRenderer
                 linesWithFillShapes=clsClipQuad.LinesWithFill(tg, clipPoints);
             else if(clipArea==null)
                 linesWithFillShapes=clsClipPolygon2.LinesWithFill(tg, clipBounds);
+            
+            //diagnostic
+            tg.Pixels=savePixels;
+            //end section
             
             //add section M. Deutch 11-4-2011
             ArrayList rangeFanFillShapes=null;

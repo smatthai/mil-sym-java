@@ -693,7 +693,7 @@ public final class clsClipPolygon2 {
             shape.moveTo(tg2.Pixels.get(0));
             for(j=1;j<tg2.Pixels.size();j++)
                 shape.lineTo(tg2.Pixels.get(j));
-
+            
             if(tg.get_FillColor() != null || tg.get_FillColor().getAlpha()>1)
             {
                 shapes.add(shape);
