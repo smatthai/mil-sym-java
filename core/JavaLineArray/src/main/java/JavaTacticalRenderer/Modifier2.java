@@ -1890,6 +1890,7 @@ public class Modifier2 {
         {
             POINT2 pt0=null,pt1=null;
             int j=0;
+            double dist=0;
             //we want the middle segment to be visible            
             //middleSegment=tg.Pixels.size() / 2 - 1;
             middleSegment=(tg.Pixels.size()+1) / 2 - 1;
@@ -1903,6 +1904,9 @@ public class Modifier2 {
             {
                 pt0 = tg.Pixels.get(j);
                 pt1 = tg.Pixels.get(j + 1);  
+                dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                if(dist==0)
+                    continue;
                 //if either of the points is within the bound then most of the segment is visible
                 if(clipBounds.contains(pt0.x, pt0.y) || clipBounds.contains(pt1.x, pt1.y))
                 {
@@ -1918,6 +1922,9 @@ public class Modifier2 {
                 {
                     pt0 = tg.Pixels.get(j);
                     pt1 = tg.Pixels.get(j - 1);  
+                    dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                    if(dist==0)
+                        continue;
                     //if either of the points is within the bound then most of the segment is visible
                     if(clipBounds.contains(pt0.x, pt0.y) || clipBounds.contains(pt1.x, pt1.y))
                     {
@@ -1929,7 +1936,10 @@ public class Modifier2 {
             }
                 
             if(foundVisibleSegment==false)
-                middleSegment=tg.Pixels.size() / 2 - 1;
+            {
+                //middleSegment=tg.Pixels.size() / 2 - 1;
+                middleSegment=-1;
+            }
             
         }
         catch (Exception exc)
@@ -1954,6 +1964,7 @@ public class Modifier2 {
             POINT2 pt0=null,pt1=null;
             int j=0;
             int x=0,y=0;
+            double dist=0;
             //we want the middle segment to be visible            
             middleSegment=(tg.Pixels.size()+1) / 2 - 1;
             
@@ -1972,7 +1983,10 @@ public class Modifier2 {
             for(j=middleSegment;j<tg.Pixels.size()-1;j++)
             {
                 pt0 = tg.Pixels.get(j);
-                pt1 = tg.Pixels.get(j + 1);  
+                pt1 = tg.Pixels.get(j + 1);
+                dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                if(dist==0)
+                    continue;
                 //if either of the points is within the bound then most of the segment is visible
                 if(clipBoundsPoly.contains(pt0.x, pt0.y) || clipBoundsPoly.contains(pt1.x, pt1.y))
                 {
@@ -1988,6 +2002,9 @@ public class Modifier2 {
                 {
                     pt0 = tg.Pixels.get(j);
                     pt1 = tg.Pixels.get(j - 1);  
+                    dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                    if(dist==0)
+                        continue;
                     //if either of the points is within the bound then most of the segment is visible
                     if(clipBoundsPoly.contains(pt0.x, pt0.y) || clipBoundsPoly.contains(pt1.x, pt1.y))
                     {
@@ -1999,7 +2016,10 @@ public class Modifier2 {
             }
                 
             if(foundVisibleSegment==false)
-                middleSegment=tg.Pixels.size() / 2 - 1;
+            {
+                //middleSegment=tg.Pixels.size() / 2 - 1;
+                middleSegment=-1;
+            }
             
         }
         catch (Exception exc)
@@ -4719,7 +4739,6 @@ public class Modifier2 {
                 pt1 = modifier.textPath[1];
                 x2 = pt1.x;
                 y2 = pt1.y;
-                
                 theta = Math.atan2(y2 - y1, x2 - x1);
                 POINT2 midPt;
                 if (x1 > x2) {
@@ -4790,7 +4809,8 @@ public class Modifier2 {
                         break;
                     case aboveMiddle:
                         //use the geo midpoint for this, otherwise it strays
-                        if(converter != null)
+                        dist=lineutility.CalcDistanceDouble(pt0, pt1);                
+                        if(converter != null && dist>100)
                         {
                             Point2D.Double pt1Geo=converter.PixelsToGeo(new Point((int)pt0.x,(int)pt0.y));
                             Point2D.Double pt2Geo=converter.PixelsToGeo(new Point((int)pt1.x,(int)pt1.y));
