@@ -1191,11 +1191,17 @@ public final class clsUtilityCPOF {
 
             pt1F=PointLatLongToPixels(pt1,converter);
             dist=lineutility.CalcDistanceDouble(pt0F, pt1F);
-            ptBaseF=lineutility.ExtendAlongLineDouble(pt0F, pt1F, dist+10);
-            ptTipF=lineutility.ExtendAlongLineDouble(pt0F, pt1F, dist+20);
+            double base=10;
+            if(dist<100)
+                base=dist/10;
+            if(base<5)
+                base=5;
+            double basex2=2*base;
+            ptBaseF=lineutility.ExtendAlongLineDouble(pt0F, pt1F, dist+base);   //was 10
+            ptTipF=lineutility.ExtendAlongLineDouble(pt0F, pt1F, dist+basex2);  //was 20
 
-            ptLeftF=lineutility.ExtendDirectedLine(pt0F, ptBaseF, ptBaseF, 0, 10);
-            ptRightF=lineutility.ExtendDirectedLine(pt0F, ptBaseF, ptBaseF, 1, 10);
+            ptLeftF=lineutility.ExtendDirectedLine(pt0F, ptBaseF, ptBaseF, 0, base);    //was 10
+            ptRightF=lineutility.ExtendDirectedLine(pt0F, ptBaseF, ptBaseF, 1, base);   //was 10
             //length1 = tg.Pixels.size();
 
             tg.Pixels.add(pt0F);
