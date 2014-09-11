@@ -1937,8 +1937,8 @@ public class Modifier2 {
                 
             if(foundVisibleSegment==false)
             {
-                //middleSegment=tg.Pixels.size() / 2 - 1;
-                middleSegment=-1;
+                middleSegment=tg.Pixels.size() / 2 - 1;
+                //middleSegment=-1;
             }
             
         }
@@ -2017,8 +2017,8 @@ public class Modifier2 {
                 
             if(foundVisibleSegment==false)
             {
-                //middleSegment=tg.Pixels.size() / 2 - 1;
-                middleSegment=-1;
+                middleSegment=tg.Pixels.size() / 2 - 1;
+                //middleSegment=-1;
             }
             
         }
