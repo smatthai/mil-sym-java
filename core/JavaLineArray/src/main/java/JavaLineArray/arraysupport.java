@@ -2496,31 +2496,51 @@ public final class arraysupport
                     acCounter=vblCounter;
                     break;
                 case TacticalLines.TRAINING_AREA:
+                    //diagnostic
+                    dMBR=lineutility.MBRDistance(pLinePoints, vblSaveCounter);
+                    d=20;
+                    if(dMBR<60)
+                        d=dMBR/4;
+                    if(d<5)
+                        d=5;
+                    //end section
                     for (j = 0; j < vblSaveCounter; j++)
                     {
                         pLinePoints[j].style = 1;
                     }
                     pLinePoints[vblSaveCounter - 1].style = 5;
                     pt0 = lineutility.CalcCenterPointDouble(pLinePoints, vblSaveCounter - 1);
-                    lineutility.CalcCircleDouble(pt0, 20, 26, arcPts, 0);
+                    //lineutility.CalcCircleDouble(pt0, 20, 26, arcPts, 0);
+                    lineutility.CalcCircleDouble(pt0, d, 26, arcPts, 0);
 
                     for (j = vblSaveCounter; j < vblSaveCounter + 26; j++)
                     {
                         pLinePoints[j] = new POINT2(arcPts[j - vblSaveCounter]);
                     }
                     pLinePoints[j-1].style = 5;
+                    
                     //! inside the circle
+                    //diagnostic
+                    if(dMBR<50)
+                    {
+                        //d was used as the circle radius
+                        d*=0.6;
+                    }
+                    else
+                        d=12;
+                    //end section
+                    
                     pt1 = new POINT2(pt0);
-                    pt1.y -= 12;
+                    pt1.y -= d;//12;
                     pt1.style = 0;
                     pt2 = new POINT2(pt1);
-                    pt2.y += 12;
+                    pt2.y += d;//12;
                     pt2.style = 5;
                     pt3 = new POINT2(pt2);
-                    pt3.y += 3;
+                    pt3.y += d/4;//3;
                     pt3.style = 0;
                     pt4 = new POINT2(pt3);
-                    pt4.y += 3;
+                    pt4.y += d/4;//3;
                     pLinePoints[j++] = new POINT2(pt1);
                     pLinePoints[j++] = new POINT2(pt2);
                     pLinePoints[j++] = new POINT2(pt3);
