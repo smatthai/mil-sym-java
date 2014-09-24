@@ -35,8 +35,11 @@ public class ImagingUtils {
 		
 		while (paramNames.hasMoreElements()) {			
 			String key = (String) paramNames.nextElement();
-			String val = request.getParameter(key);			
-			params.put(key.toUpperCase(), val);
+			String val = request.getParameter(key);
+                        if(val != null && val.equals("") == false)
+                        {
+                            params.put(key.toUpperCase(), val);
+                        }
 			
 			// LOGGER.log(Level.INFO, "PROCESSING\nkey: "+key + "\tValue: " + val);
 		}

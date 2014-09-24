@@ -2255,9 +2255,16 @@ public class MultiPointHandler {
         try {
 
             JSONObject jsonModifiersString = new JSONObject(jsonString);
-            JSONObject jsonModifiersArray =
-            jsonModifiersString.getJSONObject("modifiers");
-
+            JSONObject jsonModifiersArray = null;
+            if(jsonModifiersString.has("modifiers"))
+            {
+                jsonModifiersArray = jsonModifiersString.getJSONObject("modifiers");
+            }
+            else
+            {
+                jsonModifiersArray = jsonModifiersString;
+            }
+            
 
             // The following attirubtes are labels.  All of them
             // are strings and can be added on the creation of the
