@@ -42,6 +42,7 @@ import sec.web.renderer.utilities.SinglePointServerTester;
 public class SECRenderer {
 
 	private SinglePointServer sps = null;
+        private MultiPointServer mps = null;
 	private SinglePointServerTester spst = null;
         private SinglePointRendererService sprs = null;
 	private IJavaRenderer jr = null;
@@ -341,6 +342,94 @@ public class SECRenderer {
 		}
 		sps = null;
 		spst = null;
+	}
+
+	// </editor-fold>
+        
+        // <editor-fold defaultstate="collapsed" desc="Multi Point Server Functions">
+
+	/*
+	 * Starts the multi point server. Uses default port # of 6790.
+	 */
+	public void startMultiPointServer() {
+		startSinglePointServer(6790);
+	}
+
+	/**
+	 * Starts multi point server on specified port number
+	 * 
+	 * @param port
+	 */
+	public void startMultiPointServer(int port) {
+		// 0 for backlog means use system default value.
+		startSinglePointServer(port, 0);
+	}
+
+	/**
+	 * Starts multi point server on specified port number
+	 * 
+	 * @param port
+	 * @param backlog
+	 *            An integer value of '0' means use the system default
+	 */
+	public void startMultiPointServer(int port, int backlog) {
+		try {
+			if (mps == null) {
+				// START MULTI POINT SERVER /////////////////////////////////////////
+				mps = new MultiPointServer(port, backlog);
+				mps.start();
+
+				/*spst = new SinglePointServerTester(sps);
+				Thread thr1 = new Thread(spst);
+				thr1.start();*/
+				// STARTED MULTI POINT SERVER /////////////////////////////////////////
+			} else {
+				System.out.println("Multi Point Server already started.");
+			}
+		} catch (Exception exc) {
+			ErrorLogger.LogException("SECRenderer", "startMultiPointServer", exc);
+		}
+	}
+
+	/**
+	 * Gets the port # the multi point server is currently using.
+	 * 
+	 * @return
+	 */
+	public int getMultiPointServerPort() {
+		if (mps != null) {
+			return mps.getPortNumber();
+		} else {
+			return -1;
+		}
+	}
+
+	/**
+	 * Checks if the MultiPointServer is running
+	 * 
+	 * @return
+	 */
+	public Boolean isMultiPointServerRunning() {
+		/*if (spst != null) {
+			return spst.isRunning();
+		} else {
+			return false;
+		}//*/
+                if(mps != null)
+                    return true;
+                else
+                    return false;
+	}
+
+	/**
+	 * Stops the multi point server
+	 */
+	public void stopMultiPointServer() {
+		if (mps != null) {
+			mps.stop();
+		}
+		mps = null;
+		//spst = null;
 	}
 
 	// </editor-fold>

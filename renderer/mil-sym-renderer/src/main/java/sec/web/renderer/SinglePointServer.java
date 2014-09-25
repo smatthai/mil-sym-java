@@ -5,7 +5,6 @@
 
 package sec.web.renderer;
 
-import java.awt.Color;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -27,18 +26,13 @@ import ArmyC2.C2SD.Rendering.IJavaRenderer;
 import ArmyC2.C2SD.Rendering.JavaRenderer;
 import ArmyC2.C2SD.Rendering.TacticalGraphicIconRenderer;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
-import ArmyC2.C2SD.Utilities.IPointConversion;
 import ArmyC2.C2SD.Utilities.ImageInfo;
 import ArmyC2.C2SD.Utilities.MilStdAttributes;
 import ArmyC2.C2SD.Utilities.MilStdSymbol;
-import ArmyC2.C2SD.Utilities.PointConversionDummy;
 import ArmyC2.C2SD.Utilities.RendererException;
-import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.SinglePointFont;
 import ArmyC2.C2SD.Utilities.SinglePointLookup;
-import ArmyC2.C2SD.Utilities.SymbolDef;
 import ArmyC2.C2SD.Utilities.SymbolDefTable;
-import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import ArmyC2.C2SD.Utilities.UnitDefTable;
 import ArmyC2.C2SD.Utilities.UnitFontLookup;
 
@@ -59,11 +53,12 @@ public class SinglePointServer {
 	private static IJavaRenderer jr = null;
         private static TacticalGraphicIconRenderer tgir = null;
 	private SinglePointRendererService plugins = null;
+        private SinglePointHandler _singlePointHandler = null;
 	private static boolean _preloadedRenderer = false;
-	private static int _instanceCount = 0;
 	private HttpServer httpServer;
-	private int portNumber = 8888;
-	private SinglePointHandler _singlePointHandler = null;
+        //private HttpServer httpServerMP;
+	private int portNumber = 6789;
+
         
         //backlog number <= 0 means use system default
         // I think the java default value is 50
@@ -79,7 +74,6 @@ public class SinglePointServer {
         public SinglePointServer(int port, int backlog) {
 		this.portNumber = port;
 		createHttpServer();
-
 	}
 
 	private void createHttpServer() {
@@ -88,11 +82,14 @@ public class SinglePointServer {
 			// of queued incoming connections to allow on the listening socket.
 			// Queued connection above this limit may be rejected.
 			// If set <=0, a system default value is used.
-
+                        _singlePointHandler = new SinglePointHandler(true);
 			int backlog = _backLog;
 			httpServer = HttpServer.create(new InetSocketAddress("127.0.0.1", portNumber), backlog);
-			_singlePointHandler = new SinglePointHandler();
-			httpServer.createContext("/", _singlePointHandler);
+
+			httpServer.createContext("/", new SinglePointHandler(false));
+                        httpServer.createContext("/mil-sym-service/renderer/image/", new SinglePointHandler(false));
+                        httpServer.createContext("/mil-sym-service/renderer/kml/", _singlePointHandler);
+
 			httpServer.setExecutor(Executors.newCachedThreadPool());
 		} catch(BindException bexc){
                     String strTypicalPortInUseMessage = "Address already in use: bind";
@@ -208,11 +205,15 @@ public class SinglePointServer {
 	public void setUnitPointSize(int size) {
 		jr.setUnitSymbolSize(size);
 	}
-
+        
+        
 	class SinglePointHandler implements HttpHandler {
 
-		public SinglePointHandler() {
+                private Boolean _renderAsKML = false;
+                private SECRenderer sr = SECRenderer.getInstance();
+		public SinglePointHandler(Boolean renderAsKML) {
 			initRenderer();
+                        _renderAsKML = renderAsKML;
 		}
 
 		/**
@@ -236,66 +237,36 @@ public class SinglePointServer {
 		}
 
 		public void handle(HttpExchange exchange) {
-			/*
-			 * try {
-			 * ErrorLogger.LogMessage(exchange.getRequestURI().toString()); }
-			 * catch(Exception exc) {
-			 * ErrorLogger.LogException("SinglePointServer", "handle", exc); }
-			 */
-			/*
-			 * if (exchange.getRequestURI().toString().equalsIgnoreCase(
-			 * "/crossdomain.xml")) { try { String el =
-			 * System.getProperty("line.separator"); Headers headers =
-			 * exchange.getResponseHeaders(); headers.set("Content-Type",
-			 * "text/plain");
-			 * 
-			 * StringBuilder sb = new StringBuilder(); StringBuilder sbALL = new
-			 * StringBuilder(); sb.append(
-			 * "<cross-domain-policy xsi:noNamespaceSchemaLocation=\"http://www.adobe.com/xml/schemas/PolicyFile.xsd\">"
-			 * ); sb.append(el);
-			 * sb.append("\t<allow-access-from domain=\"127.0.0.1\"/>");
-			 * sb.append(el);
-			 * sb.append("\t<allow-access-from domain=\"localhost\"/>");
-			 * sb.append(el); //sb.append(
-			 * "\t<site-control permitted-cross-domain-policies=\"master-only\"/>"
-			 * ); //sb.append(el); sb.append(
-			 * "\t<allow-http-request-headers-from domain=\"localhost\" headers=\"GET\" secure=\"false\"/>"
-			 * ); sb.append(el); sb.append(
-			 * "\t<allow-http-request-headers-from domain=\"127.0.0.1\" headers=\"GET\" secure=\"false\"/>"
-			 * ); sb.append(el); sb.append("</cross-domain-policy>");
-			 * 
-			 * //sbALL.append("<?xml version=\1.0\"?>"); //sbALL.append(el);
-			 * sbALL.append("<cross-domain-policy>"); sbALL.append(el);
-			 * sbALL.append("\t<allow-access-from domain=\"*\"/>");
-			 * sbALL.append(el); sbALL.append(
-			 * "\t<site-control permitted-cross-domain-policies=\"master-only\"/>"
-			 * ); sbALL.append(el); sbALL.append("</cross-domain-policy>");
-			 * 
-			 * 
-			 * 
-			 * String response = sbALL.toString(); byte[] bytes =
-			 * response.getBytes();
-			 * exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,
-			 * bytes.length); exchange.getResponseBody().write(bytes);
-			 * exchange.getResponseBody().close(); } catch(Exception excCD) {
-			 * ErrorLogger.LogException("SinglePointServer", "handle", excCD); }
-			 * 
-			 * 
-			 * }
-			 */
 
+                String allowOrigin = exchange.getRemoteAddress().toString();
+                
 			if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
 				String url = null;
 				// String url = exchange.getRequestURI().getPath();
 				// String url = exchange.getRequestURI().toString();
 
 				byte[] pngResponse = null;
+                                byte[] kmlResponse = null;
 
 				try {
 					url = exchange.getRequestURI().toString();
+                                        url = exchange.getLocalAddress().toString() + url;
+                                        if(url.startsWith("/"))
+                                            url = url.substring(1);
 					String symbolID = url.substring(url.lastIndexOf("/") + 1);
 					// System.out.println(symbolID);
-					pngResponse = getSinglePointBytes(symbolID);
+                                        if(_renderAsKML == false)
+                                        {
+                                            pngResponse = getSinglePointBytes(symbolID);
+                                        }
+                                        else
+                                        {
+                                            Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(url);
+                                            if(url.indexOf("?") > -1)
+                                                url = url.substring(0,url.indexOf("?"));
+                                            String kml = sr.getSymbolImageKML(url, symbolID, params);
+                                            kmlResponse = kml.getBytes();
+                                        }
 
 				} catch (Exception exc) {
 					// System.err.println(exc.getMessage());
@@ -304,6 +275,8 @@ public class SinglePointServer {
 					try {
 						Headers headers = exchange.getResponseHeaders();
 						headers.set("Content-Type", "text/plain");
+//                                                if(allowOrigin.contains("127.0.0.1"))
+//                                                    headers.set("Access-Control-Allow-Origin", allowOrigin);//*;//127.0.0.1
 						exchange.sendResponseHeaders(503, 0);
 						exchange.getResponseBody().close();
 					} catch (IOException ex) {
@@ -320,6 +293,8 @@ public class SinglePointServer {
 					try {
 						Headers headers = exchange.getResponseHeaders();
 						headers.set("Content-Type", "image/png");
+//                                                if(allowOrigin.contains("127.0.0.1"))
+//                                                    headers.set("Access-Control-Allow-Origin", allowOrigin);//127.0.0.1
 						exchange.sendResponseHeaders(200, 0);
 
 						responseBody = exchange.getResponseBody();
@@ -338,6 +313,34 @@ public class SinglePointServer {
 						ErrorLogger.LogException("SinglePointServer", "handle", exc3, Level.WARNING);
 					}
 				}
+                                
+                                if(kmlResponse != null)
+                                {
+                                    OutputStream responseBody = null;
+					try {
+						Headers headers = exchange.getResponseHeaders();
+						headers.set("Content-Type", "text/xml");
+                                                //only required for POST
+                                                /*if(allowOrigin.contains("127.0.0.1"))
+                                                    headers.set("Access-Control-Allow-Origin", "*");//127.0.0.1*/
+						exchange.sendResponseHeaders(200, 0);
+
+						responseBody = exchange.getResponseBody();
+						responseBody.write(kmlResponse);
+						responseBody.close();
+					} catch (IOException exc) {
+						Date date = new Date();
+						SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
+						System.err.println("SinglePointServer.handle() tried sending response");
+						// System.err.println(date.toString());
+						System.err.println(sdf.format(date));
+						System.err.println(exchange.getRequestURI().toString());
+						System.err.println(exc.getMessage());
+
+					} catch (Exception exc3) {
+						ErrorLogger.LogException("SinglePointServer", "handle", exc3, Level.WARNING);
+					}
+                                }
 			}
 		}
 
@@ -478,6 +481,8 @@ public class SinglePointServer {
                     }
             }
 
+
+                
 		/**
 		 * 
 		 * @param symbolCode
@@ -574,5 +579,5 @@ public class SinglePointServer {
 		}
 
 	}
-
+        
 }

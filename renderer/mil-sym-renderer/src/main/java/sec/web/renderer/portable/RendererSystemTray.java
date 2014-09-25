@@ -14,6 +14,7 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import sec.web.renderer.SECRenderer;
 
 public class RendererSystemTray {
 	
@@ -39,7 +40,7 @@ public class RendererSystemTray {
 			popup.add(aboutItem);
 			popup.addSeparator();
 			popup.addSeparator();
-			popup.add(displayMenu);
+			//popup.add(displayMenu);
 			popup.add(exitItem);
 			
 			trayIcon.setPopupMenu(popup);
@@ -57,7 +58,16 @@ public class RendererSystemTray {
 			aboutItem.addActionListener(new ActionListener() {				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(null, "This application is capable of Rendering milstd 2525 change b graphics");
+                                    SECRenderer sr = SECRenderer.getInstance();
+                                    
+                                    
+                                    String message = "";
+                                    if(sr.isSinglePointServerRunning())
+                                        message += "\nSingle Point Service is running on 127.0.0.1:"  + String.valueOf(sr.getSinglePointServerPort());
+                                    if(sr.isMultiPointServerRunning())
+                                        message += "\nMulti Point Service is running on 127.0.0.1:"  + String.valueOf(sr.getMultiPointServerPort());
+                                    
+                                    JOptionPane.showMessageDialog(null, "This application is capable of Rendering milstd 2525 change b graphics" + message);
 				}
 			});
 			
@@ -65,7 +75,7 @@ public class RendererSystemTray {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					sysTray.remove(trayIcon);
-					//SECRenderer.getInstance().stopSinglePointServer();
+					SECRenderer.getInstance().stopSinglePointServer();
 					System.exit(0);
 				}
 			});
