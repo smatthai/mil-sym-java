@@ -21,7 +21,7 @@ public class PortableWrapper {
                 if(help)
                 {
                     String message = "";
-                    message += "Usage: java -jar jarfile -spport:#### -spbacklog:### -mpport:#### -mpbacklog:###";
+                    message += "Usage: java -cp [location of jars] sec.web.renderer.portable.PortableWrapper -spport:#### -spbacklog:### -mpport:#### -mpbacklog:###";
                     message += "\nWhere options include:";
                     message += "\n\t-?\t\tprint this help message.";
                     message += "\n\t-spon\t\tstarts the single point service. (default true)";
