@@ -24,8 +24,10 @@ public class PortableWrapper {
                     message += "Usage: java -jar jarfile -spport:#### -spbacklog:### -mpport:#### -mpbacklog:###";
                     message += "\nWhere options include:";
                     message += "\n\t-?\t\tprint this help message.";
+                    message += "\n\t-spon\t\tstarts the single point service. (default true)";
                     message += "\n\t-spport\t\tdesired port for the single point service. (default 6789)";
                     message += "\n\t-spbacklog\tdesired backlog for the single point service.  (default 0, lets system decide)";
+                    message += "\n\t-spon\t\tstarts the multi point service. (default true)";
                     message += "\n\t-mpport\t\tdesired port for the multi point service. (default 6790)";
                     message += "\n\t-mpbacklog\tdesired backlog for the single point service.  (default 0, lets system decide)";
                     System.out.println(message);
@@ -36,6 +38,8 @@ public class PortableWrapper {
                 sr.matchSECWebRendererAppletDefaultRendererSettings();
                 sr.refreshPlugins();
                 
+                Boolean spOn = true;
+                Boolean mpOn = true;
                 String spPort = null;
                 String mpPort = null;
                 String spBacklog = null;
@@ -79,6 +83,24 @@ public class PortableWrapper {
                         }
                     }
                     
+                    if(args[i].startsWith("-spon"))
+                    {
+                        parts = args[i].split(":");
+                        if(parts.length == 2)
+                        {
+                            spOn = Boolean.parseBoolean(parts[1]);
+                        }
+                    }
+                    
+                    if(args[i].startsWith("-mpon"))
+                    {
+                        parts = args[i].split(":");
+                        if(parts.length == 2)
+                        {
+                            mpOn = Boolean.parseBoolean(parts[1]);
+                        }
+                    }
+                    
                     parts = null;
                 }    
                 
@@ -106,9 +128,15 @@ public class PortableWrapper {
                     mBacklog = Integer.parseInt(mpBacklog);
                 }
 
+                if(spOn)
+                {
+                    sr.startSinglePointServer(sPort, sBacklog);
+                }
                 
-		sr.startSinglePointServer(sPort, sBacklog);
-                sr.startMultiPointServer(mPort, mBacklog);
+                if(mpOn)
+                {
+                    sr.startMultiPointServer(mPort, mBacklog);
+                }
                 
 		
 		// System tray

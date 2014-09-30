@@ -20,16 +20,28 @@
         $dependencies
     </resources>
 
-    <!--<application-desc main-class="$mainClass">
-    <application-desc>-->
+    <application-desc main-class="$mainClass">
+		<!-- Single Point Server On; default true -->
+		<!-- <argument>-spon:true</argument> -->
+		<!-- Single Point Server Port; port will increment if port is not free -->
+		<argument>-spport:6789</argument>
+		<!-- Single Point Server Backlog; default 0 lets system decide -->
+		<argument>-spbacklog:0</argument>
+		<!-- Multi Point Server On; default true -->
+		<!-- <argument>-mpon:true</argument> -->
+		<!-- Multi Point Server Port; port will increment if port is not free -->
+		<argument>-mpport:6790</argument>
+		<!-- Multi Point Server Backlog; default 0 lets system decide -->
+		<argument>-mpbacklog:0</argument>
+    <application-desc>
     
     
     <!-- Width and height are overridden by the containing web page. -->
-    <applet-desc
+    <!-- <applet-desc
         name="SECRenderer"
         main-class="$mainClass"
         width="800" height="500">
         <param name="MAYSCRIPT" value="true"/>
         <param name="separate_jvm" value="true"/>
-    </applet-desc>
+    </applet-desc> -->
 </jnlp>

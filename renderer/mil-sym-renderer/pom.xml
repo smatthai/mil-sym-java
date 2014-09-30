@@ -111,7 +111,7 @@
 
 					<jnlp>
 						<outputFile>mil-sym-renderer_Launch.jnlp</outputFile>
-						<mainClass>sec.web.renderer.SECWebRenderer</mainClass>
+						<mainClass>sec.web.renderer.portable.PortableWrapper</mainClass>
 					</jnlp>
 					<!-- <libPath>lib</libPath> -->
 					<unsign>true</unsign>

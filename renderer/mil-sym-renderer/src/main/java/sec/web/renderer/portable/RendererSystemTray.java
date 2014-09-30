@@ -25,9 +25,9 @@ public class RendererSystemTray {
 	public void createSystemTray() {
 		try {
 			isSysTraySupported();
-			
+			String toolTip = "SEC MilStd 2525 Rendering Service";
 			final PopupMenu popup    = new PopupMenu();
-			final TrayIcon trayIcon  = new TrayIcon(createImage("images/globe.png", "SECRenderer tray icon"));
+			final TrayIcon trayIcon  = new TrayIcon(createImage("images/globe.png", toolTip),toolTip);
 			final SystemTray sysTray = SystemTray.getSystemTray();
 			
 			
@@ -44,7 +44,8 @@ public class RendererSystemTray {
 			popup.add(exitItem);
 			
 			trayIcon.setPopupMenu(popup);
-			
+                        trayIcon.displayMessage("caption", "text", TrayIcon.MessageType.ERROR);
+			//trayIcon.setToolTip(toolTip);
 			sysTray.add(trayIcon);				
 			
 			
@@ -67,7 +68,7 @@ public class RendererSystemTray {
                                     if(sr.isMultiPointServerRunning())
                                         message += "\nMulti Point Service is running on 127.0.0.1:"  + String.valueOf(sr.getMultiPointServerPort());
                                     
-                                    JOptionPane.showMessageDialog(null, "This application is capable of Rendering milstd 2525 change b graphics" + message);
+                                    JOptionPane.showMessageDialog(null, "This Service is capable of rendering milstd 2525chB & 2525C graphics with USAS additions" + message,"About",JOptionPane.PLAIN_MESSAGE);
 				}
 			});
 			
@@ -76,6 +77,7 @@ public class RendererSystemTray {
 				public void actionPerformed(ActionEvent e) {
 					sysTray.remove(trayIcon);
 					SECRenderer.getInstance().stopSinglePointServer();
+                                        SECRenderer.getInstance().stopMultiPointServer();
 					System.exit(0);
 				}
 			});
