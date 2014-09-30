@@ -7,7 +7,7 @@
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>mil-sym-renderer</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.39-SNAPSHOT</version>
+	<version>0.0.39</version>
 
 	<name>mil-sym-renderer</name>
 	<url>http://maven.apache.org</url>
@@ -95,7 +95,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>webstart-maven-plugin</artifactId>
-				<version>1.0-beta-3</version>
+				<version>1.0-beta-6</version>
 				<executions>
 					<execution>
 						<id>package</id>
@@ -122,12 +122,25 @@
 						<keypass>changeit</keypass>
 					</sign>
 
-					<pack200>false</pack200>
+					
 					<gzip>true</gzip>
 					<OutputJarVersions>true</OutputJarVersions>
 					<verbose>false</verbose>
 					<install>true</install>
 				</configuration>
+				<dependencies>
+				<dependency>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>keytool-api-1.7</artifactId>
+					<version>1.4</version>
+				</dependency>
+				<dependency>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>webstart-pack200-impl</artifactId>
+					<version>1.0-beta-6</version>
+				</dependency>
+
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

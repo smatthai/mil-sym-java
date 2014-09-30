@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>sec.web.renderer</groupId>
 		<artifactId>mil-sym-svc-parent</artifactId>
-		<version>0.0.39-SNAPSHOT</version>
+		<version>0.0.39</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>			
@@ -25,6 +25,7 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<encoding>UTF-8</encoding>
+				 <showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
 			
