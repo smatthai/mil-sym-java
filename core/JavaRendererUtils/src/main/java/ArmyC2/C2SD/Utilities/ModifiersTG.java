@@ -141,7 +141,7 @@ public class ModifiersTG {
      * TG:P,L,A,N,B/C
      * Length: 14
      */
-    public static final String X_ALTITUDE_DEPTH = "XN";
+    public static final String X_ALTITUDE_DEPTH = "X";
     /**
      * A text modifier that displays a graphic’s location
      * in degrees, minutes, and seconds (or in UTM or
