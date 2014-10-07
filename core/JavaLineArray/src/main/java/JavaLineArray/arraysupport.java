@@ -4449,6 +4449,21 @@ public final class arraysupport
                     break;
                 case TacticalLines.SARA:
                     acCounter=DISMSupport.GetDISMCoverDouble(pLinePoints,lineType);
+                    //reorder pLinePoints
+                    POINT2[]saraPts=new POINT2[16];
+                    for(j=0;j<4;j++)                    
+                        saraPts[j]=pLinePoints[j];  //0-3
+                    
+                    for(j=4;j<8;j++)
+                        saraPts[j]=pLinePoints[j+4];    //8-11
+                    
+                    for(j=8;j<12;j++)
+                        saraPts[j]=pLinePoints[j-4];    //4-7
+                    
+                    for(j=12;j<16;j++)
+                        saraPts[j]=pLinePoints[j];  //12-15
+                    
+                    pLinePoints=saraPts;
                     //acCounter=14;
                     break;
                 case TacticalLines.DISRUPT:
@@ -5774,8 +5789,8 @@ public final class arraysupport
                         if(pLinePoints[k].style==10)
                         {
                             shape.lineTo(pLinePoints[k]);                            
-                            if(lineType==TacticalLines.SARA)
-                                shape.lineTo(pLinePoints[k-2]);
+                            //if(lineType==TacticalLines.SARA)
+                                //shape.lineTo(pLinePoints[k-2]);
                             if(shape !=null && shape.getShape() != null)
                             {
                                 //must line to the initial fill point to close the shape
