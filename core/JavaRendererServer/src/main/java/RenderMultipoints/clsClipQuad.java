@@ -670,9 +670,9 @@ public class clsClipQuad {
             tg2.Pixels=new ArrayList();
             //to get the original pixels size
             int n=0;
-            if(tg.LatLongs != null)
-                n=tg.LatLongs.size();
-            else
+//            if(tg.LatLongs != null)
+//                n=tg.LatLongs.size();
+//            else
                 n=tg.Pixels.size();
             
             for(j=0;j<n;j++)
