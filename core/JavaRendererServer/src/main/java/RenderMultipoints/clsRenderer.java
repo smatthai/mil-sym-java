@@ -1042,7 +1042,7 @@ public final class clsRenderer
     {
         try
         {
-            TGLight tg=createTGLightFromMilStdSymbol(symbol,converter);
+            TGLight tg=createTGLightFromMilStdSymbol(symbol,converter,null);
             ArrayList<ShapeInfo>shapeInfos=new ArrayList();
             ArrayList<ShapeInfo>modifierShapeInfos=new ArrayList();
             clsUtility.FilterAXADPoints(tg, converter);
@@ -1395,6 +1395,7 @@ public final class clsRenderer
             TGLight tg=clsRenderer.createTGLightFromMilStdSymbol(mss, converter);
             ArrayList<ShapeInfo>shapeInfos=new ArrayList();
             ArrayList<ShapeInfo>modifierShapeInfos=new ArrayList();
+            double scale=getScale(tg,converter,clipArea);
             render_GE(tg,shapeInfos,modifierShapeInfos,converter,clipArea);
             mss.setSymbolShapes(shapeInfos);
             mss.setModifierShapes(modifierShapeInfos);
@@ -1455,6 +1456,7 @@ public final class clsRenderer
     {
         try
         {
+            double scale=getScale(tg,converter,clipArea);
             Rectangle2D clipBounds=null;            
             //diagnostic 1-9-13
             //uncomment line to trun off shift lines
