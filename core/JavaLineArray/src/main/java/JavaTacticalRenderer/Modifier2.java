@@ -3273,8 +3273,41 @@ public class Modifier2 {
                     break;
                 case TacticalLines.BS_LINE:
                 case TacticalLines.BBS_LINE:
-                    AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, pt0, pt1, false);
-                    AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);
+                    if(tg.get_T1()==null || tg.get_T1().isEmpty())
+                    {
+                        AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, pt0, pt1, false);
+                        AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);
+                    }
+                    else
+                    {
+                        if(tg.get_T1().equalsIgnoreCase("1"))
+                        {
+                            for(j=0;j<tg.Pixels.size()-1;j++)                            
+                                AddIntegralAreaModifier(tg, tg.get_Name(), aboveMiddle, 0, tg.Pixels.get(j), tg.Pixels.get(j+1), false);                                                            
+                        }
+                        else if(tg.get_T1().equalsIgnoreCase("2"))
+                        {
+                            AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, pt0, pt1, false);
+                            AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);                            
+                        }
+                        else if(tg.get_T1().equalsIgnoreCase("3"))
+                        {
+                            //either end of the polyline
+                            dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                            stringWidth = metrics.stringWidth(tg.get_Name());
+                            stringWidth /=2;
+                            pt2=lineutility.ExtendAlongLineDouble2(pt1, pt0, dist+stringWidth);
+                            AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, pt2, pt2, false);
+                            dist=lineutility.CalcDistanceDouble(ptNextToLast, ptLast);
+                            pt2=lineutility.ExtendAlongLineDouble2(ptNextToLast, ptLast, dist+stringWidth);
+                            AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, pt2, pt2, false);
+                            //the intermediate points
+                            for(j=1;j<tg.Pixels.size()-1;j++)
+                            {
+                                AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, tg.Pixels.get(j), tg.Pixels.get(j), false);
+                            }
+                        }
+                    }
                     break;
                 case TacticalLines.BS_AREA:
                 case TacticalLines.BBS_AREA:
