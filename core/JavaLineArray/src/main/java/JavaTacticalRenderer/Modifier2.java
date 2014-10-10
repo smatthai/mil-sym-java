@@ -3307,6 +3307,11 @@ public class Modifier2 {
                                 AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, tg.Pixels.get(j), tg.Pixels.get(j), false);
                             }
                         }
+                        else    //t1 is set inadvertantly or for other graphics
+                        {
+                            AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, pt0, pt1, false);
+                            AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);                            
+                        }
                     }
                     break;
                 case TacticalLines.BS_AREA:
