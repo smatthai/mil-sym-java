@@ -42,6 +42,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.net.BindException;
 import java.util.Map;
+import sec.web.renderer.utilities.PNGInfo;
 
 /**
  * 
@@ -555,6 +556,47 @@ public class SinglePointServer {
                                     BufferedImage bit = null;
                                     bit = ImageInfo.CenterImageOnPoint(iInfo.getImage(), iInfo.getSymbolCenterPoint());
                                     ImageIO.write(bit, "png", baos);
+                                }
+                                else if (params.containsKey("BUFFER"))
+                                {
+                                    int eWidth = 0;
+                                    int eHeight = 0;
+                                    int ecX = 0;
+                                    int ecY = 0;
+                                    int buffer = 0;
+                                    
+                                    if(params.containsKey("EWIDTH"))
+                                    {
+                                        eWidth = Math.round(Float.parseFloat(params.get("EWIDTH")));
+                                    }
+                                    if(params.containsKey("EHEIGHT"))
+                                    {
+                                        eHeight = Math.round(Float.parseFloat(params.get("EHEIGHT")));
+                                    }
+                                    if(params.containsKey("ECENTERX"))
+                                    {
+                                        ecX = Math.round(Float.parseFloat(params.get("ECENTERX")));
+                                    }
+                                    if(params.containsKey("ECENTERY"))
+                                    {
+                                        ecY = Math.round(Float.parseFloat(params.get("ECENTERY")));
+                                    }
+                                    if(params.containsKey("BUFFER"))
+                                    {
+                                        buffer = Integer.parseInt(params.get("BUFFER"));
+                                    }
+                                    
+                                    PNGInfo pi = new PNGInfo(iInfo);
+                                    if(eWidth > 0 && eHeight > 0 && ecX > 0 && ecY > 0 && buffer > 0)
+                                    {
+                                        pi = pi.fitImage(eWidth, eHeight, ecX, ecY, buffer);
+                                        ImageIO.write(pi.getImage(), "png", baos);
+                                    }
+                                    else
+                                    {
+                                        BufferedImage image = iInfo.getImage();
+					ImageIO.write(image, "png", baos);
+                                    }
                                 }
                                 else {
 					// regular PNG, takes about 5-6 miliseconds

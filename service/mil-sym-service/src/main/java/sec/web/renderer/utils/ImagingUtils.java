@@ -4,11 +4,14 @@ import ArmyC2.C2SD.Utilities.MilStdAttributes;
 import ArmyC2.C2SD.Utilities.ModifiersTG;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -68,69 +71,99 @@ public class ImagingUtils {
                 if(Boolean.parseBoolean(symbolInfoMap.get("ICON"))==true)
                     icon = true;
             }
+            
+            int eWidth = 0;
+            int eHeight = 0;
+            int ecX = 0;
+            int ecY = 0;
+            int buffer = 0;
+            if(symbolInfoMap.containsKey("EWIDTH"))
+            {
+                eWidth = Math.round(Float.parseFloat(symbolInfoMap.get("EWIDTH")));
+            }
+            if(symbolInfoMap.containsKey("EHEIGHT"))
+            {
+                eHeight = Math.round(Float.parseFloat(symbolInfoMap.get("EHEIGHT")));
+            }
+            if(symbolInfoMap.containsKey("ECENTERX"))
+            {
+                ecX = Math.round(Float.parseFloat(symbolInfoMap.get("ECENTERX")));
+            }
+            if(symbolInfoMap.containsKey("ECENTERY"))
+            {
+                ecY = Math.round(Float.parseFloat(symbolInfoMap.get("ECENTERY")));
+            }
+            if(symbolInfoMap.containsKey("BUFFER"))
+            {
+                buffer = Integer.parseInt(symbolInfoMap.get("BUFFER"));
+            }
                 
-                if(icon)
-                {
-                    HashMap<String, String> iconInfo = new HashMap<String, String>();
-                    //if icon == true, make sure keepUnitRatio defaults to false.
-                    iconInfo.put(MilStdAttributes.KeepUnitRatio,"false");
-                    
-                    if(SymbolUtilities.isWarfighting(symbolId))
-                    {
-                        Color fillColor = SymbolUtilities.getFillColorOfAffiliation(symbolId);
-                        iconInfo.put(MilStdAttributes.FillColor,SymbolUtilities.colorToHexString(fillColor, Boolean.TRUE));
-                    }
-                    if(symbolInfoMap.containsKey(MilStdAttributes.FillColor))
-                    {
-                        iconInfo.put(MilStdAttributes.FillColor,symbolInfoMap.get(MilStdAttributes.FillColor));
-                    }
-                    if(symbolId.substring(0, 1).equals("G"))
-                    {
-                        Color fillColor = SymbolUtilities.getLineColorOfAffiliation(symbolId);
-                        iconInfo.put(MilStdAttributes.LineColor,SymbolUtilities.colorToHexString(fillColor, Boolean.TRUE));
-                    }
-                    if(symbolInfoMap.containsKey(MilStdAttributes.LineColor))
-                    {
-                        iconInfo.put(MilStdAttributes.LineColor,symbolInfoMap.get(MilStdAttributes.LineColor));
-                    }
-                    if(symbolInfoMap.containsKey(MilStdAttributes.SymbologyStandard))
-                    {
-                        iconInfo.put(MilStdAttributes.SymbologyStandard,symbolInfoMap.get(MilStdAttributes.SymbologyStandard));
-                    }
-                    if(symbolInfoMap.containsKey(MilStdAttributes.KeepUnitRatio))
-                    {
-                        iconInfo.put(MilStdAttributes.KeepUnitRatio,symbolInfoMap.get(MilStdAttributes.KeepUnitRatio));
-                    }
-                    if(symbolInfoMap.containsKey(MilStdAttributes.Alpha))
-                    {
-                        iconInfo.put(MilStdAttributes.Alpha,symbolInfoMap.get(MilStdAttributes.Alpha));
-                    }
-                    if(symbolInfoMap.containsKey(MilStdAttributes.Renderer))
-                    {
-                        iconInfo.put(MilStdAttributes.Renderer,symbolInfoMap.get(MilStdAttributes.Renderer));
-                    }
-                    if(symbolInfoMap.containsKey(MilStdAttributes.PixelSize))
-                    {
-                        iconInfo.put(MilStdAttributes.PixelSize,symbolInfoMap.get(MilStdAttributes.PixelSize));
-                    }
-                    if(symbolInfoMap.containsKey(MilStdAttributes.OutlineColor))
-                    {
-                        iconInfo.put(MilStdAttributes.OutlineColor,symbolInfoMap.get(MilStdAttributes.OutlineColor));
-                    }
-                    iconInfo.put(MilStdAttributes.OutlineSymbol,"false");
-                    symbolId = sanitizeSymbolID(symbolId);
-                    
-                    symbolInfoMap = iconInfo;
-                }
+            if(icon)
+            {
+                HashMap<String, String> iconInfo = new HashMap<String, String>();
+                //if icon == true, make sure keepUnitRatio defaults to false.
+                iconInfo.put(MilStdAttributes.KeepUnitRatio,"false");
 
-                
-                
-                PNGInfo pngInfo = sr.getSymbolImage(symbolId, symbolInfoMap);	
-                
-                if(icon)
-                    pngInfo = pngInfo.squareImage();
-                
-		return processImageModifiers(symbolInfoMap, pngInfo);
+                if(SymbolUtilities.isWarfighting(symbolId))
+                {
+                    Color fillColor = SymbolUtilities.getFillColorOfAffiliation(symbolId);
+                    iconInfo.put(MilStdAttributes.FillColor,SymbolUtilities.colorToHexString(fillColor, Boolean.TRUE));
+                }
+                if(symbolInfoMap.containsKey(MilStdAttributes.FillColor))
+                {
+                    iconInfo.put(MilStdAttributes.FillColor,symbolInfoMap.get(MilStdAttributes.FillColor));
+                }
+                if(symbolId.substring(0, 1).equals("G"))
+                {
+                    Color fillColor = SymbolUtilities.getLineColorOfAffiliation(symbolId);
+                    iconInfo.put(MilStdAttributes.LineColor,SymbolUtilities.colorToHexString(fillColor, Boolean.TRUE));
+                }
+                if(symbolInfoMap.containsKey(MilStdAttributes.LineColor))
+                {
+                    iconInfo.put(MilStdAttributes.LineColor,symbolInfoMap.get(MilStdAttributes.LineColor));
+                }
+                if(symbolInfoMap.containsKey(MilStdAttributes.SymbologyStandard))
+                {
+                    iconInfo.put(MilStdAttributes.SymbologyStandard,symbolInfoMap.get(MilStdAttributes.SymbologyStandard));
+                }
+                if(symbolInfoMap.containsKey(MilStdAttributes.KeepUnitRatio))
+                {
+                    iconInfo.put(MilStdAttributes.KeepUnitRatio,symbolInfoMap.get(MilStdAttributes.KeepUnitRatio));
+                }
+                if(symbolInfoMap.containsKey(MilStdAttributes.Alpha))
+                {
+                    iconInfo.put(MilStdAttributes.Alpha,symbolInfoMap.get(MilStdAttributes.Alpha));
+                }
+                if(symbolInfoMap.containsKey(MilStdAttributes.Renderer))
+                {
+                    iconInfo.put(MilStdAttributes.Renderer,symbolInfoMap.get(MilStdAttributes.Renderer));
+                }
+                if(symbolInfoMap.containsKey(MilStdAttributes.PixelSize))
+                {
+                    iconInfo.put(MilStdAttributes.PixelSize,symbolInfoMap.get(MilStdAttributes.PixelSize));
+                }
+                if(symbolInfoMap.containsKey(MilStdAttributes.OutlineColor))
+                {
+                    iconInfo.put(MilStdAttributes.OutlineColor,symbolInfoMap.get(MilStdAttributes.OutlineColor));
+                }
+                iconInfo.put(MilStdAttributes.OutlineSymbol,"false");
+                symbolId = sanitizeSymbolID(symbolId);
+
+                symbolInfoMap = iconInfo;
+            }
+
+
+
+            PNGInfo pngInfo = sr.getSymbolImage(symbolId, symbolInfoMap);	
+
+            if(icon)
+                pngInfo = pngInfo.squareImage();
+            else if(eWidth > 0 && eHeight > 0 && ecX > 0 && ecY > 0 && buffer > 0)
+            {
+                pngInfo = pngInfo.fitImage(eWidth, eHeight, ecX, ecY, buffer);
+            }
+
+            return processImageModifiers(symbolInfoMap, pngInfo);
 	}
 
         /**

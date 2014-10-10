@@ -878,14 +878,14 @@ public class SECRenderer {
                 iconScale = width / scale1;
             } else if (width > height) {
                 if (height <= scale2)
-                    iconScale = width / scale2;
+                    iconScale = width / 28;
                 else
-                    iconScale = height / scale2;
+                    iconScale = height / 28;
             } else {
                 if (width <= scale2)
-                    iconScale = height / scale2;
+                    iconScale = height / 28;
                 else
-                    iconScale = width / scale2;
+                    iconScale = width / 28;
             }
             return iconScale;
         }

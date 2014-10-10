@@ -386,4 +386,55 @@ public class PNGInfo
         }
         return pi;
     }
+    
+     /**
+      * 
+      * @param eWidth
+      * @param eHeight
+      * @param buffer
+      * @return 
+      */
+    public PNGInfo fitImage(int eWidth, int eHeight, int ecX, int ecY, int buffer)
+    {
+        BufferedImage image = null;
+        Point2D newCenter = null;
+        PNGInfo pi = null;
+        BufferedImage bi = null;
+        double x = 0;
+        double y = 0;
+        int height = 0;
+        int width = 0;
+        
+
+        try
+        {
+            image = _image;
+            height = image.getHeight();
+            width = image.getWidth();
+            
+            int newWidth = eWidth;
+            int newHeight = eHeight;
+            bi = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+            
+            int cX = (int)_centerPoint.getX();
+            int cY = (int)_centerPoint.getY();
+            
+            int offsetX = buffer + (ecX - (cX + buffer));
+            int offsetY = buffer + (ecY - (cY + buffer));
+            
+            newCenter = new Point2D.Double(ecX, ecY);
+                            
+            Rectangle2D bounds = new Rectangle2D.Double(offsetX,offsetY,
+                    newWidth, newHeight);
+            
+            Graphics2D g2d =  bi.createGraphics();
+            g2d.drawImage(image, offsetX, offsetY, null);
+            pi = new PNGInfo(bi, newCenter, bounds);
+        }
+        catch(Exception exc)
+        {
+            ErrorLogger.LogException("ImageInfo", "CenterImage", exc);
+        }
+        return pi;
+    }
 }
