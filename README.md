@@ -4,8 +4,8 @@ mil-sym-java is a well worn set of java libraries that have been used in US Army
 
 [Web Service Developer's Guide Wiki](https://github.com/missioncommand/mil-sym-java/wiki/Developer's-Guide)  
 [Developer's Guide Word Docs](https://github.com/missioncommand/mil-sym-java/blob/master/documentation)  
-[Multipoint Sample](http://mil-sym-service.spinelli.cloudbees.net/multiPoints.html)  
-[Singlepoint Sample](http://mil-sym-service.spinelli.cloudbees.net/singlePoints.html)  
+[Multipoint Sample]()  - service discontinued  
+[Singlepoint Sample]()  - service discontinued  
 [Google Group Discussion Forum](https://groups.google.com/forum/#!forum/mission-command-milstd-renderer)  
 
 MIL-STD-2525
@@ -32,16 +32,16 @@ A live instance of the web service can be tested on CloudBees at [http://mil-sym
 Basic usage can be seen below:
  
 http://mil-sym-renderer.missioncommand.cloudbees.net/renderer/image/OFPPC----------?size=48 
-will output:![Service call for symbol](http://mil-sym-renderer.missioncommand.cloudbees.net/renderer/image/OFPPC----------?size=48)
+will output:![Service call for symbol]()  - service discontinued  
 
 http://mil-sym-renderer.missioncommand.cloudbees.net/renderer/image/OHPPC----------?size=48 
-will output:![Service call for symbol](http://mil-sym-renderer.missioncommand.cloudbees.net/renderer/image/OHPPC----------?size=48)
+will output:![Service call for symbol]()  - service discontinued  
 
 http://mil-sym-renderer.missioncommand.cloudbees.net/renderer/image/ONPPC----------?size=48 
-will output:![Service call for symbol](http://mil-sym-renderer.missioncommand.cloudbees.net/renderer/image/ONPPC----------?size=48)
+will output:![Service call for symbol]()  - service discontinued  
 
 http://mil-sym-renderer.missioncommand.cloudbees.net/renderer/image/OUPPC----------?size=48&fillColor=3366FF&lineColor=FF0000 
-will output:![Service call for symbol SHGP-----------](http://mil-sym-renderer.missioncommand.cloudbees.net/renderer/image/OUPPC----------?size=48&fillColor=3366FF&lineColor=FF0000)
+will output:![Service call for symbol SHGP-----------]()  - service discontinued  
 
 
 Version
