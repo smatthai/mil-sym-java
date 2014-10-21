@@ -1,21 +1,20 @@
 package sec.web.renderer.utils;
 
 import ArmyC2.C2SD.Utilities.MilStdAttributes;
-import ArmyC2.C2SD.Utilities.ModifiersTG;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 import javax.servlet.http.HttpServletRequest;
 
 import sec.web.renderer.SECRenderer;
+import sec.web.renderer.utilities.JavaRendererUtilities;
 import sec.web.renderer.utilities.PNGInfo;
 
 @SuppressWarnings("unused")
@@ -63,7 +62,7 @@ public class ImagingUtils {
 		return pngResponse;
 	}
 
-	public static byte[] getMilStd2525Png(String symbolId, HashMap<String, String> symbolInfoMap) {		
+	public static byte[] getMilStd2525PngBytes(String symbolId, Map<String, String> symbolInfoMap) {		
 
             Boolean icon = false;
             if(symbolInfoMap.containsKey("ICON"))
@@ -71,12 +70,11 @@ public class ImagingUtils {
                 if(Boolean.parseBoolean(symbolInfoMap.get("ICON"))==true)
                     icon = true;
             }
-            
-            int eWidth = 0;
-            int eHeight = 0;
-            int ecX = 0;
-            int ecY = 0;
-            int buffer = 0;
+            int eWidth = -1;
+            int eHeight = -1;
+            int ecX = -1;
+            int ecY = -1;
+            int buffer = -1;
             if(symbolInfoMap.containsKey("EWIDTH"))
             {
                 eWidth = Math.round(Float.parseFloat(symbolInfoMap.get("EWIDTH")));
@@ -97,129 +95,76 @@ public class ImagingUtils {
             {
                 buffer = Integer.parseInt(symbolInfoMap.get("BUFFER"));
             }
-                
-            if(icon)
-            {
-                HashMap<String, String> iconInfo = new HashMap<String, String>();
-                //if icon == true, make sure keepUnitRatio defaults to false.
-                iconInfo.put(MilStdAttributes.KeepUnitRatio,"false");
-
-                if(SymbolUtilities.isWarfighting(symbolId))
-                {
-                    Color fillColor = SymbolUtilities.getFillColorOfAffiliation(symbolId);
-                    iconInfo.put(MilStdAttributes.FillColor,SymbolUtilities.colorToHexString(fillColor, Boolean.TRUE));
-                }
-                if(symbolInfoMap.containsKey(MilStdAttributes.FillColor))
-                {
-                    iconInfo.put(MilStdAttributes.FillColor,symbolInfoMap.get(MilStdAttributes.FillColor));
-                }
-                if(symbolId.substring(0, 1).equals("G"))
-                {
-                    Color fillColor = SymbolUtilities.getLineColorOfAffiliation(symbolId);
-                    iconInfo.put(MilStdAttributes.LineColor,SymbolUtilities.colorToHexString(fillColor, Boolean.TRUE));
-                }
-                if(symbolInfoMap.containsKey(MilStdAttributes.LineColor))
-                {
-                    iconInfo.put(MilStdAttributes.LineColor,symbolInfoMap.get(MilStdAttributes.LineColor));
-                }
-                if(symbolInfoMap.containsKey(MilStdAttributes.SymbologyStandard))
-                {
-                    iconInfo.put(MilStdAttributes.SymbologyStandard,symbolInfoMap.get(MilStdAttributes.SymbologyStandard));
-                }
-                if(symbolInfoMap.containsKey(MilStdAttributes.KeepUnitRatio))
-                {
-                    iconInfo.put(MilStdAttributes.KeepUnitRatio,symbolInfoMap.get(MilStdAttributes.KeepUnitRatio));
-                }
-                if(symbolInfoMap.containsKey(MilStdAttributes.Alpha))
-                {
-                    iconInfo.put(MilStdAttributes.Alpha,symbolInfoMap.get(MilStdAttributes.Alpha));
-                }
-                if(symbolInfoMap.containsKey(MilStdAttributes.Renderer))
-                {
-                    iconInfo.put(MilStdAttributes.Renderer,symbolInfoMap.get(MilStdAttributes.Renderer));
-                }
-                if(symbolInfoMap.containsKey(MilStdAttributes.PixelSize))
-                {
-                    iconInfo.put(MilStdAttributes.PixelSize,symbolInfoMap.get(MilStdAttributes.PixelSize));
-                }
-                if(symbolInfoMap.containsKey(MilStdAttributes.OutlineColor))
-                {
-                    iconInfo.put(MilStdAttributes.OutlineColor,symbolInfoMap.get(MilStdAttributes.OutlineColor));
-                }
-                iconInfo.put(MilStdAttributes.OutlineSymbol,"false");
-                symbolId = sanitizeSymbolID(symbolId);
-
-                symbolInfoMap = iconInfo;
-            }
-
-
-
-            PNGInfo pngInfo = sr.getSymbolImage(symbolId, symbolInfoMap);	
+            
+            PNGInfo pngInfo = getMilStd2525Png(symbolId, symbolInfoMap);
 
             if(icon)
                 pngInfo = pngInfo.squareImage();
-            else if(eWidth > 0 && eHeight > 0 && ecX > 0 && ecY > 0 && buffer > 0)
+            else if(eWidth > 0 && eHeight > 0 && ecX >= 0 && ecY >= 0 && buffer > 0)
             {
                 pngInfo = pngInfo.fitImage(eWidth, eHeight, ecX, ecY, buffer);
             }
-
-            return processImageModifiers(symbolInfoMap, pngInfo);
-	}
-
-        /**
-         * we only have font lookups for F,H,N,U.  But the shapes match one of these
-         * four for the remaining affiliations.  So we convert the string to a base
-         * affiliation before we do the lookup.
-         * @param {String} symbolID
-         * @returns {String}
-         */        
-        private static String sanitizeSymbolID(String symbolID)
-        {
-            String code = symbolID;
-            char affiliation = symbolID.charAt(1);
-
-            if(SymbolUtilities.isWeather(symbolID)==false)
+            else
             {
-                if(affiliation == 'F' ||//friendly
-                        affiliation == 'H' ||//hostile
-                        affiliation == 'U' ||//unknown
-                        affiliation == 'N' )//neutral
-                {
-                    //code = code;
+                pngInfo =  processImageModifiers(symbolInfoMap, pngInfo);
+            }
+            
+            Boolean meta = false;
+            String tempModifierVal = null;
+            if (symbolInfoMap.containsKey("META")) {
+                tempModifierVal = symbolInfoMap.get("META");
+                if (tempModifierVal != null && tempModifierVal.toLowerCase().equals("true") == true) {
+                        meta = true;
                 }
-                else if(affiliation == 'S')//suspect
-                    code = code.charAt(0) + "H" + code.substring(2, 15);
-                else if(affiliation == 'L')//exercise neutral
-                    code = code.charAt(0) + "N" + code.substring(2, 15);
-                else if(affiliation == 'A' ||//assumed friend
-                        affiliation == 'D' ||//exercise friend
-                        affiliation == 'M' ||//exercise assumed friend
-                        affiliation == 'K' ||//faker
-                        affiliation == 'J')//joker
-                    code = code.charAt(0) + "F" + code.substring(2, 15);
-                else if(affiliation == 'P' ||//pending
-                        affiliation == 'G' ||//exercise pending
-                        affiliation == 'O' ||//? brought it over from mitch's code
-                        affiliation == 'W')//exercise unknown
-                    code = code.charAt(0) + "U" + code.substring(2, 15);
-                else
-                    code = code.charAt(0) + "U" + code.substring(2, 15);
-
-                code = code.substring(0,10) + "-----";
             }
 
-            return code;
-        };
+            byte[] pngResponse = null;
+            if (meta) {
+                    pngResponse = (pngInfo == null) ? null : pngInfo.getImageAsByteArrayWithMetaInfo();
+            } else {
+                    pngResponse = (pngInfo == null) ? null : pngInfo.getImageAsByteArray();
+            }
+            return pngResponse;
+	}
+        
+        /**
+         * 
+         * @param symbolId
+         * @param symbolInfoMap
+         * @return 
+         */
+        public static PNGInfo getMilStd2525Png(String symbolId, Map<String, String> symbolInfoMap) {		
+
+            Boolean icon = false;
+            if(symbolInfoMap.containsKey("ICON"))
+            {
+                if(Boolean.parseBoolean(symbolInfoMap.get("ICON"))==true)
+                    icon = true;
+            }
+                            
+            if(icon)
+            {
+                //strip unwanted modifiers
+                symbolInfoMap = JavaRendererUtilities.parseIconParameters(symbolId, symbolInfoMap);                
+                symbolId = JavaRendererUtilities.sanitizeSymbolID(symbolId);
+            }
+
+            PNGInfo pngInfo = sr.getSymbolImage(symbolId, symbolInfoMap);	
+
+            return pngInfo;
+            
+
+	}
+    
 
 	/**
 	 * @param symbolInfoMap
 	 * @param pngInfo
 	 * @return
 	 */
-	private static byte[] processImageModifiers(HashMap<String, String> symbolInfoMap, PNGInfo pngInfo) {
-		boolean meta = false;
+	private static PNGInfo processImageModifiers(Map<String, String> symbolInfoMap, PNGInfo pngInfo) {
 		String tempModifierVal = null;
-		byte[] pngResponse = null;
+		
 		                
 		if (symbolInfoMap.containsKey("CENTER")) {
 			tempModifierVal = symbolInfoMap.get("CENTER");
@@ -234,19 +179,7 @@ public class ImagingUtils {
 			}
 		}
 
-		if (symbolInfoMap.containsKey("META")) {
-			tempModifierVal = symbolInfoMap.get("META");
-			if (tempModifierVal != null && tempModifierVal.toLowerCase().equals("true") == true) {
-				meta = true;
-			}
-		}
-
-		if (meta) {
-			pngResponse = (pngInfo == null) ? null : pngInfo.getImageAsByteArrayWithMetaInfo();
-		} else {
-			pngResponse = (pngInfo == null) ? null : pngInfo.getImageAsByteArray();
-		}
-		return pngResponse;
+		return pngInfo;
 	}
 
 	public static byte[] getKml(String url, String symbolId, HashMap<String, String> symbolInfoMap) {

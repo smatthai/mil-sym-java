@@ -42,6 +42,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.net.BindException;
 import java.util.Map;
+import static sec.web.renderer.utilities.JavaRendererUtilities.sanitizeSymbolID;
 import sec.web.renderer.utilities.PNGInfo;
 
 /**
@@ -54,8 +55,8 @@ public class SinglePointServer {
 	private static IJavaRenderer jr = null;
         private static TacticalGraphicIconRenderer tgir = null;
 	private SinglePointRendererService plugins = null;
-        private SinglePointHandler _singlePointHandler = null;
 	private static boolean _preloadedRenderer = false;
+        private SinglePointHandler _singlePointHandler = null;
 	private HttpServer httpServer;
         //private HttpServer httpServerMP;
 	private int portNumber = 6789;
@@ -77,50 +78,52 @@ public class SinglePointServer {
 		createHttpServer();
 	}
 
-	private void createHttpServer() {
-		try {
-			// A maximum backlog can be specified. This is the maximum number
-			// of queued incoming connections to allow on the listening socket.
-			// Queued connection above this limit may be rejected.
-			// If set <=0, a system default value is used.
-                        _singlePointHandler = new SinglePointHandler(true);
-			int backlog = _backLog;
-			httpServer = HttpServer.create(new InetSocketAddress("127.0.0.1", portNumber), backlog);
+	private void createHttpServer() 
+        {
+            try {
+                    // A maximum backlog can be specified. This is the maximum number
+                    // of queued incoming connections to allow on the listening socket.
+                    // Queued connection above this limit may be rejected.
+                    // If set <=0, a system default value is used.
+                    _singlePointHandler = new SinglePointHandler(0);
+                    int backlog = _backLog;
+                    httpServer = HttpServer.create(new InetSocketAddress("127.0.0.1", portNumber), backlog);
 
-			httpServer.createContext("/", new SinglePointHandler(false));
-                        httpServer.createContext("/mil-sym-service/renderer/image/", new SinglePointHandler(false));
-                        httpServer.createContext("/mil-sym-service/renderer/kml/", _singlePointHandler);
+                    httpServer.createContext("/", _singlePointHandler);
+                    httpServer.createContext("/mil-sym-service/renderer/image/", new SinglePointHandler(RENDER_TYPE_IMAGE));
+                    httpServer.createContext("/mil-sym-service/renderer/kml/", new SinglePointHandler(RENDER_TYPE_KML));
+                    httpServer.createContext("/mil-sym-service/renderer/svg/", new SinglePointHandler(RENDER_TYPE_SVG));
 
-			httpServer.setExecutor(Executors.newCachedThreadPool());
-		} catch(BindException bexc){
-                    String strTypicalPortInUseMessage = "Address already in use: bind";
-                    if(bexc.getMessage().startsWith(strTypicalPortInUseMessage))
-                    {
-                        System.out.println("Port " 
-                            + String.valueOf(portNumber) 
-                            + " already in use. Incrementing...");
-                    }
-                    else
-                    {
-                        System.err.println(bexc.getMessage());
-                        bexc.printStackTrace();
-                    }
-                    
-                    portNumber++;
-                    //System.err.println(ErrorLogger.getStackTrace(bexc));
-                    createHttpServer();
+                    httpServer.setExecutor(Executors.newCachedThreadPool());
+            } catch(BindException bexc){
+                String strTypicalPortInUseMessage = "Address already in use: bind";
+                if(bexc.getMessage().startsWith(strTypicalPortInUseMessage))
+                {
+                    System.out.println("Port " 
+                        + String.valueOf(portNumber) 
+                        + " already in use. Incrementing...");
+                }
+                else
+                {
+                    System.err.println(bexc.getMessage());
+                    bexc.printStackTrace();
+                }
+
+                portNumber++;
+                //System.err.println(ErrorLogger.getStackTrace(bexc));
+                createHttpServer();
+                // throw(exc);
+            } 
+            catch (IOException exc) {
+                    System.err.println(exc.getMessage());
+                    System.err.println(ErrorLogger.getStackTrace(exc));
+                    //portNumber++;
+                    //createHttpServer();
                     // throw(exc);
-                } 
-                catch (IOException exc) {
-			System.err.println(exc.getMessage());
-			System.err.println(ErrorLogger.getStackTrace(exc));
-			//portNumber++;
-			//createHttpServer();
-			// throw(exc);
-		} catch (Exception exc2) {
-			System.err.println(exc2.getMessage());
-			System.err.println(ErrorLogger.getStackTrace(exc2));
-		}
+            } catch (Exception exc2) {
+                    System.err.println(exc2.getMessage());
+                    System.err.println(ErrorLogger.getStackTrace(exc2));
+            }
 	}
 
 	public void start() {
@@ -207,14 +210,19 @@ public class SinglePointServer {
 		jr.setUnitSymbolSize(size);
 	}
         
-        
+        private int RENDER_TYPE_IMAGE = 0;
+        private int RENDER_TYPE_KML = 1;
+        private int RENDER_TYPE_SVG = 2;
+            
 	class SinglePointHandler implements HttpHandler {
 
-                private Boolean _renderAsKML = false;
+            
+            
+                private int _renderType = 0;
                 private SECRenderer sr = SECRenderer.getInstance();
-		public SinglePointHandler(Boolean renderAsKML) {
+		public SinglePointHandler(int renderType) {
 			initRenderer();
-                        _renderAsKML = renderAsKML;
+                        _renderType = renderType;
 		}
 
 		/**
@@ -222,126 +230,204 @@ public class SinglePointServer {
 		 * @param symbolID
 		 * @return
 		 */
-		public byte[] getSinglePointByteArray(String symbolID) {
-			byte[] pngResponse = null;
+		public byte[] getSinglePointByteArray(String symbolID) 
+                {
+                    byte[] pngResponse = null;
 
-			try {
-				// symbolID = url.substring(url.lastIndexOf("/") + 1);
-				// System.out.println(symbolID);
-				pngResponse = getSinglePointBytes(symbolID);
-				return pngResponse;
-			} catch (Exception exc) {
-				// System.err.println(exc.getMessage());
-				ErrorLogger.LogException("SinglePointServer", "getSinglePointByteArray", exc, Level.WARNING);
-				return null;
-			}
+                    try 
+                    {
+                        // symbolID = url.substring(url.lastIndexOf("/") + 1);
+                        // System.out.println(symbolID);
+                        Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(symbolID);
+                        pngResponse = getSinglePointBytes(symbolID, params);
+                        return pngResponse;
+                    } catch (Exception exc) {
+                        // System.err.println(exc.getMessage());
+                        ErrorLogger.LogException("SinglePointServer", "getSinglePointByteArray", exc, Level.WARNING);
+                        return null;
+                    }
 		}
 
-		public void handle(HttpExchange exchange) {
+		public void handle(HttpExchange exchange) 
+                {
 
-                String allowOrigin = exchange.getRemoteAddress().toString();
-                
-			if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
-				String url = null;
-				// String url = exchange.getRequestURI().getPath();
-				// String url = exchange.getRequestURI().toString();
+                    String allowOrigin = exchange.getRemoteAddress().toString();
+                    if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+                            String url = null;
+                            // String url = exchange.getRequestURI().getPath();
+                            // String url = exchange.getRequestURI().toString();
 
-				byte[] pngResponse = null;
-                                byte[] kmlResponse = null;
+                            byte[] pngResponse = null;
+                            byte[] kmlResponse = null;
+                            byte[] svgResponse = null;
+                            int svgDrawMode = 0;
+                            Boolean isIcon = false;
 
-				try {
-					url = exchange.getRequestURI().toString();
-                                        url = exchange.getLocalAddress().toString() + url;
-                                        if(url.startsWith("/"))
-                                            url = url.substring(1);
-					String symbolID = url.substring(url.lastIndexOf("/") + 1);
-					// System.out.println(symbolID);
-                                        if(_renderAsKML == false)
+                            try {
+                                    url = exchange.getRequestURI().toString();
+                                    url = exchange.getLocalAddress().toString() + url;
+                                    if(url.startsWith("/"))
+                                        url = url.substring(1);
+                                    String symbolID = url.substring(url.lastIndexOf("/") + 1);
+
+                                    Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(url);
+                                    // System.out.println(symbolID);
+                                    if(_renderType == RENDER_TYPE_IMAGE)
+                                    {
+                                        if(params.containsKey("ICON"))
                                         {
-                                            pngResponse = getSinglePointBytes(symbolID);
+                                            isIcon = Boolean.parseBoolean(params.get("ICON"));
+                                            params = JavaRendererUtilities.parseIconParameters(symbolID, params);
+                                            symbolID = sanitizeSymbolID(symbolID);
                                         }
+                                        pngResponse = getSinglePointBytes(symbolID, params);
+                                    }
+                                    else if(_renderType == RENDER_TYPE_KML)
+                                    {
+                                        if(url.indexOf("?") > -1)
+                                            url = url.substring(0,url.indexOf("?"));
+                                        String kml = sr.getSymbolImageKML(url, symbolID, params);
+                                        kmlResponse = kml.getBytes();
+                                    }
+                                    else if(_renderType == RENDER_TYPE_SVG)
+                                    {
+                                        if(symbolID.indexOf("?") > -1)
+                                            symbolID = symbolID.substring(0,symbolID.indexOf("?"));
+
+                                        if(params.containsKey("ICON")&& 
+                                                (Boolean.parseBoolean(params.get("ICON")) == true))
+                                        {
+                                            params = JavaRendererUtilities.parseIconParameters(symbolID, params);
+                                            symbolID = sanitizeSymbolID(symbolID);
+                                            isIcon = true;
+                                        }
+
+                                        PNGInfo pi = sr.getMilStdSymbolImage(symbolID, params);
+
+                                        if(isIcon)
+                                            pi = pi.squareImage();
                                         else
                                         {
-                                            Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(url);
-                                            if(url.indexOf("?") > -1)
-                                                url = url.substring(0,url.indexOf("?"));
-                                            String kml = sr.getSymbolImageKML(url, symbolID, params);
-                                            kmlResponse = kml.getBytes();
+                                            if(params.containsKey("CENTER") && 
+                                                    (Boolean.parseBoolean(params.get("CENTER")) == true))
+                                            {
+                                                svgDrawMode = 1;
+                                            }
+                                            else if(params.containsKey("SQUARE") && 
+                                                    (Boolean.parseBoolean(params.get("SQUARE")) == true))
+                                            {
+                                                svgDrawMode = 2;
+                                            }
                                         }
 
-				} catch (Exception exc) {
-					// System.err.println(exc.getMessage());
-					ErrorLogger.LogException("SinglePointServer", "handle", exc, Level.WARNING);
+                                        svgResponse = pi.toSVG(svgDrawMode).getBytes();   
+                                    }
+                                    else
+                                    {
+                                        pngResponse = getSinglePointBytes(symbolID, params);
+                                    }
 
-					try {
-						Headers headers = exchange.getResponseHeaders();
-						headers.set("Content-Type", "text/plain");
+                            } catch (Exception exc) {
+                                    // System.err.println(exc.getMessage());
+                                    ErrorLogger.LogException("SinglePointServer", "handle", exc, Level.WARNING);
+
+                                    try {
+                                            Headers headers = exchange.getResponseHeaders();
+                                            headers.set("Content-Type", "text/plain");
 //                                                if(allowOrigin.contains("127.0.0.1"))
 //                                                    headers.set("Access-Control-Allow-Origin", allowOrigin);//*;//127.0.0.1
-						exchange.sendResponseHeaders(503, 0);
-						exchange.getResponseBody().close();
-					} catch (IOException ex) {
-						// System.err.println(ex.getMessage());
-						ErrorLogger.LogException("SinglePointServer", "handle", ex, Level.WARNING);
-					} catch (Exception exc2) {
-						ErrorLogger.LogException("SinglePointServer", "handle", exc2, Level.WARNING);
-					}
-				}
+                                            exchange.sendResponseHeaders(503, 0);
+                                            exchange.getResponseBody().close();
+                                    } catch (IOException ex) {
+                                            // System.err.println(ex.getMessage());
+                                            ErrorLogger.LogException("SinglePointServer", "handle", ex, Level.WARNING);
+                                    } catch (Exception exc2) {
+                                            ErrorLogger.LogException("SinglePointServer", "handle", exc2, Level.WARNING);
+                                    }
+                            }
 
-				if (pngResponse != null) {
+                            if (pngResponse != null) {
 
-					OutputStream responseBody = null;
-					try {
-						Headers headers = exchange.getResponseHeaders();
-						headers.set("Content-Type", "image/png");
+                                    OutputStream responseBody = null;
+                                    try {
+                                            Headers headers = exchange.getResponseHeaders();
+                                            headers.set("Content-Type", "image/png");
 //                                                if(allowOrigin.contains("127.0.0.1"))
 //                                                    headers.set("Access-Control-Allow-Origin", allowOrigin);//127.0.0.1
-						exchange.sendResponseHeaders(200, 0);
+                                            exchange.sendResponseHeaders(200, 0);
 
-						responseBody = exchange.getResponseBody();
-						responseBody.write(pngResponse);
-						responseBody.close();
-					} catch (IOException exc) {
-						Date date = new Date();
-						SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
-						System.err.println("SinglePointServer.handle() tried sending response");
-						// System.err.println(date.toString());
-						System.err.println(sdf.format(date));
-						System.err.println(exchange.getRequestURI().toString());
-						System.err.println(exc.getMessage());
+                                            responseBody = exchange.getResponseBody();
+                                            responseBody.write(pngResponse);
+                                            responseBody.close();
+                                    } catch (IOException exc) {
+                                            Date date = new Date();
+                                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
+                                            System.err.println("SinglePointServer.handle() tried sending response");
+                                            // System.err.println(date.toString());
+                                            System.err.println(sdf.format(date));
+                                            System.err.println(exchange.getRequestURI().toString());
+                                            System.err.println(exc.getMessage());
 
-					} catch (Exception exc3) {
-						ErrorLogger.LogException("SinglePointServer", "handle", exc3, Level.WARNING);
-					}
-				}
-                                
-                                if(kmlResponse != null)
-                                {
-                                    OutputStream responseBody = null;
-					try {
-						Headers headers = exchange.getResponseHeaders();
-						headers.set("Content-Type", "text/xml");
-                                                //only required for POST
-                                                /*if(allowOrigin.contains("127.0.0.1"))
-                                                    headers.set("Access-Control-Allow-Origin", "*");//127.0.0.1*/
-						exchange.sendResponseHeaders(200, 0);
+                                    } catch (Exception exc3) {
+                                            ErrorLogger.LogException("SinglePointServer", "handle", exc3, Level.WARNING);
+                                    }
+                            }
 
-						responseBody = exchange.getResponseBody();
-						responseBody.write(kmlResponse);
-						responseBody.close();
-					} catch (IOException exc) {
-						Date date = new Date();
-						SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
-						System.err.println("SinglePointServer.handle() tried sending response");
-						// System.err.println(date.toString());
-						System.err.println(sdf.format(date));
-						System.err.println(exchange.getRequestURI().toString());
-						System.err.println(exc.getMessage());
+                            else if(kmlResponse != null)
+                            {
+                                OutputStream responseBody = null;
+                                    try {
+                                            Headers headers = exchange.getResponseHeaders();
+                                            headers.set("Content-Type", "text/xml");
+                                            //only required for POST
+                                            /*if(allowOrigin.contains("127.0.0.1"))
+                                                headers.set("Access-Control-Allow-Origin", "*");//127.0.0.1*/
+                                            exchange.sendResponseHeaders(200, 0);
 
-					} catch (Exception exc3) {
-						ErrorLogger.LogException("SinglePointServer", "handle", exc3, Level.WARNING);
-					}
-                                }
+                                            responseBody = exchange.getResponseBody();
+                                            responseBody.write(kmlResponse);
+                                            responseBody.close();
+                                    } catch (IOException exc) {
+                                            Date date = new Date();
+                                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
+                                            System.err.println("SinglePointServer.handle() tried sending response");
+                                            // System.err.println(date.toString());
+                                            System.err.println(sdf.format(date));
+                                            System.err.println(exchange.getRequestURI().toString());
+                                            System.err.println(exc.getMessage());
+
+                                    } catch (Exception exc3) {
+                                            ErrorLogger.LogException("SinglePointServer", "handle", exc3, Level.WARNING);
+                                    }
+                            }
+
+                            else if(svgResponse != null)
+                            {
+                                OutputStream responseBody = null;
+                                    try {
+                                            Headers headers = exchange.getResponseHeaders();
+                                            headers.set("Content-Type", "image/svg+xml");
+                                            //only required for POST
+                                            /*if(allowOrigin.contains("127.0.0.1"))
+                                                headers.set("Access-Control-Allow-Origin", "*");//127.0.0.1*/
+                                            exchange.sendResponseHeaders(200, 0);
+
+                                            responseBody = exchange.getResponseBody();
+                                            responseBody.write(svgResponse);
+                                            responseBody.close();
+                                    } catch (IOException exc) {
+                                            Date date = new Date();
+                                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
+                                            System.err.println("SinglePointServer.handle() tried sending response");
+                                            // System.err.println(date.toString());
+                                            System.err.println(sdf.format(date));
+                                            System.err.println(exchange.getRequestURI().toString());
+                                            System.err.println(exc.getMessage());
+
+                                    } catch (Exception exc4) {
+                                            ErrorLogger.LogException("SinglePointServer", "handle", exc4, Level.WARNING);
+                                    }
+                            }
 			}
 		}
 
@@ -491,7 +577,7 @@ public class SinglePointServer {
 		 * @throws RendererException
 		 * @throws IOException
 		 */
-		private byte[] getSinglePointBytes(String symbolCode) throws RendererException, IOException {
+		private byte[] getSinglePointBytes(String symbolCode, Map<String,String> params) throws RendererException, IOException {
 			byte[] byteArray = null;
 
 			// This will get an instance of the renderer and initialize if it
@@ -501,7 +587,6 @@ public class SinglePointServer {
 			// ////////////////////////////////////////////
 
 			try {
-                                Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(symbolCode);
 
 				// check if plugin renderer was requested
                                 String renderer = params.get(MilStdAttributes.Renderer);
@@ -546,15 +631,12 @@ public class SinglePointServer {
 
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-				if (symbolCode.contains("meta=true")) {
-					// PNG with metadata takes about 8-9 miliseconds
-					iInfo.SaveImageToPNG(ImageIO.createImageOutputStream(baos));
-				}
-                                else if (symbolCode.contains("center=true"))
+                                if (params.containsKey("ICON") && Boolean.parseBoolean(params.get("ICON"))==true)
                                 {   //center image so you don't have to worry about getting 
                                     //the center point.
                                     BufferedImage bit = null;
-                                    bit = ImageInfo.CenterImageOnPoint(iInfo.getImage(), iInfo.getSymbolCenterPoint());
+                                    PNGInfo pi = new PNGInfo(iInfo);
+                                    bit = pi.squareImage().getImage();
                                     ImageIO.write(bit, "png", baos);
                                 }
                                 else if (params.containsKey("BUFFER"))
@@ -598,6 +680,17 @@ public class SinglePointServer {
 					ImageIO.write(image, "png", baos);
                                     }
                                 }
+                                else if (symbolCode.contains("center=true"))
+                                {   //center image so you don't have to worry about getting 
+                                    //the center point.
+                                    BufferedImage bit = null;
+                                    bit = ImageInfo.CenterImageOnPoint(iInfo.getImage(), iInfo.getSymbolCenterPoint());
+                                    ImageIO.write(bit, "png", baos);
+                                }
+                                else if (symbolCode.contains("meta=true")) {
+					// PNG with metadata takes about 8-9 milisecondsi
+					iInfo.SaveImageToPNG(ImageIO.createImageOutputStream(baos));
+				}
                                 else {
 					// regular PNG, takes about 5-6 miliseconds
 					BufferedImage image = iInfo.getImage();

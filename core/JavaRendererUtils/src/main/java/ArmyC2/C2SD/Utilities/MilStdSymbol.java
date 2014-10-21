@@ -557,6 +557,8 @@ public class MilStdSymbol {
                         _OutLineWidth = 1;
                     else
                         _OutLineWidth = 0;
+                    if(_OutLineColor == null)
+                        _OutLineColor =SymbolDraw.getIdealTextBackgroundColor(_LineColor);
                 }
                 /**
                  * determines if we outline the symbol
@@ -568,6 +570,8 @@ public class MilStdSymbol {
                     _Outline = value;
                     if(width > 0)
                         _OutLineWidth = width;
+                    if(_OutLineColor == null)
+                        _OutLineColor =SymbolDraw.getIdealTextBackgroundColor(_LineColor);
                 }
                 public boolean getOutlineEnabled()
                 {

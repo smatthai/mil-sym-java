@@ -29,6 +29,7 @@ import org.w3c.dom.Node;
 import ArmyC2.C2SD.RendererPluginInterface.ISinglePointInfo;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.ImageInfo;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 /**
  *
@@ -437,4 +438,94 @@ public class PNGInfo
         }
         return pi;
     }
+    
+    /**
+     * 
+     * @param drawMode 0 - normal, 1 - center, 2 - square
+     * @return 
+     */
+    public String toSVG(int drawMode)
+    {
+        String svg = "<svg></svg>";
+        if(_image != null)
+        {
+            int x = 0;
+            int y = 0;
+            int width = _image.getWidth();
+            int height = _image.getHeight();
+            int svgWidth = width;
+            int svgHeight = height;
+            if(width > 0 && height > 0)
+            {
+                String b64 = "data:image/png;base64," + Base64.encode(getImageAsByteArray());
+
+                if(drawMode == 0)//normal
+                {
+                    svg = "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
+                        "width=\"" + width + 
+                        "\" height=\"" + height + 
+                        "\"><image x=\"0\" y=\"0\"" +
+                        " width=\"" + width + 
+                        "\" height=\"" + height + 
+                        "\" xlink:href=\"" + b64 +  "\" /></svg>";
+                }
+                else if(drawMode == 1)//center
+                {
+                    if(_centerPoint.getY() > svgHeight - _centerPoint.getY())
+                    {
+                        svgHeight = (int)(_centerPoint.getY() * 2.0);
+                        y=0;
+                    }
+                    else
+                    {
+                        svgHeight = (int)((svgHeight - _centerPoint.getY()) * 2);
+                        y = (int)((svgHeight / 2) - _centerPoint.getY());
+                    }
+
+                    if(_centerPoint.getX() > svgWidth - _centerPoint.getX())
+                    {
+                        svgWidth = (int)(_centerPoint.getX() * 2.0);
+                        x=0;
+                    }
+                    else
+                    {
+                        svgWidth = (int)((svgWidth - _centerPoint.getX()) * 2);
+                        x = (int)((svgWidth / 2) - _centerPoint.getX());
+                    }
+
+                    svg = "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
+                    "width=\"" + svgWidth + 
+                    "\" height=\"" + svgHeight + 
+                    "\"><image x=\"" + x + "\" y=\"" + y + "\"" +
+                    " width=\"" + width + 
+                    "\" height=\"" + height + 
+                    "\" xlink:href=\"" + b64 +  "\" /></svg>";
+
+                }
+                else if(drawMode == 2)//square
+                {
+                    int newSize = svgHeight;
+                    if(svgWidth > svgHeight)
+                        newSize = width;
+
+                    if(svgWidth < newSize)
+                        x = (int)((newSize - svgWidth)/2.0);
+
+                    if(svgHeight < newSize)
+                        y = (int)((newSize - svgHeight)/2.0);
+
+
+                    svg = "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
+                        "width=\"" + newSize + 
+                        "\" height=\"" + newSize + 
+                        "\"><image x=\"" + x + "\" y=\"" + y + "\"" +
+                        " width=\"" + width + 
+                        "\" height=\"" + height + 
+                        "\" xlink:href=\"" + b64 +  "\" /></svg>";
+                }
+            }
+        }
+        return svg;
+    }
+    
 }

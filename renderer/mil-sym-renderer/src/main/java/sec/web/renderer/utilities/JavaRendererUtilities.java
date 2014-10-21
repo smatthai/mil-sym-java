@@ -940,4 +940,105 @@ public class JavaRendererUtilities {
          return LookAtTag.toString();
     }
     
+    /**
+     * we only have font lookups for F,H,N,U.  But the shapes match one of these
+     * four for the remaining affiliations.  So we convert the string to a base
+     * affiliation before we do the lookup.
+     * @param symbolID
+     * @return 
+    */      
+    public static String sanitizeSymbolID(String symbolID)
+    {
+        String code = symbolID;
+        char affiliation = symbolID.charAt(1);
+
+        if(SymbolUtilities.isWeather(symbolID)==false)
+        {
+            if(affiliation == 'F' ||//friendly
+                    affiliation == 'H' ||//hostile
+                    affiliation == 'U' ||//unknown
+                    affiliation == 'N' )//neutral
+            {
+                //code = code;
+            }
+            else if(affiliation == 'S')//suspect
+                code = code.charAt(0) + "H" + code.substring(2, 15);
+            else if(affiliation == 'L')//exercise neutral
+                code = code.charAt(0) + "N" + code.substring(2, 15);
+            else if(affiliation == 'A' ||//assumed friend
+                    affiliation == 'D' ||//exercise friend
+                    affiliation == 'M' ||//exercise assumed friend
+                    affiliation == 'K' ||//faker
+                    affiliation == 'J')//joker
+                code = code.charAt(0) + "F" + code.substring(2, 15);
+            else if(affiliation == 'P' ||//pending
+                    affiliation == 'G' ||//exercise pending
+                    affiliation == 'O' ||//? brought it over from mitch's code
+                    affiliation == 'W')//exercise unknown
+                code = code.charAt(0) + "U" + code.substring(2, 15);
+            else
+                code = code.charAt(0) + "U" + code.substring(2, 15);
+
+            code = code.substring(0,10) + "-----";
+        }
+
+        return code;
+    };
+    
+    public static Map<String, String> parseIconParameters(String symbolId, Map<String, String> params)
+    {
+        Map<String, String> iconInfo = new HashMap<String, String>();
+        //if icon == true, make sure keepUnitRatio defaults to false.
+        iconInfo.put(MilStdAttributes.KeepUnitRatio,"false");
+
+        if(SymbolUtilities.isWarfighting(symbolId))
+        {
+            Color fillColor = SymbolUtilities.getFillColorOfAffiliation(symbolId);
+            iconInfo.put(MilStdAttributes.FillColor,SymbolUtilities.colorToHexString(fillColor, Boolean.TRUE));
+        }
+        if(params.containsKey(MilStdAttributes.FillColor))
+        {
+            iconInfo.put(MilStdAttributes.FillColor,params.get(MilStdAttributes.FillColor));
+        }
+        if(symbolId.substring(0, 1).equals("G"))
+        {
+            Color fillColor = SymbolUtilities.getLineColorOfAffiliation(symbolId);
+            iconInfo.put(MilStdAttributes.LineColor,SymbolUtilities.colorToHexString(fillColor, Boolean.TRUE));
+        }
+        if(params.containsKey(MilStdAttributes.LineColor))
+        {
+            iconInfo.put(MilStdAttributes.LineColor,params.get(MilStdAttributes.LineColor));
+        }
+        if(params.containsKey(MilStdAttributes.SymbologyStandard))
+        {
+            iconInfo.put(MilStdAttributes.SymbologyStandard,params.get(MilStdAttributes.SymbologyStandard));
+        }
+        if(params.containsKey(MilStdAttributes.KeepUnitRatio))
+        {
+            iconInfo.put(MilStdAttributes.KeepUnitRatio,params.get(MilStdAttributes.KeepUnitRatio));
+        }
+        if(params.containsKey(MilStdAttributes.Alpha))
+        {
+            iconInfo.put(MilStdAttributes.Alpha,params.get(MilStdAttributes.Alpha));
+        }
+        if(params.containsKey(MilStdAttributes.Renderer))
+        {
+            iconInfo.put(MilStdAttributes.Renderer,params.get(MilStdAttributes.Renderer));
+        }
+        if(params.containsKey(MilStdAttributes.PixelSize))
+        {
+            iconInfo.put(MilStdAttributes.PixelSize,params.get(MilStdAttributes.PixelSize));
+        }
+        if(params.containsKey(MilStdAttributes.OutlineColor))
+        {
+            iconInfo.put(MilStdAttributes.OutlineColor,params.get(MilStdAttributes.OutlineColor));
+        }
+        iconInfo.put(MilStdAttributes.OutlineSymbol,"false");
+        iconInfo.put("ICON","true");
+        return iconInfo;
+            
+    }
+    
+    
+    
 }

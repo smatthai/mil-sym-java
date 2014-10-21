@@ -1,7 +1,7 @@
 package sec.web.renderer.model;
 
 public enum RenderingDataEnums {
-	IMAGE("image"), KML("kml"), MP3D("mp3d"), MP2D("mp2d"), SPBI("spbi");
+	IMAGE("image"), KML("kml"), MP3D("mp3d"), MP2D("mp2d"), SPBI("spbi"), SVG("svg"), SVGZ("svgz");
 
 	private String type;
 	
