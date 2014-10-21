@@ -27,7 +27,7 @@ public class PortableWrapper {
                     message += "\n\t-spon\t\tstarts the single point service. (default true)";
                     message += "\n\t-spport\t\tdesired port for the single point service. (default 6789)";
                     message += "\n\t-spbacklog\tdesired backlog for the single point service.  (default 0, lets system decide)";
-                    message += "\n\t-spon\t\tstarts the multi point service. (default true)";
+                    message += "\n\t-mpon\t\tstarts the multi point service. (default true)";
                     message += "\n\t-mpport\t\tdesired port for the multi point service. (default 6790)";
                     message += "\n\t-mpbacklog\tdesired backlog for the single point service.  (default 0, lets system decide)";
                     System.out.println(message);
