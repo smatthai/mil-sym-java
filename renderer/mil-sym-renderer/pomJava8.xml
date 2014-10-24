@@ -17,6 +17,10 @@
 		<security.dir>${project.basedir}/src/main/resources/security</security.dir>
 		<sec.dependency.version>${project.version}</sec.dependency.version>
 		<mainClass>sec.web.renderer.portable.PortableWrapper</mainClass>
+                <!-- <maven.build.timestamp.format>MM/dd/yyyy-HH:mm</maven.build.timestamp.format> -->
+                <dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
+                <maven.build.timestamp.format>MMddyy</maven.build.timestamp.format>
+                <dev.build.buildnumber>${maven.build.timestamp}</dev.build.buildnumber>
         <zip.assembly>${project.basedir}/src/main/resources/assembly/zipAssembly.xml</zip.assembly>
 	</properties>
 
@@ -87,6 +91,10 @@
 						<manifestEntries>
 							<Main-Class>${mainClass}</Main-Class>
 							<Implementation-Title>SEC Renderer</Implementation-Title>
+                                                        <Implementation-Version>${project.version}</Implementation-Version>
+                                                        <Implementation-Vendor>CERDEC SED BCSD</Implementation-Vendor>
+                                                        <Build-Number>${dev.build.buildnumber}</Build-Number>
+                                                        <Build-Date>${dev.build.timestamp}</Build-Date>
 						</manifestEntries>
 					</archive>
 				</configuration>
