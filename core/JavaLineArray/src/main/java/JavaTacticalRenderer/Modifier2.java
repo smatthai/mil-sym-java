@@ -3870,6 +3870,7 @@ public class Modifier2 {
                             AddIntegralAreaModifier(tg, label, area, 0, ptCenter, ptCenter, true);
                             break;
                     }
+                    break;
                 case TacticalLines.KILLBOXBLUE_CIRCULAR:
                 case TacticalLines.KILLBOXPURPLE_CIRCULAR:
                     rfaLines = getRFALines(tg);
