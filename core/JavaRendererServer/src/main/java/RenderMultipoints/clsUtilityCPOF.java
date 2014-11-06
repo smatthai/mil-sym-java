@@ -693,7 +693,7 @@ public final class clsUtilityCPOF {
             {
                 //set tg.Pixels to the left shapes for the call to Change1PixelsToShapes
                 tg.Pixels=farLeftPixels;
-                Modifier2.AddModifiers2(tg);
+                //Modifier2.AddModifiers2(tg);
                 Change1PixelsToShapes(tg,shapesLeft);
                 //set tg.Pixels to the right shapes for the call to Change1PixelsToShapes
                 tg.Pixels=farRightPixels;

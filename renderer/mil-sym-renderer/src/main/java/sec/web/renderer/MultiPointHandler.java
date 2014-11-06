@@ -440,6 +440,47 @@ public class MultiPointHandler {
         else
             return false;
     }
+    /**
+     * Assumes bbox is of form left, right, bottom, top and it is currently only using the width
+     * to calculate a reasonable scale. If the original scale is within the max and min range it
+     * returns the original scale.
+     * @param bbox
+     * @param origScale
+     * @return 
+     */
+    private static double getReasonableScale(String bbox, double origScale)
+    {
+        double scale=origScale;
+        try
+        {
+            String[] bounds = bbox.split(",");
+            double left = Double.valueOf(bounds[0]).doubleValue();
+            double right = Double.valueOf(bounds[2]).doubleValue();
+            double top = Double.valueOf(bounds[3]).doubleValue();
+            double bottom = Double.valueOf(bounds[1]).doubleValue();
+            POINT2 ul=new POINT2(left,top);
+            POINT2 ur=new POINT2(right,top);
+            //POINT2 ll=new POINT2(left,bottom);
+            double widthInMeters=mdlGeodesic.geodesic_distance(ul, ur, null, null);
+            //double metersHigh=mdlGeodesic.geodesic_distance(ul, ll, null, null);
+            double maxWidthInPixels=_maxPixelWidth;   //this should be RendererSettings.getMaxPixels
+            double minScale=(maxWidthInPixels/widthInMeters)*(1.0d/96.0d)*(1.0d/39.37d);
+            minScale=1.0d/minScale;
+            if(origScale<minScale)
+                return minScale;
+                        
+            double minWidthInPixels=_minPixelWidth;  //is this reasonable????? and would become RendererSettings.getMinPixels 
+            double maxScale=(minWidthInPixels/widthInMeters)*(1.0d/96.0d)*(1.0d/39.37d);
+            maxScale=1.0d/maxScale;
+            if(origScale>maxScale)
+                return maxScale;
+        }
+    catch (Exception exc) {
+            String st = JavaRendererUtilities.getStackTrace(exc);            
+            ErrorLogger.LogException("MultiPointHandler", "getReasonableScale", exc);
+        }    
+        return scale;
+    }
     
     /**
      * 
@@ -594,6 +635,7 @@ public class MultiPointHandler {
                 right = Double.valueOf(bounds[2]).doubleValue();
                 top = Double.valueOf(bounds[3]).doubleValue();
                 bottom = Double.valueOf(bounds[1]).doubleValue();
+                scale=getReasonableScale(bbox,scale);
                 ipc = new PointConverter(left, top, scale);
             }
 
