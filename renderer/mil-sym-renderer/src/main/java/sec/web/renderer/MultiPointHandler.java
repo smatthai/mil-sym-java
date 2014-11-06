@@ -89,6 +89,9 @@ public class MultiPointHandler {
     */
     public static final int Symbology_2525C = 1;
     
+    private static final int _maxPixelWidth = 1000;
+    private static final int _minPixelWidth = 100;
+    
     /**
      * GE has the unusual distinction of being an application with coordinates outside its own extents.
      * It appears to only be a problem when lines cross the IDL
