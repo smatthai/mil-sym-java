@@ -1856,7 +1856,7 @@ public class Modifier2 {
             double dist = 0;
             POINT2 lastPt = null;
             boolean doublesBack = false;
-            long lineType=tg.get_LineType();
+            long lineType = tg.get_LineType();
             //we want the middle segment to be visible            
             //middleSegment=tg.Pixels.size() / 2 - 1;
             middleSegment = (tg.Pixels.size() + 1) / 2 - 1;
@@ -1875,8 +1875,7 @@ public class Modifier2 {
                     continue;
                 }
                 //diagnostic
-                if (j > 0 && lineType == TacticalLines.BOUNDARY)
-                {
+                if (j > 0 && lineType == TacticalLines.BOUNDARY) {
                     if (lastPt == null) {
                         lastPt = tg.Pixels.get(j - 1);
                     }
@@ -1904,8 +1903,7 @@ public class Modifier2 {
                         continue;
                     }
                     //diagnostic
-                    if (j > 0 && lineType == TacticalLines.BOUNDARY)
-                    {
+                    if (j > 0 && lineType == TacticalLines.BOUNDARY) {
                         if (lastPt == null) {
                             lastPt = tg.Pixels.get(j - 1);
                         }
@@ -1978,8 +1976,7 @@ public class Modifier2 {
                     continue;
                 }
                 //diagnostic
-                if (j > 0 && lineType == TacticalLines.BOUNDARY)
-                {
+                if (j > 0 && lineType == TacticalLines.BOUNDARY) {
                     if (lastPt == null) {
                         lastPt = tg.Pixels.get(j - 1);
                     }
@@ -2007,8 +2004,7 @@ public class Modifier2 {
                         continue;
                     }
                     //diagnostic
-                    if (j > 0 && lineType == TacticalLines.BOUNDARY)
-                    {
+                    if (j > 0 && lineType == TacticalLines.BOUNDARY) {
                         if (lastPt == null) {
                             lastPt = tg.Pixels.get(j - 1);
                         }
@@ -2338,7 +2334,7 @@ public class Modifier2 {
         try {
             switch (tg.get_LineType()) {
                 case TacticalLines.CFL:
-                //case TacticalLines.FSCL:
+                    //case TacticalLines.FSCL:
                     //case TacticalLines.RFL:
                     break;
                 default:
@@ -3273,44 +3269,35 @@ public class Modifier2 {
                     break;
                 case TacticalLines.BS_LINE:
                 case TacticalLines.BBS_LINE:
-                    if(tg.get_T1()==null || tg.get_T1().isEmpty())
-                    {
+                    if (tg.get_T1() == null || tg.get_T1().isEmpty()) {
                         AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, pt0, pt1, false);
                         AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);
-                    }
-                    else
-                    {
-                        if(tg.get_T1().equalsIgnoreCase("1"))
-                        {
-                            for(j=0;j<tg.Pixels.size()-1;j++)                            
-                                AddIntegralAreaModifier(tg, tg.get_Name(), aboveMiddle, 0, tg.Pixels.get(j), tg.Pixels.get(j+1), false);                                                            
-                        }
-                        else if(tg.get_T1().equalsIgnoreCase("2"))
-                        {
+                    } else {
+                        if (tg.get_T1().equalsIgnoreCase("1")) {
+                            for (j = 0; j < tg.Pixels.size() - 1; j++) {
+                                AddIntegralAreaModifier(tg, tg.get_Name(), aboveMiddle, 0, tg.Pixels.get(j), tg.Pixels.get(j + 1), false);
+                            }
+                        } else if (tg.get_T1().equalsIgnoreCase("2")) {
                             AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, pt0, pt1, false);
-                            AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);                            
-                        }
-                        else if(tg.get_T1().equalsIgnoreCase("3"))
-                        {
+                            AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);
+                        } else if (tg.get_T1().equalsIgnoreCase("3")) {
                             //either end of the polyline
-                            dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                            dist = lineutility.CalcDistanceDouble(pt0, pt1);
                             stringWidth = metrics.stringWidth(tg.get_Name());
-                            stringWidth /=2;
-                            pt2=lineutility.ExtendAlongLineDouble2(pt1, pt0, dist+stringWidth);
+                            stringWidth /= 2;
+                            pt2 = lineutility.ExtendAlongLineDouble2(pt1, pt0, dist + stringWidth);
                             AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, pt2, pt2, false);
-                            dist=lineutility.CalcDistanceDouble(ptNextToLast, ptLast);
-                            pt2=lineutility.ExtendAlongLineDouble2(ptNextToLast, ptLast, dist+stringWidth);
+                            dist = lineutility.CalcDistanceDouble(ptNextToLast, ptLast);
+                            pt2 = lineutility.ExtendAlongLineDouble2(ptNextToLast, ptLast, dist + stringWidth);
                             AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, pt2, pt2, false);
                             //the intermediate points
-                            for(j=1;j<tg.Pixels.size()-1;j++)
-                            {
+                            for (j = 1; j < tg.Pixels.size() - 1; j++) {
                                 AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, tg.Pixels.get(j), tg.Pixels.get(j), false);
                             }
-                        }
-                        else    //t1 is set inadvertantly or for other graphics
+                        } else //t1 is set inadvertantly or for other graphics
                         {
                             AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, pt0, pt1, false);
-                            AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);                            
+                            AddIntegralAreaModifier(tg, tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);
                         }
                     }
                     break;
@@ -4090,16 +4077,16 @@ public class Modifier2 {
                     }
                     break;
                 case TacticalLines.RANGE_FAN_SECTOR:
-                    if (tg.get_H1() != null && tg.get_H1().equals("") == false) {
-                        H1 = tg.get_H1().split(",");
-                        for (j = 0; j < H1.length; j++) {
-                            if (tg.Pixels.size() > j * 203 + 151)//was j*203 + 50
-                            {
-                                pt0 = tg.Pixels.get(j * 203 + 151);//was j*203 + 50
-                                AddAreaModifier(tg, "ALT " + H1[j], area, 0, pt0, pt0);
-                            }
-                        }
-                    }
+//                    if (tg.get_H1() != null && tg.get_H1().equals("") == false) {
+//                        H1 = tg.get_H1().split(",");
+//                        for (j = 0; j < H1.length; j++) {
+//                            if (tg.Pixels.size() > j * 203 + 151)//was j*203 + 50
+//                            {
+//                                pt0 = tg.Pixels.get(j * 203 + 151);//was j*203 + 50
+//                                AddAreaModifier(tg, "ALT " + H1[j], area, 0, pt0, pt0);
+//                            }
+//                        }
+//                    }                    
                     break;
                 default:
                     return;
@@ -4112,7 +4099,94 @@ public class Modifier2 {
                     new RendererException("Failed inside AddModifiers2", exc));
         }
     }
+    /**
+     * Added sector range fan modifiers based using the calculated orientation indicator points
+     * @param tg
+     * @param converter
+     * @return 
+     */
+    public static boolean addSectorModifiers(TGLight tg, IPointConversion converter)
+    {
+        int linetype=tg.get_LineType();
+        if(linetype != TacticalLines.RANGE_FAN_SECTOR)
+            return false;
+        
+            ArrayList<Double>AM=new ArrayList();
+            //get the number of sectors
+            String H2 = tg.get_H2();
+            String H1 = tg.get_H1();
+            //H1 modifier is passed as left azimuth,right azimuth,min radius,max radius
+            String[] leftRightMinMax = H2.split(",");
+            String[] altitudes = H1.split(",");
+            //sanity checks
+            double left = 0, right = 0, min = 0, max = 0;
+            int numSectors = leftRightMinMax.length / 4;
 
+            //there must be at least one sector
+            if (numSectors < 1) {
+                return false;
+            }
+
+            if (numSectors * 4 != leftRightMinMax.length) {
+                return false;
+            }
+
+            //left must be  less than right,
+            //min must be less than max, each sector
+            try
+            {
+                for (int k = 0; k < numSectors; k++)
+                {
+                    left = Double.parseDouble(leftRightMinMax[4 * k]);
+                    right = Double.parseDouble(leftRightMinMax[4 * k + 1]);
+                    min = Double.parseDouble(leftRightMinMax[4 * k + 2]);
+                    max = Double.parseDouble(leftRightMinMax[4 * k + 3]);
+                    AM.add(max);
+                }
+            }           
+            catch (NumberFormatException e)
+            {
+                return false;
+            }
+            int n=tg.Pixels.size();
+            //pt0 and pt1 are points for the location indicator
+            POINT2 pt0=tg.Pixels.get(n-5);
+            POINT2 pt1=tg.Pixels.get(n-4);
+            Point2D pt02d=new Point2D.Double(pt0.x,pt0.y);
+            Point2D pt12d=new Point2D.Double(pt1.x,pt1.y);
+            pt02d=converter.PixelsToGeo(pt02d);
+            pt12d=converter.PixelsToGeo(pt12d);
+            pt0.x=pt02d.getX();
+            pt0.y=pt02d.getY();
+            pt1.x=pt12d.getX();
+            pt1.y=pt12d.getY();
+            //azimuth of the orientation indicator
+            double az12=mdlGeodesic.GetAzimuth(pt0, pt1);
+            
+            POINT2 pt2=null;
+            ArrayList<POINT2>locModifier=new ArrayList();
+            Point2D pt22d=null;
+            for(int k=0;k<AM.size();k++)
+            {
+                max=AM.get(k);
+                pt2=mdlGeodesic.geodesic_coordinate(pt0, max, az12);
+                //need locModifier in geo pixels                
+                pt22d=new Point2D.Double(pt2.x,pt2.y);
+                pt22d=converter.GeoToPixels(pt22d);
+                pt2.x=pt22d.getX();
+                pt2.y=pt22d.getY();
+                locModifier.add(pt2);
+            }
+            for(int k=0;k<altitudes.length;k++)
+            {
+                if(k>=locModifier.size())
+                    break;
+                pt0=locModifier.get(k);
+                AddAreaModifier(tg, "ALT " + altitudes[k], area, 0, pt0, pt0);                
+            }
+            return true;
+        
+    }
     /**
      * Displays the tg modifiers using a client Graphics2D, this is an option
      * provided to clients for displaying modifiers without using shapes

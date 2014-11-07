@@ -567,6 +567,9 @@ public final class clsRenderer
                 ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN=milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
                 ArrayList<Double> X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
+                //add zero to the front of the array if it's not there
+                if(AM.get(0)!=0)
+                    AM.add(0, 0d);
                 //double test=AM.get(0);//0th element must be 0, the min range is always 0
                 //if(test != 0d)
                     //AM.add(0,0d);
