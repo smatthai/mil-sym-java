@@ -584,7 +584,7 @@ public final class clsRenderer
                     }
                     tg.set_H1(strH1);
                 }                
-                if(AM != null)
+                if(AM != null && AN != null)
                 {
                     int numSectors=AN.size()/2;
                     double left,right,min=0,max=0;
