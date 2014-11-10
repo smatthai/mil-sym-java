@@ -568,40 +568,43 @@ public final class clsRenderer
                 ArrayList<Double> AN=milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
                 ArrayList<Double> X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
                 //add zero to the front of the array if it's not there
-                if(AM.get(0)!=0)
-                    AM.add(0, 0d);
+                //if(AM.get(0)!=0)
+                //    AM.add(0, 0d);
                 //double test=AM.get(0);//0th element must be 0, the min range is always 0
                 //if(test != 0d)
                     //AM.add(0,0d);
+                if(X!=null)
+                {
+                    String strH1="";
+                    for(int j=0;j<X.size();j++)
+                    {
+                        strH1+=Double.toString(X.get(j));
+                        if(j<X.size()-1)
+                            strH1+=",";                        
+                    }
+                    tg.set_H1(strH1);
+                }                
                 if(AM != null)
                 {
-                    int numSectors=AM.size()-1;
-                    if(AN.size()/2<numSectors)
-                        numSectors=AN.size()/2;
-
+                    int numSectors=AN.size()/2;
                     double left,right,min=0,max=0;
                     //construct left,right,min,max from the arraylists
                     String strLeftRightMinMax="";
-                    String strH1="";
+                    //String strH1="";
                     for(int j=0;j<numSectors;j++)
                     {
                         left=AN.get(2*j);
                         right=AN.get(2*j+1);
+                        if(j+1==AM.size())                            
+                            break;
                         min=AM.get(j);
                         max=AM.get(j+1);
                         strLeftRightMinMax+=Double.toString(left)+","+Double.toString(right)+","+Double.toString(min)+","+Double.toString(max);
                         if(j<numSectors-1)
                             strLeftRightMinMax+=",";
-
-                        if(X!=null && j<X.size())
-                        {
-                            strH1+=Double.toString(X.get(j));
-                            if(j<numSectors-1 && j<X.size()-1)
-                                strH1+=",";
-                        }
+                        
                     }
                     tg.set_H2(strLeftRightMinMax);
-                    tg.set_H1(strH1);
                 }
             }
             int j=0;
