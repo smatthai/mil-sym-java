@@ -705,6 +705,8 @@ public class clsClipQuad {
     private static Boolean isClosed(ArrayList<POINT2>pts)
     {
         boolean closed=false;
+        if(pts==null || pts.isEmpty())
+            return false;
         POINT2 pt0=pts.get(0);
         POINT2 ptLast=pts.get(pts.size()-1);
         if(pt0.x==ptLast.x && pt0.y==ptLast.y)
