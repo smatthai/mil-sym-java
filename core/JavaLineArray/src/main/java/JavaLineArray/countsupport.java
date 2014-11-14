@@ -106,12 +106,12 @@ public final class countsupport
                     count = flot.GetAnchorageCountDouble(pLinePoints, vblCounter);
                     break;
                 case TacticalLines.LRO:
-                    int xCount=GetXPointsCount(pLinePoints,vblCounter);
-                    int lvoCount=GetLVOCount(pLinePoints,vblCounter);
+                    int xCount=GetXPointsCount(vbiDrawThis, pLinePoints,vblCounter);
+                    int lvoCount=GetLVOCount(vbiDrawThis, pLinePoints,vblCounter);
                     count=xCount+lvoCount;
                     break;
                 case TacticalLines.LVO:
-                    count=GetLVOCount(pLinePoints,vblCounter);
+                    count=GetLVOCount(vbiDrawThis, pLinePoints,vblCounter);
                     break;
                 case TacticalLines.ICING:
                     vblCounter = GetIcingCount(pLinePoints, vblCounter);
@@ -606,7 +606,7 @@ public final class countsupport
         return count;
     }
 
-    protected static int GetXPointsCount(POINT2[] pOriginalLinePoints, int vblCounter)
+    protected static int GetXPointsCount(int linetype, POINT2[] pOriginalLinePoints, int vblCounter)
     {
         int xCounter=0;
         try
@@ -619,6 +619,8 @@ public final class countsupport
             {
                 d=lineutility.CalcDistanceDouble(pOriginalLinePoints[j],pOriginalLinePoints[j+1]);
                 numThisSegment=(int)((d-10)/20);
+                if(linetype==TacticalLines.LRO)
+                    numThisSegment=(int)((d-15)/30);
                 xCounter += 4*numThisSegment;
             }
         }
@@ -630,7 +632,7 @@ public final class countsupport
         return xCounter;
     }
 
-    protected static int GetLVOCount(POINT2[] pOriginalLinePoints, int vblCounter)
+    protected static int GetLVOCount(int linetype, POINT2[] pOriginalLinePoints, int vblCounter)
     {
         int lEllipseCounter = 0;
         try {
@@ -642,6 +644,8 @@ public final class countsupport
                 d = lineutility.CalcDistanceDouble(pOriginalLinePoints[j], pOriginalLinePoints[j + 1]);
                 //lHowManyThisSegment = (int) ((d - 20) / 20);
                 lHowManyThisSegment = (int) ((d - 20) / 20)+1;
+                if(linetype==TacticalLines.LRO)
+                    lHowManyThisSegment = (int) ((d - 30) / 30)+1;
                 lEllipseCounter += lHowManyThisSegment*37;
             }
         } catch (Exception exc) {

@@ -1659,7 +1659,7 @@ public final class arraysupport
         }
         return counter;
     }
-    private static int GetXPoints(POINT2[] pOriginalLinePoints, POINT2[] XPoints, int vblCounter)
+    private static int GetXPoints(int linetype, POINT2[] pOriginalLinePoints, POINT2[] XPoints, int vblCounter)
     {
         int xCounter=0;
         try
@@ -1673,6 +1673,8 @@ public final class arraysupport
             {
                 d=lineutility.CalcDistanceDouble(pOriginalLinePoints[j],pOriginalLinePoints[j+1]);
                 numThisSegment=(int)( (d-20d)/20d);
+                if(linetype==TacticalLines.LRO)
+                    numThisSegment=(int)( (d-30d)/30d);
                 //added 4-19-12
                 distInterval=d/numThisSegment;
                 for(k=0;k<numThisSegment;k++)
@@ -1736,7 +1738,7 @@ public final class arraysupport
         }
         return pEllipsePoints;
     }
-    private static int GetLVOPoints(POINT2[] pOriginalLinePoints, POINT2[] pLinePoints, int vblCounter)
+    private static int GetLVOPoints(int linetype, POINT2[] pOriginalLinePoints, POINT2[] pLinePoints, int vblCounter)
     {
         int lEllipseCounter = 0;
         try {
@@ -1754,7 +1756,8 @@ public final class arraysupport
                 d = lineutility.CalcDistanceDouble(pOriginalLinePoints[j], pOriginalLinePoints[j + 1]);
                 //lHowManyThisSegment = (int) ((d - 10) / 10);                
                 lHowManyThisSegment = (int) ((d - 20) / 20);
-                
+                if(linetype==TacticalLines.LRO)
+                    lHowManyThisSegment = (int) ((d - 30) / 30);
                 //added 4-19-12
                 distInterval=d/lHowManyThisSegment;
                 
@@ -2623,12 +2626,12 @@ public final class arraysupport
                     acCounter=GetAnchorageDouble(pLinePoints,vblSaveCounter);
                     break;
                 case TacticalLines.LRO:
-                    int xCount=countsupport.GetXPointsCount(pOriginalLinePoints, vblSaveCounter);
+                    int xCount=countsupport.GetXPointsCount(lineType, pOriginalLinePoints, vblSaveCounter);
                     POINT2 []xPoints2=new POINT2[xCount];
-                    int lvoCount=countsupport.GetLVOCount(pOriginalLinePoints, vblSaveCounter);
+                    int lvoCount=countsupport.GetLVOCount(lineType, pOriginalLinePoints, vblSaveCounter);
                     POINT2 []lvoPoints=new POINT2[lvoCount];
-                    xCount=GetXPoints(pOriginalLinePoints,xPoints2,vblSaveCounter);
-                    lvoCount=GetLVOPoints(pOriginalLinePoints,lvoPoints,vblSaveCounter);
+                    xCount=GetXPoints(lineType, pOriginalLinePoints,xPoints2,vblSaveCounter);
+                    lvoCount=GetLVOPoints(lineType, pOriginalLinePoints,lvoPoints,vblSaveCounter);
                     for(k=0;k<xCount;k++)
                     {
                         pLinePoints[k]=new POINT2(xPoints2[k]);
@@ -2649,7 +2652,7 @@ public final class arraysupport
                     acCounter=lFlotCount;
                     break;
                 case TacticalLines.LVO:
-                    acCounter=GetLVOPoints(pOriginalLinePoints,pLinePoints,vblSaveCounter);
+                    acCounter=GetLVOPoints(lineType, pOriginalLinePoints,pLinePoints,vblSaveCounter);
                     break;
                 case TacticalLines.ICING:
                     vblCounter=GetIcingPointsDouble(pLinePoints,vblSaveCounter);
