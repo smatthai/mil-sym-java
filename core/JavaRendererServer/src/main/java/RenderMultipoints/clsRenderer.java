@@ -573,6 +573,29 @@ public final class clsRenderer
                 //double test=AM.get(0);//0th element must be 0, the min range is always 0
                 //if(test != 0d)
                     //AM.add(0,0d);
+                if(AM!=null)
+                {
+                    String strT1="";
+                    for(int j=0;j<AM.size();j++)
+                    {
+                        strT1+=Double.toString(AM.get(j));
+                        if(j<AM.size()-1)
+                            strT1+=",";                        
+                    }
+                    tg.set_T1(strT1);
+                }
+                if(AN!=null)
+                {
+                    String strT="";
+                    String az="";
+                    for(int j=0;j<AN.size();j++)
+                    {
+                        strT+=AN.get(j);
+                        if(j<AN.size()-1)
+                            strT+=",";                        
+                    }
+                    tg.set_Name(strT);
+                }
                 if(X!=null)
                 {
                     String strH1="";

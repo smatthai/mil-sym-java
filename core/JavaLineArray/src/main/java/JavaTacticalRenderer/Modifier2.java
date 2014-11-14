@@ -4119,45 +4119,32 @@ public class Modifier2 {
         //get the number of sectors
         String H2 = tg.get_H2();
         String H1 = tg.get_H1();
-        //H1 modifier is passed as left azimuth,right azimuth,min radius,max radius
-        String[] leftRightMinMax = H2.split(",");
+        String T1=tg.get_T1();
+        String T=tg.get_Name();
         String[] altitudes = H1.split(",");
-        //sanity checks
-        double left = 0, right = 0, min = 0, max = 0;
-        int numSectors = leftRightMinMax.length / 4;
-
+        String[] am = T1.split(",");
+        String[] az = T.split(",");
+        double min = 0, max = 0;
+        int numSectors=az.length/2;
         //there must be at least one sector
         if (numSectors < 1) {
             return false;
         }
 
-        if (numSectors * 4 != leftRightMinMax.length) {
-            return false;
-        }
-        boolean usemin=false;
-        if(Double.parseDouble(leftRightMinMax[2])!=0d)
-            usemin=true;
-        //if the AM array begins with 0 use the max values
-        //if the array does not begin with 0 use the min values                
-        try {
-            for (int k = 0; k < numSectors; k++) {
-                //left = Double.parseDouble(leftRightMinMax[4 * k]);
-                //right = Double.parseDouble(leftRightMinMax[4 * k + 1]);
-                min = Double.parseDouble(leftRightMinMax[4 * k + 2]);
-                max = Double.parseDouble(leftRightMinMax[4 * k + 3]);
-                if(usemin)
-                    AM.add(min);
-                else
-                    AM.add(max);
-                if(k==numSectors-1)
-                {
-                    if(usemin)
-                        AM.add(max);
-                }
+        try 
+        {
+            for(int k=0;k<am.length;k++)
+            {
+                min = Double.parseDouble(am[k]);
+                AM.add(min);
             }
-        } catch (NumberFormatException e) {
+        } 
+        catch (NumberFormatException e) {
             return false;
         }
+        if(numSectors+1>AM.size())
+            if(Double.parseDouble(am[0])!=0d)
+                AM.add(0,0d);
         
         int n = tg.Pixels.size();
         //pt0 and pt1 are points for the location indicator
@@ -4178,8 +4165,10 @@ public class Modifier2 {
         ArrayList<POINT2> locModifier = new ArrayList();
         Point2D pt22d = null;
         double radius=0;
-        for (int k = 0; k < AM.size(); k++) {
-            radius = AM.get(k);
+        for (int k = 0; k < numSectors; k++) {
+            if(AM.size()<k+2)
+                break;
+            radius = (AM.get(k)+AM.get(k+1))/2;            
             pt2 = mdlGeodesic.geodesic_coordinate(pt0, radius, az12);
             //need locModifier in geo pixels                
             pt22d = new Point2D.Double(pt2.x, pt2.y);
