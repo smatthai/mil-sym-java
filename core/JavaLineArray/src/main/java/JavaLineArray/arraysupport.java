@@ -2633,7 +2633,8 @@ public final class arraysupport
                     {
                         pLinePoints[k]=new POINT2(xPoints2[k]);
                     }
-                    pLinePoints[xCount-1].style=5;
+                    if(xCount>0)
+                        pLinePoints[xCount-1].style=5;
                     for(k=0;k<lvoCount;k++)
                     {
                         pLinePoints[xCount+k]=new POINT2(lvoPoints[k]);
