@@ -4109,83 +4109,88 @@ public class Modifier2 {
      * @return
      */
     public static boolean addSectorModifiers(TGLight tg, IPointConversion converter) {
-        int linetype = tg.get_LineType();
-        if (linetype != TacticalLines.RANGE_FAN_SECTOR) {
-            return false;
-        }
-
-        ArrayList<Double> AM = new ArrayList();
-        ArrayList<Double> AN = new ArrayList();
-        //get the number of sectors
-        String H2 = tg.get_H2();
-        String H1 = tg.get_H1();
-        String T1=tg.get_T1();
-        String T=tg.get_Name();
-        String[] altitudes = H1.split(",");
-        String[] am = T1.split(",");
-        String[] az = T.split(",");
-        double min = 0, max = 0;
-        int numSectors=az.length/2;
-        //there must be at least one sector
-        if (numSectors < 1) {
-            return false;
-        }
-
-        try 
-        {
-            for(int k=0;k<am.length;k++)
-            {
-                min = Double.parseDouble(am[k]);
-                AM.add(min);
+        try {
+            int linetype = tg.get_LineType();
+            if (linetype != TacticalLines.RANGE_FAN_SECTOR) {
+                return false;
             }
-        } 
-        catch (NumberFormatException e) {
-            return false;
-        }
-        if(numSectors+1>AM.size())
-            if(Double.parseDouble(am[0])!=0d)
-                AM.add(0,0d);
-        
-        int n = tg.Pixels.size();
-        //pt0 and pt1 are points for the location indicator
-        POINT2 pt0 = tg.Pixels.get(n - 5);
-        POINT2 pt1 = tg.Pixels.get(n - 4);
-        Point2D pt02d = new Point2D.Double(pt0.x, pt0.y);
-        Point2D pt12d = new Point2D.Double(pt1.x, pt1.y);
-        pt02d = converter.PixelsToGeo(pt02d);
-        pt12d = converter.PixelsToGeo(pt12d);
-        pt0.x = pt02d.getX();
-        pt0.y = pt02d.getY();
-        pt1.x = pt12d.getX();
-        pt1.y = pt12d.getY();
-        //azimuth of the orientation indicator
-        double az12 = mdlGeodesic.GetAzimuth(pt0, pt1);
 
-        POINT2 pt2 = null;
-        ArrayList<POINT2> locModifier = new ArrayList();
-        Point2D pt22d = null;
-        double radius=0;
-        for (int k = 0; k < numSectors; k++) {
-            if(AM.size()<k+2)
-                break;
-            radius = (AM.get(k)+AM.get(k+1))/2;            
-            pt2 = mdlGeodesic.geodesic_coordinate(pt0, radius, az12);
-            //need locModifier in geo pixels                
-            pt22d = new Point2D.Double(pt2.x, pt2.y);
-            pt22d = converter.GeoToPixels(pt22d);
-            pt2.x = pt22d.getX();
-            pt2.y = pt22d.getY();
-            locModifier.add(pt2);
-        }
-        for (int k = 0; k < altitudes.length; k++) {
-            if (k >= locModifier.size()) {
-                break;
+            ArrayList<Double> AM = new ArrayList();
+            ArrayList<Double> AN = new ArrayList();
+            //get the number of sectors
+            String H2 = tg.get_H2();
+            String H1 = tg.get_H1();
+            String T1 = tg.get_T1();
+            String T = tg.get_Name();
+            String[] altitudes = H1.split(",");
+            String[] am = T1.split(",");
+            String[] az = T.split(",");
+            double min = 0, max = 0;
+            int numSectors = az.length / 2;
+            //there must be at least one sector
+            if (numSectors < 1) {
+                return false;
             }
-            pt0 = locModifier.get(k);
-            AddAreaModifier(tg, "ALT " + altitudes[k], area, 0, pt0, pt0);
+
+            try {
+                for (int k = 0; k < am.length; k++) {
+                    min = Double.parseDouble(am[k]);
+                    AM.add(min);
+                }
+            } catch (NumberFormatException e) {
+                return false;
+            }
+            if (numSectors + 1 > AM.size()) {
+                if (Double.parseDouble(am[0]) != 0d) {
+                    AM.add(0, 0d);
+                }
+            }
+
+            int n = tg.Pixels.size();
+            //pt0 and pt1 are points for the location indicator
+            POINT2 pt0 = tg.Pixels.get(n - 5);
+            POINT2 pt1 = tg.Pixels.get(n - 4);
+            Point2D pt02d = new Point2D.Double(pt0.x, pt0.y);
+            Point2D pt12d = new Point2D.Double(pt1.x, pt1.y);
+            pt02d = converter.PixelsToGeo(pt02d);
+            pt12d = converter.PixelsToGeo(pt12d);
+            pt0.x = pt02d.getX();
+            pt0.y = pt02d.getY();
+            pt1.x = pt12d.getX();
+            pt1.y = pt12d.getY();
+            //azimuth of the orientation indicator
+            double az12 = mdlGeodesic.GetAzimuth(pt0, pt1);
+
+            POINT2 pt2 = null;
+            ArrayList<POINT2> locModifier = new ArrayList();
+            Point2D pt22d = null;
+            double radius = 0;
+            for (int k = 0; k < numSectors; k++) {
+                if (AM.size() < k + 2) {
+                    break;
+                }
+                radius = (AM.get(k) + AM.get(k + 1)) / 2;
+                pt2 = mdlGeodesic.geodesic_coordinate(pt0, radius, az12);
+                //need locModifier in geo pixels                
+                pt22d = new Point2D.Double(pt2.x, pt2.y);
+                pt22d = converter.GeoToPixels(pt22d);
+                pt2.x = pt22d.getX();
+                pt2.y = pt22d.getY();
+                locModifier.add(pt2);
+            }
+            for (int k = 0; k < altitudes.length; k++) {
+                if (k >= locModifier.size()) {
+                    break;
+                }
+                pt0 = locModifier.get(k);
+                AddAreaModifier(tg, "ALT " + altitudes[k], area, 0, pt0, pt0);
+            }
+        } catch (Exception exc) {
+            //clsUtility.WriteFile("Error in Modifier2.AddModifiers2");
+            ErrorLogger.LogException(_className, "addSectorModifiers",
+                    new RendererException("Failed inside addSectorModifiers", exc));
         }
         return true;
-
     }
 
     /**
