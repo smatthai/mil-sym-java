@@ -627,6 +627,11 @@ public final class clsRenderer
                             strLeftRightMinMax+=",";
                         
                     }
+                    int len=strLeftRightMinMax.length();
+                    String c=strLeftRightMinMax.substring(len-1,len);
+                    if(c.equalsIgnoreCase(","))
+                        strLeftRightMinMax=strLeftRightMinMax.substring(0,len-1);
+                    
                     tg.set_H2(strLeftRightMinMax);
                 }
             }
