@@ -1081,7 +1081,7 @@ public class SinglePointRenderer {
         ShapeInfo siTaskForce = null;
         Stroke stroke = new BasicStroke(2);
         Rectangle2D sTaskForce = null;
-        int sideBuffer = 2;
+        int sideBuffer = 3;
 
         try
         {
@@ -1095,7 +1095,8 @@ public class SinglePointRenderer {
                 sTaskForce.setFrame(echelonBounds.getX() - sideBuffer,
                         echelonBounds.getY() - 2,
                         echelonBounds.getWidth() + (sideBuffer*2),
-                        echelonBounds.getHeight()+3);
+                        symbolBounds.getY() - (echelonBounds.getY() - 2));
+                
             }
             else
             {
