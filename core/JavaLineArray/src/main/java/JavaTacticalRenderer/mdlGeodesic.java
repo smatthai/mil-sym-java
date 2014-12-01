@@ -2,21 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package JavaTacticalRenderer;
+
 import JavaLineArray.POINT2;
 import JavaLineArray.ref;
 import JavaLineArray.TacticalLines;
 import java.util.ArrayList;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.RendererException;
+import java.awt.Rectangle;
+
 /**
  * Class to calculate the geodesic based shapes for the Fire Support Areas
+ *
  * @author Michael Deutch
  */
 public final class mdlGeodesic {
+
     private static String _className = "mdlGeodesic";
-    private static double sm_a	= 6378137;
+    private static double sm_a = 6378137;
 
     private static double DegToRad(double deg) {
         return deg / 180.0 * Math.PI;
@@ -25,13 +29,15 @@ public final class mdlGeodesic {
     private static double RadToDeg(double rad) {
         return rad / Math.PI * 180.0;
     }
-/**
- * Returns the azimuth from true north between two points
- * @param c1
- * @param c2
- * @return the azimuth from c1 to c2
- */
-    public static double GetAzimuth(POINT2 c1, 
+
+    /**
+     * Returns the azimuth from true north between two points
+     *
+     * @param c1
+     * @param c2
+     * @return the azimuth from c1 to c2
+     */
+    public static double GetAzimuth(POINT2 c1,
             POINT2 c2) {//was private
         double theta = 0;
         try {
@@ -54,23 +60,25 @@ public final class mdlGeodesic {
             x = x - z;
             theta = Math.atan2(y, x);
             theta = RadToDeg(theta);
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             //System.out.println(e.getMessage());
             //clsUtility.WriteFile("Error in mdlGeodesic.GetAzimuth");
-               ErrorLogger.LogException(_className ,"GetAzimuth",
+            ErrorLogger.LogException(_className, "GetAzimuth",
                     new RendererException("Failed inside GetAzimuth", exc));
         }
         return theta;//RadToDeg(k);
     }
+
     /**
-     * Calculates the distance in meters between two geodesic points.
-     * Also calculates the azimuth from c1 to c2 and from c2 to c1.
+     * Calculates the distance in meters between two geodesic points. Also
+     * calculates the azimuth from c1 to c2 and from c2 to c1.
      *
      * @param c1 the first point
      * @param c2 the last point
-     * @param a12 OUT - an object with a member to hold the calculated azimuth in degrees from c1 to c2
-     * @param a21 OUT - an object with a member to hold the calculated azimuth in degrees from c2 to c1
+     * @param a12 OUT - an object with a member to hold the calculated azimuth
+     * in degrees from c1 to c2
+     * @param a21 OUT - an object with a member to hold the calculated azimuth
+     * in degrees from c2 to c1
      * @return the distance in meters between c1 and c2
      */
     public static double geodesic_distance(POINT2 c1,
@@ -86,8 +94,7 @@ public final class mdlGeodesic {
             //a = sin²(Δlat/2) + cos(lat1).cos(lat2).sin²(Δlong/2)
             //c = 2.atan2(√a, √(1−a))
             //d = R.c
-            if(a12 != null && a21 !=null)
-            {
+            if (a12 != null && a21 != null) {
                 a12.value = new double[1];
                 a21.value = new double[1];
                 //set the azimuth
@@ -111,17 +118,18 @@ public final class mdlGeodesic {
             h = Math.sqrt(a);
             k = Math.sqrt(1 - a);
             h = 2 * Math.atan2(h, k);
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             //System.out.println(e.getMessage());
             //clsUtility.WriteFile("Error in mdlGeodesic.geodesic_distance");
-               ErrorLogger.LogException(_className ,"geodesic_distance",
+            ErrorLogger.LogException(_className, "geodesic_distance",
                     new RendererException("Failed inside geodesic_distance", exc));
         }
         return sm_a * h;
     }
+
     /**
-     * Calculates a geodesic point and given distance and azimuth from the srating geodesic point
+     * Calculates a geodesic point and given distance and azimuth from the
+     * srating geodesic point
      *
      * @param start the starting point
      * @param distance the distance in meters
@@ -133,53 +141,54 @@ public final class mdlGeodesic {
             double distance,
             double azimuth) {
         POINT2 pt = null;
-        try
-        {
+        try {
         //formula
-        //lat2 = asin(sin(lat1)*cos(d/R) + cos(lat1)*sin(d/R)*cos(θ))
-        //lon2 = lon1 + atan2(sin(θ)*sin(d/R)*cos(lat1), cos(d/R)−sin(lat1)*sin(lat2))
+            //lat2 = asin(sin(lat1)*cos(d/R) + cos(lat1)*sin(d/R)*cos(θ))
+            //lon2 = lon1 + atan2(sin(θ)*sin(d/R)*cos(lat1), cos(d/R)−sin(lat1)*sin(lat2))
 
-        double a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0,
-                j = 0, k = 0, l = 0, m = 0, n = 0, p = 0, q = 0;
+            double a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0,
+                    j = 0, k = 0, l = 0, m = 0, n = 0, p = 0, q = 0;
 
-        a = DegToRad(start.y);
-        b = Math.cos(a);
-        c = DegToRad(azimuth);
-        d = Math.sin(a);
-        e = Math.cos(distance / sm_a);
-        f = Math.sin(distance / sm_a);
-        g = Math.cos(c);
+            a = DegToRad(start.y);
+            b = Math.cos(a);
+            c = DegToRad(azimuth);
+            d = Math.sin(a);
+            e = Math.cos(distance / sm_a);
+            f = Math.sin(distance / sm_a);
+            g = Math.cos(c);
         //uncomment to test calculation
-        //var lat2:Number = RadToDeg(Math.asin(Math.sin(DegToRad(start.y)) * Math.cos(DegToRad(distance / sm_a)) + Math.cos(DegToRad(start.y)) * Math.sin(DegToRad(distance / sm_a)) * Math.cos(DegToRad(azimuth))));
-        //lat2 = asin(sin(lat1)*cos(d/R) + cos(lat1)*sin(d/R)*cos(θ))
-        //var lat2:Number = RadToDeg(Math.asin(Math.sin(DegToRad(start.y)) * Math.cos(distance / sm_a) + Math.cos(DegToRad(start.y)) * Math.sin(distance / sm_a) * Math.cos(DegToRad(azimuth))));
-        //double lat2 = RadToDeg(Math.asin(Math.sin(DegToRad(start.y)) * Math.cos(distance / sm_a) + Math.cos(DegToRad(start.y)) * Math.sin(distance / sm_a) * Math.cos(DegToRad(azimuth))));
-        double lat = RadToDeg(Math.asin(d * e + b * f * g));
-        h = Math.sin(c);
-        k = Math.sin(h);
-        l = Math.cos(a);
-        m = DegToRad(lat);
-        n = Math.sin(m);
-        p = Math.atan2(h * f * b, e - d * n);
+            //var lat2:Number = RadToDeg(Math.asin(Math.sin(DegToRad(start.y)) * Math.cos(DegToRad(distance / sm_a)) + Math.cos(DegToRad(start.y)) * Math.sin(DegToRad(distance / sm_a)) * Math.cos(DegToRad(azimuth))));
+            //lat2 = asin(sin(lat1)*cos(d/R) + cos(lat1)*sin(d/R)*cos(θ))
+            //var lat2:Number = RadToDeg(Math.asin(Math.sin(DegToRad(start.y)) * Math.cos(distance / sm_a) + Math.cos(DegToRad(start.y)) * Math.sin(distance / sm_a) * Math.cos(DegToRad(azimuth))));
+            //double lat2 = RadToDeg(Math.asin(Math.sin(DegToRad(start.y)) * Math.cos(distance / sm_a) + Math.cos(DegToRad(start.y)) * Math.sin(distance / sm_a) * Math.cos(DegToRad(azimuth))));
+            double lat = RadToDeg(Math.asin(d * e + b * f * g));
+            h = Math.sin(c);
+            k = Math.sin(h);
+            l = Math.cos(a);
+            m = DegToRad(lat);
+            n = Math.sin(m);
+            p = Math.atan2(h * f * b, e - d * n);
         //uncomment to test calculation
-        //var lon2:Number = start.x + DegToRad(Math.atan2(Math.sin(DegToRad(azimuth)) * Math.sin(DegToRad(distance / sm_a)) * Math.cos(DegToRad(start.y)), Math.cos(DegToRad(distance / sm_a)) - Math.sin(DegToRad(start.y)) * Math.sin(DegToRad(lat))));
-        //lon2 = lon1 + atan2(sin(θ)*sin(d/R)*cos(lat1), cos(d/R)−sin(lat1)*sin(lat2))
-        //var lon2:Number = start.x + RadToDeg(Math.atan2(Math.sin(DegToRad(azimuth)) * Math.sin(distance / sm_a) * Math.cos(DegToRad(start.y)), Math.cos(distance / sm_a) - Math.sin(DegToRad(start.y)) * Math.sin(DegToRad(lat2))));
-        double lon = start.x + RadToDeg(p);
-        pt = new POINT2(lon, lat);
-        }
-        catch (Exception exc) {
+            //var lon2:Number = start.x + DegToRad(Math.atan2(Math.sin(DegToRad(azimuth)) * Math.sin(DegToRad(distance / sm_a)) * Math.cos(DegToRad(start.y)), Math.cos(DegToRad(distance / sm_a)) - Math.sin(DegToRad(start.y)) * Math.sin(DegToRad(lat))));
+            //lon2 = lon1 + atan2(sin(θ)*sin(d/R)*cos(lat1), cos(d/R)−sin(lat1)*sin(lat2))
+            //var lon2:Number = start.x + RadToDeg(Math.atan2(Math.sin(DegToRad(azimuth)) * Math.sin(distance / sm_a) * Math.cos(DegToRad(start.y)), Math.cos(distance / sm_a) - Math.sin(DegToRad(start.y)) * Math.sin(DegToRad(lat2))));
+            double lon = start.x + RadToDeg(p);
+            pt = new POINT2(lon, lat);
+        } catch (Exception exc) {
             //clsUtility.WriteFile("Error in mdlGeodesic.geodesic_distance");
-               ErrorLogger.LogException(_className ,"geodesic_coordinate",
+            ErrorLogger.LogException(_className, "geodesic_coordinate",
                     new RendererException("Failed inside geodesic_coordinate", exc));
         }
         return pt;
     }
+
     /**
-     * Calculates an arc from geodesic point and uses them for the change 1 circular symbols
+     * Calculates an arc from geodesic point and uses them for the change 1
+     * circular symbols
      *
-     * @param pPoints array of 3 points, currently the last 2 points are the same. The first point
-     * is the center and the next point defines the radius.
+     * @param pPoints array of 3 points, currently the last 2 points are the
+     * same. The first point is the center and the next point defines the
+     * radius.
      *
      * @return points for the geodesic circle
      */
@@ -227,7 +236,7 @@ public final class mdlGeodesic {
             if (a12b.value[0] < a12.value[0]) {
                 a12b.value[0] = a12b.value[0] + 360;
             }
-            a12c.value=new double[1];
+            a12c.value = new double[1];
             for (j = 0; j <= 100; j++) {
 
                 a12c.value[0] = a12.value[0] + ((double) j / 100.0) * (a12b.value[0] - a12.value[0]);
@@ -248,16 +257,17 @@ public final class mdlGeodesic {
             }
         } catch (Exception exc) {
             //clsUtility.WriteFile("Error in mdlGeodesic.GetGeodesicArc");
-               ErrorLogger.LogException(_className ,"GetGeodesicArc",
+            ErrorLogger.LogException(_className, "GetGeodesicArc",
                     new RendererException("Failed inside GetGeodesicArc", exc));
         }
         return pPoints2;
     }
+
     /**
      * Calculates the sector points for a sector range fan.
      *
-     * @param pPoints array of 3 points. The first point
-     * is the center and the next two points define either side of the sector
+     * @param pPoints array of 3 points. The first point is the center and the
+     * next two points define either side of the sector
      * @param pPoints2 OUT - the calculated geodesic sector points
      *
      * @return true if the sector is a circle
@@ -291,7 +301,6 @@ public final class mdlGeodesic {
             }
 
             //assume caller has set pPoints2 as new Array
-
             ref<double[]> a12c = new ref();
             a12c.value = new double[1];
             int j = 0;
@@ -311,19 +320,24 @@ public final class mdlGeodesic {
                 pPoint = geodesic_coordinate(ptCenter, dist1, a12c.value[0]);
                 pPoints2.add(pPoint);
             }
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             //System.out.println(e.getMessage());
             //clsUtility.WriteFile("Error in mdlGeodesic.GetGeodesicArc2");
-               ErrorLogger.LogException(_className ,"GetGeodesicArc2",
+            ErrorLogger.LogException(_className, "GetGeodesicArc2",
                     new RendererException("Failed inside GetGeodesicArc2", exc));
         }
         return circle;
     }
+
     /**
-     * @deprecated 
-     * returns intersection of two lines, each defined by a point and a bearing
-     * <a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+     * @deprecated returns intersection of two lines, each defined by a point
+     * and a bearing
+     * <a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img
+     * alt="Creative Commons License" style="border-width:0"
+     * src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br />This
+     * work is licensed under a <a rel="license"
+     * href="http://creativecommons.org/licenses/by/3.0/">Creative Commons
+     * Attribution 3.0 Unported License</a>.
      * @param p1 1st point
      * @param brng1 first line bearing in degrees from true north
      * @param p2 2nd point
@@ -331,7 +345,7 @@ public final class mdlGeodesic {
      * @return
      */
     public static POINT2 IntersectLines(POINT2 p1,
-            double brng1, 
+            double brng1,
             POINT2 p2,
             double brng2) {
         POINT2 ptResult = null;
@@ -345,22 +359,21 @@ public final class mdlGeodesic {
             double dLat = lat2 - lat1;
             double dLon = lon2 - lon1;
 
-
-            double dist12 = 2 * Math.asin(Math.sqrt(Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2)));
+            double dist12 = 2 * Math.asin(Math.sqrt(Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                    + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2)));
 
             if (dist12 == 0) {
                 return null;
             }
 
-            double brngA = Math.acos((Math.sin(lat2) - Math.sin(lat1) * Math.cos(dist12)) /
-                    (Math.sin(dist12) * Math.cos(lat1)));
+            double brngA = Math.acos((Math.sin(lat2) - Math.sin(lat1) * Math.cos(dist12))
+                    / (Math.sin(dist12) * Math.cos(lat1)));
 
             if (Double.isNaN(brngA)) {
                 brngA = 0;  // protect against rounding
             }
-            double brngB = Math.acos((Math.sin(lat1) - Math.sin(lat2) * Math.cos(dist12)) /
-                    (Math.sin(dist12) * Math.cos(lat2)));
+            double brngB = Math.acos((Math.sin(lat1) - Math.sin(lat2) * Math.cos(dist12))
+                    / (Math.sin(dist12) * Math.cos(lat2)));
 
             double brng12 = 0, brng21 = 0;
             if (Math.sin(lon2 - lon1) > 0) {
@@ -382,14 +395,14 @@ public final class mdlGeodesic {
             }
             //alpha1 = Math.abs(alpha1);
             //alpha2 = Math.abs(alpha2);  // ... Ed Williams takes abs of alpha1/alpha2, but seems to break calculation?
-            double alpha3 = Math.acos(-Math.cos(alpha1) * Math.cos(alpha2) +
-                    Math.sin(alpha1) * Math.sin(alpha2) * Math.cos(dist12));
+            double alpha3 = Math.acos(-Math.cos(alpha1) * Math.cos(alpha2)
+                    + Math.sin(alpha1) * Math.sin(alpha2) * Math.cos(dist12));
 
             double dist13 = Math.atan2(Math.sin(dist12) * Math.sin(alpha1) * Math.sin(alpha2),
                     Math.cos(alpha2) + Math.cos(alpha1) * Math.cos(alpha3));
 
-            double lat3 = Math.asin(Math.sin(lat1) * Math.cos(dist13) +
-                    Math.cos(lat1) * Math.sin(dist13) * Math.cos(brng13));
+            double lat3 = Math.asin(Math.sin(lat1) * Math.cos(dist13)
+                    + Math.cos(lat1) * Math.sin(dist13) * Math.cos(brng13));
             double dLon13 = Math.atan2(Math.sin(brng13) * Math.sin(dist13) * Math.cos(lat1),
                     Math.cos(dist13) - Math.sin(lat1) * Math.sin(lat3));
             double lon3 = lon1 + dLon13;
@@ -406,22 +419,145 @@ public final class mdlGeodesic {
     }
 
     /**
-     * @deprecated 
-     * BELT and other decorated lines require pre-segmenting to create simpler shapes for fill.
+     * Normalizes geo points for arrays which span the IDL
+     *
+     * @param geoPoints
+     * @return
+     */
+    public static ArrayList<POINT2> normalize_points(ArrayList<POINT2> geoPoints) {
+        ArrayList<POINT2> normalizedPts = null;
+        try {
+            if (geoPoints == null || geoPoints.isEmpty()) {
+                return normalizedPts;
+            }
+
+            int j = 0;
+            double minx = geoPoints.get(0).x;
+            double maxx = minx;
+            //double miny=geoPoints.get(0).y;
+            //double maxy=miny;
+            boolean spansIDL = false;
+            POINT2 pt = null;
+            for (j = 1; j < geoPoints.size(); j++) {
+                pt = geoPoints.get(j);
+                if (pt.x < minx) {
+                    minx = pt.x;
+                }
+                if (pt.x > maxx) {
+                    maxx = pt.x;
+                }
+            }
+            if (maxx - minx > 180) {
+                spansIDL = true;
+            }
+
+            if (!spansIDL) {
+                return geoPoints;
+            }
+
+            normalizedPts = new ArrayList();
+            for (j = 0; j < geoPoints.size(); j++) {
+                pt = geoPoints.get(j);
+                if (pt.x < 0) {
+                    pt.x += 360;
+                }
+                normalizedPts.add(pt);
+            }
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "normalize_pts",
+                    new RendererException("Failed inside normalize_pts", exc));
+        }
+        return normalizedPts;
+    }
+
+    /**
+     * calculates the geodesic MBR, intended for regular shaped areas
+     *
+     * @param geoPoints
+     * @return
+     */
+    public static Rectangle.Double geodesic_mbr(ArrayList<POINT2> geoPoints) {
+        Rectangle.Double rect2d = null;
+        try {
+            if (geoPoints == null || geoPoints.isEmpty()) {
+                return rect2d;
+            }
+            
+            ArrayList<POINT2>normalizedPts=normalize_points(geoPoints);
+            double ulx=normalizedPts.get(0).x;
+            double lrx=ulx;
+            double uly=normalizedPts.get(0).y;
+            double lry=uly;
+            int j=0;
+            POINT2 pt=null;
+            for(j=1;j<normalizedPts.size();j++)
+            {
+                pt=normalizedPts.get(j);
+                if(pt.x<ulx)
+                    ulx=pt.x;
+                if(pt.x>lrx)
+                    lrx=pt.x;
+            
+                if(pt.y>uly)
+                    uly=pt.y;
+                if(pt.y<lry)
+                    lry=pt.y;
+            }
+            POINT2 ul=new POINT2(ulx,uly);
+            POINT2 ur=new POINT2(lrx,uly);
+            POINT2 lr=new POINT2(lrx,lry);
+            double width=geodesic_distance(ul,ur,null,null);
+            double height=geodesic_distance(ur,lr,null,null);
+            rect2d=new Rectangle.Double(ulx,uly,width,height);
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "geodesic_mbr",
+                    new RendererException("Failed inside geodesic_mbr", exc));
+        }
+        return rect2d;
+    }
+
+    /**
+     * Currently used by AddModifiers for greater accuracy on center labels
+     *
+     * @param geoPoints
+     * @return
+     */
+    public static POINT2 geodesic_center(ArrayList<POINT2> geoPoints) {
+        POINT2 pt = null;
+        try {
+            if(geoPoints==null || geoPoints.isEmpty())
+                return pt;
+            
+            Rectangle.Double rect2d=geodesic_mbr(geoPoints);
+            double deltax=rect2d.getWidth()/2;
+            double deltay=rect2d.getHeight()/2;
+            POINT2 ul=new POINT2(rect2d.x,rect2d.y);
+            //first walk east by deltax
+            POINT2 ptEast=geodesic_coordinate(ul,deltax,90);
+            //next walk south by deltay;
+            pt=geodesic_coordinate(ptEast,deltay,180);
+            
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "geodesic_center",
+                    new RendererException("Failed inside geodesic_center", exc));
+        }
+        return pt;
+    }
+
+    /**
+     * @deprecated BELT and other decorated lines require pre-segmenting to
+     * create simpler shapes for fill.
      * @param geoPoints
      * @param interval
      * @return
      */
-    public static ArrayList<POINT2>SegmentGeoPoints(ArrayList<POINT2>geoPoints, 
+    public static ArrayList<POINT2> SegmentGeoPoints(ArrayList<POINT2> geoPoints,
             double interval,
-            int lineType)
-    {
-        ArrayList<POINT2>resultPts=new ArrayList();
-        try
-        {
+            int lineType) {
+        ArrayList<POINT2> resultPts = new ArrayList();
+        try {
             //return early for those lines not requiring pre-segmenting geo points
-            switch(lineType)
-            {
+            switch (lineType) {
                 case TacticalLines.DMAF:
                 case TacticalLines.STRONG:
                 case TacticalLines.TRIPLE:
@@ -451,33 +587,31 @@ public final class mdlGeodesic {
                 default:
                     return geoPoints;
             }
-            int j=0,k=0,n=0;
-            POINT2 pt0=null,pt1=null,pt=null;
-            double dist=0;
-            double az=0;
-            double remainder=0;
-            for(j=0;j<geoPoints.size()-1;j++)
-            {
-                pt0=geoPoints.get(j);
-                pt1=geoPoints.get(j+1);
-                az=GetAzimuth(pt0,pt1);
-                dist=geodesic_distance(geoPoints.get(j),geoPoints.get(j+1),null,null);
-                n=(int)(dist/interval);
+            int j = 0, k = 0, n = 0;
+            POINT2 pt0 = null, pt1 = null, pt = null;
+            double dist = 0;
+            double az = 0;
+            double remainder = 0;
+            for (j = 0; j < geoPoints.size() - 1; j++) {
+                pt0 = geoPoints.get(j);
+                pt1 = geoPoints.get(j + 1);
+                az = GetAzimuth(pt0, pt1);
+                dist = geodesic_distance(geoPoints.get(j), geoPoints.get(j + 1), null, null);
+                n = (int) (dist / interval);
                 //don't use too-short segments
-                remainder=dist-n*interval;
-                if(remainder<interval/2)
-                    n-=1;
-                
+                remainder = dist - n * interval;
+                if (remainder < interval / 2) {
+                    n -= 1;
+                }
+
                 resultPts.add(pt0);
-                for(k=1;k<=n;k++)
-                {
-                    pt=geodesic_coordinate(pt0,interval*k,az);
+                for (k = 1; k <= n; k++) {
+                    pt = geodesic_coordinate(pt0, interval * k, az);
                     resultPts.add(pt);
                 }
             }
             resultPts.add(pt1);
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             ErrorLogger.LogException(_className, "SegmentGeoPoints",
                     new RendererException("Failed inside SegmentGeoPoints", exc));
         }

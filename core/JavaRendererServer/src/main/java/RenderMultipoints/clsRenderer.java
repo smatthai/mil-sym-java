@@ -1616,7 +1616,8 @@ public final class clsRenderer
             tg.modifiers=new ArrayList();
             BufferedImage bi=new BufferedImage(8,8,BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d=bi.createGraphics();
-            Modifier2.AddModifiers(tg,g2d,clipArea);
+            //Modifier2.AddModifiers(tg,g2d,clipArea);
+            Modifier2.AddModifiersGeo(tg,g2d,clipArea,converter);
             
             clsUtilityCPOF.FilterPoints2(tg,converter);
             JavaTacticalRenderer.clsUtility.FilterVerticalSegments(tg);
