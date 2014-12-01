@@ -1,5 +1,6 @@
 package sec.web.renderer.portable;
 
+import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import sec.web.renderer.SECRenderer;
 
@@ -24,6 +25,7 @@ public class PortableWrapper {
                     message += "Usage: java -cp [location of jars] sec.web.renderer.portable.PortableWrapper -spport:#### -spbacklog:### -mpport:#### -mpbacklog:###";
                     message += "\nWhere options include:";
                     message += "\n\t-?\t\tprint this help message.";
+                    message += "\n\t-symstd\t\tspecifies which symbology standard to assume. (default \"2525B\")  Set with \"2525B\" or \"2525C\"";
                     message += "\n\t-spon\t\tstarts the single point service. (default true)";
                     message += "\n\t-spport\t\tdesired port for the single point service. (default 6789)";
                     message += "\n\t-spbacklog\tdesired backlog for the single point service.  (default 0, lets system decide)";
@@ -45,6 +47,7 @@ public class PortableWrapper {
                 String spBacklog = null;
                 String mpBacklog = null;
                 String[] parts = null;
+                int symStd = -1;
                 
                 for(int i = 0; i < args.length; i++)
                 {
@@ -101,6 +104,27 @@ public class PortableWrapper {
                         }
                     }
                     
+                    if(args[i].startsWith("-symstd"))
+                    {
+                        parts = args[i].split(":");
+                        if(parts.length == 2)
+                        {
+                            if(parts[1].equalsIgnoreCase("2525B"))
+                                symStd = RendererSettings.Symbology_2525Bch2_USAS_13_14;
+                            else if(parts[1].equalsIgnoreCase("2525C"))
+                                symStd = RendererSettings.Symbology_2525C;
+                            else if(parts[1].equalsIgnoreCase("2525D"))
+                                symStd = RendererSettings.Symbology_2525D;
+                            else if(parts[1].equals("0"))
+                                symStd = RendererSettings.Symbology_2525Bch2_USAS_13_14;
+                            else if(parts[1].equals("1"))
+                                symStd = RendererSettings.Symbology_2525C;
+                            else if(parts[1].equals("2"))
+                                symStd = RendererSettings.Symbology_2525D;
+                            mpOn = Boolean.parseBoolean(parts[1]);
+                        }
+                    }
+                    
                     parts = null;
                 }    
                 
@@ -138,6 +162,10 @@ public class PortableWrapper {
                     sr.startMultiPointServer(mPort, mBacklog);
                 }
                 
+                if(symStd >=0)
+                {
+                    sr.setDefaultSymbologyStandard(symStd);
+                }
 		
 		// System tray
 		RendererSystemTray tray = new RendererSystemTray();

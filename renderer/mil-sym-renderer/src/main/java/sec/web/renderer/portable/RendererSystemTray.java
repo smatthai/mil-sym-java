@@ -1,5 +1,6 @@
 package sec.web.renderer.portable;
 
+import ArmyC2.C2SD.Utilities.RendererSettings;
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.Menu;
@@ -63,6 +64,10 @@ public class RendererSystemTray {
                                     
                                     
                                     String message = "";
+                                    String std = getSymbologyStandardString();
+                                    
+                                    message += "\nSymbology Standard set to: " + std;
+                                    
                                     if(sr.isSinglePointServerRunning())
                                         message += "\nSingle Point Service is running on 127.0.0.1:"  + String.valueOf(sr.getSinglePointServerPort());
                                     if(sr.isMultiPointServerRunning())
@@ -107,6 +112,26 @@ public class RendererSystemTray {
 		
 		return (new ImageIcon(imageURL, descr)).getImage();
 	}
+        
+        private String getSymbologyStandardString()
+        {
+            String std = "2525B";
+            int symstd = RendererSettings.getInstance().getSymbologyStandard();
+            switch(symstd)
+            {
+                case RendererSettings.Symbology_2525Bch2_USAS_13_14:
+                    std = "2525B";
+                    break;
+                case RendererSettings.Symbology_2525C:
+                    std = "2525C";
+                    break;
+                case 2://RendererSettings.Symbology_2525D:
+                    std = "2525D";
+                    break;//*/
+            }
+                    
+            return std;
+        }
 	
 
 

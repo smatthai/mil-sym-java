@@ -126,6 +126,8 @@ public class SECRenderer {
                         sb.append("Trusted-Library: ");
                         sb.append(attribs.getValue("Trusted-Library"));
                         sb.append("\n");
+                        sb.append("\nSymbology Standard set to: " + getSymbologyStandardString());
+                        sb.append("\n");
                     }
                 }
                 catch(Exception exc)
@@ -143,6 +145,26 @@ public class SECRenderer {
         public void printManifestInfo()
         {
             System.out.println(getManifestInfoString());
+        }
+        
+        private String getSymbologyStandardString()
+        {
+            String std = "2525B";
+            int symstd = RendererSettings.getInstance().getSymbologyStandard();
+            switch(symstd)
+            {
+                case RendererSettings.Symbology_2525Bch2_USAS_13_14:
+                    std = "2525B";
+                    break;
+                case RendererSettings.Symbology_2525C:
+                    std = "2525C";
+                    break;
+                case 2://RendererSettings.Symbology_2525D:
+                    std = "2525D";
+                    break;//*/
+            }
+                    
+            return std;
         }
         
         // </editor-fold>
@@ -164,7 +186,7 @@ public class SECRenderer {
 		RendererSettings.getInstance().setTextOutlineWidth(2);
 		//RendererSettings.getInstance().setLabelForegroundColor(Color.BLACK);
 		//RendererSettings.getInstance().setLabelBackgroundColor(new Color(255, 255, 255, 200));
-		RendererSettings.getInstance().setSymbologyStandard(RendererSettings.Symbology_2525Bch2_USAS_13_14);
+		//RendererSettings.getInstance().setSymbologyStandard(RendererSettings.Symbology_2525Bch2_USAS_13_14);
                 RendererSettings.getInstance().setLabelFont("arial", Font.BOLD, 12);//, false, 0.05f);
 		// RendererSettings.getInstance().setLabelBackgroundColor(Color.WHITE);
 		// RendererSettings.getInstance().setLabelFont("arial",

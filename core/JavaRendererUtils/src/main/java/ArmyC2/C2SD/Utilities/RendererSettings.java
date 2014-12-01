@@ -98,6 +98,10 @@ public class RendererSettings {
      * 2525C, which includes 2525Bch2 & USAS 13/14
      */
     public static final int Symbology_2525C = 1;
+    /**
+     * 2525D, not support yet so defaults to 2525C is selected
+     */
+    public static final int Symbology_2525D = 1;
     
     private static int _SymbologyStandard = 0;
 
@@ -189,6 +193,9 @@ public class RendererSettings {
     public void setSymbologyStandard(int standard)
     {
         _SymbologyStandard = standard;
+
+        /*ErrorLogger.LogMessage("symStd set to: " + String.valueOf(standard));
+        System.out.println(ErrorLogger.getStackTrace(new Exception()));//*/
     }
 
     /**

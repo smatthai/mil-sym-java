@@ -1,6 +1,7 @@
 package sec.web.renderer.services.imaging;
 
 import ArmyC2.C2SD.Utilities.MilStdAttributes;
+import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -37,6 +39,7 @@ import sec.web.renderer.utilities.JavaRendererUtilities;
 import sec.web.renderer.utilities.PNGInfo;
 import sec.web.renderer.utils.ImagingUtils;
 import sec.web.renderer.utils.MultiPointUtils;
+import sec.web.renderer.utils.ResourceUtils;
 
 @Controller
 @SuppressWarnings("unused")
@@ -44,8 +47,18 @@ public class ImageGeneratorController {
 	public final String EMPTY_STRING = "";
 	
 	public ImageGeneratorController() {
-		try {
-			SECRenderer.getInstance().printManifestInfo();
+		try 
+                {
+                    Properties props = ResourceUtils.loadResource("properties/prop.properties", this.getClass().getClassLoader());
+                    //get rendering standard
+                    String symStd = props.getProperty("symStd");
+                    System.out.println("SymStd:  " + symStd);
+                    if(SymbolUtilities.isNumber(symStd))
+                    {
+                        RendererSettings.getInstance().setSymbologyStandard(Integer.parseInt(symStd));
+                    }
+                    SECRenderer.getInstance().printManifestInfo();
+                    
 		} catch (Exception exc1) {
 			System.err.println(exc1.getMessage());
 			exc1.printStackTrace();
