@@ -121,7 +121,6 @@ public class PortableWrapper {
                                 symStd = RendererSettings.Symbology_2525C;
                             else if(parts[1].equals("2"))
                                 symStd = RendererSettings.Symbology_2525D;
-                            mpOn = Boolean.parseBoolean(parts[1]);
                         }
                     }
                     
