@@ -66,6 +66,14 @@ public class MilStdAttributes {
     
     public static final String LookAtTag = "LOOKAT";
     
+    /**
+     * If false, the renderer will create a bunch of little lines to create
+     * the "dash" effect (expensive but necessary for KML).  
+     * If true, it will be on the user to create the dash effect using the
+     * DashArray from the Stroke object from the ShapeInfo object.
+     */
+    public static final String UseDashArray = "USEDASHARRAY";
+    
     public static ArrayList<String> GetModifierList()
     {
         ArrayList<String> list = new ArrayList<String>();

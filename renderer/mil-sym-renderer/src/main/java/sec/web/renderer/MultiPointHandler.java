@@ -75,6 +75,7 @@ public class MultiPointHandler {
     private final static String FILL_COLOR = "fillColor";
     private final static String LINE_COLOR = "lineColor";
     private final static String LINE_THICKNESS = "lineThickness";
+    private final static String USE_DASH_ARRAY = "useDashArray";
     
     private final static String SYMBOL_FILL_ICON_SIZE = "symbolFillIconSize";
     private final static String SYMBOL_FILL_IDS = "symbolFillIds";
@@ -774,6 +775,7 @@ public class MultiPointHandler {
             //String fillColor = null;
             MilStdSymbol mSymbol = new MilStdSymbol(symbolCode, null, geoCoords, null);
 
+            mSymbol.setUseDashArray(false);
             //set milstd symbology standard.
             mSymbol.setSymbologyStandard(symStd);
             
@@ -1253,7 +1255,7 @@ public class MultiPointHandler {
 
             String fillColor = null;
             mSymbol = new MilStdSymbol(symbolCode, null, geoCoords, null);
-
+            mSymbol.setUseDashArray(true);
             //set milstd symbology standard.
             mSymbol.setSymbologyStandard(symStd);
             
@@ -1540,7 +1542,7 @@ public class MultiPointHandler {
 
         try {
             MilStdSymbol mSymbol = new MilStdSymbol(symbolCode, null, geoCoords, null);
-            
+            mSymbol.setUseDashArray(false);
             //set milstd symbology standard.
             mSymbol.setSymbologyStandard(symStd);
 
@@ -2293,6 +2295,7 @@ public class MultiPointHandler {
         String lineColor = null;
         
         int lineWidth = 0;
+        boolean useDashArray = symbol.getUseDashArray();
         
         String symbolFillIDs = null;
         String symbolFillIconSize = null;
@@ -2487,6 +2490,13 @@ public class MultiPointHandler {
                 lineWidth = jsonModifiersArray.getInt(LINE_THICKNESS);
             }
             
+            if (jsonModifiersArray.has(USE_DASH_ARRAY) && !jsonModifiersArray.isNull(USE_DASH_ARRAY)) {
+                useDashArray = jsonModifiersArray.getBoolean(USE_DASH_ARRAY);
+            }
+            else if (jsonModifiersArray.has(MilStdAttributes.UseDashArray) && !jsonModifiersArray.isNull(MilStdAttributes.UseDashArray)) {
+                useDashArray = jsonModifiersArray.getBoolean(MilStdAttributes.UseDashArray);
+            }
+            
             // These are for when we create a area fill that is comprised of symbols//////////
             if (jsonModifiersArray.has(SYMBOL_FILL_IDS) && !jsonModifiersArray.isNull(SYMBOL_FILL_IDS)) {
                 modifierMap.put(SYMBOL_FILL_IDS, jsonModifiersArray.getString(SYMBOL_FILL_IDS));
@@ -2528,6 +2538,8 @@ public class MultiPointHandler {
             if (lineWidth > 0) {
                 symbol.setLineWidth(lineWidth);
             }
+            
+            symbol.setUseDashArray(useDashArray);
 
             // Check grpahic modifiers variables.  If we set earlier, populate
             // the fields, otherwise, ignore.

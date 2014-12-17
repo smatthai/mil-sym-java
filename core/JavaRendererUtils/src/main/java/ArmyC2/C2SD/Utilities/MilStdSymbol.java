@@ -89,6 +89,8 @@ public class MilStdSymbol {
 
         private static int _SymbologyStandard = 0;
         
+        private static boolean _UseDashArray = true;
+        
         private static boolean _DrawAffiliationModifierAsLabel = true;
         
         private static boolean _UseLineInterpolation = false;
@@ -247,6 +249,16 @@ public class MilStdSymbol {
                 public int getSymbologyStandard()
                 {
                     return _SymbologyStandard;
+                }
+                
+                public boolean getUseDashArray()
+                {
+                    return _UseDashArray;
+                }
+                
+                public void setUseDashArray(boolean value)
+                {
+                    _UseDashArray = value;
                 }
                 
                 public void setUseLineInterpolation(boolean value)
