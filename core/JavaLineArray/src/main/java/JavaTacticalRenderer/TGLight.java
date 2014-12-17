@@ -441,4 +441,14 @@ public class TGLight {
     {
         _useLineInterpolation=value;
     }
+    boolean _useDashArray=false;
+    public boolean get_UseDashArray()
+    {
+        return _useDashArray;
+    }
+    public void set_UseDashArray(boolean value)
+    {
+        _useDashArray=value;
+    }
+    
 }

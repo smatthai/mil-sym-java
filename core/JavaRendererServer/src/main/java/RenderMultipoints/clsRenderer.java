@@ -550,7 +550,8 @@ public final class clsRenderer
                 tg.set_Location(milStd.getModifier(ModifiersTG.Y_LOCATION));
             if(milStd.getModifier(ModifiersTG.N_HOSTILE) != null)
                 tg.set_N(milStd.getModifier(ModifiersTG.N_HOSTILE));
-
+            tg.set_UseDashArray(milStd.getUseDashArray());
+            
             //int lineType=CELineArray.CGetLinetypeFromString(tg.get_SymbolId());
             //int lineType=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(tg,null);
             boolean isClosedArea=JavaTacticalRenderer.clsUtility.isClosedPolygon(lineType);

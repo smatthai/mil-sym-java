@@ -152,6 +152,8 @@ public final class clsUtilityGE {
     {
         try
         {
+            if(tg.get_UseDashArray()==true)
+                return;
             if(shape.getLineColor()==null)
                 return;
             ArrayList<ArrayList<Point2D>>dashedPolylines=new ArrayList();
