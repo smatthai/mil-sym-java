@@ -229,7 +229,10 @@ public final class clsRenderer2 {
                     clipBounds2=new Rectangle2D.Double(x,y,width,height);
                 }
                 else if(clipBounds.getClass().isAssignableFrom(ArrayList.class))
+                {
                     clipArray=(ArrayList<Point2D>)clipBounds;
+                    clipBounds2=RenderMultipoints.clsUtility.getMBR(clipArray);
+                }
             }
             
             int lineType=tg.get_LineType();
