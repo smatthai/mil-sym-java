@@ -702,7 +702,7 @@ public class clsClipQuad {
         }
         return shapes;
     }
-    private static Boolean isClosed(ArrayList<POINT2>pts)
+    private static Boolean isClosed(ArrayList<POINT2> pts)
     {
         boolean closed=false;
         if(pts==null || pts.isEmpty())
@@ -725,8 +725,8 @@ public class clsClipQuad {
         try 
         {            
             //diagnostic
-            //Boolean isClosed = clsUtility.isClosedPolygon(tg.get_LineType());            
-            Boolean isClosed = isClosed(tg.Pixels);
+            Boolean isClosed = clsUtility.isClosedPolygon(tg.get_LineType());            
+            //Boolean isClosed = isClosed(tg.Pixels);
             //M. Deutch commented one line 12-27-12
             clipBounds=clsUtilityGE.expandPolygon(clipBounds, 20);
             ArrayList polygon = clsUtilityCPOF.POINT2toPoint2D(tg.Pixels);            
