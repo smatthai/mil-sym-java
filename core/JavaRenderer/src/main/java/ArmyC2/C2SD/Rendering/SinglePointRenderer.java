@@ -2002,6 +2002,12 @@ public class SinglePointRenderer {
         ArrayList<ShapeInfo> modifierShapes = null;
         
         int symStd = symbol.getSymbologyStandard();
+        
+        sDef = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(symbol.getSymbolID()),symStd);
+        if(sDef != null)
+        {
+            validModifiers = sDef.getModifiers();
+        }
 
         if(_RendererSettings.getLabelForegroundColor() != null)
         {
@@ -2010,9 +2016,6 @@ public class SinglePointRenderer {
         else if(SymbolUtilities.isTacticalGraphic(symbol.getSymbolID()) && symbol.getLineColor() != null)
         {
             textColor = symbol.getLineColor();
-            sDef = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(symbol.getSymbolID()),symStd);
-            validModifiers = sDef.getModifiers();
-           // ErrorLogger.LogMessage(textColor.toString() ,true);
         }
         else
             textColor = Color.BLACK;

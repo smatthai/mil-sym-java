@@ -34,12 +34,14 @@ import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.ShapeInfo;
 import ArmyC2.C2SD.Utilities.SymbolDef;
 import ArmyC2.C2SD.Utilities.SymbolDefTable;
+import ArmyC2.C2SD.Utilities.SymbolDraw;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import JavaLineArray.TacticalLines;
 import JavaTacticalRenderer.TGLight;
 import RenderMultipoints.clsRenderer;
 import JavaLineArray.POINT2;
 import JavaTacticalRenderer.mdlGeodesic;
+import java.awt.Font;
 import java.util.logging.Level;
 
 
@@ -555,7 +557,7 @@ public class MultiPointHandler {
         //Double metPerPix = GeoPixelConversion.metersPerPixel(scale);
         //String bbox2=getBoundingRectangle(controlPoints,bbox);
         StringBuilder jsonOutput = new StringBuilder();
-        String jsonContent = "";
+        String jsonContent = null;
 
         Rectangle rect = null;
 
@@ -884,6 +886,22 @@ public class MultiPointHandler {
                 }///end if symbol fill or line pattern//////////////////////////
 
                 jsonOutput.append(jsonContent);
+            }
+            else if (format == 2)
+            {
+                jsonOutput.append("{\"type\":\"FeatureCollection\",\"features\":");
+                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getLineColor());
+                jsonOutput.append(jsonContent);
+                jsonOutput.append(",\"properties\":{\"id\":\"");
+                jsonOutput.append(id);
+                jsonOutput.append("\",\"name\":\"");
+                jsonOutput.append(name);
+                jsonOutput.append("\",\"description\":\"");
+                jsonOutput.append(description);
+                jsonOutput.append("\",\"symbolID\":\"");
+                jsonOutput.append(symbolCode);
+                jsonOutput.append("\"}}");
+                
             }
 
         } catch (Exception exc) {
@@ -2897,59 +2915,43 @@ public class MultiPointHandler {
      * @param modifiers
      * @param ipcgeMap
      * @param normalize
-     * @deprecated Actually, just not ready yet.
      * @return 
      */
-        private static String GeoJSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, boolean normalize) {
-        String polygons = "";
-        String lines = "";
-        String labels = "";
+        private static String GeoJSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, boolean normalize, Color lineColor) {
+
         String jstr = "";
         ShapeInfo tempModifier = null;
+        StringBuilder fc = new StringBuilder();//JSON feature collection
 
+        fc.append("[");
+        
         int len = shapes.size();
-        for (int i = 0; i < len; i++) {
-            if (jstr.length() > 0) {
-                jstr += ",";
-            }
-            String shapesToAdd = ShapeToJSONString(shapes.get(i), ipc, normalize);
-            if (shapesToAdd.length() > 0) {
-                if (shapesToAdd.startsWith("line", 2)) {
-                    if (lines.length() > 0) {
-                        lines += ",";
-                    }
+        for (int i = 0; i < len; i++) 
+        {
 
-                    lines += shapesToAdd;
-                } else if (shapesToAdd.startsWith("polygon", 2)) {
-                    if (polygons.length() > 0) {
-                        polygons += ",";
-                    }
-
-                    polygons += shapesToAdd;
-                }
-            }
+            String shapesToAdd = ShapeToGeoJSONString(shapes.get(i), ipc, normalize);
+            if(shapesToAdd.length() > 0)
+                fc.append(shapesToAdd);
+            if(i < len - 1)
+                fc.append(",");
         }
+        
+        
 
-        jstr += "\"polygons\": [" + polygons + "],"
-                + "\"lines\": [" + lines + "],";
         int len2 = modifiers.size();
-        labels = "";
+
         for (int j = 0; j < len2; j++) {
             tempModifier = modifiers.get(j);
             
-            
-            String labelsToAdd = LabelToJSONString(tempModifier, ipc, normalize);
+            String labelsToAdd = LabelToGeoJSONString(tempModifier, ipc, normalize, lineColor);
             if (labelsToAdd.length() > 0) {
-                if (labels.length() > 0) {
-                    labels += ",";
-                }
-
-                labels += labelsToAdd;
-
+                fc.append(",");
+                fc.append(labelsToAdd);
             }
         }
-        jstr += "\"labels\": [" + labels + "]";
-        return jstr;
+        fc.append("]");
+        String GeoJSON = fc.toString();
+        return GeoJSON;
     }
     
 
@@ -3783,27 +3785,25 @@ public class MultiPointHandler {
      * @param shapeInfo
      * @param ipc
      * @param normalize
-     * @deprecated Not yet ready
      * @return 
      */
         private static String ShapeToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize) {
         StringBuilder JSONed = new StringBuilder();
+        StringBuilder properties = new StringBuilder();
+        StringBuilder geometry = new StringBuilder();
+        String geometryType = null;
         /*
         NOTE: Google Earth / KML colors are backwards.
         They are ordered Alpha,Blue,Green,Red, not Red,Green,Blue,Aplha like the rest of the world
          * */
-        String fillColor = null;
-        String lineColor = null;
+        Color lineColor = shapeInfo.getLineColor();
+        Color fillColor = shapeInfo.getFillColor();
 
-        if (shapeInfo.getLineColor() != null)
-        {
-            lineColor = Integer.toHexString(shapeInfo.getLineColor().getRGB());
-
-        }
-        if (shapeInfo.getFillColor() != null)
-        {
-            fillColor = Integer.toHexString(shapeInfo.getFillColor().getRGB());
-        }
+        
+        if(shapeInfo.getShapeType() == ShapeInfo.SHAPE_TYPE_FILL || fillColor != null)
+            geometryType = "\"Polygon\"";
+        else //if(shapeInfo.getShapeType() == ShapeInfo.SHAPE_TYPE_POLYLINE)
+            geometryType = "\"MultiLineString\"";
         
         BasicStroke stroke = null;
         stroke = (BasicStroke)shapeInfo.getStroke();
@@ -3815,23 +3815,45 @@ public class MultiPointHandler {
             //lineWidth++;
             //System.out.println("lineWidth: " + String.valueOf(lineWidth));
         }
+        
+        //generate JSON properties for feature
+        properties.append("\"properties\":{");
+            properties.append("\"label\":\"\",");
+            if(lineColor != null)
+            {
+                properties.append("\"strokeColor\":\"" + SymbolUtilities.colorToHexString(lineColor, false) + "\",");
+                properties.append("\"lineOpacity\":" + String.valueOf(lineColor.getAlpha() / 255f) + ",");
+            }
+            if(fillColor != null)
+            {
+                properties.append("\"fillColor\":\"" + SymbolUtilities.colorToHexString(fillColor, false) + "\",");
+                properties.append("\"fillOpacity\":" + String.valueOf(fillColor.getAlpha() / 255f) + ",");
+            }
+            String strokeWidth = String.valueOf(lineWidth);
+            properties.append("\"strokeWidth\":" + strokeWidth + ",");
+            properties.append("\"strokeWeight\":" + strokeWidth + "");
+        properties.append("}");
 
+        //generate JSON geometry for feature
+        geometry.append("\"geometry\":{\"type\":");
+        geometry.append(geometryType);
+        geometry.append(",\"coordinates\":[");
+        
         ArrayList shapesArray = shapeInfo.getPolylines();
 
-        for (int i = 0; i < shapesArray.size(); i++) {
-            ArrayList shape = (ArrayList) shapesArray.get(i);
+        for (int i = 0; i < shapesArray.size(); i++) 
+        {
+            ArrayList pointList = (ArrayList) shapesArray.get(i);
 
-            normalize = normalizePoints(shape, ipc);
+            normalize = normalizePoints(pointList, ipc);
             
-            if (fillColor != null) {
-                JSONed.append("{\"polygon\":[");
-            } else {
-                JSONed.append("{\"line\":[");
-            }
+
+            geometry.append("[");
 
             //System.out.println("Pixel Coords:");
-            for (int j = 0; j < shape.size(); j++) {
-                Point2D coord = (Point2D) shape.get(j);
+            for (int j = 0; j < pointList.size(); j++) 
+            {
+                Point2D coord = (Point2D) pointList.get(j);
                 Point2D geoCoord = ipc.PixelsToGeo(coord);
                 //M. Deutch 9-27-11
                 if(normalize)
@@ -3852,50 +3874,33 @@ public class MultiPointHandler {
                 //set the point as geo so that the 
                 //coord.setLocation(longitude, latitude);
                 coord=new Point2D.Double(longitude,latitude);
-                shape.set(j, coord);
+                pointList.set(j, coord);
                 //end section
                 
-                JSONed.append("[");
-                JSONed.append(longitude);
-                JSONed.append(",");
-                JSONed.append(latitude);
-                JSONed.append("]");
+                geometry.append("[");
+                geometry.append(longitude);
+                geometry.append(",");
+                geometry.append(latitude);
+                geometry.append("]");
 
-                if (j < (shape.size() - 1)) {
-                    JSONed.append(",");
+                if (j < (pointList.size() - 1)) {
+                    geometry.append(",");
                 }
             }
-
-//            JSONed.append("]");
-//            JSONed.append(",\"color\":\"");
-//            JSONed.append(lineColor);
-//            JSONed.append("\"");
-
-            JSONed.append("]");
-            if(lineColor != null)
-            {
-                JSONed.append(",\"lineColor\":\"");
-                JSONed.append(lineColor);
-
-                    JSONed.append("\"");
-            }
-            if(fillColor != null)
-            {
-                JSONed.append(",\"fillColor\":\"");
-                JSONed.append(fillColor);
-                JSONed.append("\"");
-            }
             
-            JSONed.append(",\"lineWidth\":\"");
-            JSONed.append(String.valueOf(lineWidth));
-            JSONed.append("\"");
-
-            JSONed.append("}");
+            geometry.append("]");
 
             if (i < (shapesArray.size() - 1)) {
-                JSONed.append(",");
+                geometry.append(",");
             }
         }
+        geometry.append("]}");
+        
+        JSONed.append("{\"type\":\"Feature\",");
+        JSONed.append(properties);
+        JSONed.append(",");
+        JSONed.append(geometry);
+        JSONed.append("}");
 
         return JSONed.toString();
     }
@@ -4016,26 +4021,18 @@ public class MultiPointHandler {
      * @param shapeInfo
      * @param ipc
      * @param normalize
-     * @deprecated Not yet ready
      * @return 
      */
-        private static String LabelToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize) {
+        private static String LabelToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize, Color lineColor) {
+        
+        
         StringBuilder JSONed = new StringBuilder();
-        /*
-        NOTE: Google Earth / KML colors are backwards.
-        They are ordered Alpha,Blue,Green,Red, not Red,Green,Blue,Aplha like the rest of the world
-         * */
-        //String lineColor = Integer.toHexString(shapeInfo.getLineColor().getRGB());
-        //lineColor = ARGBtoABGR(lineColor);
+        StringBuilder properties = new StringBuilder();
+        StringBuilder geometry = new StringBuilder();
+        
+        Color outlineColor = SymbolDraw.getIdealTextBackgroundColor(lineColor);
 
-
-
-        //ArrayList shapesArray = shapeInfo.getPolylines();
-
-
-        //if(shapesArray.get(i).getClass().getSimpleName().equals("ArrayList") ){
-
-        JSONed.append("{\"label\":");
+        
 
         //AffineTransform at = shapeInfo.getAffineTransform();
         //Point2D coord = (Point2D)new Point2D.Double(at.getTranslateX(), at.getTranslateY());
@@ -4054,21 +4051,46 @@ public class MultiPointHandler {
 
 
         String text = shapeInfo.getModifierString();
+        
+        RendererSettings RS = RendererSettings.getInstance();
 
         if (text != null && text.equals("") == false) {
-            JSONed.append("[");
+            
+            JSONed.append("{\"type\":\"Feature\",\"properties\":{\"label\":\"");
+            JSONed.append(text);
+            JSONed.append("\",\"pointRadius\":0,\"fontColor\":\"");
+            JSONed.append(SymbolUtilities.colorToHexString(lineColor, false));
+            JSONed.append("\",\"fontSize\":\"");
+            JSONed.append(String.valueOf(RS.getLabelFontSize()) + "pt\"");
+            JSONed.append(",\"fontFamily\":\"");
+            JSONed.append(RS.getLabelFontName());
+            JSONed.append(", sans-serif");
+            
+            if(RS.getLabelFontType() == Font.BOLD)
+                JSONed.append("\",\"fontWeight\":\"bold\"");
+            else
+                JSONed.append("\",\"fontWeight\":\"normal\"");
+            
+            JSONed.append(",\"labelAlign\":\"lm\"");
+            JSONed.append(",\"labelXOffset\":0");
+            JSONed.append(",\"labelYOffset\":0");
+            JSONed.append(",\"labelOutlineColor\":\"");
+            JSONed.append(SymbolUtilities.colorToHexString(outlineColor, false));
+            JSONed.append("\",\"labelOutlineWidth\":");
+            JSONed.append(4);
+            JSONed.append(",\"rotation\":");
+            JSONed.append(angle);
+            JSONed.append(",\"angle\":");
+            JSONed.append(angle);
+            JSONed.append("},");
+            
+            JSONed.append("\"geometry\":{\"type\":\"Point\",\"coordinates\":[");
             JSONed.append(longitude);
             JSONed.append(",");
             JSONed.append(latitude);
             JSONed.append("]");
-
-            JSONed.append(",\"text\":\"");
-            JSONed.append(text);
-            JSONed.append("\"");
-
-            JSONed.append(",\"angle\":\"");
-            JSONed.append(angle);
-            JSONed.append("\"}");
+            JSONed.append("}}");
+            
         } else {
             return "";
         }
