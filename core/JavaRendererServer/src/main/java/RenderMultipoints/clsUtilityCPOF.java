@@ -2256,8 +2256,8 @@ public final class clsUtilityCPOF {
             int w=shapeSpec.getBounds().width;
             int x=shapeSpec.getBounds().x;
             int y=shapeSpec.getBounds().y;
-            if(h==0 && w==0)
-                return shapeSpecs2;
+//            if(h==0 && w==0)
+//                return shapeSpecs2;
 
             if(h==0)
                 h=1;
