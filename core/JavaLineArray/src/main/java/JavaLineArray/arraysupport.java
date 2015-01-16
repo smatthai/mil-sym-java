@@ -548,6 +548,22 @@ public final class arraysupport
                 default:
                     break;
             }
+            //reverse direction for ICING
+            switch(lineType)
+            {
+                case TacticalLines.ICING:
+                    if(nDirection==extendLeft)
+                        nDirection=extendRight;
+                    else if(nDirection==extendRight)
+                        nDirection=extendLeft;
+                    else if(nDirection==extendAbove)
+                        nDirection=extendBelow;
+                    else if(nDirection==extendBelow)
+                        nDirection=extendAbove;
+                    break;
+                default:
+                    break;
+            }
         } catch (Exception exc)
             {
                 ErrorLogger.LogException(_className, "GetInsideOutsideDouble2",
@@ -1836,7 +1852,7 @@ public final class arraysupport
                 //4-19-12
                 distInterval=lineutility.CalcDistanceDouble(origPoints[j], origPoints[j + 1])/numSegments;
                 //get the direction and the quadrant
-                nDirection = GetInsideOutsideDouble2(origPoints[j], origPoints[j + 1], origPoints, vblCounter, j, TacticalLines.ICING);
+                nDirection = GetInsideOutsideDouble2(origPoints[j], origPoints[j + 1], origPoints, vblCounter, j, TacticalLines.ICING);                
                 for (k = 0; k < numSegments; k++) {
                     //get the parallel segment
                     if (k == 0) {
