@@ -1080,7 +1080,7 @@ public final class clsMETOC {
                 case TacticalLines.WATER:
                     tg.set_LineColor(Color.GRAY);   //beige
                     tg.set_FillColor(Color.WHITE);
-                    //tg.set_LineStyle(1);
+                    tg.set_LineStyle(1);
                     break;
                 case TacticalLines.WEIRS:
                     tg.set_LineColor(new Color(245, 245, 220));   //beige
