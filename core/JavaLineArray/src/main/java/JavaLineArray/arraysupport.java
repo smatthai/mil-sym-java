@@ -3589,7 +3589,7 @@ public final class arraysupport
                     pLinePoints[0].style=9;
                     acCounter=lineutility.GetDitchSpikeDouble(pLinePoints,vblSaveCounter,
                             0,lineType);
-                    pLinePoints[vblCounter-1].style=10;
+                    //pLinePoints[vblCounter-1].style=10;
                     break;
                 case TacticalLines.ATDITCHM:
                     lineutility.ReversePointsDouble2(
