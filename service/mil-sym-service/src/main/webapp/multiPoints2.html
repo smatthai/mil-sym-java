@@ -278,7 +278,7 @@ function callWebService(url, params, format){
 	http.open("POST",url,true);
 
 	//First 2 header lines critical!
-	http.setRequestHeader("Content-type","application/x-www-form-urlencoded; charset=UTF-8,");
+	http.setRequestHeader("Content-type","application/x-www-form-urlencoded; charset=UTF-8");
 	http.setRequestHeader("Content-length",params.length);
 	//Not sure about this line
 	http.setRequestHeader("Connection","Close");
