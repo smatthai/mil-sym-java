@@ -369,6 +369,8 @@ public final class clsMETOC {
 
             //METOC
             //HOLD
+            if(c0.equalsIgnoreCase("W")==false)
+                return -1;
             if (str3.equals("SLH") && c0.equals("G") && c2.equals("G"))
                 return TacticalLines.HOLD;
             //BRDGHD
