@@ -337,7 +337,8 @@ public final class clsUtilityCPOF {
                     {
                         //value passed in mils, convert mils to degrees
                         attitude.value[0] = Double.parseDouble(tg.get_H2())*(360d/6400d);   
-                        if(RendererSettings.getInstance().getSymbologyStandard()==RendererSettings.Symbology_2525C) //value passed in degrees
+                        //if(RendererSettings.getInstance().getSymbologyStandard()==RendererSettings.Symbology_2525C) //value passed in degrees
+                        if(tg.getSymbologyStandard()==RendererSettings.Symbology_2525C) //value passed in degrees
                             attitude.value[0] = Double.parseDouble(tg.get_H2());
                     }
                     break;
