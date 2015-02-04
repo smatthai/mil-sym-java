@@ -314,7 +314,7 @@ public final class clsUtilityGE {
     private static ShapeInfo createSimpleFillShape(TGLight tg,ShapeInfo shape,ArrayList<ArrayList<Point2D>>polylines)
     {
         try
-        {
+        {             
             BasicStroke s=(BasicStroke)shape.getStroke();
             float[]dash=s.getDashArray();
             if(JavaTacticalRenderer.clsUtility.isClosedPolygon(tg.get_LineType())==false)
@@ -322,6 +322,8 @@ public final class clsUtilityGE {
                     return null;
             if(dash==null || dash.length<2)
                 return null;   
+            if(shape.getFillColor()==null)
+                return null;
             
             //if we reach this point we know it is a dashed line so we need a separate fill shape
             int j=0,k=0;
