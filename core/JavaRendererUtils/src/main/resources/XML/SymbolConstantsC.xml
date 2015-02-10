@@ -1332,20 +1332,6 @@
     <ALPHAHIERARCHY>TACGRP.C2GM.GNL.PNT.ACTL.RPH</ALPHAHIERARCHY>
     <PATH>Tactical Graphics/Command and Control and General Maneuver/General/Points/Air Control</PATH>
   </SYMBOL>
-<!-- goes away in 2525C, symbol used by new symbol
-  <SYMBOL>
-    <SYMBOLID>G*G*GPAM__****X</SYMBOLID>
-    <GEOMETRY>point</GEOMETRY>
-    <DRAWCATEGORY>8</DRAWCATEGORY>
-    <MAXPOINTS>1</MAXPOINTS>
-    <MINPOINTS>1</MINPOINTS>
-    <MODIFIERS></MODIFIERS>
-    <DESCRIPTION>Air Control Marshall</DESCRIPTION>
-    <HIERARCHY>2.X.2.1.1.7.10</HIERARCHY>
-    <ALPHAHIERARCHY></ALPHAHIERARCHY>
-    <PATH>Tactical Graphics/Command and Control and General Maneuver/General/Points/Air Control</PATH>
-  </SYMBOL>
--->
   <SYMBOL>
     <SYMBOLID>G*G*GPAS--****X</SYMBOLID>
     <GEOMETRY>point</GEOMETRY>
@@ -1358,20 +1344,6 @@
     <ALPHAHIERARCHY>TACGRP.C2GM.GNL.PNT.ACTL.SKEIP</ALPHAHIERARCHY>
     <PATH>Tactical Graphics/Command and Control and General Maneuver/General/Points/Air Control</PATH>
   </SYMBOL>
-<!-- goes away in 2525C, symbol used by new symbol
-  <SYMBOL>
-    <SYMBOLID>G*G*GPAC__****X</SYMBOLID>
-    <GEOMETRY>point</GEOMETRY>
-    <DRAWCATEGORY>8</DRAWCATEGORY>
-    <MAXPOINTS>1</MAXPOINTS>
-    <MINPOINTS>1</MINPOINTS>
-    <MODIFIERS></MODIFIERS>
-    <DESCRIPTION>Air Control Corridor TAB</DESCRIPTION>
-    <HIERARCHY>2.X.2.1.1.7.12</HIERARCHY>
-    <ALPHAHIERARCHY></ALPHAHIERARCHY>
-    <PATH>Tactical Graphics/Command and Control and General Maneuver/General/Points/Air Control</PATH>
-  </SYMBOL>
--->
   <SYMBOL>
     <SYMBOLID>G*G*GPAB--****X</SYMBOLID>
     <GEOMETRY>point</GEOMETRY>
