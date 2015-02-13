@@ -865,8 +865,8 @@ public final class clsUtility {
                 case TacticalLines.LC:
                 case TacticalLines.PL:
                 case TacticalLines.LL:
-                case TacticalLines.AC:
-                case TacticalLines.SAAFR:
+//                case TacticalLines.AC:
+//                case TacticalLines.SAAFR:
                 case TacticalLines.FEBA:
                 case TacticalLines.DIRATKGND:
                 case TacticalLines.DIRATKSPT:

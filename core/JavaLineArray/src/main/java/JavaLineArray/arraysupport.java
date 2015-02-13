@@ -5705,6 +5705,26 @@ public final class arraysupport
             //these require a separate shape for fill
             switch(lineType)
             {
+                case TacticalLines.AC:
+                case TacticalLines.SAAFR:
+                case TacticalLines.MRR:
+                case TacticalLines.MRR_USAS:
+                case TacticalLines.UAV:
+                case TacticalLines.UAV_USAS:
+                case TacticalLines.LLTR:
+                    for (j = 0; j < vblSaveCounter - 1; j++) {
+                        dMBR=pOriginalLinePoints[j].style;
+                        acPoints[0] = new POINT2(pOriginalLinePoints[j]);
+                        acPoints[1] = new POINT2(pOriginalLinePoints[j + 1]);
+                        lineutility.GetSAAFRFillSegment(acPoints, lineType, dMBR);//was dMRR
+                        shape =new Shape2(Shape2.SHAPE_TYPE_FILL);
+                        shape.moveTo(acPoints[0]);
+                        shape.lineTo(acPoints[1]);
+                        shape.lineTo(acPoints[2]);
+                        shape.lineTo(acPoints[3]);
+                        shapes.add(0,shape);
+                    }
+                    break;
                 case TacticalLines.BELT1://requires non-decorated fill shape
                     shape =new Shape2(Shape2.SHAPE_TYPE_FILL);
                     shape.moveTo(pUpperLinePoints[0]);

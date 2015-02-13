@@ -2223,6 +2223,50 @@ public final class lineutility {
         }
         return;
     }
+    /**
+     * fill segments for SAAFR and AC
+     * @param pLinePoints
+     * @param lineType
+     * @param dMRR
+     * @param rev 
+     */
+    protected static void GetSAAFRFillSegment(POINT2[] pLinePoints,
+            int lineType,
+            double dMRR) {
+        try {
+            POINT2 pt2 = new POINT2();
+            POINT2 pt3 = new POINT2();
+            POINT2 pt4 = new POINT2();
+            POINT2 pt5 = new POINT2();
+            ref<double[]> m = new ref();
+            int bolVertical = CalcTrueSlopeDouble(pLinePoints[0], pLinePoints[1], m);
+            if (bolVertical != 0 && m.value[0] < 1) {
+                //upper line
+                pt2 = ExtendDirectedLine(pLinePoints[0], pLinePoints[1], pLinePoints[0], 2, dMRR);
+                pt3 = ExtendDirectedLine(pLinePoints[0], pLinePoints[1], pLinePoints[1], 2, dMRR);
+                //lower line
+                pt4 = ExtendDirectedLine(pLinePoints[0], pLinePoints[1], pLinePoints[0], 3, dMRR);
+                pt5 = ExtendDirectedLine(pLinePoints[0], pLinePoints[1], pLinePoints[1], 3, dMRR);
+            } //if( (bolVertical!=0 && m>1) || bolVertical==0)
+            else {
+                //left line
+                pt2 = ExtendDirectedLine(pLinePoints[0], pLinePoints[1], pLinePoints[0], 0, dMRR);
+                pt3 = ExtendDirectedLine(pLinePoints[0], pLinePoints[1], pLinePoints[1], 0, dMRR);
+                //right line
+                pt4 = ExtendDirectedLine(pLinePoints[0], pLinePoints[1], pLinePoints[0], 1, dMRR);
+                pt5 = ExtendDirectedLine(pLinePoints[0], pLinePoints[1], pLinePoints[1], 1, dMRR);
+            }
+            //load the line points
+            pLinePoints[0] = new POINT2(pt2);
+            pLinePoints[1] = new POINT2(pt3);
+            pLinePoints[2] = new POINT2(pt5);
+            pLinePoints[3] = new POINT2(pt4);
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "GetSAAFRFillSegment",
+                    new RendererException("Failed inside GetSAAFRFillSegment", exc));
+        }
+        //return;
+    }
     //shift the client array by these values for the geo option
     //private static double shiftX=0;
     //private static double shiftY=0;
