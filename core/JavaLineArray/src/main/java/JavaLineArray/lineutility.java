@@ -2231,7 +2231,6 @@ public final class lineutility {
      * @param rev 
      */
     protected static void GetSAAFRFillSegment(POINT2[] pLinePoints,
-            int lineType,
             double dMRR) {
         try {
             POINT2 pt2 = new POINT2();

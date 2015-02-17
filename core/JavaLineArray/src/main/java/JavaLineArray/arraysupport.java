@@ -5716,7 +5716,7 @@ public final class arraysupport
                         dMBR=pOriginalLinePoints[j].style;
                         acPoints[0] = new POINT2(pOriginalLinePoints[j]);
                         acPoints[1] = new POINT2(pOriginalLinePoints[j + 1]);
-                        lineutility.GetSAAFRFillSegment(acPoints, lineType, dMBR);//was dMRR
+                        lineutility.GetSAAFRFillSegment(acPoints, dMBR);//was dMRR
                         shape =new Shape2(Shape2.SHAPE_TYPE_FILL);
                         shape.moveTo(acPoints[0]);
                         shape.lineTo(acPoints[1]);
