@@ -368,14 +368,15 @@ public final class clsMETOC {
             str10 = strLine.substring(3, 13);//was(3,10)
 
             //METOC
-            //HOLD
-            if(c0.equalsIgnoreCase("W")==false)
-                return -1;
+            //HOLD  handled as METOC
             if (str3.equals("SLH") && c0.equals("G") && c2.equals("G"))
                 return TacticalLines.HOLD;
-            //BRDGHD
+            //BRDGHD    handled as METOC
             if (str3.equals("SLB") && c0.equals("G") && c2.equals("G"))
                 return TacticalLines.BRDGHD;
+            
+            if(c0.equalsIgnoreCase("W")==false)
+                return -1;
 
             if (c0.equals("W") && c1.equals("A")) {
                 if (str7.equals("DPXSQ--")) {
