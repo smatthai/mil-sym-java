@@ -1145,17 +1145,18 @@ public class SECWebRenderer extends Applet {
                 }
                 
                 color = JavaRendererUtilities.ARGBtoABGR(color);
-                                
+
+                // if it's a killbox, need to set minimum alt to 0.
+                if (symbolId.startsWith("AKP") && altitudeDepthLength == 1)
+                {
+                    attributes.X_ALTITUDE_DEPTH.add(0D);
+                }    
                 for (int i=0; i < altitudeDepthLength; i++)
                 {
-                    // if it's a killbox, need to set minimum alt to 0.
-                    if (symbolId.startsWith("AJP"))
-                    {
-                        attributes.X_ALTITUDE_DEPTH.add(0D);
-                        i++;
-                    }                                        
                     attributes.X_ALTITUDE_DEPTH.add(altitudeDepthJSON.getDouble(i));
                 }
+                
+                
                 for (int i=0; i < distanceLength; i++)
                 {
                     // If this is a 'track' type graphic, then we need to take the distance

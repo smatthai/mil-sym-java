@@ -744,7 +744,17 @@ public class JavaRendererUtilities {
                             JSONArray jsonAltitudeArray = jsonModifiersArray.getJSONArray("altitudeDepth");
                             if (jsonAltitudeArray.length() < 2)
                             {
-                                returnValue = false;                                    
+                                if((jsonAltitudeArray.length() == 1) && (symbolId.equals("AKPC--") || // Kill box circular
+                                    symbolId.equals("AKPR--") || // Kill box rectangular
+                                    symbolId.equals("AKPI--"))) // Kill box irregular)
+                                {
+                                    returnValue = true;
+                                }
+                                else
+                                {
+                                    returnValue = false;                                    
+                                }
+                                
                             }
                             else 
                             {
