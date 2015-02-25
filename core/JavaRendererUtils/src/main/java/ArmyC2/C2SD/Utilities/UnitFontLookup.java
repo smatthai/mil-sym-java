@@ -713,8 +713,7 @@ public class UnitFontLookup {
 
           //Special check for sea mine graphics
           //2525C///////////////////////////////////////////////////////////////
-          if(RendererSettings.getInstance().getSymbologyStandard() == 
-                  RendererSettings.Symbology_2525C)
+          if(symStd == RendererSettings.Symbology_2525C)
           {
               if(SymbolID.indexOf("WM")==4 || //Sea Mine
                       SymbolID.indexOf("WDM")==4 ||//Sea Mine Decoy
