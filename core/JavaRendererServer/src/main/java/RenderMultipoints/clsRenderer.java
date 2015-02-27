@@ -584,7 +584,7 @@ public final class clsRenderer
                         if(X!=null && j<X.size())
                         {
                             //strH1+=Double.toString(X.get(j));
-                            x_alt=X.get(j)+feetPerMeter;
+                            x_alt=X.get(j)*feetPerMeter;
                             strXAlt=Double.toString(x_alt)+" ft. "+altitudeLabel;
                             strH1+=strXAlt;
                             
