@@ -7,6 +7,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * 
+ * @author User
+ * @deprecated 
+ */
 public class DirectoryReaderTaskScheduler {
 	private final static Logger LOGGER = Logger.getLogger(DirectoryReaderTaskScheduler.class.getName());	
 	

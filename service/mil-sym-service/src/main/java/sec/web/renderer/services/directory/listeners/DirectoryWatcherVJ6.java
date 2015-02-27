@@ -10,7 +10,10 @@ import javax.servlet.ServletContextListener;
 
 import sec.web.renderer.utils.IoUtilities;
 
-
+/**
+ * @deprecated 
+ * @author User
+ */
 public class DirectoryWatcherVJ6 implements ServletContextListener {
 	public static final Logger LOGGER = Logger.getLogger(DirectoryWatcherVJ6.class.getName());
 	public static DirectoryReaderTaskScheduler scheduler = new DirectoryReaderTaskScheduler();

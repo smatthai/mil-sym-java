@@ -18,6 +18,8 @@ import sec.web.renderer.utils.DirectoryReaderUtils;
 
 /**
  * Servlet implementation class DirectoryReader
+ * @deprecated
+ * 
  */
 @WebServlet(name = "sec-directory-reader", urlPatterns = { "/directoryReader" })
 public class DirectoryReaderServlet extends HttpServlet {

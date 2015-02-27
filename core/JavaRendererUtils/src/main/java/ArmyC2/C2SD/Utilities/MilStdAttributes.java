@@ -67,6 +67,11 @@ public class MilStdAttributes {
     public static final String LookAtTag = "LOOKAT";
     
     /**
+     * AGL or MSL typically
+     */
+    public static final String AltitudeMode = "ALTMODE";
+    
+    /**
      * If false, the renderer will create a bunch of little lines to create
      * the "dash" effect (expensive but necessary for KML).  
      * If true, it will be on the user to create the dash effect using the

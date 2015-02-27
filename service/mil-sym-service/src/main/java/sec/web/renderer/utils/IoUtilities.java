@@ -146,7 +146,7 @@ public class IoUtilities {
 		if (retVal.endsWith(",")) {
 			retVal = retVal.substring(0, retVal.length() - 1);
 		} else {
-			throw new IOException("NO Plugins werer found at:\t" + baseURL.toString());
+			throw new IOException("No Plugins were found at:\t" + baseURL.toString());
 		}
 		
 		return  retVal;
@@ -327,7 +327,7 @@ public class IoUtilities {
 			File dir = new File(path);
 			if (!dir.exists()) {
 				dir.mkdirs();
-				System.out.println("createing directory:\t" + dir.getCanonicalPath());
+				System.out.println("creating directory:\t" + dir.getCanonicalPath());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

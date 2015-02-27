@@ -2312,6 +2312,7 @@ public class MultiPointHandler {
         
         int lineWidth = 0;
         boolean useDashArray = symbol.getUseDashArray();
+        String altMode = null;
         
         String symbolFillIDs = null;
         String symbolFillIconSize = null;
@@ -2430,6 +2431,7 @@ public class MultiPointHandler {
             else if (jsonModifiersArray.has(ModifiersTG.W1_DTG_2) && !jsonModifiersArray.isNull(ModifiersTG.W1_DTG_2)) {
                 modifierMap.put(ModifiersTG.W1_DTG_2, jsonModifiersArray.getString(ModifiersTG.W1_DTG_2));
             }
+            
             //                if (jsonModifiersArray.has(LOCATION)) {
             //                    modifierMap.put(LOCATION, jsonModifiersArray.getString(LOCATION));
             //                }
@@ -2513,6 +2515,10 @@ public class MultiPointHandler {
                 useDashArray = jsonModifiersArray.getBoolean(MilStdAttributes.UseDashArray);
             }
             
+            if (jsonModifiersArray.has(MilStdAttributes.AltitudeMode)) {
+                altMode = jsonModifiersArray.getString(MilStdAttributes.AltitudeMode);
+            }
+            
             // These are for when we create a area fill that is comprised of symbols//////////
             if (jsonModifiersArray.has(SYMBOL_FILL_IDS) && !jsonModifiersArray.isNull(SYMBOL_FILL_IDS)) {
                 modifierMap.put(SYMBOL_FILL_IDS, jsonModifiersArray.getString(SYMBOL_FILL_IDS));
@@ -2554,6 +2560,9 @@ public class MultiPointHandler {
             if (lineWidth > 0) {
                 symbol.setLineWidth(lineWidth);
             }
+            
+            if(altMode != null)
+                symbol.setAltitudeMode(altMode);
             
             symbol.setUseDashArray(useDashArray);
 

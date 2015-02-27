@@ -89,6 +89,8 @@ public class MilStdSymbol {
 
         private static int _SymbologyStandard = 0;
         
+        private static String _AltitudeMode = "";
+        
         private static boolean _UseDashArray = true;
         
         private static boolean _DrawAffiliationModifierAsLabel = true;
@@ -249,6 +251,16 @@ public class MilStdSymbol {
                 public int getSymbologyStandard()
                 {
                     return _SymbologyStandard;
+                }
+                
+                public String getAltitudeMode()
+                {
+                    return _AltitudeMode;
+                }
+                
+                public void setAltitudeMode(String value)
+                {
+                    _AltitudeMode = value;
                 }
                 
                 public boolean getUseDashArray()

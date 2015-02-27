@@ -4,6 +4,8 @@ package sec.web.renderer;
 //import netscape.javascript.JSObject;
 
 import ArmyC2.C2SD.Utilities.ErrorLogger;
+import ArmyC2.C2SD.Utilities.MilStdAttributes;
+import ArmyC2.C2SD.Utilities.ModifiersUnits;
 import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.ShapeInfo;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
@@ -702,6 +704,8 @@ public class SECWebRenderer extends Applet {
         String output = "";
         try {                
         
+            modifiers = JavaRendererUtilities.addAltModeToModifiersString(modifiers, altitudeMode);
+            
             if(sps != null && spsPortNumber==-1)
             {
                 spsPortNumber = sps.getPortNumber();

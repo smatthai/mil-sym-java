@@ -6,6 +6,10 @@ import java.util.TimerTask;
 
 import sec.web.renderer.utils.ImagingUtils;
 
+/**
+ * @deprecated 
+ * @author User
+ */
 public class ReadDirectoryTimerTask extends TimerTask {
 	private String directoryPath;
 	private ArrayList<String> fileNames = new ArrayList<String>();

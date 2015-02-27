@@ -995,6 +995,51 @@ public class JavaRendererUtilities {
         return code;
     };
     
+    public static String addAltModeToModifiersString(String modifiers, String altMode)
+    {
+        String alt = "";
+        StringBuilder altsb = new StringBuilder();
+        if(altMode != null)
+        {
+            alt = "";
+
+            if(altMode.equals("relativeToGround"))
+                alt="AGL";
+            else if(altMode.equals("absolute"))
+                alt="MSL";
+
+            if(modifiers == null || modifiers.isEmpty())
+            {
+                altsb.append("{\"");
+                altsb.append(MilStdAttributes.AltitudeMode);
+                altsb.append("\":\"");
+                altsb.append(alt);
+                altsb.append("\"}");
+            }
+            else if(modifiers.endsWith("}}"))
+            {
+                altsb.append(modifiers);
+                altsb.delete(modifiers.length()-2, modifiers.length());
+                altsb.append(",\"");
+                altsb.append(MilStdAttributes.AltitudeMode);
+                altsb.append("\":\"");
+                altsb.append(alt);
+                altsb.append("\"}}");
+            }
+            else if(modifiers.endsWith("}"))
+            {
+                altsb.append(modifiers);
+                altsb.delete(modifiers.length()-1, modifiers.length());
+                altsb.append(",\"");
+                altsb.append(MilStdAttributes.AltitudeMode);
+                altsb.append("\":\"");
+                altsb.append(alt);
+                altsb.append("\"}");
+            }
+        }
+        return altsb.toString();
+    }
+    
     public static Map<String, String> parseIconParameters(String symbolId, Map<String, String> params)
     {
         Map<String, String> iconInfo = new HashMap<String, String>();

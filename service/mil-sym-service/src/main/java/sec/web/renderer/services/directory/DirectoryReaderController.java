@@ -17,6 +17,10 @@ import sec.web.renderer.services.directory.listeners.DirectoryWatcherVJ6;
 import sec.web.renderer.utils.IoUtilities;
 
 @Controller
+/**
+ * @deprecated
+ * 
+ */
 public class DirectoryReaderController {
 
 	public DirectoryReaderController() { }

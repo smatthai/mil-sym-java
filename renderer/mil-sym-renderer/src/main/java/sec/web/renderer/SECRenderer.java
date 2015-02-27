@@ -1043,7 +1043,12 @@ public class SECRenderer {
 			String controlPoints, String altitudeMode, double scale, String bbox, String modifiers, int format, int symStd) {
 		// System.out.println("RenderSymbol called");
 		String output = "";
-            try {                
+
+            try {        
+                
+                modifiers = JavaRendererUtilities.addAltModeToModifiersString(modifiers, altitudeMode);
+                
+            
 
                 if (JavaRendererUtilities.is3dSymbol(symbolCode, modifiers))
                 {
