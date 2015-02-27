@@ -53,6 +53,7 @@ import java.awt.geom.Line2D;
 public final class clsRenderer
 {
     private static String _className="clsRenderer";
+    private static double feetPerMeter=3.28084;
     /**
      * Set tg geo points from the client points
      * @param milStd
@@ -150,325 +151,18 @@ public final class clsRenderer
             
             ArrayList<Point2D.Double>coords=getClientCoords(tg);
             tg.set_Font(new Font("Arial",Font.PLAIN,12));
-            //diagnostic
-            //tg.set_FillColor(milStd.getFillColor());
-            //tg.set_LineColor(milStd.getLineColor());
-            //tg.set_LineThickness(milStd.getLineWidth());
-            //tg.set_TexturePaint(milStd.getFillStyle());
-            //tg.set_FontBackColor(Color.WHITE);
-            //tg.set_TextColor(tg.get_LineColor());
             Map<String,String>modifiers=new HashMap();
-//            if(milStd.getModifier(ModifiersTG.W_DTG_1) != null)
-//            {
-//                tg.set_DTG(milStd.getModifier(ModifiersTG.W_DTG_1));
-//            }
             modifiers.put(ModifiersTG.W_DTG_1, tg.get_DTG());
-//            if(milStd.getModifier(ModifiersTG.W1_DTG_2) != null)
-//            {
-//                tg.set_DTG1(milStd.getModifier(ModifiersTG.W1_DTG_2));
-//            }
             modifiers.put(ModifiersTG.W1_DTG_2, tg.get_DTG1());
-//            if(milStd.getModifier(ModifiersTG.H_ADDITIONAL_INFO_1) != null)
-//                tg.set_H(milStd.getModifier(ModifiersTG.H_ADDITIONAL_INFO_1));
             modifiers.put(ModifiersTG.H_ADDITIONAL_INFO_1, tg.get_H());
-//            if(milStd.getModifier(ModifiersTG.H1_ADDITIONAL_INFO_2) != null)
-//                tg.set_H1(milStd.getModifier(ModifiersTG.H1_ADDITIONAL_INFO_2));
             modifiers.put(ModifiersTG.H1_ADDITIONAL_INFO_2, tg.get_H1());            
-//            if(milStd.getModifier(ModifiersTG.H2_ADDITIONAL_INFO_3) != null)
-//                tg.set_H2(milStd.getModifier(ModifiersTG.H2_ADDITIONAL_INFO_3));
             modifiers.put(ModifiersTG.H2_ADDITIONAL_INFO_3, tg.get_H2());            
-//            if(milStd.getModifier(ModifiersTG.T_UNIQUE_DESIGNATION_1) != null)
-//                tg.set_Name(milStd.getModifier(ModifiersTG.T_UNIQUE_DESIGNATION_1));
             modifiers.put(ModifiersTG.T_UNIQUE_DESIGNATION_1,tg.get_Name());
-//            if(milStd.getModifier(ModifiersTG.T1_UNIQUE_DESIGNATION_2) != null)
-//                tg.set_T1(milStd.getModifier(ModifiersTG.T1_UNIQUE_DESIGNATION_2));
             modifiers.put(ModifiersTG.T1_UNIQUE_DESIGNATION_2,tg.get_T1());
-//            if(milStd.getModifier(ModifiersTG.Y_LOCATION) != null)
-//                tg.set_Location(milStd.getModifier(ModifiersTG.Y_LOCATION));
             modifiers.put(ModifiersTG.Y_LOCATION,tg.get_Location());
-//            if(milStd.getModifier(ModifiersTG.N_HOSTILE) != null)
-//                tg.set_N(milStd.getModifier(ModifiersTG.N_HOSTILE));
             modifiers.put(ModifiersTG.N_HOSTILE,tg.get_N());
-//
 
-            //construct the H1 and H2 modifiers for sector from the mss AM, AN, and X arraylists
-//            if(lineType==TacticalLines.RANGE_FAN_SECTOR)
-//            {
-//                ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
-//                ArrayList<Double> AN=milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
-//                ArrayList<Double> X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
-//                if(AM != null)
-//                {
-//                    int numSectors=AM.size()-1;
-//                    if(AN.size()/2<numSectors)
-//                        numSectors=AN.size()/2;
-//
-//                    double left,right,min=0,max=0;
-//                    //construct left,right,min,max from the arraylists
-//                    String strLeftRightMinMax="";
-//                    String strH1="";
-//                    for(int j=0;j<numSectors;j++)
-//                    {
-//                        left=AN.get(2*j);
-//                        right=AN.get(2*j+1);
-//                        min=AM.get(j);
-//                        max=AM.get(j+1);
-//                        strLeftRightMinMax+=Double.toString(left)+","+Double.toString(right)+","+Double.toString(min)+","+Double.toString(max);
-//                        if(j<numSectors-1)
-//                            strLeftRightMinMax+=",";
-//
-//                        if(X!=null && j<X.size())
-//                        {
-//                            strH1+=Double.toString(X.get(j));
-//                            if(j<numSectors-1 && j<X.size()-1)
-//                                strH1+=",";
-//                        }
-//                    }
-//                    tg.set_H2(strLeftRightMinMax);
-//                    tg.set_H1(strH1);
-//                }
-//            }
-//            int j=0;
-//            switch(lineType)
-//            {
-//                case TacticalLines.ROZ:
-//                case TacticalLines.FAADZ:
-//                case TacticalLines.HIDACZ:
-//                case TacticalLines.MEZ:
-//                case TacticalLines.LOMEZ:
-//                case TacticalLines.HIMEZ:
-//                case TacticalLines.ACA:
-//                case TacticalLines.ACA_RECTANGULAR:
-//                case TacticalLines.ACA_CIRCULAR:
-//                    ArrayList<Double> X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
-//                    if(X != null && X.size()>0)
-//                        tg.set_H(Double.toString(X.get(0)));
-//                    if(X != null && X.size()>1)
-//                        tg.set_H1(Double.toString(X.get(1)));
-//                    break;
-//                case TacticalLines.UAV:
-//                case TacticalLines.MRR:
-//                case TacticalLines.UAV_USAS:
-//                case TacticalLines.MRR_USAS:
-//                case TacticalLines.LLTR:
-//                case TacticalLines.AC:
-//                case TacticalLines.SAAFR:
-//                    POINT2 pt=tg.LatLongs.get(0);
-//                    Point2D pt2d0=new Point2D.Double(pt.x,pt.y);
-//                    Point2D pt2d0Pixels=converter.GeoToPixels(pt2d0);                    
-//                    POINT2 pt0Pixels=new POINT2(pt2d0Pixels.getX(),pt2d0Pixels.getY());
-//                    
-//                    //get some point 10000 meters away from pt
-//                    double dist=10000;  //should work for any scale                    
-//                    POINT2 pt2=mdlGeodesic.geodesic_coordinate(pt, dist, 0);
-//                    Point2D pt2d1=new Point2D.Double(pt2.x,pt2.y);
-//                    Point2D pt2d1Pixels=converter.GeoToPixels(pt2d1);                    
-//                    POINT2 pt1Pixels=new POINT2(pt2d1Pixels.getX(),pt2d1Pixels.getY());
-//                    
-//                    //calculate pixels per meter
-//                    double distPixels=lineutility.CalcDistanceDouble(pt0Pixels, pt1Pixels);                    
-//                    double pixelsPerMeter=distPixels/dist;                        
-//                    
-//                    ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
-//                    if(AM != null)
-//                    {
-//                        String H2="";
-//                        for(j=0;j<AM.size();j++)
-//                        {
-//                            H2+=AM.get(j).toString();
-//                            if(j<AM.size()-1)
-//                                H2+=",";                            
-//                        }
-//                        tg.set_H2(H2);
-//                    }
-//                    String[]strRadii=null;
-//                    //get the widest vaule
-//                    //the current requirement is to use the greatest width as the default width
-//                    double maxWidth=0,temp=0;
-//                    double maxWidthMeters=0;
-//                    if(tg.get_H2()!=null && tg.get_H2().isEmpty()==false)
-//                    {
-//                        strRadii=tg.get_H2().split(",");
-//                        if(strRadii!=null && strRadii.length>0)
-//                        {
-//                            for(j=0;j<strRadii.length;j++)
-//                            {
-//                                if(!Double.isNaN(Double.parseDouble(strRadii[j])))
-//                                {
-//                                    temp=Double.parseDouble(strRadii[j]);
-//                                    if(temp>maxWidth)
-//                                        maxWidth=temp;
-//                                }
-//                            }
-//                            maxWidthMeters=maxWidth;
-//                            maxWidth *= pixelsPerMeter/2;
-//                        }                        
-//                    }
-//                    //double defaultPixels=maxWidth;
-//                    //if AM is null we default to using the value from H2 to set tg.Pixels.get(j).style                                   
-//                    //hopefully H2 was set, either by the client or by stuffing it from AM
-//                    if(tg.get_H2()!=null && tg.get_H2().isEmpty()==false)
-//                    {
-//                        if(strRadii!=null && strRadii.length>0)
-//                        {
-//                            //assume it's a comma delimited string
-//                            double pixels=0;
-//                            for(j=0;j<tg.Pixels.size();j++)
-//                            {
-//                                //pixels=defaultPixels;
-//                                if(tg.Pixels.size()>j)
-//                                {
-//                                    if(strRadii.length>j)
-//                                    {
-//                                        if(!Double.isNaN(Double.parseDouble(strRadii[j])))                                    
-//                                        {
-//                                            pixels=Double.parseDouble(strRadii[j])*pixelsPerMeter/2;                                        
-//                                            tg.Pixels.get(j).style=(int)pixels;
-//                                        }
-//                                        else
-//                                            tg.Pixels.get(j).style=(int)maxWidth;
-//                                    }
-//                                    else
-//                                        tg.Pixels.get(j).style=(int)maxWidth;
-//                                }
-//                            }
-//                        }
-//                    }
-//                    //now set tg.H2 to the max value so that the H2 modifier will display as the max vaule;
-//                    tg.set_H2(Double.toString(maxWidthMeters));
-//                    //use X, X1 to set tg.H, tg.H1
-//                    X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
-//                    if(X != null && X.size()>0)
-//                        tg.set_H(Double.toString(X.get(0)));
-//                    if(X != null && X.size()>1)
-//                        tg.set_H1(Double.toString(X.get(1)));
-//                    break;
-//                default:
-//                    break;
-//            }
-//            //killl box purple evidently uses the X modifier (Rev C)
-//            switch(lineType)
-//            {
-//                case TacticalLines.KILLBOXPURPLE:
-//                case TacticalLines.KILLBOXPURPLE_CIRCULAR:
-//                case TacticalLines.KILLBOXPURPLE_RECTANGULAR:
-//                    ArrayList<Double> X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
-//                    String strH1="";
-//                    if(X!=null)
-//                    {
-//                        strH1=Double.toString(X.get(0));
-//                        tg.set_H1(strH1);
-//                    }
-//                    break;
-//                default:
-//                    break;
-//            }
-//            //circular range fans
-//            if(lineType==TacticalLines.RANGE_FAN)
-//            {
-//                ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
-//                ArrayList<Double> X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
-//                String strH2="";
-//                String strH1="";
-//                if(AM != null)
-//                {
-//                    for(j=0;j<AM.size();j++)
-//                    {
-//                        strH2 += Double.toString(AM.get(j));
-//                        if(j < AM.size()-1)
-//                            strH2 += ",";
-//
-//                        if(X!=null && j<X.size())
-//                        {
-//                            strH1+=Double.toString(X.get(j));
-//                            if(j<X.size()-1)
-//                                strH1+=",";
-//                        }
-//
-//
-//                        //rev C has a maxiimum of 3 circles
-//                        if(j==2)
-//                            break;
-//                    }
-//                }
-//                tg.set_H2(strH2);
-//                tg.set_H1(strH1);
-//            }
-//            //Mil-Std-2525C stuff
-//            switch(lineType)
-//            {
-//                case TacticalLines.PAA_RECTANGULAR_REVC:
-//                case TacticalLines.FSA_RECTANGULAR:
-//                case TacticalLines.FFA_RECTANGULAR:
-//                case TacticalLines.ACA_RECTANGULAR:
-//                case TacticalLines.NFA_RECTANGULAR:
-//                case TacticalLines.RFA_RECTANGULAR:
-//                case TacticalLines.ATI_RECTANGULAR:
-//                case TacticalLines.CFFZ_RECTANGULAR:
-//                case TacticalLines.SENSOR_RECTANGULAR:
-//                case TacticalLines.CENSOR_RECTANGULAR:
-//                case TacticalLines.DA_RECTANGULAR:
-//                case TacticalLines.CFZ_RECTANGULAR:
-//                case TacticalLines.ZOR_RECTANGULAR:
-//                case TacticalLines.TBA_RECTANGULAR:
-//                case TacticalLines.TVAR_RECTANGULAR:
-//                case TacticalLines.CIRCULAR:
-//                case TacticalLines.FSA_CIRCULAR:
-//                case TacticalLines.ACA_CIRCULAR:
-//                case TacticalLines.FFA_CIRCULAR:
-//                case TacticalLines.NFA_CIRCULAR:
-//                case TacticalLines.RFA_CIRCULAR:
-//                case TacticalLines.PAA_CIRCULAR:
-//                case TacticalLines.ATI_CIRCULAR:
-//                case TacticalLines.CFFZ_CIRCULAR:
-//                case TacticalLines.SENSOR_CIRCULAR:
-//                case TacticalLines.CENSOR_CIRCULAR:
-//                case TacticalLines.DA_CIRCULAR:
-//                case TacticalLines.CFZ_CIRCULAR:
-//                case TacticalLines.ZOR_CIRCULAR:
-//                case TacticalLines.TBA_CIRCULAR:
-//                case TacticalLines.TVAR_CIRCULAR:
-//                case TacticalLines.KILLBOXBLUE_CIRCULAR:
-//                case TacticalLines.KILLBOXPURPLE_CIRCULAR:
-//                case TacticalLines.KILLBOXBLUE_RECTANGULAR:
-//                case TacticalLines.KILLBOXPURPLE_RECTANGULAR:
-//                    ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
-//                    if(AM != null && AM.size()>0)
-//                    {
-//                        String strT1=Double.toString(AM.get(0));
-//                        //set width for rectangles or radius for circles
-//                        tg.set_T1(strT1);
-//                    }
-//                    break;
-//                default:
-//                    break;
-//            }
-//            //Mil-std-2525C
-//            if(lineType==TacticalLines.RECTANGULAR)
-//            {
-//                ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
-//                ArrayList<Double> AN=milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
-//                //if all these conditions are not met we do not want to set any tg modifiers
-//                if(AM != null && AM.size()>1 && AN != null && AN.size()>0)
-//                {
-//                    String strT1=Double.toString(AM.get(0));    //width
-//                    String strH=Double.toString(AM.get(1));     //length
-//                    //set width and length in meters for rectangular target
-//                    tg.set_T1(strT1);
-//                    tg.set_H(strH);
-//                    //set attitude in mils
-//                    String strH2=Double.toString(AN.get(0));
-//                    tg.set_H2(strH2);
-//                }
-//            }
             milStd=new MilStdSymbol(symbolId,"1",coords,modifiers);
-            //diagnostic
-            //tg.set_FillColor(milStd.getFillColor());
-            //tg.set_LineColor(milStd.getLineColor());
-            //tg.set_LineThickness(milStd.getLineWidth());
-            //tg.set_TexturePaint(milStd.getFillStyle());
-            //tg.set_FontBackColor(Color.WHITE);
-            //tg.set_TextColor(tg.get_LineColor());
             milStd.setFillColor(tg.get_FillColor());
             milStd.setLineColor(tg.get_LineColor());
             milStd.setLineWidth(tg.get_LineThickness());
@@ -562,18 +256,17 @@ public final class clsRenderer
                 JavaTacticalRenderer.clsUtility.ClosePolygon(tg.LatLongs);
             }
 
-            //construct the H1 and H2 modifiers for sector from the mss AM, AN, and X arraylists
+            String altitudeLabel=milStd.getAltitudeMode();
+            if(altitudeLabel==null)
+                altitudeLabel="";
+            double x_alt=0;
+            String strXAlt="";
+            //construct the H1 and H2 modifiers for sector from the mss AM, AN, and X arraylists            
             if(lineType==TacticalLines.RANGE_FAN_SECTOR)
             {
                 ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN=milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
                 ArrayList<Double> X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
-                //add zero to the front of the array if it's not there
-                //if(AM.get(0)!=0)
-                //    AM.add(0, 0d);
-                //double test=AM.get(0);//0th element must be 0, the min range is always 0
-                //if(test != 0d)
-                    //AM.add(0,0d);
                 if(AM!=null)
                 {
                     String strT1="";
@@ -602,7 +295,10 @@ public final class clsRenderer
                     String strH1="";
                     for(int j=0;j<X.size();j++)
                     {
-                        strH1+=Double.toString(X.get(j));
+                        //strH1+=Double.toString(X.get(j));
+                        x_alt = X.get(j)*feetPerMeter;
+                        strXAlt=Double.toString(x_alt)+" ft. "+altitudeLabel;
+                        strH1+=strXAlt;
                         if(j<X.size()-1)
                             strH1+=",";                        
                     }
@@ -723,9 +419,19 @@ public final class clsRenderer
                 case TacticalLines.ACA_CIRCULAR:
                     ArrayList<Double> X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
                     if(X != null && X.size()>0)
-                        tg.set_H(Double.toString(X.get(0)));
+                    {
+                        //tg.set_H(Double.toString(X.get(0)));
+                        x_alt=X.get(0)*feetPerMeter;
+                        strXAlt=Double.toString(x_alt)+" ft. "+altitudeLabel;
+                        tg.set_H(strXAlt);
+                    }
                     if(X != null && X.size()>1)
-                        tg.set_H1(Double.toString(X.get(1)));
+                    {
+                        //tg.set_H1(Double.toString(X.get(1)));
+                        x_alt=X.get(1)*feetPerMeter;
+                        strXAlt=Double.toString(x_alt)+" ft. "+altitudeLabel;
+                        tg.set_H1(strXAlt);
+                    }
                     break;
                 case TacticalLines.UAV:
                 case TacticalLines.MRR:
@@ -823,9 +529,19 @@ public final class clsRenderer
                     //use X, X1 to set tg.H, tg.H1
                     X=milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
                     if(X != null && X.size()>0)
-                        tg.set_H(Double.toString(X.get(0)));
+                    {
+                        //tg.set_H(Double.toString(X.get(0)));
+                        x_alt=X.get(0)*feetPerMeter;
+                        strXAlt=Double.toString(x_alt)+" ft. "+altitudeLabel;
+                        tg.set_H(strXAlt);
+                    }
                     if(X != null && X.size()>1)
-                        tg.set_H1(Double.toString(X.get(1)));
+                    {
+                        //tg.set_H1(Double.toString(X.get(1)));
+                        x_alt=X.get(1)*feetPerMeter;
+                        strXAlt=Double.toString(x_alt)+" ft. "+altitudeLabel;
+                        tg.set_H1(strXAlt);
+                    }
                     break;
                 default:
                     break;
@@ -840,8 +556,11 @@ public final class clsRenderer
                     String strH1="";
                     if(X!=null)
                     {
-                        strH1=Double.toString(X.get(0));
-                        tg.set_H1(strH1);
+                        //strH1=Double.toString(X.get(0));
+                        //tg.set_H1(strH1);
+                        x_alt=X.get(0)*feetPerMeter;
+                        strXAlt=Double.toString(x_alt)+" ft. "+altitudeLabel;
+                        tg.set_H1(strXAlt);
                     }
                     break;
                 default:
@@ -864,7 +583,11 @@ public final class clsRenderer
 
                         if(X!=null && j<X.size())
                         {
-                            strH1+=Double.toString(X.get(j));
+                            //strH1+=Double.toString(X.get(j));
+                            x_alt=X.get(j)+feetPerMeter;
+                            strXAlt=Double.toString(x_alt)+" ft. "+altitudeLabel;
+                            strH1+=strXAlt;
+                            
                             if(j<X.size()-1)
                                 strH1+=",";
                         }
