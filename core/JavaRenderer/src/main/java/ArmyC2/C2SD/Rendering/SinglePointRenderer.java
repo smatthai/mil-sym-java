@@ -586,6 +586,8 @@ public class SinglePointRenderer {
                     if(shapes.get(i).getShapeType() == ShapeInfo.SHAPE_TYPE_UNIT_ECHELON)
                     {
                         echelonBounds = shapes.get(i).getBounds();
+                        int textOutlineWidth = RendererSettings.getInstance().getTextOutlineWidth();
+                        echelonBounds.grow(textOutlineWidth, i);
                         i = shapeSize;
                     }
                 }
@@ -3194,6 +3196,37 @@ public class SinglePointRenderer {
                 
                 alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
             }
+            if(modifiers.containsKey(ModifiersUnits.SCC_SONAR_CLASSIFICATION_CONFIDENCE))
+            {
+                modifierValue = modifiers.get(ModifiersUnits.SCC_SONAR_CLASSIFICATION_CONFIDENCE);
+                
+                int scc = 0;
+                if(SymbolUtilities.isNumber(modifierValue) && SymbolUtilities.hasModifier(symbolID, ModifiersUnits.SCC_SONAR_CLASSIFICATION_CONFIDENCE))
+                {
+                    scc = Integer.valueOf(modifierValue);
+                    if(scc > 0 && scc < 6)
+                    {
+                        double yPosition = getYPositionForSCC(symbolID);
+                        
+                        text = new TextLayout(modifierValue, labelFont, frc);
+                        //labelBounds = text.getPixelBounds(null, 0, 0);
+                        //labelWidth = labelBounds.width;
+
+                        labelBounds = text.getPixelBounds(null, 0, 0);
+                        labelWidth = labelBounds.width;
+
+                        x = (bounds.x + (bounds.width * 0.5)) - (labelWidth * 0.5);
+
+                        y = (bounds.height );//checkpoint, get box above the point
+                        y = ((y * yPosition) + ((labelHeight-descent) * 0.5));
+                        y = bounds.y + y;
+
+
+                        alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                    }
+                }
+
+            }
         }
         catch(Exception exc)
         {
@@ -3204,7 +3237,87 @@ public class SinglePointRenderer {
         return alTemp;
     }
 
-    
+    private static double getYPositionForSCC(String symbolID)
+    {
+        double yPosition = 0.32;
+        String temp = symbolID.substring(4, 10);
+        char affiliation = symbolID.charAt(1);
+
+        if(temp.equals("WMGC--"))//GROUND (BOTTOM) MILCO
+        {
+            if(affiliation == 'H' || 
+                    affiliation == 'S')//suspect
+                yPosition = 0.29;
+            else if(affiliation == 'N' ||
+                    affiliation == 'L')//exercise neutral
+                yPosition = 0.32;
+            else if(affiliation == 'F' ||
+                    affiliation == 'A' ||//assumed friend
+                    affiliation == 'D' ||//exercise friend
+                    affiliation == 'M' ||//exercise assumed friend
+                    affiliation == 'K' ||//faker
+                    affiliation == 'J')//joker
+                yPosition = 0.32;
+            else
+                yPosition = 0.34;
+        }
+        else if(temp.equals("WMMC--"))//MOORED MILCO
+        {
+            if(affiliation == 'H' || 
+                    affiliation == 'S')//suspect
+                yPosition = 0.29;
+            else if(affiliation == 'N' ||
+                    affiliation == 'L')//exercise neutral
+                yPosition = 0.32;
+            else if(affiliation == 'F' ||
+                    affiliation == 'A' ||//assumed friend
+                    affiliation == 'D' ||//exercise friend
+                    affiliation == 'M' ||//exercise assumed friend
+                    affiliation == 'K' ||//faker
+                    affiliation == 'J')//joker
+                yPosition = 0.32;
+            else
+                yPosition = 0.34;
+        }
+        else if(temp.equals("WMFC--"))//FLOATING MILCO
+        {
+            if(affiliation == 'H' || 
+                    affiliation == 'S')//suspect
+                yPosition = 0.29;
+            else if(affiliation == 'N' ||
+                    affiliation == 'L')//exercise neutral
+                yPosition = 0.32;
+            else if(affiliation == 'F' ||
+                    affiliation == 'A' ||//assumed friend
+                    affiliation == 'D' ||//exercise friend
+                    affiliation == 'M' ||//exercise assumed friend
+                    affiliation == 'K' ||//faker
+                    affiliation == 'J')//joker
+                yPosition = 0.32;
+            else
+                yPosition = 0.34;
+        }
+        else if(temp.equals("WMC---"))//GENERAL MILCO
+        {
+            if(affiliation == 'H' || 
+                    affiliation == 'S')//suspect
+                yPosition = 0.35;
+            else if(affiliation == 'N' ||
+                    affiliation == 'L')//exercise neutral
+                yPosition = 0.39;
+            else if(affiliation == 'F' ||
+                    affiliation == 'A' ||//assumed friend
+                    affiliation == 'D' ||//exercise friend
+                    affiliation == 'M' ||//exercise assumed friend
+                    affiliation == 'K' ||//faker
+                    affiliation == 'J')//joker
+                yPosition = 0.39;
+            else
+                yPosition = 0.39;
+        }
+        
+        return yPosition;
+    }
     /**
      * 
      * @param SymbolID

@@ -351,6 +351,12 @@ public class ModifiersUnits {
      * to all force elements.  This IS NOT a MilStd or USAS Label.  
      */
     public static final String CN_CPOF_NAME_LABEL = "CN";
+    
+    /**
+     * Sonar Classification Confidence level. valid values are 1-5.
+     * Only applies to the 4 subsurface MILCO sea mines
+     */
+    public static final String SCC_SONAR_CLASSIFICATION_CONFIDENCE = "SCC";
 
 
 
