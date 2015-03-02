@@ -354,55 +354,10 @@ public class JavaRendererUtilities {
                         {
                             symbologyStandard = value;
                         }
-//                            else if(key.equalsIgnoreCase("meta"))
-//                            {
-//                                //ignore meta parameter
-//                            }
-//                            else if(key.equalsIgnoreCase("renderer"))
-//                            {
-//                                modifiers.put(key, value.toString());
-//                            }
-//                            else//assume modifier
-//                            {
-                            temp = value.toString();
-                            //parse out unsafe special characters
 
-                            //<editor-fold defaultstate="collapsed" desc="manual character replacing code">
-                            /*
-                            temp = temp.replace("%20", " ");
-                            temp = temp.replace("%22", "\"");
-                            temp = temp.replace("%3C", "<");
-                            temp = temp.replace("%3E", ">");
-                            temp = temp.replace("%23", "#");
-                            temp = temp.replace("%25", "%");
-                            //reserved characters
-                            temp = temp.replace("%24", "$");
-                            temp = temp.replace("%26", "&");
-                            temp = temp.replace("%2B", "+");
-                            temp = temp.replace("%2C", ",");
-                            temp = temp.replace("%2F", "/");
-                            temp = temp.replace("%3A", ":");
-                            temp = temp.replace("%3B", ";");
-                            temp = temp.replace("%3D", "=");
-                            temp = temp.replace("%3F", "?");
-                            temp = temp.replace("%40", "@");
-                            //misc unsafe characters
-                            temp = temp.replace("%7B", "{");
-                            temp = temp.replace("%7D", "}");
-                            temp = temp.replace("%7C", "|");
-                            temp = temp.replace("%5C", "\\");
-                            temp = temp.replace("%5E", "^");
-                            temp = temp.replace("%7E", "~");
-                            temp = temp.replace("%5B", "[");
-                            temp = temp.replace("%5D", "]");
-                            temp = temp.replace("%60", "`");//*/
-                            // </editor-fold>
+                        //temp = value.toString();
 
-                            //temp = java.net.URLDecoder.decode(temp, "UTF-8");
-                            modifiers.put(key, temp);
-//                            }
-
-                        
+                        modifiers.put(key, value);
                     }
                 }
             }
