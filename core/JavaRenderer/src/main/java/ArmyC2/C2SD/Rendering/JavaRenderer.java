@@ -859,7 +859,7 @@ public class JavaRenderer implements IJavaRenderer {
                              symbol.setLineColor(SymbolUtilities.getLineColorOfAffiliation(symbolID));
                              symbol.setFillColor(null);
                          }
-                         basicSymbolID = SymbolUtilities.getBasicSymbolID(symbolID);
+                         basicSymbolID = SymbolUtilities.getBasicSymbolID(symbol.getSymbolID());
                          symbolDef = _SymbolDefTable.getSymbolDef(basicSymbolID,symbol.getSymbologyStandard());
                      }
                      
