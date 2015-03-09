@@ -9,6 +9,7 @@ import ArmyC2.C2SD.Utilities.MilStdSymbol;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.RendererException;
 import ArmyC2.C2SD.Utilities.ModifiersTG;
+import ArmyC2.C2SD.Utilities.RendererSettings;
 import java.util.HashMap;
 import java.util.Map;
 import JavaLineArray.arraysupport;
@@ -25,6 +26,10 @@ import JavaLineArray.lineutility;
 import java.awt.image.BufferedImage;
 import JavaTacticalRenderer.TGLight;
 import JavaTacticalRenderer.Modifier2;
+import static JavaTacticalRenderer.Modifier2.getCode;
+import static JavaTacticalRenderer.Modifier2.getSetA;
+import static JavaTacticalRenderer.Modifier2.getSetB;
+import static JavaTacticalRenderer.Modifier2.getSymbolSet;
 import JavaTacticalRenderer.clsChannelUtility;
 import JavaTacticalRenderer.clsMETOC;
 import JavaTacticalRenderer.P1;
@@ -197,6 +202,24 @@ public final class clsRenderer
             tg.set_UseLineInterpolation(useLineInterpolation);
             //end section
             int lineType=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(symbolId);
+            //rev D section
+            if(symbolId.length()>15 || lineType<0)
+            {
+                String setA = Modifier2.getSetA(tg.get_SymbolId());
+                String setB = Modifier2.getSetB(tg.get_SymbolId());
+                String code = Modifier2.getCode(setB);
+                String symbolSet = Modifier2.getSymbolSet(setA);
+                int nSymbol = Integer.parseInt(symbolSet);
+                if(nSymbol==25)
+                {
+                    lineType=getCMLineType(symbolSet,code);
+                    setTGProperties(tg,setA,setB);
+                }
+                else if(nSymbol==45 || nSymbol==46)                
+                    lineType=getWeatherLinetype(symbolSet,code);
+                                                    
+            }
+            //end section
             tg.set_LineType(lineType);
             String status=tg.get_Status();
             if(status != null && status.equals("A"))
@@ -2068,6 +2091,945 @@ public final class clsRenderer
             //throw exc;
         }
         //return g;
+    }
+    /**
+     * for Rev D symbols
+     * @param SymbolSet
+     * @param entityCode
+     * @return 
+     */
+    protected static int getCMLineType(String SymbolSet, String entityCode)
+    {
+        int symbolSet=Integer.parseInt(SymbolSet);
+        if(symbolSet != 25)
+            return -1;
+        int nCode=Integer.parseInt(entityCode);
+        switch(nCode)
+        {
+            case 120100:
+                return TacticalLines.AO;
+            case 120200:
+                return TacticalLines.NAI;
+            case 120300:
+                return TacticalLines.TAI;
+            case 120400:
+                return TacticalLines.AIRFIELD;
+            case 151401:
+                return TacticalLines.AIRAOA;
+            case 151402:
+                return TacticalLines.AAAAA;
+            case 151403:
+                return TacticalLines.MAIN;
+            case 151404:
+            case 151405:
+            case 151407:
+            case 151408:
+                return TacticalLines.SPT;
+            case 151406:
+                return TacticalLines.AAFNT;
+            case 110100:                        //new label
+            case 110101:                        //new label
+            case 110102:                        //new label
+                return TacticalLines.BOUNDARY;
+            case 110200:
+                return TacticalLines.LL;
+            case 120101:
+                return TacticalLines.AO;
+            case 120102:
+                return TacticalLines.NAI;
+            case 120103:
+                return TacticalLines.TAI;
+            case 120104:
+                return TacticalLines.AIRFIELD;
+            case 140100:
+            case 140101:
+            case 140102:
+            case 140103:
+            case 140104:
+                return TacticalLines.FLOT;
+            case 140200:
+                return TacticalLines.LC;
+            case 140300:
+                return TacticalLines.PL;
+            case 140400:                //new FEBA as a line, new label
+            case 140401:
+                return TacticalLines.PL;
+            case 140500:
+                return TacticalLines.PDF;
+            case 140601:
+                return TacticalLines.DIRATKAIR;
+            case 140602:
+                return TacticalLines.DIRATKGND;
+            case 140603:
+            case 140604:
+            case 140606:
+            case 140607:
+                return TacticalLines.DIRATKSPT;
+            case 140605:
+                return TacticalLines.DIRATKFNT;
+            case 140700:
+                return TacticalLines.FCL;
+            case 140800:
+                return TacticalLines.IL;
+            case 140900:
+                return TacticalLines.LOA;
+            case 141000:
+                return TacticalLines.LOD;
+            case 141100:
+                return TacticalLines.LDLC;
+            case 141200:
+                return TacticalLines.PLD;
+            case 150101:
+            case 150102:
+            case 150103:
+            case 150104:
+                return TacticalLines.GENERAL;
+            case 150200:
+            case 150300:
+            case 150301:
+            case 150302:
+            case 150400:
+                return TacticalLines.ASSY;
+            case 150501:
+            case 150502:
+            case 150503:
+                return TacticalLines.GENERAL;
+            case 150600:    //dz no eny
+                return TacticalLines.DZ;
+            case 150700:    //ez no eny
+                return TacticalLines.EZ;
+            case 150800:    //lz no eny
+                return TacticalLines.LZ;
+            case 150900:    //pz no eny
+                return TacticalLines.PZ;
+            case 151000:
+                return TacticalLines.FORT;
+            case 151100:
+                return TacticalLines.LAA;
+            case 151200:
+            case 151201:
+                return TacticalLines.BATTLE;
+            case 151202:
+                return TacticalLines.PNO;
+            case 151204:
+                return TacticalLines.CONTAIN;
+            case 151205:
+                return TacticalLines.RETAIN;
+            case 151300:
+                return TacticalLines.EA;
+            case 151203:
+                return TacticalLines.STRONG;
+            case 151500:
+                return TacticalLines.ASSAULT;
+            case 151600:
+                return TacticalLines.ATKPOS;
+            case 151700:
+                return TacticalLines.OBJ;
+            case 151801:
+            case 151802:
+                return TacticalLines.ENCIRCLE;
+            case 151900:
+                return TacticalLines.PEN;
+            case 152000:
+                return TacticalLines.ATKBYFIRE;
+            case 152100:
+                return TacticalLines.SPTBYFIRE;
+            case 152200:
+                return TacticalLines.SARA;
+            case 141300:
+                return TacticalLines.AIRHEAD;
+            case 141400:
+                return TacticalLines.BRDGHD;
+            case 141500:
+                return TacticalLines.HOLD;
+            case 141600:
+                return TacticalLines.RELEASE;
+            case 141700:
+                return TacticalLines.AMBUSH;
+            case 170100:
+                return TacticalLines.AC;
+            case 170200:
+                return TacticalLines.LLTR;
+            case 170300:
+                return TacticalLines.MRR;
+            case 170400:                    //SL new label
+                return TacticalLines.MRR;
+            case 170500:
+                return TacticalLines.SAAFR;
+            case 170600:                    //TC new label
+                return TacticalLines.MRR;
+            case 170700:
+                return TacticalLines.UAV;
+            case 170800:    
+                return TacticalLines.GENERAL;   //BDZ new label
+            case 170900:
+                return TacticalLines.HIDACZ;
+            case 171000:
+                return TacticalLines.ROZ;
+            case 171100:                    // new label type AAROZ
+            case 171200:                    // new label UAROZ
+            case 171300:                    // new label WEZ
+            case 171400:                    // new label FEZ
+            case 171500:                    // new label JEZ
+                return TacticalLines.ROZ;
+            case 171600:
+                return TacticalLines.MEZ;
+            case 171700:
+                return TacticalLines.LOMEZ;
+            case 171800:
+                return TacticalLines.HIMEZ;
+            case 171900:
+                return TacticalLines.FAADZ;
+            case 172000:
+                return TacticalLines.WFZ;
+            case 190100:    //iff off new label
+            case 190200:    //iff on new label
+                return TacticalLines.FSCL;
+            case 200200:    //launch area ellipse
+            case 200201:    //defended area ellispe
+                break;      //width, height, rotation
+            case 200202:    //defended area rect
+                return TacticalLines.FSA_RECTANGULAR;    //DA new label
+            case 200300:    //no atk
+                return TacticalLines.FSA_CIRCULAR;  //no atk new label
+            case 200401:    //aoi
+                return TacticalLines.FSA;           //aoi new label
+            case 200402:    //aoi rect
+                break;      //width
+            case 220100:
+                return TacticalLines.BEARING;
+            case 220101:
+                return TacticalLines.ELECTRO;
+            case 220102:    //EW                //new label
+                return TacticalLines.BEARING;   
+            case 220103:    
+            case 220104:    
+                return TacticalLines.ACOUSTIC;
+            case 220105:    
+                return TacticalLines.TORPEDO;
+            case 220106:    
+                return TacticalLines.OPTICAL;
+            case 218400:
+                return TacticalLines.NAVIGATION;
+            case 220107:    //Jammer                //new label
+            case 220108:    //RDF                   //new label
+                return TacticalLines.BEARING;   
+            case 230100:
+            case 230200:
+                return TacticalLines.DECEIVE;
+            case 240101:
+                return TacticalLines.ACA;
+            case 240102:
+                return TacticalLines.ACA_RECTANGULAR;
+            case 240103:
+                return TacticalLines.ACA_CIRCULAR;
+                
+            case 240201:
+                return TacticalLines.FFA;
+            case 240202:
+                return TacticalLines.FFA_RECTANGULAR;
+            case 240203:
+                return TacticalLines.FFA_CIRCULAR;
+            
+            case 240301:
+                return TacticalLines.NFA;
+            case 240302:
+                return TacticalLines.NFA_RECTANGULAR;
+            case 240303:
+                return TacticalLines.NFA_CIRCULAR;
+            
+            case 240401:
+                return TacticalLines.RFA;
+            case 240402:
+                return TacticalLines.RFA_RECTANGULAR;
+            case 240403:
+                return TacticalLines.RFA_CIRCULAR;    
+                
+            case 240501:
+                return TacticalLines.PAA_RECTANGULAR;
+            case 240502:
+                return TacticalLines.PAA_CIRCULAR;
+            case 260100:
+                return TacticalLines.FSCL;
+            case 260200:
+                return TacticalLines.CFL;
+            case 260300:
+                return TacticalLines.NFL;
+            case 260400:    //BCL               new label
+                return TacticalLines.FSCL;
+            case 260500:
+                return TacticalLines.RFL;
+            case 260600:
+                return TacticalLines.MFP;
+            case 240701:
+                return TacticalLines.LINTGT;
+            case 240702:
+                return TacticalLines.LINTGTS;
+            case 240703:
+                return TacticalLines.FPF;
+            case 240801:
+                return TacticalLines.AT;
+            case 240802:
+                return TacticalLines.RECTANGULAR;
+            case 240803:
+                return TacticalLines.CIRCULAR;
+            case 240805:
+                return TacticalLines.SERIES;
+            case 240806:
+            case 240807:
+                return TacticalLines.SMOKE;
+            case 240808:
+                return TacticalLines.BOMB;
+            case 241001:
+                return TacticalLines.FSA;
+            case 241002:
+                return TacticalLines.FSA_RECTANGULAR;
+            case 241003:
+                return TacticalLines.FSA_CIRCULAR;
+            case 241101:
+                return TacticalLines.ATI;
+            case 241102:
+                return TacticalLines.ATI_RECTANGULAR;
+            case 241103:
+                return TacticalLines.ATI_CIRCULAR;
+            case 241201:
+                return TacticalLines.CFFZ;
+            case 241202:
+                return TacticalLines.CFFZ_RECTANGULAR;
+            case 241203:
+                return TacticalLines.CFFZ_CIRCULAR;
+            case 241301:
+                return TacticalLines.CENSOR;
+            case 241302:
+                return TacticalLines.CENSOR_RECTANGULAR;
+            case 241303:
+                return TacticalLines.CENSOR_CIRCULAR;
+            case 241401:
+                return TacticalLines.CFZ;
+            case 241402:
+                return TacticalLines.CFZ_RECTANGULAR;
+            case 241403:
+                return TacticalLines.CFZ_CIRCULAR;
+            case 241501:
+                return TacticalLines.DA;
+            case 241502:
+                return TacticalLines.DA_RECTANGULAR;
+            case 241503:
+                return TacticalLines.DA_CIRCULAR;
+            case 241601:
+                return TacticalLines.SENSOR;
+            case 241602:
+                return TacticalLines.SENSOR_RECTANGULAR;
+            case 241603:
+                return TacticalLines.SENSOR_CIRCULAR;
+            case 241701:
+                return TacticalLines.TBA;
+            case 241702:
+                return TacticalLines.TBA_RECTANGULAR;
+            case 241703:
+                return TacticalLines.TBA_CIRCULAR;
+            case 241801:
+                return TacticalLines.TVAR;
+            case 241802:
+                return TacticalLines.TVAR_RECTANGULAR;
+            case 241803:
+                return TacticalLines.TVAR_CIRCULAR;
+            case 241901:
+                return TacticalLines.ZOR;
+            case 241902:
+                return TacticalLines.ZOR_RECTANGULAR;
+            case 241903:
+                return TacticalLines.ZOR_CIRCULAR;
+            case 242000:
+                return TacticalLines.TGMF;
+            case 242100:
+                return TacticalLines.RANGE_FAN;
+            case 242200:
+                return TacticalLines.RANGE_FAN_SECTOR;
+            case 242301:
+                return TacticalLines.KILLBOXBLUE;
+            case 242302:
+                return TacticalLines.KILLBOXBLUE_RECTANGULAR;
+            case 242303:
+                return TacticalLines.KILLBOXBLUE_CIRCULAR;
+            case 242304:
+                return TacticalLines.KILLBOXPURPLE;
+            case 242305:
+                return TacticalLines.KILLBOXPURPLE_RECTANGULAR;
+            case 242306:
+                return TacticalLines.KILLBOXPURPLE_CIRCULAR;
+            case 270100:
+                return TacticalLines.BELT;
+            case 270200:
+                return TacticalLines.ZONE;
+            case 270300:
+                return TacticalLines.OBSFAREA;
+            case 270400:
+                return TacticalLines.OBSAREA;
+            case 270501:
+                return TacticalLines.MNFLDBLK;
+            case 270502:
+                return TacticalLines.MNFLDDIS;
+            case 270503:
+                return TacticalLines.MNFLDFIX;
+            case 270504:
+                return TacticalLines.TURN;
+            case 270601:
+                return TacticalLines.EASY;
+            case 270602:
+                return TacticalLines.BYDIF;
+            case 270603:
+                return TacticalLines.BYIMP;
+            case 270604:
+                return TacticalLines.GAP;
+            case 271201:
+                return TacticalLines.PLANNED;
+            case 271202:
+                return TacticalLines.ESR1;
+            case 271203:
+                return TacticalLines.ESR2;
+            case 271204:
+                return TacticalLines.ROADBLK;
+            case 280100:
+                return TacticalLines.ABATIS;
+            case 290100:
+                return TacticalLines.LINE;
+            case 290201:
+                return TacticalLines.ATDITCH;
+            case 290202:
+                return TacticalLines.ATDITCHC;
+            case 290203:
+                return TacticalLines.ATDITCHM;
+            case 290204:
+                return TacticalLines.ATWALL;                
+            case 290301:
+                return TacticalLines.UNSP;
+            case 290302:
+                return TacticalLines.SFENCE;
+            case 290303:
+                return TacticalLines.DFENCE;
+            case 290304:
+                return TacticalLines.DOUBLEA;
+            case 290305:
+                return TacticalLines.LWFENCE;
+            case 290306:
+                return TacticalLines.HWFENCE;
+            case 290307:
+                return TacticalLines.SINGLEC;
+            case 290308:
+                return TacticalLines.DOUBLEC;
+            case 290309:
+                return TacticalLines.TRIPLE;
+            case 290600:
+                return TacticalLines.MFLANE;
+            case 270706:
+                return TacticalLines.DUMMY;
+            case 270707:
+                return TacticalLines.DEPICT;
+            case 270800:
+                return TacticalLines.MINED;
+            case 270900:
+                return TacticalLines.DMA;
+            case 270901:
+                return TacticalLines.DMAF;
+            case 271000:
+                return TacticalLines.UXO;
+            case 290400:
+                return TacticalLines.CLUSTER;
+            case 290500:
+                return TacticalLines.TRIP;
+            case 282003:
+                return TacticalLines.OVERHEAD_WIRE;
+            case 271400:
+                return TacticalLines.ASLTXING;
+            case 271500:
+                return TacticalLines.FORDSITE;
+            case 271600:
+                return TacticalLines.FORDIF;
+            case 290700:
+                return TacticalLines.FERRY;
+            case 290800:
+                return TacticalLines.RAFT;
+            case 290900:
+                return TacticalLines.FORTL;
+            case 291000:
+                return TacticalLines.FOXHOLE;
+            case 272100:
+                return TacticalLines.MSDZ;
+            case 272200:
+                return TacticalLines.DRCL;
+            
+            case 310100:
+                return TacticalLines.DHA;
+            case 310200:
+                return TacticalLines.EPW;
+            case 310300:
+                return TacticalLines.FARP;
+            case 310400:
+                return TacticalLines.RHA;
+            case 310500:
+                return TacticalLines.RSA;
+            case 310600:
+                return TacticalLines.BSA;
+            case 310700:
+                return TacticalLines.DSA;
+            case 330100:
+                return TacticalLines.CONVOY;
+            case 330200:
+                return TacticalLines.HCONVOY;
+            case 330300:
+                return TacticalLines.MSR;
+            case 330301:
+                return TacticalLines.ONEWAY;
+            case 330302:
+                return TacticalLines.TWOWAY;
+            case 330303:
+                return TacticalLines.ALT;
+            
+            case 330400:
+                return TacticalLines.ASR;
+            case 330401:                    //asr one way   new label
+                return TacticalLines.ONEWAY;
+            case 330402:                    //asr two way   new label
+                return TacticalLines.TWOWAY;
+            case 330403:                    //asr alt       new label
+                return TacticalLines.ALT;
+            
+            case 340100:
+                return TacticalLines.BLOCK;
+            case 340200:
+                return TacticalLines.BREACH;
+            case 340300:
+                return TacticalLines.BYPASS;
+            case 340400:
+                return TacticalLines.CANALIZE;
+            case 340500:
+                return TacticalLines.CLEAR;
+            case 340600:
+                return TacticalLines.CATK;
+            case 340700:
+                return TacticalLines.CATKBYFIRE;
+                
+            case 340800:
+                return TacticalLines.DELAY;
+            case 341000:
+                return TacticalLines.DISRUPT;
+            case 341100:
+                return TacticalLines.FIX;
+            case 341200:
+                return TacticalLines.FOLLA;
+            case 341300:
+                return TacticalLines.FOLSP;
+            case 341500:
+                return TacticalLines.ISOLATE;
+            case 341700:
+                return TacticalLines.OCCUPY;
+            case 341800:
+                return TacticalLines.PENETRATE;
+            case 341900:
+                return TacticalLines.RIP;
+            case 342000:
+                return TacticalLines.RETIRE;
+            case 342100:
+                return TacticalLines.SECURE;
+            case 342201:
+                return TacticalLines.COVER;
+            case 342202:
+                return TacticalLines.GUARD;
+            case 342203:
+                return TacticalLines.SCREEN;
+            case 342300:
+                return TacticalLines.SEIZE;
+            case 342400:
+                return TacticalLines.WITHDRAW;
+            case 342500:
+                return TacticalLines.WDRAWUP;                
+            case 300100:    //ICL               new label
+                return TacticalLines.FSCL;  
+            case 240804:    //new symbol
+                break;
+            default:
+                break;
+        }
+        return -1;
+    }
+    //the following functions are for the rev D symbols
+    /**
+     * Rev D METOC symbols
+     * @param SymbolSet
+     * @param entityCode
+     * @return 
+     */
+    private static int getWeatherLinetype(String SymbolSet, String entityCode)
+    {
+        int symbolSet=Integer.parseInt(SymbolSet);
+        if(symbolSet != 45 && symbolSet != 46)
+            return -1;
+        int nCode=Integer.parseInt(entityCode);
+        switch(nCode)
+        {
+            case 110301:
+                return TacticalLines.CF;
+            case 110302:
+                return TacticalLines.UCF;
+            case 110303:
+                return TacticalLines.CFG;
+            case 110304:
+                return TacticalLines.CFY;
+            case 110305:
+                return TacticalLines.WF;
+            case 110306:
+                return TacticalLines.UWF;
+            case 110307:
+                return TacticalLines.WFG;
+            case 110308:
+                return TacticalLines.WFY;
+            case 110309:
+                return TacticalLines.OCCLUDED;
+            case 110310:
+                return TacticalLines.UOF;
+            case 110311:
+                return TacticalLines.OFY;
+            case 110312:
+                return TacticalLines.SF;
+            case 110313:
+                return TacticalLines.USF;
+            case 110314:
+                return TacticalLines.SFG;
+            case 110315:
+                return TacticalLines.SFY;
+            case 110401:    //trough with dashed lines new symbol
+                break;
+            case 110402:    //now called upper trough
+                return TacticalLines.TROUGH;
+            case 110403:
+                return TacticalLines.RIDGE;
+            case 110404:
+                return TacticalLines.SQUALL;
+            case 110405:
+                return TacticalLines.INSTABILITY;
+            case 110406:
+                return TacticalLines.SHEAR;
+            case 110407:
+                return TacticalLines.ITC;
+            case 110408:
+                return TacticalLines.CONVERGANCE;
+            case 110409:
+                return TacticalLines.ITD;
+            case 140300:
+                return TacticalLines.JET;
+            case 140400:
+                return TacticalLines.STREAM;
+            case 162004:            //tropical storm wind
+                break;
+            case 170100:
+                return TacticalLines.IFR;
+            case 170200:
+                return TacticalLines.MVFR;
+            case 170300:
+                return TacticalLines.TURBULENCE;
+            case 170400:
+                return TacticalLines.ICING;
+            case 170500:
+                return TacticalLines.NON_CONVECTIVE;
+            case 170501:
+                return TacticalLines.CONVECTIVE;
+            case 170600:
+                return TacticalLines.FROZEN;
+            case 170700:
+                return TacticalLines.THUNDERSTORMS;
+            case 170800:
+                return TacticalLines.FOG;                
+            case 170900:
+                return TacticalLines.SAND;
+            case 171000:
+                return TacticalLines.FREEFORM;
+            case 180100:
+                return TacticalLines.ISOBAR;
+            case 180200:
+                return TacticalLines.UPPER_AIR;
+            case 180300:
+                return TacticalLines.ISOTHERM;
+            case 180400:
+                return TacticalLines.ISOTACH;
+            case 180500:
+                return TacticalLines.ISODROSOTHERM;
+            case 180600:
+                return TacticalLines.ISOPLETHS;
+            case 180700:
+                return TacticalLines.OPERATOR_FREEFORM;
+            case 110501:
+                return TacticalLines.LVO;
+            case 110502:
+                return TacticalLines.UNDERCAST;
+            case 110503:
+                return TacticalLines.LRO;
+            case 110504:
+                return TacticalLines.ICE_EDGE;
+            case 110505:
+                return TacticalLines.ESTIMATED_ICE_EDGE;
+            case 110506:
+                return TacticalLines.ICE_EDGE_RADAR;
+            case 110601:
+                return TacticalLines.CRACKS;
+            case 110602:
+                return TacticalLines.CRACKS_SPECIFIC_LOCATION;
+            case 110603:
+                return TacticalLines.ICE_OPENINGS_LEAD;
+            case 110604:
+                return TacticalLines.ICE_OPENINGS_FROZEN;
+            case 120102:
+                return TacticalLines.DEPTH_CURVE;
+            case 120103:
+                return TacticalLines.DEPTH_CONTOUR;
+            case 120104:
+                return TacticalLines.DEPTH_AREA;
+            case 120201:
+                return TacticalLines.COASTLINE;
+            case 120202:
+                return TacticalLines.ISLAND;
+            case 120203:
+                return TacticalLines.BEACH;
+            case 120204:
+                return TacticalLines.WATER;
+            case 120205:
+                return TacticalLines.FORESHORE_LINE;
+            case 120206:
+                return TacticalLines.FORESHORE_AREA;
+            case 120305:
+                return TacticalLines.ANCHORAGE_LINE;
+            case 120306:
+                return TacticalLines.ANCHORAGE_AREA;
+                
+            case 120308:
+                return TacticalLines.PIER;
+            case 120312:
+                return TacticalLines.WEIRS;
+            case 120313:
+                return TacticalLines.DRYDOCK;
+            case 120317:
+                return TacticalLines.LOADING_FACILITY_LINE;
+            case 120318:
+                return TacticalLines.LOADING_FACILITY_AREA;
+                
+            case 120319:
+                return TacticalLines.RAMP_ABOVE_WATER;
+            case 120320:
+                return TacticalLines.RAMP_BELOW_WATER;
+                
+            case 120326:
+                return TacticalLines.JETTY_ABOVE_WATER;
+            case 120327:
+                return TacticalLines.JETTY_BELOW_WATER;
+            case 120328:
+                return TacticalLines.SEAWALL;
+            case 120405:
+                return TacticalLines.PERCHES;
+            case 120407:
+                return TacticalLines.LEADING_LINE;
+            case 120503:
+                return TacticalLines.UNDERWATER_HAZARD;
+            case 120505:
+                return TacticalLines.FOUL_GROUND;
+            case 120507:
+                return TacticalLines.KELP;
+            case 120511:
+                return TacticalLines.BREAKERS;
+            case 120512:
+                return TacticalLines.REEF;
+            case 120514:
+                return TacticalLines.DISCOLORED_WATER;
+            case 120702:
+                return TacticalLines.EBB_TIDE;
+            case 120703:
+                return TacticalLines.FLOOD_TIDE;
+                
+            case 130101:
+                return TacticalLines.VDR_LEVEL_12;
+            case 130102:
+                return TacticalLines.VDR_LEVEL_23;
+            case 130103:
+                return TacticalLines.VDR_LEVEL_34;
+            case 130104:
+                return TacticalLines.VDR_LEVEL_45;
+            case 130105:
+                return TacticalLines.VDR_LEVEL_56;
+            case 130106:
+                return TacticalLines.VDR_LEVEL_67;
+            case 130107:
+                return TacticalLines.VDR_LEVEL_78;
+            case 130108:
+                return TacticalLines.VDR_LEVEL_89;
+            case 130109:
+                return TacticalLines.VDR_LEVEL_910;
+            case 130201:
+                return TacticalLines.BEACH_SLOPE_FLAT;
+            case 130202:
+                return TacticalLines.BEACH_SLOPE_GENTLE;
+            case 130203:
+                return TacticalLines.BEACH_SLOPE_MODERATE;
+            case 130204:
+                return TacticalLines.BEACH_SLOPE_STEEP;
+            case 140101:
+                return TacticalLines.SOLID_ROCK;
+            case 140102:
+                return TacticalLines.CLAY;
+            case 140103:
+                return TacticalLines.VERY_COARSE_SAND;
+            case 140104:
+                return TacticalLines.COARSE_SAND;
+            case 140105:
+                return TacticalLines.MEDIUM_SAND;
+            case 140106:
+                return TacticalLines.FINE_SAND;
+            case 140107:
+                return TacticalLines.VERY_FINE_SAND;
+            case 140108:
+                return TacticalLines.VERY_FINE_SILT;
+            case 140109:
+                return TacticalLines.FINE_SILT;
+            case 140110:
+                return TacticalLines.MEDIUM_SILT;
+            case 140111:
+                return TacticalLines.COARSE_SILT;
+            case 140112:
+                return TacticalLines.BOULDERS;
+            case 140113:
+                return TacticalLines.OYSTER_SHELLS;
+            case 140114:
+                return TacticalLines.PEBBLES;
+            case 140115:
+                return TacticalLines.SAND_AND_SHELLS;
+            case 140116:
+                return TacticalLines.BOTTOM_SEDIMENTS_LAND;
+            case 140117:
+                return TacticalLines.BOTTOM_SEDIMENTS_NO_DATA;
+            case 140118:
+                return TacticalLines.BOTTOM_ROUGHNESS_SMOOTH;
+            case 140119:
+                return TacticalLines.BOTTOM_ROUGHNESS_MODERATE;
+            case 140120:
+                return TacticalLines.BOTTOM_ROUGHNESS_ROUGH;
+            case 140121:
+                return TacticalLines.CLUTTER_LOW;
+            case 140122:
+                return TacticalLines.CLUTTER_MEDIUM;
+            case 140123:
+                return TacticalLines.CLUTTER_HIGH;
+            case 140124:
+                return TacticalLines.IMPACT_BURIAL_0;
+            case 140125:
+                return TacticalLines.IMPACT_BURIAL_10;
+            case 140126:
+                return TacticalLines.IMPACT_BURIAL_20;
+            case 140127:
+                return TacticalLines.IMPACT_BURIAL_75;
+            case 140128:
+                return TacticalLines.IMPACT_BURIAL_100;
+            case 140129:
+                return TacticalLines.BOTTOM_CATEGORY_A;
+            case 140130:
+                return TacticalLines.BOTTOM_CATEGORY_B;
+            case 140131:
+                return TacticalLines.BOTTOM_CATEGORY_C;
+            case 140132:
+                return TacticalLines.BOTTOM_TYPE_A1;
+            case 140133:
+                return TacticalLines.BOTTOM_TYPE_A2;
+            case 140134:
+                return TacticalLines.BOTTOM_TYPE_A3;
+            case 140135:
+                return TacticalLines.BOTTOM_TYPE_B1;
+            case 140136:
+                return TacticalLines.BOTTOM_TYPE_B2;
+            case 140137:
+                return TacticalLines.BOTTOM_TYPE_B3;
+            case 140138:
+                return TacticalLines.BOTTOM_TYPE_C1;
+            case 140139:
+                return TacticalLines.BOTTOM_TYPE_C2;
+            case 140140:
+                return TacticalLines.BOTTOM_TYPE_C3;
+            
+            case 150100:
+                return TacticalLines.MARITIME_LIMIT;
+            case 150200:
+                return TacticalLines.MARITIME_AREA;
+            case 150300:
+                return TacticalLines.RESTRICTED_AREA;
+            case 150400:
+                return TacticalLines.SWEPT_AREA;
+            case 150500:
+                return TacticalLines.TRAINING_AREA;
+            case 150600:
+                return TacticalLines.OPERATOR_DEFINED;
+            case 160100:
+                return TacticalLines.CABLE;
+            case 160200:
+                return TacticalLines.SUBMERGED_CRIB;
+            case 160300:
+                return TacticalLines.CANAL;
+            case 160700:
+                return TacticalLines.OIL_RIG_FIELD;
+            case 160800:
+                return TacticalLines.PIPE;
+                
+            default:
+                return -1;
+        }
+        return -1;
+    }
+    /**
+     * Rev D symbols
+     * @param tg
+     * @param setA
+     * @param setB 
+     */
+    private static void setTGProperties(TGLight tg, String setA, String setB)
+    {
+        String symbolSet=getSymbolSet(setA);
+        int nSymbolSet=Integer.parseInt(symbolSet);
+        if(nSymbolSet != 25)
+            return;
+        String code=Modifier2.getCode(setB);
+        int nCode=Integer.parseInt(code);
+        switch(nCode)
+        {
+            case 140101:    //friendly present flot
+                tg.set_Status("P");
+                tg.set_Affiliation("F");
+                break;
+            case 140102:
+                tg.set_Status("A");
+                tg.set_Affiliation("F");
+                break;
+            case 140103:
+                tg.set_Status("P");
+                tg.set_Affiliation("H");
+                break;
+            case 140104:
+            case 140607:
+            case 151408:
+                tg.set_Status("A");
+                tg.set_Affiliation("H");
+                break;
+            case 140604:
+            case 140401:
+            case 220104:
+            case 240807:
+            case 151405:
+            case 150400:
+                tg.set_Status("A");
+                break;
+            case 151802:
+            case 140606:
+            case 151407:
+                tg.set_Affiliation("H");
+                break;
+            default:
+                break;
+        }
+        
     }
 
 }
