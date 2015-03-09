@@ -895,7 +895,7 @@
     <MAXPOINTS>1</MAXPOINTS>
     <MINPOINTS>1</MINPOINTS>
     <MODIFIERS></MODIFIERS>
-    <DESCRIPTION>Nav Reference Point</DESCRIPTION>
+    <DESCRIPTION>Navigational Reference Point</DESCRIPTION>
     <HIERARCHY>2.X.2.1.1.2.2</HIERARCHY>
     <ALPHAHIERARCHY>TACGRP.C2GM.GNL.PNT.REFPNT.NAVREF</ALPHAHIERARCHY>
     <PATH>Tactical Graphics/Command and Control and General Maneuver/General/Points/Reference Point</PATH>
@@ -955,7 +955,7 @@
     <MAXPOINTS>1</MAXPOINTS>
     <MINPOINTS>1</MINPOINTS>
     <MODIFIERS></MODIFIERS>
-    <DESCRIPTION>Waypoint</DESCRIPTION>
+    <DESCRIPTION>Waypoint (Refernce Point)</DESCRIPTION>
     <HIERARCHY>2.X.2.1.1.2.7</HIERARCHY>
     <ALPHAHIERARCHY>TACGRP.C2GM.GNL.PNT.REFPNT.WAP</ALPHAHIERARCHY>
     <PATH>Tactical Graphics/Command and Control and General Maneuver/General/Points/Reference Point</PATH>
@@ -2527,7 +2527,7 @@
     <MAXPOINTS>1</MAXPOINTS>
     <MINPOINTS>1</MINPOINTS>
     <MODIFIERS></MODIFIERS>
-    <DESCRIPTION>NBC Observation Post Dismounted</DESCRIPTION>
+    <DESCRIPTION>CBRN Observation Post Dismounted</DESCRIPTION>
     <HIERARCHY>2.X.2.4.1.2.5</HIERARCHY>
     <ALPHAHIERARCHY>TACGRP.C2GM.DEF.PNT.OBSPST.CBRNOP</ALPHAHIERARCHY>
     <PATH>Tactical Graphics/Command and Control and General Maneuver/Defense/Points/Observation Post-Outpost</PATH>
