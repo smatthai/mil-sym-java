@@ -181,6 +181,44 @@ public final class clsRenderer
         return milStd;
     }
     /**
+     * sets tactical graphic line type for rev D and below
+     * @param tg 
+     */
+    public static int getRevDLinetype(TGLight tg)
+    {
+        int linetype=-1;
+        try
+        {
+            String symbolId=tg.get_SymbolId();
+            if(symbolId.length()>15)    //rev D
+            {
+                String setA = Modifier2.getSetA(symbolId);
+                String setB = Modifier2.getSetB(symbolId);
+                String code = Modifier2.getCode(setB);
+                String symbolSet = Modifier2.getSymbolSet(setA);
+                int nSymbol = Integer.parseInt(symbolSet);
+                if(nSymbol==25)
+                {
+                    linetype=getCMLineType(symbolSet,code);
+                    setTGProperties(tg,setA,setB);
+                }
+                else if(nSymbol==45 || nSymbol==46)                
+                    linetype=getWeatherLinetype(symbolSet,code);
+                                                    
+            }
+            else    //not rev D            
+                linetype=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(symbolId);
+                                       
+            tg.set_LineType(linetype);
+        }
+        catch(Exception exc)
+        {
+            ErrorLogger.LogException("clsRenderer" ,"setRevDLinetype",
+                    new RendererException("Failed in setRevDLinetype ", exc));
+        }
+        return linetype;
+    }
+    /**
      * Build a tactical graphic object from the client MilStdSymbol
      * @param milStd MilstdSymbol object
      * @param converter geographic to pixels converter
@@ -197,30 +235,15 @@ public final class clsRenderer
             tg.setSymbologyStandard(std);
             JavaTacticalRenderer.clsUtility.initializeLinetypes(std);
             tg.set_SymbolId(symbolId);
-            //diagnostic 1-29-13
             boolean useLineInterpolation=milStd.getUseLineInterpolation();
             tg.set_UseLineInterpolation(useLineInterpolation);
+            
+            //rev D diagnostic
+            //int lineType=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(symbolId);
+            //setRevDLinetype(tg);
+            int lineType=getRevDLinetype(tg);
             //end section
-            int lineType=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(symbolId);
-            //rev D section
-            if(symbolId.length()>15 || lineType<0)
-            {
-                String setA = Modifier2.getSetA(tg.get_SymbolId());
-                String setB = Modifier2.getSetB(tg.get_SymbolId());
-                String code = Modifier2.getCode(setB);
-                String symbolSet = Modifier2.getSymbolSet(setA);
-                int nSymbol = Integer.parseInt(symbolSet);
-                if(nSymbol==25)
-                {
-                    lineType=getCMLineType(symbolSet,code);
-                    setTGProperties(tg,setA,setB);
-                }
-                else if(nSymbol==45 || nSymbol==46)                
-                    lineType=getWeatherLinetype(symbolSet,code);
-                                                    
-            }
-            //end section
-            tg.set_LineType(lineType);
+            //tg.set_LineType(lineType);
             String status=tg.get_Status();
             if(status != null && status.equals("A"))
             {
@@ -1264,7 +1287,7 @@ public final class clsRenderer
      * @param shapeInfos symbol ShapeInfo array
      * @param modifierShapeInfos modifier ShapeInfo array
      * @param converter geographic to pixels coordinate converter
-     * @param clipBounds clipping bounds
+     * @param clipArea clipping bounds
      */
     public static void render_GE(TGLight tg,
             ArrayList<ShapeInfo>shapeInfos,
@@ -1295,21 +1318,12 @@ public final class clsRenderer
             boolean shiftLines=Channels.getShiftLines();
             if(shiftLines)
             {
-                //Channels.setClient("ge");
-                //tg.set_Affiliation("H");
-                //tg.set_Affiliation("F");
                 String affiliation=tg.get_Affiliation();
                 Channels.setAffiliation(affiliation);
             }
-            //end section
-            CELineArray.setMinLength(2.5);    //2-27-2013
-            
+            CELineArray.setMinLength(2.5);            
             ArrayList<Point2D> clipPoints=null; 
-            
-            //diagnostic
-            //tg.set_Affiliation("H");
-            //end section
-            
+                        
             if(clipArea != null)
             {
                 if(clipArea.getClass().isAssignableFrom(Rectangle2D.Double.class))
@@ -1336,27 +1350,22 @@ public final class clsRenderer
                 clipPoints.add(new Point2D.Double(x,y+height));
                 clipPoints.add(new Point2D.Double(x,y));
                 clipBounds=null;
-            }            
-            //end section
-                                    
+            }                                                
             if(tg.get_Client()==null || tg.get_Client().isEmpty())
                 tg.set_client("ge");
             
             RenderMultipoints.clsUtility.RemoveDuplicatePoints(tg);
             
-            //diagnostic until they add Revision to the Mil-Std-2525 class
             int rev=tg.getSymbologyStandard();
             JavaTacticalRenderer.clsUtility.initializeLinetypes(rev);
             JavaTacticalRenderer.clsUtility.setRevC(tg);
                         
-            //diagnostic
             int linetype=tg.get_LineType();
             if(linetype<0)
             {
-                linetype=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(tg.get_SymbolId());            //clsUtilityCPOF.SegmentGeoPoints(tg, converter);
+                linetype=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(tg.get_SymbolId());
                 tg.set_LineType(linetype);
             }
-            //end section
             
             Boolean isTextFlipped=false;
             ArrayList<Shape2> shapes=null;   //use this to collect all the shapes
@@ -1366,7 +1375,6 @@ public final class clsRenderer
             clsUtilityCPOF.SegmentGeoPoints(tg, converter);
             if(clipBounds != null || clipPoints !=null)
             {
-                //ArrayList<POINT2>originalPixels=(ArrayList<POINT2>)tg.Pixels.clone();
                 if (clsUtilityCPOF.canClipPoints(tg))
                 {
                    //check assignment
@@ -1380,7 +1388,6 @@ public final class clsRenderer
                 }
             }           
             
-            //diagnostic 4-26-13
             //if MSR segment data set use original pixels unless tg.Pixels is empty from clipping
             if(origPixels != null)
             {
@@ -1394,14 +1401,13 @@ public final class clsRenderer
                 }
             }
             
-            //diagnostic 1-28-13
             JavaTacticalRenderer.clsUtility.InterpolatePixels(tg);
             
             tg.modifiers=new ArrayList();
             BufferedImage bi=new BufferedImage(8,8,BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d=bi.createGraphics();
-            //Modifier2.AddModifiers(tg,g2d,clipArea);
-            Modifier2.AddModifiersGeo(tg,g2d,clipArea,converter);
+            //Modifier2.AddModifiersGeo(tg,g2d,clipArea,converter);
+            Modifier2.AddModifiersGeo2(tg,g2d,clipArea,converter);
             
             clsUtilityCPOF.FilterPoints2(tg,converter);
             JavaTacticalRenderer.clsUtility.FilterVerticalSegments(tg);
@@ -2540,8 +2546,10 @@ public final class clsRenderer
                 return TacticalLines.TRIP;
             case 282003:
                 return TacticalLines.OVERHEAD_WIRE;
-            case 271400:
+            case 271300:
                 return TacticalLines.ASLTXING;
+            case 271400:
+                return TacticalLines.BRIDGE;
             case 271500:
                 return TacticalLines.FORDSITE;
             case 271600:

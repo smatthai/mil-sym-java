@@ -5162,6 +5162,9 @@ public class Modifier2 {
                 return "BCL";
             case 300100:
                 return "ICL";
+            case 140400:
+            case 140401:
+                return "FEBA";
             default:
                 return "";
         }
@@ -5180,13 +5183,15 @@ public class Modifier2 {
             Graphics2D g2d,
             Object clipBounds,
             IPointConversion converter) {
-        if (tg.get_SymbolId().length() == 15) {
-            return;
+        if (tg.get_SymbolId().length() < 20) {
+                Modifier2.AddModifiersGeo(tg, g2d, clipBounds, converter);
+                return;
         }
         try {
             String setA = getSetA(tg.get_SymbolId());
             String setB = getSetB(tg.get_SymbolId());
             String code = getCode(setB);
+            int nCode=Integer.parseInt(code);
             String symbolSet = getSymbolSet(setA);
             int nSymbol = Integer.parseInt(symbolSet);
             //default values for modifiers AP and V
@@ -5203,13 +5208,15 @@ public class Modifier2 {
             double csFactor = 1d;
             if (nSymbol == 45 || nSymbol == 46) {
                 Modifier2.AddModifiersGeo(tg, g2d, clipBounds, converter);
+                return;
             }
             if (nSymbol != 25) {
+                Modifier2.AddModifiersGeo(tg, g2d, clipBounds, converter);
                 return;
             }
             //at this point the symbol is a control measure
             double factor = 1;//10d/tg.get_Font().getSize();
-            int linetype = tg.get_LineType();
+            //int linetype = tg.get_LineType();
             //boolean visibleModifiers=tg.get_VisibleLabels();
             int j = 0, k = 0;
             double x = 0, y = 0;
@@ -5289,7 +5296,7 @@ public class Modifier2 {
             }
             g2d.setFont(font);
             //switch adds the new modifiers or calls the old function if the modifiers did not change        
-            switch (nSymbol) {
+            switch (nCode) {
                 case 110100:    //lateral boundary
                     t += " " + "(" + country + ")";
                     tg.set_Name(t);
@@ -5310,7 +5317,7 @@ public class Modifier2 {
                 case 140900:
                 case 190100:
                 case 190200:
-                    label = getRevDLabel(nSymbol);
+                    label = getRevDLabel(nCode);
                     AddIntegralAreaModifier(tg, label, aboveEnd, -csFactor, pt0, pt1, false);
                     AddIntegralAreaModifier(tg, label, aboveEnd, -csFactor, ptLast, ptNextToLast, false);
                     break;
@@ -5329,6 +5336,7 @@ public class Modifier2 {
                     break;
                 case 140400:    //feba has labels at end    
                 case 140401:
+                    label = getRevDLabel(nCode);
                     AddIntegralAreaModifier(tg, label, toEnd, 0, pt0, pt1, false);
                     AddIntegralAreaModifier(tg, label, toEnd, 0, ptLast, ptNextToLast, false);
                     break;
@@ -5342,7 +5350,7 @@ public class Modifier2 {
                 case 150503:
                     areasWithENY(tg, g2d);
                     //AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, ptCenter, ptCenter, false);
-                    label = getRevDLabel(nSymbol);
+                    label = getRevDLabel(nCode);
                     AddIntegralAreaModifier(tg, label, area, 0, ptCenter, ptCenter, false);
                     AddIntegralAreaModifier(tg, tg.get_DTG() + dash + tg.get_DTG1(), aboveMiddle, csFactor, ptCenter, ptCenter, false);
                     break;
@@ -5411,7 +5419,7 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, tg.get_N(), aboveMiddle, 0, pt1, midPt, false);
                     break;
                 case 151500:    //assault pos
-                    label = getRevDLabel(nSymbol);
+                    label = getRevDLabel(nCode);
                     AddIntegralAreaModifier(tg, label + " " + tg.get_Name(), aboveMiddle, 0, ptCenter, ptCenter, false);
                     break;
                 case 151600:    //atk pos
@@ -5437,7 +5445,7 @@ public class Modifier2 {
                     break;
                 case 170400:
                 case 170600:
-                    label = getRevDLabel(nSymbol);
+                    label = getRevDLabel(nCode);
                     AddIntegralModifier(tg, label + " " + tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
                     AddIntegralModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -4 * csFactor, middleSegment, middleSegment + 1, false);
                     AddIntegralModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -5 * csFactor, middleSegment, middleSegment + 1, false);
@@ -5452,7 +5460,7 @@ public class Modifier2 {
                 case 171400:
                 case 171500:
                 case 171900:
-                    label = getRevDLabel(nSymbol);
+                    label = getRevDLabel(nCode);
                     AddIntegralAreaModifier(tg, label, area, -2.5, ptCenter, ptCenter, false, "");
                     AddIntegralAreaModifier(tg, tg.get_Name(), area, -1.5, ptCenter, ptCenter, false, "T");
                     AddIntegralAreaModifier(tg, "MIN ALT: " + tg.get_H(), area, -0.5, ptCenter, ptCenter, false, "H");
@@ -5474,7 +5482,7 @@ public class Modifier2 {
                 case 200102:
                 case 220107:
                 case 220108:
-                    label = getRevDLabel(nSymbol);
+                    label = getRevDLabel(nCode);
                     AddIntegralAreaModifier(tg, label, aboveMiddle, 0, pt0, pt1, false); //ENY or N?
                     break;
                 case 240101:
@@ -5487,7 +5495,7 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, tg.get_DTG1(), area, 3 * csFactor, ptCenter, ptCenter, false, "W1");
                     break;
                 case 300100:    //icl
-                    label = getRevDLabel(nSymbol);
+                    label = getRevDLabel(nCode);
                     pt0 = tg.Pixels.get(0);
                     pt1 = tg.Pixels.get(1);
                     pt2 = tg.Pixels.get(tg.Pixels.size() - 1);
@@ -5540,7 +5548,7 @@ public class Modifier2 {
                     break;
                 case 260300:    //nfl handle like fscl
                 case 260400:
-                    label = getRevDLabel(nSymbol);
+                    label = getRevDLabel(nCode);
                     pt0 = tg.Pixels.get(0);
                     pt1 = tg.Pixels.get(1);
                     pt2 = tg.Pixels.get(tg.Pixels.size() - 1);
@@ -5645,6 +5653,7 @@ public class Modifier2 {
                 case 242303:
                 case 242305:
                 case 242306:
+                case 140500:    //pdf has no label
                     break;
                 case 290100:    //zone
                     AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, csFactor, middleSegment, middleSegment + 1, false);
