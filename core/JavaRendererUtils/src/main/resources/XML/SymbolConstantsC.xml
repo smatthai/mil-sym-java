@@ -955,7 +955,7 @@
     <MAXPOINTS>1</MAXPOINTS>
     <MINPOINTS>1</MINPOINTS>
     <MODIFIERS></MODIFIERS>
-    <DESCRIPTION>Waypoint (Refernce Point)</DESCRIPTION>
+    <DESCRIPTION>Waypoint (Reference Point)</DESCRIPTION>
     <HIERARCHY>2.X.2.1.1.2.7</HIERARCHY>
     <ALPHAHIERARCHY>TACGRP.C2GM.GNL.PNT.REFPNT.WAP</ALPHAHIERARCHY>
     <PATH>Tactical Graphics/Command and Control and General Maneuver/General/Points/Reference Point</PATH>
