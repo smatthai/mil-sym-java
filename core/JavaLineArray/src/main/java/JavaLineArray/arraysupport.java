@@ -3691,6 +3691,7 @@ public final class arraysupport
                     //pLinePoints[1].style=5;
                     pLinePoints[vblSaveCounter - 1].style = 5;
                     acCounter=vblCounter;
+                    FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.RAFT:	//extra eight Points for hash marks either end
                     pt2 = lineutility.ExtendLineDouble(pLinePoints[vblCounter - 8], pLinePoints[vblCounter - 7], dMBR / 2);

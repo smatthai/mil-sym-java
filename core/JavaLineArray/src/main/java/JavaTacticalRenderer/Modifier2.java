@@ -3594,7 +3594,58 @@ public class Modifier2 {
         }
         return lines;
     }
-
+    /**
+     * Handles rev D codes
+     * @param tg 
+     */
+    public static void AddModifiers2RevD(TGLight tg)
+    {
+        if (tg.get_SymbolId().length() < 20) {            
+                Modifier2.AddModifiers2(tg);
+                return;
+        }
+        try
+        {
+            String setA = getSetA(tg.get_SymbolId());
+            String setB = getSetB(tg.get_SymbolId());
+            String code = getCode(setB);
+            int nCode=Integer.parseInt(code);
+            String symbolSet = getSymbolSet(setA);
+            int nSymbol = Integer.parseInt(symbolSet);
+            //default values for modifiers AP and V
+            String country = "US";  //country AS modifier
+            String v = "MORTAR";    //type            
+            String ap="QC 1968";    //target designator    AP modifier
+            POINT2 pt0=null, pt1=null;
+            double csFactor=1d;
+            switch(nCode)
+            {
+                case 290600:
+                    pt0=tg.Pixels.get(7);
+                    pt1=tg.Pixels.get(5);
+                    if(tg.Pixels.get(0).y>tg.Pixels.get(1).y)
+                        AddIntegralAreaModifier(tg, tg.get_DTG() + " - " + tg.get_DTG1(), aboveMiddle, csFactor/2, pt0, pt1, false);
+                    else
+                        AddIntegralAreaModifier(tg, tg.get_DTG() + " - " + tg.get_DTG1(), aboveMiddle, -csFactor/2, pt0, pt1, false);
+                    break;
+                case 141500:
+                case 141400:
+                    break;
+                default:
+                    int saveStd=tg.getSymbologyStandard();
+                    tg.setSymbologyStandard(RendererSettings.Symbology_2525C);
+                    AddModifiers2(tg);
+                    tg.setSymbologyStandard(saveStd);
+                    break;
+            }
+            
+        }
+    catch (Exception exc) {
+            //clsUtility.WriteFile("Error in Modifier2.AddModifiers");
+            ErrorLogger.LogException(_className, "AddModifiers2RevD",
+                    new RendererException("Failed inside AddModifiers2RevD", exc));
+        }
+    }
     /**
      * Called by the renderer after tg.Pixels has been filled with the
      * calculated points. The modifier path depends on points calculated by
@@ -5105,7 +5156,6 @@ public class Modifier2 {
         }
         return setA.substring(4, 6);
     }
-
     public static String getCode(String setB) {
         if (setB.isEmpty()) {
             return "";
@@ -5165,6 +5215,8 @@ public class Modifier2 {
             case 140400:
             case 140401:
                 return "FEBA";
+            case 140900:
+                return "LOA";
             default:
                 return "";
         }
