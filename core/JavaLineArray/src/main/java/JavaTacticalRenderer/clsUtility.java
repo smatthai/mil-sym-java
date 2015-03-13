@@ -3127,8 +3127,10 @@ public final class clsUtility {
             {
                 case TacticalLines.ATDITCH:
                 case TacticalLines.ATDITCHC:
-                case TacticalLines.ATDITCHM:
                     glyphSize=25;
+                    break;
+                case TacticalLines.ATDITCHM:
+                    glyphSize=50;
                     break;
                 case TacticalLines.DMAF:
                     glyphSize=20;
