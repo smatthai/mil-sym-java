@@ -2914,7 +2914,7 @@ public final class arraysupport
                 case TacticalLines.DUMMY:
                     AreaWithCenterFeatureDouble(pLinePoints,vblCounter,lineType);
                     acCounter=vblCounter;
-                    FillPoints(pLinePoints,vblCounter,points);
+                    //FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.PNO:
                     for(j=0;j<vblCounter;j++)
@@ -2989,13 +2989,12 @@ public final class arraysupport
                 case TacticalLines.ISOLATE:
                     GetIsolatePointsDouble(pLinePoints,lineType);
                     acCounter=50;
-                    //FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.CORDONKNOCK:
                 case TacticalLines.CORDONSEARCH:
                     GetIsolatePointsDouble(pLinePoints,lineType);
                     acCounter=50;
-                    FillPoints(pLinePoints,acCounter,points);
+                    //FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.OCCUPY:
                     GetIsolatePointsDouble(pLinePoints,lineType);
@@ -3188,8 +3187,10 @@ public final class arraysupport
                     for(j=0; j < 100; j++) {
                         pLinePoints[200 + j] = new POINT2(circlePoints[j]);
                     }
-                    acCounter=300;
-                    FillPoints(pLinePoints,vblCounter,points);
+                    //acCounter=300;
+                    acCounter=vblCounter;
+                    //FillPoints(pLinePoints,vblCounter,points);
+                    //FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.CONVOY:
                     d=lineutility.CalcDistanceDouble(pt0, pt1);
@@ -3245,7 +3246,7 @@ public final class arraysupport
                     }
 
                     acCounter=9;
-                    FillPoints(pLinePoints,acCounter,points);
+                    //FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.HCONVOY:
                     //reverse the points
@@ -3287,7 +3288,7 @@ public final class arraysupport
                     pLinePoints[9] = new POINT2(pArrowPoints[1]);
 
                     acCounter=10;
-                    FillPoints(pLinePoints,acCounter,points);
+                    //FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.ONEWAY:
                 case TacticalLines.ALT:
@@ -3691,7 +3692,7 @@ public final class arraysupport
                     //pLinePoints[1].style=5;
                     pLinePoints[vblSaveCounter - 1].style = 5;
                     acCounter=vblCounter;
-                    FillPoints(pLinePoints,acCounter,points);
+                    //FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.RAFT:	//extra eight Points for hash marks either end
                     pt2 = lineutility.ExtendLineDouble(pLinePoints[vblCounter - 8], pLinePoints[vblCounter - 7], dMBR / 2);
@@ -3839,7 +3840,7 @@ public final class arraysupport
                     //end section
 
                     acCounter=vblCounter;
-                    FillPoints(pLinePoints,vblCounter,points);
+                    //FillPoints(pLinePoints,vblCounter,points);
                     break;
                 case TacticalLines.PDF:
                     //reverse pt0 and pt1   8-1-08
@@ -3939,7 +3940,6 @@ public final class arraysupport
                         pLinePoints[11 + j] = new POINT2(pArrowPoints[j]);
                         pLinePoints[11 + j].style = 0;
                     }
-                    //FillPoints(pLinePoints,14,points,lineType);
                     acCounter=14;
                     break;
                 case TacticalLines.DIRATKSPT:
@@ -4031,8 +4031,9 @@ public final class arraysupport
 //                        pLinePoints[j]=new POINT2(abatisPts.get(j));
                     //end section
 
-                    FillPoints(pLinePoints,vblCounter,points);
+                    //FillPoints(pLinePoints,vblCounter,points);
                     acCounter=vblCounter;
+                    //FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.CLUSTER:
                     //must use an x offset for ptYintercept because of extending from it
@@ -4492,7 +4493,6 @@ public final class arraysupport
                     break;
                 case TacticalLines.CONTAIN:
                     acCounter=DISMSupport.GetDISMContainDouble(pLinePoints,lineType);
-                    //FillPoints(pLinePoints,acCounter,points,lineType);
                     break;
                 case TacticalLines.PENETRATE:
                     DISMSupport.GetDISMPenetrateDouble(pLinePoints,lineType);
@@ -4508,7 +4508,6 @@ public final class arraysupport
                     DISMSupport.GetDISMBlockDouble2(
                     pLinePoints,
                     lineType);
-                    //FillPoints(pLinePoints,4,points,lineType);
                     acCounter=4;
                     break;
                 case TacticalLines.LINTGT:
@@ -4583,7 +4582,6 @@ public final class arraysupport
                 case TacticalLines.PAA_RECTANGULAR:
                     DISMSupport.GetDISMPAADouble(pLinePoints,lineType);
                     acCounter=5;
-                    //FillPoints(pLinePoints,acCounter,points);
                     break;
                 case TacticalLines.AMBUSH:
                     acCounter=DISMSupport.AmbushPointsDouble(pLinePoints);
@@ -4604,8 +4602,7 @@ public final class arraysupport
             {
                 case TacticalLines.BOUNDARY:
                     FillPoints(pLinePoints,acCounter,points);
-                    //break;
-                    return points;
+                    return points;                
                 case TacticalLines.CONTAIN:
                 case TacticalLines.BLOCK:
                 //case TacticalLines.DMAF:  //points are already filled for DMAF
@@ -4634,7 +4631,19 @@ public final class arraysupport
                 case TacticalLines.SEIZE:
                 case TacticalLines.SEIZE_REVC:
                 case TacticalLines.BS_RECTANGLE:
-                case TacticalLines.BBS_RECTANGLE:
+                case TacticalLines.BBS_RECTANGLE:                
+                    //add these
+                case TacticalLines.AIRFIELD:
+                case TacticalLines.DMA:
+                case TacticalLines.DUMMY:
+                case TacticalLines.CORDONKNOCK:
+                case TacticalLines.CORDONSEARCH:
+                case TacticalLines.MSDZ:
+                case TacticalLines.CONVOY:
+                case TacticalLines.HCONVOY:
+                case TacticalLines.MFLANE:
+                case TacticalLines.DIRATKAIR:
+                case TacticalLines.ABATIS:
                     FillPoints(pLinePoints,acCounter,points);
                     break;
                 default:
