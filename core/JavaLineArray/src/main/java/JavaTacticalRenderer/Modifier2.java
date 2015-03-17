@@ -25,7 +25,9 @@ import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.RendererException;
 import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.IPointConversion;
-import ArmyC2.C2SD.Utilities.SymbolUtilities;
+//import ArmyC2.C2SD.Utilities.SymbolUtilities;
+import java.awt.geom.PathIterator;
+import ArmyC2.C2SD.Utilities.ShapeInfo;
 import JavaLineArray.Channels;
 import java.awt.BasicStroke;
 import java.awt.Point;
@@ -3588,17 +3590,68 @@ public class Modifier2 {
                     break;
             }
         } catch (Exception exc) {
-            //clsUtility.WriteFile("Error in Modifier2.AddModifiers");
             ErrorLogger.LogException(_className, "AddModifiers",
                     new RendererException("Failed inside AddModifiers", exc));
         }
         return lines;
     }
     /**
+     * Channels don't return points in tg.Pixels. For Channels modifiers we only need to collect the points,
+     * don't need internal arrays, and can calculate on which segments the modifiers lie.
+     * @param shape
+     * @return 
+     */
+    private static ArrayList<POINT2> getShapePoints(Shape shape)
+    {
+        try
+        {
+            ArrayList<Point2D>ptsPoly=new ArrayList();
+            Point2D ptPoly=null;
+            float[] coords = new float[6];
+            for (PathIterator i = shape.getPathIterator(null); !i.isDone(); i.next())
+            {
+                int type = i.currentSegment(coords);
+                switch (type) {
+                    case PathIterator.SEG_MOVETO:
+                        ptPoly=new Point2D.Double(coords[0],coords[1]);
+                        ptsPoly.add(ptPoly);                        
+                        break;
+                    case PathIterator.SEG_LINETO:
+                        ptPoly=new Point2D.Double(coords[0], coords[1]);
+                        ptsPoly.add(ptPoly);
+                        break;
+                    case PathIterator.SEG_QUADTO: //quadTo was never used
+                        break;
+                    case PathIterator.SEG_CUBICTO:  //curveTo was used for HOLD, BRDGHD and some METOC's
+                        break;
+                    case PathIterator.SEG_CLOSE:    //closePath was never used
+                        break;
+                }
+            }
+            if(ptsPoly.size()>0)
+            {
+                ArrayList<POINT2>pts=null;
+                pts=new ArrayList();
+                for(int j=0;j<ptsPoly.size();j++)
+                {
+                    Point2D pt2d=ptsPoly.get(j);
+                    POINT2 pt=new POINT2(pt2d.getX(),pt2d.getY());
+                    pts.add(pt);
+                }
+                return pts;
+            }
+        }
+        catch (Exception exc) {
+            ErrorLogger.LogException(_className, "getshapePoints",
+                    new RendererException("Failed inside getShapePoints", exc));
+        }        
+        return null;
+    }
+    /**
      * Handles rev D codes
      * @param tg 
      */
-    public static void AddModifiers2RevD(TGLight tg)
+    public static void AddModifiers2RevD(TGLight tg,ArrayList<Shape2>shapes)
     {
         if (tg.get_SymbolId().length() < 20) {            
                 Modifier2.AddModifiers2(tg);
@@ -3618,6 +3671,7 @@ public class Modifier2 {
             String ap="QC 1968";    //target designator    AP modifier
             POINT2 pt0=null, pt1=null;
             double csFactor=1d;
+            int n=tg.Pixels.size();
             switch(nCode)
             {
                 case 290600:
@@ -3630,6 +3684,35 @@ public class Modifier2 {
                     break;
                 case 141500:
                 case 141400:
+                    break;
+                case 151407:    //eny spt confirmed
+                case 151408:    //eny spt anticipated
+                    Shape2 shape=shapes.get(shapes.size()-1);                    
+                    ArrayList<POINT2>pts=getShapePoints(shape.getShape());
+                    if(n==3)
+                    {
+                        pt0=pts.get(0);
+                        pt1=pts.get(1);
+                        pt1=lineutility.MidPointDouble(pt0, pt1, 0);
+                    }
+                    else
+                    {
+                        pt0=pts.get(n-4);
+                        pt1=pts.get(n-3);                        
+                    }
+                    AddIntegralAreaModifier(tg, tg.get_N(), aboveMiddle, 0, pt0, pt1, false);
+                    if(n==3)
+                    {
+                        pt0=pts.get(pts.size()-9);
+                        pt1=pts.get(pts.size()-8);
+                        pt1=lineutility.MidPointDouble(pt0, pt1, 0);
+                    }
+                    else
+                    {
+                        pt0=pts.get(pts.size()-10);
+                        pt1=pts.get(pts.size()-9);                        
+                    }
+                    AddIntegralAreaModifier(tg, tg.get_N(), aboveMiddle, 0, pt0, pt1, false);                    
                     break;
                 default:
                     int saveStd=tg.getSymbologyStandard();

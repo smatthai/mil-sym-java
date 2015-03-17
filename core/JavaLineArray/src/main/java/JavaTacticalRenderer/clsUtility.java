@@ -1119,7 +1119,7 @@ public final class clsUtility {
             int j = 0;
             Shape2 shape = null;
             BasicStroke stroke = null;
-            float[] dash = null;
+            //float[] dash = null;
             int lineThickness = tg.get_LineThickness();
             int shapeType = -1;
             int lineType = tg.get_LineType();

@@ -1519,7 +1519,7 @@ public final class clsRenderer
                         new RendererException("Failed inside render_GE", exc));
 
         }
-        return;
+        //return;
     }
     /**
      * to follow right hand rule for LC when affiliation is hostile.
@@ -2692,7 +2692,7 @@ public final class clsRenderer
                 break;
             case 140104:
             case 140607:
-            case 151408:
+            //case 151408:
                 tg.set_Status("A");
                 tg.set_Affiliation("H");
                 break;
@@ -2706,8 +2706,18 @@ public final class clsRenderer
                 break;
             case 151802:
             case 140606:
-            case 151407:
+            //case 151407:
                 tg.set_Affiliation("H");
+                break;
+            case 151407:
+                tg.set_Name("");
+                //tg.set_Affiliation("H");
+                break;
+            case 151408:
+                tg.set_Name("");
+                //tg.set_Status("A");
+                //tg.set_Affiliation("H");
+                tg.set_LineStyle(1);
                 break;
             default:
                 break;
