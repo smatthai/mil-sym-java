@@ -280,8 +280,12 @@ public final class clsMETOC {
             } else if (symbolID.equalsIgnoreCase("RIDGE")) {
                 return TacticalLines.RIDGE;
             } else if (symbolID.equalsIgnoreCase("TROUGH")) {
-                return TacticalLines.TROUGH;
-            } else if (symbolID.equalsIgnoreCase("INSTABILITY")) {
+                return TacticalLines.TROUGH;                
+            } 
+            else if (symbolID.equalsIgnoreCase("TROUGH_A")) {
+                return TacticalLines.TROUGH;                
+            } 
+            else if (symbolID.equalsIgnoreCase("INSTABILITY")) {
                 return TacticalLines.INSTABILITY;
             } else if (symbolID.equalsIgnoreCase("SHEAR")) {
                 return TacticalLines.SHEAR;
@@ -926,7 +930,6 @@ public final class clsMETOC {
             case 110315:
                 return TacticalLines.SFY;
             case 110401:    //trough with dashed lines new symbol
-                break;
             case 110402:    //now called upper trough
                 return TacticalLines.TROUGH;
             case 110403:
@@ -1217,7 +1220,20 @@ public final class clsMETOC {
             //METOC's have no user defined fills
             //any fills per Mil-Std-2525 will be set below
             //tg.set_FillColor(null);
-            switch (tg.get_LineType()) {   //255:150:150                    
+            String symbolId=tg.get_SymbolId();
+            switch (tg.get_LineType()) {   //255:150:150
+                case TacticalLines.TROUGH:
+                    if(symbolId.length()>=20)
+                    {
+                       String setB=symbolId.substring(10);
+                       String entityCode=setB.substring(0,6);
+                       if(entityCode.equalsIgnoreCase("110401"))
+                       {
+                           tg.set_LineStyle(2);
+                       }
+                    }
+                    tg.set_LineColor(Color.BLACK);
+                    break;
                 case TacticalLines.BOTTOM_TYPE_A2:
                     tg.set_LineColor(new Color(127, 255, 0));   //light green
                     tg.set_FillColor(new Color(127, 255, 0));
@@ -1563,7 +1579,7 @@ public final class clsMETOC {
                 case TacticalLines.LVO:
                 case TacticalLines.SQUALL:
                 case TacticalLines.RIDGE:
-                case TacticalLines.TROUGH:
+                //case TacticalLines.TROUGH:
                 case TacticalLines.ICE_OPENINGS_LEAD:
                 case TacticalLines.ICE_OPENINGS_LEAD_GE:
                 case TacticalLines.ICE_OPENINGS_FROZEN:

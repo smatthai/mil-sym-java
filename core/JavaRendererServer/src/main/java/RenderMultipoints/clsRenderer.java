@@ -1633,7 +1633,7 @@ public final class clsRenderer
             scale=1.0d/scale;
             //reset the linetype for overhead wire if the sclae is large
             int lineType=tg.get_LineType();
-            if(lineType==TacticalLines.OVERHEAD_WIRE && scale >=250000)
+            if(lineType==TacticalLines.OVERHEAD_WIRE && scale >=250000 && tg.get_SymbolId().length()<=15)
                 tg.set_LineType(TacticalLines.OVERHEAD_WIRE_LS);            
         }
         catch (Exception exc)
