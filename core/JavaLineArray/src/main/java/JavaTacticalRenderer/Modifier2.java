@@ -5456,10 +5456,15 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, label, aboveEnd, -csFactor, pt0, pt1, false);
                     AddIntegralAreaModifier(tg, label, aboveEnd, -csFactor, ptLast, ptNextToLast, false);
                     break;
-                case 140101:    //flot has no labels
-                case 140102:
                 case 140103:
                 case 140104:
+                    //AddIntegralAreaModifier(tg, label, toEnd, 0, pt0, pt1, false);
+                    AddIntegralAreaModifier(tg, tg.get_N(), toEnd, -1 * csFactor, pt0, pt1, false);
+                    //AddIntegralAreaModifier(tg, label, toEnd, 0, ptLast, ptNextToLast, false);
+                    AddIntegralAreaModifier(tg, tg.get_N(), toEnd, -1 * csFactor, ptLast, ptNextToLast, false);
+                    break;
+                case 140101:    //flot has no labels
+                case 140102:
                 case 150101:
                 case 150102:
                 case 151801:
@@ -5479,14 +5484,14 @@ public class Modifier2 {
                 case 150104:
                 case 151802:
                     areasWithENY(tg, g2d);
-                    break;
+                    break;               
                 case 150501:
                 case 150502:
                 case 150503:
                     areasWithENY(tg, g2d);
                     //AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, ptCenter, ptCenter, false);
                     label = getRevDLabel(nCode);
-                    AddIntegralAreaModifier(tg, label, area, 0, ptCenter, ptCenter, false);
+                    AddIntegralAreaModifier(tg, label + " " + tg.get_Name(), area, 0, ptCenter, ptCenter, false);
                     AddIntegralAreaModifier(tg, tg.get_DTG() + dash + tg.get_DTG1(), aboveMiddle, csFactor, ptCenter, ptCenter, false);
                     break;
                 case 151000:    //fort now has T modifier

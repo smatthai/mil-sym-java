@@ -2190,7 +2190,7 @@ public final class clsRenderer
             case 150102:
             case 150103:
             case 150104:
-                return TacticalLines.GENERAL;
+                return TacticalLines.PEN;
             case 150200:
             case 150300:
             case 150301:
@@ -2679,22 +2679,19 @@ public final class clsRenderer
         switch(nCode)
         {
             case 140101:    //friendly present flot
-                tg.set_Status("P");
+                //tg.set_Status("P");
                 tg.set_Affiliation("F");
                 break;
             case 140102:
-                tg.set_Status("A");
-                tg.set_Affiliation("F");
+                tg.set_LineStyle(1);
                 break;
             case 140103:
-                tg.set_Status("P");
-                tg.set_Affiliation("H");
                 break;
             case 140104:
             case 140607:
-            //case 151408:
-                tg.set_Status("A");
-                tg.set_Affiliation("H");
+            case 150102:
+            case 150104:
+                tg.set_LineStyle(1);
                 break;
             case 140604:
             case 140401:
@@ -2702,21 +2699,19 @@ public final class clsRenderer
             case 240807:
             case 151405:
             case 150400:
-                tg.set_Status("A");
+                tg.set_LineStyle(1);
                 break;
             case 151802:
             case 140606:
-            //case 151407:
-                tg.set_Affiliation("H");
+            case 150501:
+            case 150502:
+            case 150503:                
                 break;
             case 151407:
                 tg.set_Name("");
-                //tg.set_Affiliation("H");
                 break;
             case 151408:
                 tg.set_Name("");
-                //tg.set_Status("A");
-                //tg.set_Affiliation("H");
                 tg.set_LineStyle(1);
                 break;
             default:
