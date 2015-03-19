@@ -521,8 +521,9 @@ public final class clsRenderer
                     if(AM==null)
                     {
                         AM=new ArrayList();                   
-                        long n=Math.round(10d/pixelsPerMeter);
-                        AM.add((double)n);
+                        //long n=Math.round(10d/pixelsPerMeter);
+                        //AM.add((double)n);
+                        AM.add(10000d);
                     }
                     if(AM != null)
                     {
