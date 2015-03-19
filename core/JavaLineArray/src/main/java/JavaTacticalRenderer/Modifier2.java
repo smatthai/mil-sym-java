@@ -5248,6 +5248,8 @@ public class Modifier2 {
 
     private static String getRevDLabel(int code) {
         switch (code) {
+            case 170800:
+                return "BDZ";
             case 150501:
                 return "JTAA";
             case 150502:
@@ -5557,6 +5559,10 @@ public class Modifier2 {
                 case 140607:
                     midPt = lineutility.MidPointDouble(pt0, pt1, 0);
                     AddIntegralAreaModifier(tg, tg.get_N(), aboveMiddle, 0, pt1, midPt, false);
+                    break;
+                case 170800:    //bdz
+                    label = getRevDLabel(nCode);
+                    AddIntegralAreaModifier(tg, label, aboveMiddle, 0, ptCenter, ptCenter, false);
                     break;
                 case 151500:    //assault pos
                     label = getRevDLabel(nCode);

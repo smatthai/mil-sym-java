@@ -1,7 +1,6 @@
 /*
  * A class to serve JavaRendererServer
  */
-
 package RenderMultipoints;
 import ArmyC2.C2SD.Utilities.IPointConversion;
 import ArmyC2.C2SD.Utilities.ShapeInfo;
@@ -518,7 +517,13 @@ public final class clsRenderer
                     double distPixels=lineutility.CalcDistanceDouble(pt0Pixels, pt1Pixels);                                        
                     double pixelsPerMeter=distPixels/dist;                        
                     
-                    ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
+                    ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);                    
+                    if(AM==null)
+                    {
+                        AM=new ArrayList();                   
+                        long n=Math.round(10d/pixelsPerMeter);
+                        AM.add((double)n);
+                    }
                     if(AM != null)
                     {
                         String H2="";
@@ -2268,7 +2273,7 @@ public final class clsRenderer
             case 170700:
                 return TacticalLines.UAV;
             case 170800:    
-                return TacticalLines.GENERAL;   //BDZ new label
+                return TacticalLines.PEN;   //BDZ new label
             case 170900:
                 return TacticalLines.HIDACZ;
             case 171000:
