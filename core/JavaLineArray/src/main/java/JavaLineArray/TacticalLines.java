@@ -311,6 +311,9 @@ public final class TacticalLines {
     public static final int RANGE_FAN_FILL  =   243111001;
     public static final int RANGE_FAN_SECTOR = 243112000;
 
+    //rev D new line types
+    public static final int LAUNCH_AREA = 25200101;
+    
 
     public static final int CF				=	31131000;
     public static final int UCF				=	31131100;

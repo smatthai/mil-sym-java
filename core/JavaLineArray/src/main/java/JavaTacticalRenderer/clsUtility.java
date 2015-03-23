@@ -181,6 +181,7 @@ public final class clsUtility {
             case TacticalLines.TVAR_CIRCULAR:
             case TacticalLines.KILLBOXBLUE_CIRCULAR:
             case TacticalLines.KILLBOXPURPLE_CIRCULAR:
+            case TacticalLines.LAUNCH_AREA:
                 result = 1; //was 2
                 break;
             case TacticalLines.RANGE_FAN:
@@ -1358,6 +1359,11 @@ public final class clsUtility {
                 minPoints.value = new int[1];
             }
             switch (lineType) {
+                case TacticalLines.LAUNCH_AREA:
+                    if (minPoints != null) {
+                        minPoints.value[0] = 1;
+                    }
+                    return true;
                 case TacticalLines.FEBA:
                     if (minPoints != null) {
                         minPoints.value[0] = 1;

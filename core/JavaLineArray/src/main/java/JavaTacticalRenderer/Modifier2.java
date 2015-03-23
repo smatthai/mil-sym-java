@@ -5248,6 +5248,11 @@ public class Modifier2 {
 
     private static String getRevDLabel(int code) {
         switch (code) {
+            case 200101:
+                return "LA";
+            case 200201:
+            case 200202:
+                return "DA";
             case 170800:
                 return "BDZ";
             case 150501:
@@ -5280,11 +5285,6 @@ public class Modifier2 {
                 return "IFF OFF";
             case 190200:
                 return "IFF ON";
-            case 200200:
-                return "LA";
-            case 200201:
-            case 200202:
-                return "DA";
             case 220102:
                 return "EW";
             case 220107:
@@ -5450,6 +5450,11 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, label, aboveEnd, -csFactor, pt0, pt1, false);
                     AddIntegralAreaModifier(tg, label, aboveEnd, -csFactor, ptLast, ptNextToLast, false);
                     break;
+                case 200101:
+                case 200201:
+                    label = getRevDLabel(nCode);
+                    AddIntegralAreaModifier(tg, label + " - " + tg.get_Name(), area, 0, ptCenter, ptCenter, false);
+                    break;
                 case 140700:
                 case 140900:
                 case 190100:
@@ -5613,13 +5618,6 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, "MAX ALT: " + tg.get_H1(), area, 0.5, ptCenter, ptCenter, false, "H1");
                     AddIntegralAreaModifier(tg, "TIME FROM: " + tg.get_DTG(), area, 1.5, ptCenter, ptCenter, false, "W");
                     AddIntegralAreaModifier(tg, "TIME TO: " + tg.get_DTG1(), area, 2.5, ptCenter, ptCenter, false, "W1");
-                    break;
-                case 200200:
-                case 200201:
-                    AddIntegralAreaModifier(tg, label + "-" + tg.get_Name(), aboveMiddle, 0, pt0, pt0, false);
-                    break;
-                case 200202:
-                    AddIntegralAreaModifier(tg, label + "-" + tg.get_Name(), aboveMiddle, 0, pt0, pt1, false);
                     break;
                 case 200300:
                     AddIntegralAreaModifier(tg, tg.get_N(), aboveMiddle, 0, pt0, pt0, false); //ENY or N?

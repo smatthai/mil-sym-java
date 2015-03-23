@@ -457,6 +457,23 @@ public final class clsRenderer
                 default:
                     break;
             }
+            if(lineType==TacticalLines.LAUNCH_AREA) //geo ellipse
+            {
+                ArrayList<Double> AM=milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
+                ArrayList<Double> AN=milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
+                if(AM != null && AM.size()>1)
+                {
+                    String H=AM.get(0).toString();  //major axis
+                    tg.set_H(H);    
+                    String T1=AM.get(1).toString(); //minor axis
+                    tg.set_T1(T1);    
+                }                    
+                if(AN != null && AN.size()>0)
+                {
+                    String H2=AN.get(0).toString(); //rotation
+                    tg.set_H2(H2);
+                }                
+            }
             switch(lineType)
             {
                 case TacticalLines.ROZ:
@@ -2119,6 +2136,9 @@ public final class clsRenderer
         int nCode=Integer.parseInt(entityCode);
         switch(nCode)
         {
+            case 200101:
+            case 200201:
+                return TacticalLines.LAUNCH_AREA;
             case 120100:
                 return TacticalLines.AO;
             case 120200:
@@ -2298,9 +2318,6 @@ public final class clsRenderer
             case 190100:    //iff off new label
             case 190200:    //iff on new label
                 return TacticalLines.FSCL;
-            case 200200:    //launch area ellipse
-            case 200201:    //defended area ellispe
-                break;      //width, height, rotation
             case 200202:    //defended area rect
                 return TacticalLines.FSA_RECTANGULAR;    //DA new label
             case 200300:    //no atk
@@ -2685,8 +2702,7 @@ public final class clsRenderer
         switch(nCode)
         {
             case 140101:    //friendly present flot
-                //tg.set_Status("P");
-                tg.set_Affiliation("F");
+                //tg.set_Affiliation("F");
                 break;
             case 140102:
                 tg.set_LineStyle(1);
@@ -2719,6 +2735,12 @@ public final class clsRenderer
             case 151408:
                 tg.set_Name("");
                 tg.set_LineStyle(1);
+                break;
+            case 200101:
+                tg.set_FillColor(new Color(255,155,0,191));
+                break;
+            case 200201:
+                tg.set_FillColor(new Color(85,119,136,191));
                 break;
             default:
                 break;
