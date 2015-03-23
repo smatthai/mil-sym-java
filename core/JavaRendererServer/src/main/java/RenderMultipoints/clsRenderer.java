@@ -2216,6 +2216,7 @@ public final class clsRenderer
             case 150102:
             case 150103:
             case 150104:
+            case 200401:
                 return TacticalLines.PEN;
             case 150200:
             case 150300:
@@ -2319,13 +2320,10 @@ public final class clsRenderer
             case 190200:    //iff on new label
                 return TacticalLines.FSCL;
             case 200202:    //defended area rect
+            case 200402:
                 return TacticalLines.FSA_RECTANGULAR;    //DA new label
             case 200300:    //no atk
                 return TacticalLines.FSA_CIRCULAR;  //no atk new label
-            case 200401:    //aoi
-                return TacticalLines.FSA;           //aoi new label
-            case 200402:    //aoi rect
-                break;      //width
             case 220100:
                 return TacticalLines.BEARING;
             case 220101:
@@ -2740,6 +2738,7 @@ public final class clsRenderer
                 tg.set_FillColor(new Color(255,155,0,191));
                 break;
             case 200201:
+            case 200202:
                 tg.set_FillColor(new Color(85,119,136,191));
                 break;
             default:

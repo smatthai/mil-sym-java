@@ -1127,8 +1127,16 @@ public class Modifier2 {
             POINT2 ptLl) {
         try {
             int j = 0;
-            double x = tg.Pixels.get(0).x;
-            double y = tg.Pixels.get(0).y;
+            double x = 0;
+            double y = 0;
+            ptUl.x=tg.Pixels.get(0).x;
+            ptUl.y=tg.Pixels.get(0).y;
+            ptUr.x=tg.Pixels.get(0).x;
+            ptUr.y=tg.Pixels.get(0).y;
+            ptLl.x=tg.Pixels.get(0).x;
+            ptLl.y=tg.Pixels.get(0).y;
+            ptLr.x=tg.Pixels.get(0).x;
+            ptLr.y=tg.Pixels.get(0).y;
             for (j = 1; j < tg.Pixels.size(); j++) {
                 x = tg.Pixels.get(j).x;
                 y = tg.Pixels.get(j).y;
@@ -3672,8 +3680,17 @@ public class Modifier2 {
             POINT2 pt0=null, pt1=null;
             double csFactor=1d;
             int n=tg.Pixels.size();
+            POINT2 ptLeft=null,ptRight=null,ptCenter=null;
+            String label = getRevDLabel(nCode);
+            String dash=" - ";
+//            POINT2 ptUl=null,ptUr=null,ptLl=null,ptLr=null;
             switch(nCode)
             {
+                case 200202:
+                    ptLeft = lineutility.MidPointDouble(tg.Pixels.get(0), tg.Pixels.get(1), 0);
+                    ptRight = lineutility.MidPointDouble(tg.Pixels.get(2), tg.Pixels.get(3), 0);
+                    AddIntegralAreaModifier(tg, label + " - " + tg.get_Name(), aboveMiddle, csFactor/2, ptLeft, ptRight, false);
+                    break;
                 case 290600:
                     pt0=tg.Pixels.get(7);
                     pt1=tg.Pixels.get(5);
@@ -3682,8 +3699,23 @@ public class Modifier2 {
                     else
                         AddIntegralAreaModifier(tg, tg.get_DTG() + " - " + tg.get_DTG1(), aboveMiddle, -csFactor/2, pt0, pt1, false);
                     break;
+//                case 200401:
+//                    ptUr=new POINT2();
+//                    ptUl=new POINT2();
+//                    ptLl=new POINT2();
+//                    ptLr=new POINT2();
+//                    Modifier2.GetMBR(tg, ptUl, ptUr, ptLr, ptLl);
+//                    AddIntegralAreaModifier(tg, label, aboveMiddle, csFactor, ptLl, ptLr, false);
+//                    break;
+                case 200402:
+                    if(tg.Pixels.get(0).x<=tg.Pixels.get(3).x)
+                        AddIntegralAreaModifier(tg, label, aboveMiddle, 2*csFactor, tg.Pixels.get(0), tg.Pixels.get(3), false);
+                    else
+                        AddIntegralAreaModifier(tg, label, aboveMiddle, 2*csFactor, tg.Pixels.get(1), tg.Pixels.get(2), false);
+                    break;
                 case 141500:
                 case 141400:
+                case 200300:
                     break;
                 case 151407:    //eny spt confirmed
                 case 151408:    //eny spt anticipated
@@ -5248,6 +5280,11 @@ public class Modifier2 {
 
     private static String getRevDLabel(int code) {
         switch (code) {
+            case 200401:
+            case 200402:
+                return "AOI";
+            case 200300:
+                return "N";
             case 200101:
                 return "LA";
             case 200201:
@@ -5432,8 +5469,18 @@ public class Modifier2 {
                 font = g2d.getFont();
             }
             g2d.setFont(font);
+            POINT2 ptUl=null,ptUr=null,ptLl=null,ptLr=null;
             //switch adds the new modifiers or calls the old function if the modifiers did not change        
             switch (nCode) {
+                case 200401:
+                    ptUr=new POINT2();
+                    ptUl=new POINT2();
+                    ptLl=new POINT2();
+                    ptLr=new POINT2();
+                    Modifier2.GetMBR(tg, ptUl, ptUr, ptLr, ptLl);
+                    label = getRevDLabel(nCode);
+                    AddIntegralAreaModifier(tg, label, aboveMiddle, csFactor, ptLl, ptLr, false);
+                    break;
                 case 110100:    //lateral boundary
                     t += " " + "(" + country + ")";
                     tg.set_Name(t);
@@ -5480,6 +5527,7 @@ public class Modifier2 {
                 case 152100:
                 case 152200:
                 case 141700:
+                case 200402:
                     break;
                 case 140400:    //feba has labels at end    
                 case 140401:
@@ -5620,7 +5668,8 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, "TIME TO: " + tg.get_DTG1(), area, 2.5, ptCenter, ptCenter, false, "W1");
                     break;
                 case 200300:
-                    AddIntegralAreaModifier(tg, tg.get_N(), aboveMiddle, 0, pt0, pt0, false); //ENY or N?
+                    label = getRevDLabel(nCode);
+                    AddIntegralAreaModifier(tg, label, aboveMiddle, -1, pt0, pt0, false); //ENY or N?
                     AddIntegralAreaModifier(tg, tg.get_DTG() + dash + tg.get_DTG1(), aboveMiddle, csFactor, pt0, pt0, false);
                     break;
                 case 200102:
