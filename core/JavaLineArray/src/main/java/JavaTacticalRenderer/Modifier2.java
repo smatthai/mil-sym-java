@@ -3692,21 +3692,15 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, label + " - " + tg.get_Name(), aboveMiddle, csFactor/2, ptLeft, ptRight, false);
                     break;
                 case 290600:
-                    pt0=tg.Pixels.get(7);
-                    pt1=tg.Pixels.get(5);
-                    if(tg.Pixels.get(0).y>tg.Pixels.get(1).y)
+                    //pt0=tg.Pixels.get(7);
+                    //pt1=tg.Pixels.get(5);
+                    pt0=tg.Pixels.get(4);
+                    pt1=tg.Pixels.get(2);
+                    if(tg.Pixels.get(0).y<tg.Pixels.get(1).y)
                         AddIntegralAreaModifier(tg, tg.get_DTG() + " - " + tg.get_DTG1(), aboveMiddle, csFactor/2, pt0, pt1, false);
                     else
                         AddIntegralAreaModifier(tg, tg.get_DTG() + " - " + tg.get_DTG1(), aboveMiddle, -csFactor/2, pt0, pt1, false);
                     break;
-//                case 200401:
-//                    ptUr=new POINT2();
-//                    ptUl=new POINT2();
-//                    ptLl=new POINT2();
-//                    ptLr=new POINT2();
-//                    Modifier2.GetMBR(tg, ptUl, ptUr, ptLr, ptLl);
-//                    AddIntegralAreaModifier(tg, label, aboveMiddle, csFactor, ptLl, ptLr, false);
-//                    break;
                 case 200402:
                     if(tg.Pixels.get(0).x<=tg.Pixels.get(3).x)
                         AddIntegralAreaModifier(tg, label, aboveMiddle, 2*csFactor, tg.Pixels.get(0), tg.Pixels.get(3), false);
@@ -5498,6 +5492,18 @@ public class Modifier2 {
                 case 141600:    //release
                     AddIntegralAreaModifier(tg, label, aboveEnd, -csFactor, pt0, pt1, false);
                     AddIntegralAreaModifier(tg, label, aboveEnd, -csFactor, ptLast, ptNextToLast, false);
+                    break;
+                case 120400:
+                    ptUr=new POINT2();
+                    ptUl=new POINT2();
+                    ptLl=new POINT2();
+                    ptLr=new POINT2();
+                    Modifier2.GetMBR(tg, ptUl, ptUr, ptLr, ptLl);
+                    stringWidth = metrics.stringWidth(tg.get_H());
+                    pt0.x=ptUr.x+stringWidth/2+1;
+                    //pt0.x=ptUr.x+1;
+                    pt0.y=(ptUr.y+ptLr.y)/2-metrics.getFont().getSize();
+                    AddIntegralAreaModifier(tg, tg.get_H(), area, csFactor, pt0, pt0, false);
                     break;
                 case 200101:
                 case 200201:
