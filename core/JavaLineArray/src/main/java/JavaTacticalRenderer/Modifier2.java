@@ -3716,6 +3716,7 @@ public class Modifier2 {
                 case 141500:
                 case 141400:
                 case 200300:
+                case 240804:
                     break;
                 case 151407:    //eny spt confirmed
                 case 151408:    //eny spt anticipated
@@ -5280,6 +5281,7 @@ public class Modifier2 {
 
     private static String getRevDLabel(int code) {
         switch (code) {
+            
             case 200401:
             case 200402:
                 return "AOI";
@@ -5757,8 +5759,8 @@ public class Modifier2 {
                     if (tg.Pixels.size() == 2) //one segment
                     {
                         pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                        //pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, 1.7 * stringWidth);
-                        AddModifier2(tg, tg.get_Name() + " " + label, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                        //AddModifier2(tg, tg.get_Name() + " " + label, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                        AddModifier2(tg, label + " " + tg.get_Name(), aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
                         AddModifier2(tg, tg.get_DTG(), aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
                         AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
                         if (dist > 3.5 * stringWidth)//was 28stringwidth+5
@@ -5766,8 +5768,8 @@ public class Modifier2 {
                             pt0 = tg.Pixels.get(tg.Pixels.size() - 1);
                             pt1 = tg.Pixels.get(tg.Pixels.size() - 2);
                             pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                            //pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, 1.7 * stringWidth);
-                            AddModifier2(tg, tg.get_Name() + " " + label, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                            //AddModifier2(tg, tg.get_Name() + " " + label, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                            AddModifier2(tg, label + " " + tg.get_Name(), aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG(), aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
                         }
@@ -5776,8 +5778,8 @@ public class Modifier2 {
                         double dist3 = lineutility.CalcDistanceDouble(pt0, pt2);
                         if (dist > stringWidth + 5 || dist >= dist2 || dist3 > stringWidth + 5) {
                             pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                            //pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, 1.7 * stringWidth);
-                            AddModifier2(tg, tg.get_Name() + " " + label, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                            //AddModifier2(tg, tg.get_Name() + " " + label, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                            AddModifier2(tg, label + " " + tg.get_Name(), aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG(), aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
                         }
@@ -5785,8 +5787,8 @@ public class Modifier2 {
                             pt0 = tg.Pixels.get(tg.Pixels.size() - 1);
                             pt1 = tg.Pixels.get(tg.Pixels.size() - 2);
                             pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                            //pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, 1.7 * stringWidth);
-                            AddModifier2(tg, tg.get_Name() + " " + label, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                            //AddModifier2(tg, tg.get_Name() + " " + label, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                            AddModifier2(tg, label + " " + tg.get_Name(), aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG(), aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
                         }
@@ -5820,7 +5822,7 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, ap, area, 0, pt0, pt0, false);
                     break;
                 case 240804:
-                    AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, pt0, pt0, false);
+                    AddIntegralAreaModifier(tg, tg.get_Name(), area, 0, ptCenter, ptCenter, false);
                     break;
                 case 240806:    //smoke
                 case 240807:

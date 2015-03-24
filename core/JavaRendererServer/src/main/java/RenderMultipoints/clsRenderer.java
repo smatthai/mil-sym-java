@@ -199,7 +199,7 @@ public final class clsRenderer
                 if(nSymbol==25)
                 {
                     linetype=getCMLineType(symbolSet,code);
-                    setTGProperties(tg,setA,setB);
+                    //setTGProperties(tg);
                 }
                 else if(nSymbol==45 || nSymbol==46)                
                     linetype=clsMETOC.getWeatherLinetype(symbolSet,code);
@@ -239,8 +239,8 @@ public final class clsRenderer
             
             //rev D diagnostic
             //int lineType=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(symbolId);
-            //setRevDLinetype(tg);
             int lineType=getRevDLinetype(tg);
+            setTGProperties(tg);
             //end section
             //tg.set_LineType(lineType);
             String status=tg.get_Status();
@@ -2321,6 +2321,7 @@ public final class clsRenderer
                 return TacticalLines.FSCL;
             case 200202:    //defended area rect
             case 200402:
+            case 240804:
                 return TacticalLines.FSA_RECTANGULAR;    //DA new label
             case 200300:    //no atk
                 return TacticalLines.FSA_CIRCULAR;  //no atk new label
@@ -2676,8 +2677,6 @@ public final class clsRenderer
                 return TacticalLines.WDRAWUP;                
             case 300100:    //ICL               new label
                 return TacticalLines.FSCL;  
-            case 240804:    //new symbol
-                break;
             default:
                 break;
         }
@@ -2689,8 +2688,12 @@ public final class clsRenderer
      * @param setA
      * @param setB 
      */
-    private static void setTGProperties(TGLight tg, String setA, String setB)
+    public static void setTGProperties(TGLight tg)
     {
+        if(tg.get_SymbolId().length()<20)
+            return;
+        String setA=tg.get_SymbolId().substring(0,10);
+        String setB=tg.get_SymbolId().substring(10);
         String symbolSet=getSymbolSet(setA);
         int nSymbolSet=Integer.parseInt(symbolSet);
         if(nSymbolSet != 25)
@@ -2740,6 +2743,9 @@ public final class clsRenderer
             case 200201:
             case 200202:
                 tg.set_FillColor(new Color(85,119,136,191));
+                break;
+            case 270100:
+                tg.set_T1("");
                 break;
             default:
                 break;
