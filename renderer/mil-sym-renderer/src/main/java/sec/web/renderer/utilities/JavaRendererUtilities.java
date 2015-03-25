@@ -715,8 +715,22 @@ public class JavaRendererUtilities {
                             {
                                 returnValue = true;
                             }
-                        }                    
+                        }
+                        else if (jsonModifiersArray.has("additionalInfo1") && !jsonModifiersArray.isNull("additionalInfo1") &&
+                                jsonModifiersArray.has("additionalInfo2") && !jsonModifiersArray.isNull("additionalInfo2") ) 
+                        {
+                            returnValue = true;
+                        }
+                        else if (jsonModifiersArray.has("additionalInfo1") && !jsonModifiersArray.isNull("additionalInfo1")) 
+                        {
 
+                            if((symbolId.equals("AKPC--") || // Kill box circular
+                                symbolId.equals("AKPR--") || // Kill box rectangular
+                                symbolId.equals("AKPI--"))) // Kill box irregular)
+                            {
+                                returnValue = true;
+                            }
+                        }
                     }
                 } catch (JSONException je) {
                     //ErrorLogger.LogException(this.getName(), "is3DSymbol()", je);// je.printStackTrace();
