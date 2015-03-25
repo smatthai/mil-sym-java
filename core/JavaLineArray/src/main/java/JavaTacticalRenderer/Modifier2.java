@@ -3702,10 +3702,10 @@ public class Modifier2 {
                         AddIntegralAreaModifier(tg, tg.get_DTG() + " - " + tg.get_DTG1(), aboveMiddle, -csFactor/2, pt0, pt1, false);
                     break;
                 case 200402:
-                    if(tg.Pixels.get(0).x<=tg.Pixels.get(3).x)
-                        AddIntegralAreaModifier(tg, label, aboveMiddle, 2*csFactor, tg.Pixels.get(0), tg.Pixels.get(3), false);
+                    if(tg.Pixels.get(0).x>tg.Pixels.get(3).x)
+                        AddIntegralAreaModifier(tg, label, aboveMiddle, csFactor, tg.Pixels.get(0), tg.Pixels.get(3), false);
                     else
-                        AddIntegralAreaModifier(tg, label, aboveMiddle, 2*csFactor, tg.Pixels.get(1), tg.Pixels.get(2), false);
+                        AddIntegralAreaModifier(tg, label, aboveMiddle, csFactor, tg.Pixels.get(1), tg.Pixels.get(2), false);
                     break;
                 case 141500:
                 case 141400:
@@ -5477,7 +5477,7 @@ public class Modifier2 {
                     label = getRevDLabel(nCode);
                     AddIntegralAreaModifier(tg, label, aboveMiddle, csFactor, ptLl, ptLr, false);
                     break;
-                case 110100:    //lateral boundary
+                case 110101:    //lateral boundary
                     t += " " + "(" + country + ")";
                     tg.set_Name(t);
                     tg.set_T1(t);
@@ -5525,6 +5525,10 @@ public class Modifier2 {
                     //AddIntegralAreaModifier(tg, label, toEnd, 0, ptLast, ptNextToLast, false);
                     AddIntegralAreaModifier(tg, tg.get_N(), toEnd, -1 * csFactor, ptLast, ptNextToLast, false);
                     break;
+                case 200402:
+//                    label = getRevDLabel(nCode);                    
+//                    AddIntegralAreaModifier(tg, label, aboveMiddle, 0, pt0, pt1, false);
+//                    break;
                 case 140101:    //flot has no labels
                 case 140102:
                 case 150101:
@@ -5535,7 +5539,6 @@ public class Modifier2 {
                 case 152100:
                 case 152200:
                 case 141700:
-                case 200402:
                     break;
                 case 140400:    //feba has labels at end    
                 case 140401:
