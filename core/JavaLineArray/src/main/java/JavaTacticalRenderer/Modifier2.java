@@ -3667,11 +3667,16 @@ public class Modifier2 {
         }
         try
         {
-            String setA = getSetA(tg.get_SymbolId());
-            String setB = getSetB(tg.get_SymbolId());
-            String code = getCode(setB);
+            String symbolId=tg.get_SymbolId();
+            //String setA = getSetA(tg.get_SymbolId());
+            String setA = symbolId.substring(0,10);
+            //String setB = getSetB(tg.get_SymbolId());
+            String setB = symbolId.substring(10);
+            //String code = getCode(setB);
+            String code = setB.substring(0,6);
             int nCode=Integer.parseInt(code);
-            String symbolSet = getSymbolSet(setA);
+            //String symbolSet = getSymbolSet(setA);
+            String symbolSet = setA.substring(4,6);
             int nSymbol = Integer.parseInt(symbolSet);
             //default values for modifiers AP and V
             String country = "US";  //country AS modifier
@@ -5234,45 +5239,11 @@ public class Modifier2 {
         }
         return siOutline;
     }
-
-    //the following functions added for use for Mil-Std-2525 rev D
     /**
-     * Rev D only
-     *
-     * @param standardId
-     * @return
+     * labels for Rev D symbols
+     * @param code  Rev D entity code
+     * @return 
      */
-    public static String getSetA(String standardId) {
-        if (standardId.length() < 10) {
-            return "";
-        }
-
-        String a = standardId.substring(0, 9);
-        return a;
-    }
-
-    public static String getSetB(String standardId) {
-        if (standardId.length() < 20) {
-            return "";
-        }
-
-        String b = standardId.substring(10, 19);
-        return b;
-    }
-
-    public static String getSymbolSet(String setA) {
-        if (setA.isEmpty()) {
-            return "";
-        }
-        return setA.substring(4, 6);
-    }
-    public static String getCode(String setB) {
-        if (setB.isEmpty()) {
-            return "";
-        }
-        return setB.substring(0, 6);
-    }
-
     private static String getRevDLabel(int code) {
         switch (code) {
             
@@ -5358,11 +5329,16 @@ public class Modifier2 {
                 return;
         }
         try {
-            String setA = getSetA(tg.get_SymbolId());
-            String setB = getSetB(tg.get_SymbolId());
-            String code = getCode(setB);
+            String symbolId=tg.get_SymbolId();
+            //String setA = getSetA(tg.get_SymbolId());
+            String setA=symbolId.substring(0,10);
+            //String setB = getSetB(tg.get_SymbolId());
+            String setB = symbolId.substring(10);
+            //String code = getCode(setB);
+            String code=setB.substring(0,6);
             int nCode=Integer.parseInt(code);
-            String symbolSet = getSymbolSet(setA);
+            //String symbolSet = getSymbolSet(setA);
+            String symbolSet=setA.substring(4,6);
             int nSymbol = Integer.parseInt(symbolSet);
             //default values for modifiers AP and V
             String country = "US";  //country AS modifier

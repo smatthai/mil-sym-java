@@ -26,10 +26,10 @@ import JavaLineArray.lineutility;
 import java.awt.image.BufferedImage;
 import JavaTacticalRenderer.TGLight;
 import JavaTacticalRenderer.Modifier2;
-import static JavaTacticalRenderer.Modifier2.getCode;
-import static JavaTacticalRenderer.Modifier2.getSetA;
-import static JavaTacticalRenderer.Modifier2.getSetB;
-import static JavaTacticalRenderer.Modifier2.getSymbolSet;
+//import static JavaTacticalRenderer.Modifier2.getCode;
+//import static JavaTacticalRenderer.Modifier2.getSetA;
+//import static JavaTacticalRenderer.Modifier2.getSetB;
+//import static JavaTacticalRenderer.Modifier2.getSymbolSet;
 import JavaTacticalRenderer.clsChannelUtility;
 import JavaTacticalRenderer.clsMETOC;
 import JavaTacticalRenderer.P1;
@@ -176,10 +176,14 @@ public final class clsRenderer {
             String symbolId = tg.get_SymbolId();
             if (symbolId.length() > 15) //rev D
             {
-                String setA = Modifier2.getSetA(symbolId);
-                String setB = Modifier2.getSetB(symbolId);
-                String code = Modifier2.getCode(setB);
-                String symbolSet = Modifier2.getSymbolSet(setA);
+                //String setA = Modifier2.getSetA(symbolId);
+                String setA=symbolId.substring(0,10);
+                //String setB = Modifier2.getSetB(symbolId);
+                String setB=symbolId.substring(10);
+                //String code = Modifier2.getCode(setB);
+                String code=setB.substring(0,6);
+                //String symbolSet = Modifier2.getSymbolSet(setA);
+                String symbolSet=setA.substring(4,6);
                 int nSymbol = Integer.parseInt(symbolSet);
                 if (nSymbol == 25) {
                     linetype = getCMLineType(symbolSet, code);
@@ -2611,12 +2615,14 @@ public final class clsRenderer {
             }
             String setA = tg.get_SymbolId().substring(0, 10);
             String setB = tg.get_SymbolId().substring(10);
-            String symbolSet = getSymbolSet(setA);
+            //String symbolSet = getSymbolSet(setA);
+            String symbolSet=setA.substring(4,6);
             int nSymbolSet = Integer.parseInt(symbolSet);
             if (nSymbolSet != 25) {
                 return;
             }
-            String code = Modifier2.getCode(setB);
+            //String code = Modifier2.getCode(setB);
+            String code = setB.substring(0,6);
             int nCode = Integer.parseInt(code);
             switch (nCode) {
                 case 140101:    //friendly present flot

@@ -42,11 +42,15 @@ public final class clsMETOC {
             if(symbolID.length()>15)
             {
                 //test for hold,brdghd
-                String setA=Modifier2.getSetA(symbolID);
-                String setB=Modifier2.getSetB(symbolID);
-                String entityCode=Modifier2.getCode(setB);
+                //String setA=Modifier2.getSetA(symbolID);
+                String setA=symbolID.substring(0,10);
+                //String setB=Modifier2.getSetB(symbolID);
+                String setB=symbolID.substring(10);
+                //String entityCode=Modifier2.getCode(setB);
+                String entityCode=setB.substring(0,6);
                 int nEntityCode=Integer.parseInt(entityCode);
-                String symbolSet=Modifier2.getSymbolSet(setA);
+                //String symbolSet=Modifier2.getSymbolSet(setA);
+                String symbolSet=setA.substring(4,6);
                 int nSymbolSet=Integer.parseInt(symbolSet);
                 switch(nSymbolSet)
                 {
