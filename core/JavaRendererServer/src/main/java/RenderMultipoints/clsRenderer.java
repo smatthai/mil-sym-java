@@ -739,8 +739,9 @@ public final class clsRenderer {
                     tg.set_H2(strH2);
                 }
             }
-            //set rev D properties
-            setTGProperties(tg);
+            //set rev D properties            
+            //render_GE does this
+            //setTGProperties(tg);
         } catch (Exception exc) {
             ErrorLogger.LogException("clsRenderer", "createTGLightfromMilStdSymbol",
                     new RendererException("Failed to build multipoint TG for " + milStd.getSymbolID(), exc));
@@ -1285,6 +1286,7 @@ public final class clsRenderer {
             Object clipArea) //was Rectangle2D
     {
         try {
+            setTGProperties(tg);
             double scale = getScale(tg, converter, clipArea);
             Rectangle2D clipBounds = null;
             //diagnostic 1-9-13
