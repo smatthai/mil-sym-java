@@ -2083,6 +2083,7 @@ public final class clsRenderer {
                 return TacticalLines.AAFNT;
             case 110101:                        //new label
             case 110102:                        //new label
+            case 110103:                        //new label
                 return TacticalLines.BOUNDARY;
             case 110200:
                 return TacticalLines.LL;

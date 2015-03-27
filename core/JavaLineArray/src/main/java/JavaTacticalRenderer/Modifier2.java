@@ -5453,6 +5453,8 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, label, aboveMiddle, csFactor, ptLl, ptLr, false);
                     break;
                 case 110101:    //lateral boundary
+                case 110102:    //fwd boundary
+                case 110103:    //rear boundary
                     t += " " + "(" + country + ")";
                     tg.set_Name(t);
                     tg.set_T1(t);
