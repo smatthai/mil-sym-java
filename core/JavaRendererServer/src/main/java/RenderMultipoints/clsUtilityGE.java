@@ -41,11 +41,11 @@ public final class clsUtilityGE {
      */
     //we would like for these to match the values CPOF is using
     //which means they are subject to change based on what the CPOF client may be passing
-    public static int Hatch_ForwardDiagonal=2;
-    public static int Hatch_BackwardDiagonal=3;
-    public static int Hatch_Vertical=4;
-    public static int Hatch_Horizontal=5;
-    public static int Hatch_Cross=8;
+    private static int Hatch_ForwardDiagonal=2;
+    private static int Hatch_BackwardDiagonal=3;
+    private static int Hatch_Vertical=4;
+    private static int Hatch_Horizontal=5;
+    private static int Hatch_Cross=8;
     protected static void setSplineLinetype(TGLight tg)
     {
         switch(tg.get_LineType())

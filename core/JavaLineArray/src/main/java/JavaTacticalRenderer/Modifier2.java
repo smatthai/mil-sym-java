@@ -44,28 +44,27 @@ import java.awt.geom.Line2D;
 
 public class Modifier2 {
 
-    public POINT2[] textPath;
-    protected String textID;
-    protected String featureID;
-    public String text;
-    protected int iteration;
-    protected int justify;
-    public int type;
-    public double lineFactor;
+    private POINT2[] textPath;
+    private String textID;
+    private String featureID;
+    private String text;
+    private int iteration;
+    private int justify;
+    private int type;
+    private double lineFactor;
     private static String _className = "Modifier2";
-    public boolean isIntegral = false;
-    public boolean fitsMBR = true;        //added 7-9-12 M. Deutch
-    //private static boolean _isTextFlipped=false;
+    private boolean isIntegral = false;
+    private boolean fitsMBR = true;        //added 7-9-12 M. Deutch
 
     Modifier2() {
         textPath = new POINT2[2];
     }
-    public static final int toEnd = 1;  //use both points
-    public static final int aboveMiddle = 2;    //use both points
-    public static final int area = 3;   //use one point
-    public static final int screen = 4;   //use one point, screen, cover, guard points
-    public static final int aboveEnd = 5;   //rev D mod to replace toEnd
-    public static double fillAlphaCanObscureText = 50d;
+    private static final int toEnd = 1;  //use both points
+    private static final int aboveMiddle = 2;    //use both points
+    private static final int area = 3;   //use one point
+    private static final int screen = 4;   //use one point, screen, cover, guard points
+    private static final int aboveEnd = 5;   //rev D mod to replace toEnd
+    private static double fillAlphaCanObscureText = 50d;
 
     private static boolean DoublesBack(POINT2 pt0, POINT2 pt1, POINT2 pt2) {
         boolean result = true;
