@@ -1437,6 +1437,7 @@ public final class arraysupport
                 {
                     continue;
                 }
+                sign.value[0]=-1;
                 lineutility.GetSquallSegment(StartSegPt, EndSegPt, pSquallSegPts, sign, amplitude, quantity, length);
                 for (k = 0; k < segQty; k++)
                 {
