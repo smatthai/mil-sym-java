@@ -23,16 +23,16 @@ public final class Channels {
     {
         _client=value;
     }
-    private static String _affiliation="";
-    public static void setAffiliation(String value)
-    {
-        _affiliation=value;
-    }
+//    private static String _affiliation="";
+//    public static void setAffiliation(String value)
+//    {
+//        _affiliation=value;
+//    }
     private static boolean _shiftLines=true;
-    public static void setShiftLines(boolean value)
-    {
-        _shiftLines=value;
-    }
+//    public static void setShiftLines(boolean value)
+//    {
+//        _shiftLines=value;
+//    }
     public static boolean getShiftLines()
     {
         return _shiftLines;
@@ -521,72 +521,6 @@ public final class Channels {
         }
         return pResultLinePoints;
     }
-//    private static POINT2[] CoordILDouble(long nPrinter,
-//            POINT2[] pLinePoints,
-//            int nUpperLower,
-//            int vblCounter,
-//            int linetype) {
-//
-//        POINT2[] pLinePoints2 = new POINT2[vblCounter];
-//        try {
-//            //declarations
-//            int j, channelWidth = 20;
-//            POINT2[] pNewLinePoints = new POINT2[vblCounter];
-//            CChannelPoints2[] pChannelPoints = new CChannelPoints2[vblCounter];
-//            //end declarations
-//
-//            lineutility.InitializePOINT2Array(pLinePoints2);
-//            for (j = 0; j < vblCounter; j++) {
-//                pNewLinePoints[j] = new POINT2(pLinePoints[j]);
-//            }
-//            switch (linetype) {
-//                case TacticalLines.TRIPLE:
-//                case TacticalLines.DOUBLEC:
-//                case TacticalLines.SINGLEC:
-//                case TacticalLines.HWFENCE:
-//                case TacticalLines.LWFENCE:
-//                case TacticalLines.DOUBLEA:
-//                case TacticalLines.UNSP:
-//                case TacticalLines.DFENCE:
-//                case TacticalLines.SFENCE:
-//                case TacticalLines.BELT:
-//                    channelWidth = 10;
-//                    break;
-//                default:
-//                    channelWidth = 20;
-//                    break;
-//            }
-//
-//            pChannelPoints = GetChannel2Double(channelWidth * nPrinter,
-//                    vblCounter, pNewLinePoints, pChannelPoints);
-//
-//
-//            if (nUpperLower == 1) {
-//                pNewLinePoints = GetUpperChannelLineDouble(pChannelPoints, vblCounter, pNewLinePoints);
-//
-//                for (j = 0; j < vblCounter; j++) {
-//                    pLinePoints2[j] = new POINT2(pNewLinePoints[j]);
-//                }
-//            }
-//
-//            if (nUpperLower == 0) {
-//                pNewLinePoints = GetLowerChannelLineDouble(pChannelPoints, vblCounter, pNewLinePoints);
-//
-//                for (j = 0; j < vblCounter; j++) {
-//                    pLinePoints2[j] = new POINT2(pNewLinePoints[j]);
-//                }
-//            }
-//
-//
-//            //clean up
-//            pNewLinePoints = null;
-//            pChannelPoints = null;
-//            //return pLinePoints;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return pLinePoints2;
-//    }
     private static int FenceType(int linetype) {
         int bolResult = 0;
         try {
@@ -721,7 +655,10 @@ public final class Channels {
                     break;
             }
             if (linetype != (long) TacticalLines.LC &&
-                    linetype != (long) TacticalLines.LC2) {
+                    linetype != (long) TacticalLines.LC2 &&
+                    linetype != TacticalLines.LC_HOSTILE
+                    ) 
+            {
                 channelWidth /= 2;
             }
 
@@ -1045,6 +982,7 @@ public final class Channels {
                 case TacticalLines.SINGLEC2:
                 case TacticalLines.LC2:
                 case TacticalLines.LC:
+                case TacticalLines.LC_HOSTILE:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.AXAD:
@@ -1522,6 +1460,7 @@ public final class Channels {
             switch(vbiDrawThis)
             {
                 case TacticalLines.LC:
+                case TacticalLines.LC_HOSTILE:
                 case TacticalLines.UNSP:
                 case TacticalLines.LWFENCE:
                 case TacticalLines.HWFENCE:
@@ -1686,6 +1625,7 @@ public final class Channels {
                     break;
                 case TacticalLines.LC:
                 case TacticalLines.LC2:
+                case TacticalLines.LC_HOSTILE:
                     if(shiftLines==true || vbiDrawThis == TacticalLines.LC2)
                     {
                         pOriginalLinePoints = new POINT2[vblUpperCounter];
@@ -1695,12 +1635,6 @@ public final class Channels {
                     }
                     if (vbiDrawThis == TacticalLines.LC2) //bound the points
                     {
-                        //save the original points
-//                        pOriginalLinePoints = new POINT2[vblUpperCounter];
-//                        for (k = 0; k < vblUpperCounter; k++) {
-//                            pOriginalLinePoints[k] = new POINT2(pUpperLinePoints[k]);
-//                        }
-
                         pLowerLinePoints = new POINT2[vblLowerCounter];
                         for (k = 0; k < vblLowerCounter2; k++) {
                             pLowerLinePoints[k] = new POINT2(pOriginalLinePoints[k]);
@@ -1724,7 +1658,11 @@ public final class Channels {
                     //diagnostic 1-7-13
                     if(shiftLines)   
                     {                        
-                        if(_affiliation != null && _affiliation.equalsIgnoreCase("H"))
+//                        if(_affiliation != null && _affiliation.equalsIgnoreCase("H"))
+//                            pLowerLinePoints=pOriginalLinePoints;
+//                        else
+//                            pUpperLinePoints=pOriginalLinePoints;
+                        if(vbiDrawThis==TacticalLines.LC_HOSTILE)
                             pLowerLinePoints=pOriginalLinePoints;
                         else
                             pUpperLinePoints=pOriginalLinePoints;
@@ -1831,6 +1769,7 @@ public final class Channels {
                     pLinePoints[k].style = 5;
                     break;
                 case TacticalLines.LC:
+                case TacticalLines.LC_HOSTILE:
                     lUpperFlotCount = flot.GetFlotCountDouble(pUpperLinePoints, vblUpperCounter);
                     lLowerFlotCount = flot.GetFlotCountDouble(pLowerLinePoints, vblLowerCounter);
                     if (lUpperFlotCount <= 0 || lLowerFlotCount <= 0) {
@@ -2703,6 +2642,7 @@ public final class Channels {
                     case TacticalLines.AAFNT_STRAIGHT:
                         break;
                     case TacticalLines.LC:
+                    case TacticalLines.LC_HOSTILE:
                         if(beginPath==false)
                         {
                             if(k>0)

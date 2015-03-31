@@ -1255,12 +1255,12 @@ public final class clsRenderer {
             }
             ArrayList<POINT2> origFillPixels = (ArrayList<POINT2>) tg.Pixels.clone();
 
-            boolean shiftLines = Channels.getShiftLines();
-            if (shiftLines) {
-                String affiliation = tg.get_Affiliation();
-                Channels.setAffiliation(affiliation);
-            }
-            CELineArray.setMinLength(2.5);
+//            boolean shiftLines = Channels.getShiftLines();
+//            if (shiftLines) {
+//                String affiliation = tg.get_Affiliation();
+//                Channels.setAffiliation(affiliation);
+//            }
+            //CELineArray.setMinLength(2.5);
             ArrayList<Point2D> clipPoints = null;
 
             if (clipArea != null) {
@@ -1657,12 +1657,12 @@ public final class clsRenderer {
             JavaTacticalRenderer.clsUtility.initializeLinetypes(rev);
             TGLight tg = createTGLightFromMilStdSymbol(mss, converter);
             CELineArray.setClient("generic");
-            if (shiftLines) {
-                //Channels.setClient("generic");
-                String affiliation = tg.get_Affiliation();
-                Channels.setAffiliation(affiliation);
-            }
-            CELineArray.setMinLength(2.5);    //2-27-2013
+//            if (shiftLines) {
+//                //Channels.setClient("generic");
+//                String affiliation = tg.get_Affiliation();
+//                Channels.setAffiliation(affiliation);
+//            }
+            //CELineArray.setMinLength(2.5);    //2-27-2013
 
             //if(rev==RendererSettings.Symbology_2525C)
             //{

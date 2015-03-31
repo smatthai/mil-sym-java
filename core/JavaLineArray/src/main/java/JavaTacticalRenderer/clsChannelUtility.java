@@ -105,6 +105,7 @@ public final class clsChannelUtility {
                   lineType2 = TacticalLines.BELT1;
                 //break;
                 case TacticalLines.LC:
+                case TacticalLines.LC_HOSTILE:
                 case TacticalLines.LC2:
                 case TacticalLines.UNSP:
                 case TacticalLines.DFENCE:
@@ -298,6 +299,9 @@ public final class clsChannelUtility {
             //anchor point, i.e. the rotary feature can no longer stick out past the anchor point
             //45 pixels shift here matches the 45 pixels shift for catkbyfire found in Channels.GetAXADDouble
             lineutility.adjustCATKBYFIREControlPoint(linetype, pixels, 45);
+            if(tg.get_LineType()==TacticalLines.LC && tg.get_Affiliation().equalsIgnoreCase("H"))            
+                linetype=TacticalLines.LC_HOSTILE;
+            
             //end section
             int j = 0;
             double[] pixels2 = new double[pixels.size() * 2];
@@ -426,6 +430,7 @@ public final class clsChannelUtility {
                     }
                     break;
                 case TacticalLines.LC:
+                case TacticalLines.LC_HOSTILE:
                 case TacticalLines.LC2:
                     //diagnostic 9-27-11
                     //clsUtility.MovePixels(pixels, pixels.length / 2);

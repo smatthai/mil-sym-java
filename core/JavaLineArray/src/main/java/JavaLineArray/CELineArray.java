@@ -2545,11 +2545,11 @@ public final class CELineArray {
     {
         return _client;
     }
-    public static void setMinLength(double value)
-    {
-        DISMSupport.setMinLength(value);
-        arraysupport.setMinLength(value);
-        countsupport.setMinLength(value);
-        return;
-    }
+//    public static void setMinLength(double value)
+//    {
+//        DISMSupport.setMinLength(value);
+//        arraysupport.setMinLength(value);
+//        countsupport.setMinLength(value);
+//        return;
+//    }
 }

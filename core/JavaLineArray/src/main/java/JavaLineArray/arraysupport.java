@@ -28,14 +28,14 @@ import java.awt.geom.Rectangle2D;
 public final class arraysupport
 {
     private static double maxLength=100;
-    private static double minLength=5;
+    private static double minLength=2.5;
     private static double dACP=0;
     private static String _className="arraysupport";
     
-    protected static void setMinLength(double value)
-    {
-        minLength=value;
-    }
+//    protected static void setMinLength(double value)
+//    {
+//        minLength=value;
+//    }
     private static void FillPoints(POINT2[] pLinePoints,
             int counter,
             ArrayList<POINT2>points)

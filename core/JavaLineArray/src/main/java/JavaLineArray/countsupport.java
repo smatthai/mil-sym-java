@@ -15,15 +15,13 @@ import java.awt.geom.Rectangle2D;
 public final class countsupport
 {
     private static double maxLength = 100;	//max arrow size
-    private static double minLength = 5;		//min arrow size
-    //private static double CONST_PI = Math.PI;
-    //private static int maxPixels2=100000;
+    private static double minLength = 2.5;		//min arrow size
     private static String _className = "countsupport";
     
-    protected static void setMinLength(double mLength)
-    {
-        minLength=mLength;
-    }
+//    protected static void setMinLength(double mLength)
+//    {
+//        minLength=mLength;
+//    }
     /**
      * The main function to return the number of points needed for a symbol
      * @param vbiDrawThis the line type
