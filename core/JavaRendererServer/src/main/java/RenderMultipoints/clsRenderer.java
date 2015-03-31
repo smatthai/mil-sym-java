@@ -512,12 +512,10 @@ public final class clsRenderer {
                     double pixelsPerMeter = distPixels / dist;
 
                     ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
-                    if (AM == null) {
-                        AM = new ArrayList();
-                        //long n=Math.round(10d/pixelsPerMeter);
-                        //AM.add((double)n);
-                        AM.add(10000d);
-                    }
+//                    if (AM == null) {
+//                        AM = new ArrayList();
+//                        AM.add(10000d);
+//                    }
                     if (AM != null) {
                         String H2 = "";
                         for (j = 0; j < AM.size(); j++) {
