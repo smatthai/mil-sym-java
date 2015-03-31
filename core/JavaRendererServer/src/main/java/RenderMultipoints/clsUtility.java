@@ -286,25 +286,6 @@ public final class clsUtility {
         }
     }
 
-//    private static void LatLongToPixels(TGLight tg, IPointConversion converter) {
-//        try {
-//            POINT2 pt = new POINT2();
-//            tg.Pixels.clear();
-//            for (int k = 0; k < tg.LatLongs.size(); k++) {
-//                pt=tg.LatLongs.get(k);
-//                pt = PointLatLongToPixels(pt,converter);
-//                tg.Pixels.add(pt);
-//            }//end for
-//            //pt = null;
-//            return;
-//        }
-//        catch(Exception exc)
-//        {
-//            ErrorLogger.LogException("clsUtility" ,"LatLongToPixels",
-//                    new RendererException("Could not calculate points for " + tg.get_SymbolId(), exc));
-//        }
-//    }
-
     protected static ArrayList<POINT2> PixelsToLatLong(ArrayList<POINT2> pts, IPointConversion converter)
     {
         int j=0;
@@ -442,16 +423,12 @@ public final class clsUtility {
         POINT2 pt2 = new POINT2();
         try
         {
-            //pt=converter.convertLonLatToPixels(x,y);
             Point2D.Double pt2d=POINT2ToPoint2D(ptLatLong);
             Point pt=converter.GeoToPixels(pt2d);
 
             pt2=PointToPOINT2(pt);
             pt2.style=ptLatLong.style;
 
-            //pt.x=(ptLatLong.x-clsTGProperties.get_LeftLongitude())/clsTGProperties.get_DegLonPerPixel();
-            //pt.y=(clsTGProperties.get_UpperLatitude()-ptLatLong.y)/clsTGProperties.get_DegLatPerPixel();
-            //pt.style=ptLatLong.style;
         } catch (Exception e) {
             JavaTacticalRenderer.clsUtility.WriteFile("Error in clsUtility.PointLatLongToPixels");
         }
@@ -592,9 +569,6 @@ public final class clsUtility {
             //add the control point
             tg.Pixels.add(pts.get(pts.size()-1));
             tg.LatLongs.add(ptsGeo.get(ptsGeo.size()-1));
-            //set the array
-            //tg.Pixels=pts;
-            //tg.LatLongs=ptsGeo;
         }
         catch (Exception exc) {
             ErrorLogger.LogException("clsUtility", "FilterAXADPoints",
@@ -689,7 +663,6 @@ public final class clsUtility {
         IPointConversion converter=null;
         try
         {
-            //int j=0,pixelWidth=759,pixelHeight=529;
             int j=0,pixelWidth=1000,pixelHeight=1000;
             double geoTop=Double.MIN_NORMAL,geoBottom=Double.MAX_VALUE,
                     geoLeft=Double.MAX_VALUE,geoRight=Double.MIN_NORMAL;
@@ -723,11 +696,6 @@ public final class clsUtility {
             Point2D.Double pt2d=converter.PixelsToGeo(pt);
             pt2=Point2DToPOINT2(pt2d);
             pt2.style=ptPixels.style;
-
-            //pt.x=ptPixels.x*clsTGProperties.get_DegLonPerPixel()+clsTGProperties.get_LeftLongitude();
-            //pt.y=clsTGProperties.get_UpperLatitude()-ptPixels.y*clsTGProperties.get_DegLatPerPixel();
-            //pt.style=ptPixels.style;
-
         }
         catch(Exception exc)
         {

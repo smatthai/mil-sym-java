@@ -24,7 +24,7 @@ import java.util.Map;
  * Class to clip polygons
  * @author Michael Deutch
  */
-public class clsClipQuad {
+public final class clsClipQuad {
     private static String _className = "clsClipQuad";
     /**
      * Use the new version which takes an array for polygon clip bounds instead of rectangle

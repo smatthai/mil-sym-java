@@ -9,7 +9,7 @@ import ArmyC2.C2SD.Utilities.MilStdSymbol;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.RendererException;
 import ArmyC2.C2SD.Utilities.ModifiersTG;
-import ArmyC2.C2SD.Utilities.RendererSettings;
+//import ArmyC2.C2SD.Utilities.RendererSettings;
 import java.util.HashMap;
 import java.util.Map;
 import JavaLineArray.arraysupport;
@@ -20,16 +20,12 @@ import JavaLineArray.ref;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import JavaLineArray.Shape2;
-import JavaLineArray.DISMSupport;
+//import JavaLineArray.DISMSupport;
 import JavaLineArray.TacticalLines;
 import JavaLineArray.lineutility;
 import java.awt.image.BufferedImage;
 import JavaTacticalRenderer.TGLight;
 import JavaTacticalRenderer.Modifier2;
-//import static JavaTacticalRenderer.Modifier2.getCode;
-//import static JavaTacticalRenderer.Modifier2.getSetA;
-//import static JavaTacticalRenderer.Modifier2.getSetB;
-//import static JavaTacticalRenderer.Modifier2.getSymbolSet;
 import JavaTacticalRenderer.clsChannelUtility;
 import JavaTacticalRenderer.clsMETOC;
 import JavaTacticalRenderer.P1;
@@ -40,11 +36,11 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.Rectangle;
-import java.awt.geom.Area;
-import java.awt.Polygon;
+//import java.awt.geom.Area;
+//import java.awt.Polygon;
 //import javax.jws.soap.SOAPBinding.Style;
 //import java.awt.Polygon;
-import java.awt.geom.Line2D;
+//import java.awt.geom.Line2D;
 
 //import java.awt.font.TextLayout;
 /**
@@ -1048,23 +1044,6 @@ public final class clsRenderer {
         return;
     }
 
-    /**
-     * To maintain independence from the ShapeInfo type assignments
-     *
-     * @param shapeInfo
-     * @param shape
-     */
-//    private static void setShape2Type(ShapeInfo shapeInfo, Shape2 shape)
-//    {
-//        if(shapeInfo.getShapeType()==ShapeInfo.SHAPE_TYPE_FILL)
-//            shape.set_ShapeType(Shape2.SHAPE_TYPE_FILL);
-//        else if(shapeInfo.getShapeType()==ShapeInfo.SHAPE_TYPE_MODIFIER)
-//            shape.set_ShapeType(Shape2.SHAPE_TYPE_MODIFIER);
-//        else if(shapeInfo.getShapeType()==ShapeInfo.SHAPE_TYPE_MODIFIER_FILL)
-//            shape.set_ShapeType(Shape2.SHAPE_TYPE_MODIFIER_FILL);
-//        else
-//            shape.set_ShapeType(Shape2.SHAPE_TYPE_POLYLINE);
-//    }
     private static void setShapeInfoType(ShapeInfo shapeInfo, Shape2 shape) {
         if (shape.getShapeType() == Shape2.SHAPE_TYPE_FILL) {
             shapeInfo.setShapeType(ShapeInfo.SHAPE_TYPE_FILL);
@@ -1076,32 +1055,6 @@ public final class clsRenderer {
             shapeInfo.setShapeType(ShapeInfo.SHAPE_TYPE_POLYLINE);
         }
     }
-//    private static ArrayList<Shape2>ShapeInfoToShape2(ArrayList<ShapeInfo>shapeInfos)
-//    {
-//        if(shapeInfos==null)
-//            return null;
-//        if(shapeInfos.size()==0)
-//            return new ArrayList();
-//
-//        int j=0;
-//        ShapeInfo shapeInfo=null;
-//        Shape2 shape=null;
-//        ArrayList shapes=new ArrayList();
-//        for(j=0;j<shapeInfos.size();j++)
-//        {
-//            shapeInfo=shapeInfos.get(j);
-//            shape=new Shape2(shapeInfo.getShapeType());
-//            shape.set_AffineTransform(shapeInfo.getAffineTransform());
-//            setShape2Type(shapeInfo,shape);
-//            shape.set_FillColor(shapeInfo.getFillColor());
-//            shape.set_LineColor(shapeInfo.getLineColor());
-//            shape.set_Stroke(shapeInfo.getStroke());
-//            shape.set_Shape(shapeInfo.getShape());
-//            shape.set_TexturePaint(shapeInfo.getTexturePaint());
-//            shapes.add(shape);
-//        }
-//        return shapes;
-//    }
 
     private static void Shape2ToShapeInfo(ArrayList<ShapeInfo> shapeInfos, ArrayList<Shape2> shapes) {
         //ShapeInfo shapeInfo=null;
@@ -1726,13 +1679,8 @@ public final class clsRenderer {
 
             setHostileLC(tg);
 
-            //diagnostic
-//            tg.modifiers=new ArrayList();
             BufferedImage bi = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = bi.createGraphics();
-//            if(clsUtility.addModifiersBeforeClipping(tg))
-//                 Modifier2.AddModifiers(tg,g2d,clipBounds);
-            //end section
 
             clsUtilityCPOF.SegmentGeoPoints(tg, converter);
             clsUtility.FilterAXADPoints(tg, converter);
@@ -1809,13 +1757,10 @@ public final class clsRenderer {
                 JavaTacticalRenderer.clsUtility.InterpolatePixels(tg);
 
                 tg.modifiers = new ArrayList();
-                //if(clsUtility.addModifiersBeforeClipping(tg))
-                //Modifier2.AddModifiers(tg,g2d,clipBounds);
                 Modifier2.AddModifiersGeo(tg, g2d, clipBounds, converter);
 
                 clsUtilityCPOF.FilterPoints2(tg, converter);
                 clsUtilityCPOF.ClearPixelsStyle(tg);
-                //shapes = clsRenderer2.GetLineArray(tg, converter, isTextFlipped,clipBounds);
                 //add section to replace preceding line M. Deutch 11-4-2011
                 ArrayList rangeFanFillShapes = null;
                 //do not fill the original shapes for circular range fans
@@ -1876,9 +1821,8 @@ public final class clsRenderer {
             ErrorLogger.LogException(_className, "render",
                     new RendererException("Failed inside render", exc));
 
-            //throw exc;
         }
-        return;
+        //return;
     }
 
     /**
@@ -1897,29 +1841,13 @@ public final class clsRenderer {
             ArrayList<ShapeInfo> shapeInfos,
             ArrayList<ShapeInfo> modifierShapeInfos,
             Rectangle2D clipBounds) {
-        //Graphic g = null;
         try {
-            //build a new TGLight from props
-            //TacticalGraphicProperties tgProps = (TacticalGraphicProperties) props;
-
-            //String symbolid = tgProps.get2525Code();
-            //TGLight tg=createTGLightFromMilStdSymbol(mss,converter);
-            //int linetype = CELineArray.CGetLinetypeFromString(symbolid);
             setHostileLC(tg);
             boolean isChange1Area = JavaTacticalRenderer.clsUtility.IsChange1Area(tg.get_LineType(), null);
-            //int bolMETOC=JavaTacticalRenderer.clsMETOC.IsWeather(tg.get_SymbolId());
-            //TGLight tg = new TGLight();
-            //clsUtilityCPOF.CPOFTGLight(tg, tgProps, converter);
 
             boolean isTextFlipped = false;
             //for 3d change 1 symbols we do not transform the points
 
-            //if (props.getConfiguration().getYAxisDirection()==YAxisDirection.UP && isChange1Area == false) {
-            //    clsUtilityCPOF.TransformPixels(tg, clipBounds);
-            //}
-            //if (props.getConfiguration().getYAxisDirection()==YAxisDirection.UP) {
-            //    isTextFlipped = true;
-            //}
             //if it is world view then we want to flip the far points about
             //the left and right sides to get two symbols
             ArrayList<POINT2> farLeftPixels = new ArrayList();
@@ -2011,29 +1939,6 @@ public final class clsRenderer {
             //ShapeSpec[] shapeSpecs = Shape2ToShapeSpec(shapes);
             Shape2ToShapeInfo(shapeInfos, shapes);
 
-            //6.0 change
-            //if (props.getConfiguration().getYAxisDirection()==YAxisDirection.UP && isChange1Area == false /** && useGeoPoints==false **/) {
-            //  TransformShapeSpecs(shapeSpecs, clipBounds);
-            //}
-            //shapeSpecs = clsUtilityCPOF.ValidateShapeSpecs(shapeSpecs, clipBounds);
-            //CPOF 6.0 diagnostic TextSpec
-            //change this to instantiate with new Graphic(TextSpecs[],ShapeSpecs[],category))
-            //g = new Graphic(shapeSpecs, GraphicCategory.OPEN_LINE_GRAPHIC);
-            //CPOF 6.0 diagnostic
-            //TextSpec[]textSpecs2=null;
-            //if(textSpecs != null && textSpecs.size()>0)
-            //    textSpecs2=textSpecs.toArray(new TextSpec[textSpecs.size()]);
-            //if(textSpecs2==null)
-            //    textSpecs2=new TextSpec[0];
-            //if (props.getConfiguration().getYAxisDirection()==YAxisDirection.UP && isChange1Area == false /** && useGeoPoints==false **/) {
-            //   TransformTextSpecs(textSpecs2, clipBounds);
-            //}
-            //we have the shapes and the text, can build the graphic
-            //g = new Graphic(textSpecs2, shapeSpecs, GraphicCategory.OPEN_LINE_GRAPHIC);
-            //if (g == null || g.getShapeSpecs() == null)
-            //{
-            //    throw new GraphicFactoryException("No ShapeSpecs");
-            //}
         } catch (Exception exc) {
             ErrorLogger.LogException(_className, "render",
                     new RendererException("Failed inside render", exc));
