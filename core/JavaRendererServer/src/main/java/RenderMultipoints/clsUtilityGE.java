@@ -32,7 +32,7 @@ import java.awt.Color;
  * @author Michael Deutch
  */
 public final class clsUtilityGE {
-    private static String _className="clsUtilityGE";
+    private static final String _className="clsUtilityGE";
     /**
      * set the polylines ArrayList of ArrayList<Point2D> for each ShapeInfo.
      * This will allow consumers of the Google Earth Renderer to treate the individual polylines
@@ -41,11 +41,11 @@ public final class clsUtilityGE {
      */
     //we would like for these to match the values CPOF is using
     //which means they are subject to change based on what the CPOF client may be passing
-    private static int Hatch_ForwardDiagonal=2;
-    private static int Hatch_BackwardDiagonal=3;
-    private static int Hatch_Vertical=4;
-    private static int Hatch_Horizontal=5;
-    private static int Hatch_Cross=8;
+    private static final int Hatch_ForwardDiagonal=2;
+    private static final int Hatch_BackwardDiagonal=3;
+    private static final int Hatch_Vertical=4;
+    private static final int Hatch_Horizontal=5;
+    private static final int Hatch_Cross=8;
     protected static void setSplineLinetype(TGLight tg)
     {
         switch(tg.get_LineType())

@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public final class clsClipPolygon2 {
 
-    private static String _className = "clsClipPolygon2";
+    private static final String _className = "clsClipPolygon2";
     /**
      * Calculate the point the line intersects an edge of the clipbounds
      * @param pt0 start point of the line

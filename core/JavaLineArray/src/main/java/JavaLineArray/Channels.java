@@ -15,9 +15,9 @@ import ArmyC2.C2SD.Utilities.RendererSettings;
  * @author Michael Deutch
  */
 public final class Channels {
-    private static double maxLength=100;//max arrow size
-    private static double minLength=5;	//max arrow size
-    private static String _className="Channels";
+    private static final double maxLength=100;//max arrow size
+    private static final double minLength=5;	//max arrow size
+    private static final String _className="Channels";
     private static String _client="";
     public static void setClient(String value)
     {

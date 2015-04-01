@@ -27,10 +27,10 @@ import java.awt.geom.Rectangle2D;
  */
 public final class arraysupport
 {
-    private static double maxLength=100;
-    private static double minLength=2.5;
-    private static double dACP=0;
-    private static String _className="arraysupport";
+    private static final double maxLength=100;
+    private static final double minLength=2.5;
+    private static final double dACP=0;
+    private static final String _className="arraysupport";
     
 //    protected static void setMinLength(double value)
 //    {

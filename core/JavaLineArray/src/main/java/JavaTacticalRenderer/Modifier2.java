@@ -52,7 +52,7 @@ public class Modifier2 {
     private int justify;
     private int type;
     private double lineFactor;
-    private static String _className = "Modifier2";
+    private static final String _className = "Modifier2";
     private boolean isIntegral = false;
     private boolean fitsMBR = true;        //added 7-9-12 M. Deutch
 
@@ -64,7 +64,7 @@ public class Modifier2 {
     private static final int area = 3;   //use one point
     private static final int screen = 4;   //use one point, screen, cover, guard points
     private static final int aboveEnd = 5;   //rev D mod to replace toEnd
-    private static double fillAlphaCanObscureText = 50d;
+    private static final double fillAlphaCanObscureText = 50d;
 
     private static boolean DoublesBack(POINT2 pt0, POINT2 pt1, POINT2 pt2) {
         boolean result = true;

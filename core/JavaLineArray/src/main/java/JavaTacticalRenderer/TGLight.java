@@ -22,7 +22,7 @@ import JavaLineArray.TacticalLines;
 public class TGLight {
 
     public ArrayList<POINT2> LatLongs;
-    private static String _className = "TGLight";
+    private static final String _className = "TGLight";
 
     public ArrayList<POINT2> get_LatLongs() {
         return LatLongs;

@@ -16,14 +16,14 @@ import java.awt.geom.Rectangle2D;
  */
 public final class DISMSupport
 {
-    private static int LEFT_SIDE=0;
-    private static int RIGHT_SIDE=1;
-    private static int COLINEAR=2;
+    private static final int LEFT_SIDE=0;
+    private static final int RIGHT_SIDE=1;
+    private static final int COLINEAR=2;
 
-    private static double CONST_PI = Math.PI;
-    private static double maxLength=100;
-    private static double minLength=2.5;    
-    private static String _className="DISMSupport";
+    private static final double CONST_PI = Math.PI;
+    private static final double maxLength=100;
+    private static final double minLength=2.5;    
+    private static final String _className="DISMSupport";
     
 //    protected static void setMinLength(double mLength)
 //    {

@@ -23,7 +23,7 @@ import java.util.HashMap;
  * @author Michael Deutch
  */
 public final class clsUtility {
-    private static String _className="clsUtility";
+    private static final String _className="clsUtility";
     protected static Point POINT2ToPoint(POINT2 pt2)
     {
         Point pt=new Point();

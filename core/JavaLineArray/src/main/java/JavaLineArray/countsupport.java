@@ -14,9 +14,9 @@ import java.awt.geom.Rectangle2D;
  */
 public final class countsupport
 {
-    private static double maxLength = 100;	//max arrow size
-    private static double minLength = 2.5;		//min arrow size
-    private static String _className = "countsupport";
+    private static final double maxLength = 100;	//max arrow size
+    private static final double minLength = 2.5;		//min arrow size
+    private static final String _className = "countsupport";
     
 //    protected static void setMinLength(double mLength)
 //    {

@@ -33,7 +33,7 @@ import java.awt.geom.Line2D;
 public final class clsUtility {
     private static Map<String,Object> linetypes=null;
     private static Map<String,Object> metocs=null;
-    private static String _className = "clsUtility";
+    private static final String _className = "clsUtility";
     protected static Point2D POINT2ToPoint2D(POINT2 pt2) {
         if (pt2 == null) {
             return null;

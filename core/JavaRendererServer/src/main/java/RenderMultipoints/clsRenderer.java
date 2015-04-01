@@ -50,8 +50,8 @@ import java.awt.Rectangle;
  */
 public final class clsRenderer {
 
-    private static String _className = "clsRenderer";
-    private static double feetPerMeter = 3.28084;
+    private static final String _className = "clsRenderer";
+    private static final double feetPerMeter = 3.28084;
 
     /**
      * Set tg geo points from the client points

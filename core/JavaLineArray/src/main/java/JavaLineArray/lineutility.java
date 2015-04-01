@@ -24,13 +24,13 @@ import java.awt.Point;
 public final class lineutility {
 
     private static String _className = "lineutility";
-    public static int extend_left = 0;
-    public static int extend_right = 1;
-    public static int extend_above = 2;
-    public static int extend_below = 3;
+    public static final int extend_left = 0;
+    public static final int extend_right = 1;
+    public static final int extend_above = 2;
+    public static final int extend_below = 3;
 
     /**
-     * Resizes the array to the length speicifed, called by the Channels class.
+     * Resizes the array to the length specified, called by the Channels class.
      *
      * @param pLinePoints the array to resize
      * @param length the length to which to resize the array.

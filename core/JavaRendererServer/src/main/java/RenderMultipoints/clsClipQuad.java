@@ -25,7 +25,7 @@ import java.util.Map;
  * @author Michael Deutch
  */
 public final class clsClipQuad {
-    private static String _className = "clsClipQuad";
+    private static final String _className = "clsClipQuad";
     /**
      * Use the new version which takes an array for polygon clip bounds instead of rectangle
      * @param polygon

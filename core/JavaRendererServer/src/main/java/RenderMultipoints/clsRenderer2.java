@@ -35,7 +35,7 @@ import java.awt.BasicStroke;
  * @author Michael Deutch
  */
 public final class clsRenderer2 {
-    private static String _className="clsRenderer2";
+    private static final String _className="clsRenderer2";
     /**
      * MSR and ASR use segment data for segment colors
      * Assumes tg.H has been revised for clipping

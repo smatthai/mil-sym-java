@@ -29,7 +29,7 @@ import ArmyC2.C2SD.Utilities.ShapeInfo;
  * @author Michael Deutch
  */
 public final class clsMETOC {
-    private static String _className = "clsMETOC";    
+    private static final String _className = "clsMETOC";    
     /**
      * @param symbolID Mil-Standard 2525 15 character code
      * @return the line type as an integer if it is a weather symbol, else return -1

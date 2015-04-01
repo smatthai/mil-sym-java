@@ -36,7 +36,7 @@ import java.util.Map;
  * @author Michael Deutch
  */
 public final class clsUtilityCPOF {
-    private static String _className = "clsUtilityCPOF";
+    private static final String _className = "clsUtilityCPOF";
     private static ShapeInfo BuildDummyShapeSpec()
     {
         ShapeInfo shape=new ShapeInfo(null);

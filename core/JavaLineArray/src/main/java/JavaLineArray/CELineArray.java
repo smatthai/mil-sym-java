@@ -15,7 +15,7 @@ import ArmyC2.C2SD.Utilities.RendererSettings;
  * @author Michael Deutch
  */
 public final class CELineArray {
-    private static String _className="CELineArray";
+    private static final String _className="CELineArray";
     /**
      * Client interface function, called by tactical renderer clsChannelUtility
      * @param lpsaUpperVBPoints the client points as an array of 2-tuples: x pixels, y pixels

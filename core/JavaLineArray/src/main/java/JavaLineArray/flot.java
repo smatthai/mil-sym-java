@@ -14,7 +14,7 @@ import ArmyC2.C2SD.Utilities.RendererException;
  * @author Michael Deutch
  */
 public final class flot {
-    private static String _className = "flot";
+    private static final String _className = "flot";
     protected static int GetAnchorageFlotSegment(int[] vbPoints,
             int x1,
             int y1,

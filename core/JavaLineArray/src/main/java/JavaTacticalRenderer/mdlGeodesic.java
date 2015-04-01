@@ -19,8 +19,8 @@ import JavaLineArray.lineutility;
  */
 public final class mdlGeodesic {
 
-    private static String _className = "mdlGeodesic";
-    private static double sm_a = 6378137;
+    private static final String _className = "mdlGeodesic";
+    private static final double sm_a = 6378137;
 
     private static double DegToRad(double deg) {
         return deg / 180.0 * Math.PI;
