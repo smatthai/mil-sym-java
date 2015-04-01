@@ -1646,7 +1646,7 @@ public final class clsRenderer {
             ArrayList<ShapeInfo> modifierShapeInfos,
             Object clipBounds) {
         try {
-            boolean shiftLines = Channels.getShiftLines();
+            //boolean shiftLines = Channels.getShiftLines();
             //end section
 
             Rectangle2D clipRect = new Rectangle2D.Double();
