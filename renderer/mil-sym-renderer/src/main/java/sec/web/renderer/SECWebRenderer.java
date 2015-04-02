@@ -643,7 +643,7 @@ public class SECWebRenderer extends Applet {
      * {"modifiers": {"attributeName":"value"[,"attributeNamen":"valuen"]...}}
      * The quotes are literal in the above notation.  Example: 
      * {"modifiers": {"quantity":"4","speed":"300","azimuth":[100,200]}}
-     * @param format An enumeration: 0 for KML, 1 for JSON.
+     * @param format An enumeration: 0 for KML, 1 for JSON, 2 for GeoJSON.
      * @return A JSON string representation of the graphic.
      */
     public String RenderSymbol(String id, String name, String description, 
@@ -693,7 +693,7 @@ public class SECWebRenderer extends Applet {
      * {"modifiers": {"attributeName":"value"[,"attributeNamen":"valuen"]...}}
      * The quotes are literal in the above notation.  Example: 
      * {"modifiers": {"quantity":"4","speed":"300","azimuth":[100,200]}}
-     * @param format An enumeration: 0 for KML, 1 for JSON.
+     * @param format An enumeration: 0 for KML, 1 for JSON, 2 for GeoJSON.
      * @param symStd An enumeration: 0 for 2525Bch2, 1 for 2525C.
      * @return A JSON string representation of the graphic.
      */
@@ -859,7 +859,7 @@ public class SECWebRenderer extends Applet {
      * {"modifiers": {"attributeName":"value"[,"attributeNamen":"valuen"]...}}
      * The quotes are literal in the above notation.  Example:
      * {"modifiers": {"quantity":"4","speed":"300","azimuth":[100,200]}}
-     * @param format An enumeration: 0 for KML, 1 for JSON.
+     * @param format An enumeration: 0 for KML, 1 for JSON, 2 for GeoJSON.
      * @return A JSON (1) or KML (0) string representation of the graphic.
      */
     public String RenderSymbol2D(String id, String name, String description, String symbolCode, String controlPoints,
@@ -897,7 +897,7 @@ public class SECWebRenderer extends Applet {
      * {"modifiers": {"attributeName":"value"[,"attributeNamen":"valuen"]...}}
      * The quotes are literal in the above notation.  Example:
      * {"modifiers": {"quantity":"4","speed":"300","azimuth":[100,200]}}
-     * @param format An enumeration: 0 for KML, 1 for JSON.
+     * @param format An enumeration: 0 for KML, 1 for JSON, 2 for GeoJSON.
      * @param symStd An enumeration: 0 for 2525Bch2, 1 for 2525C.
      * @return A JSON (1) or KML (0) string representation of the graphic.
      */

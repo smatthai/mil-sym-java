@@ -1494,7 +1494,7 @@ public class MultiPointHandler {
      * {"modifiers": {"attributeName":"value"[,"attributeNamen":"valuen"]...}}
      * The quotes are literal in the above notation.  Example:
      * {"modifiers": {"quantity":"4","speed":"300","azimuth":[100,200]}}
-     * @param format An enumeration: 0 for KML, 1 for JSON.
+     * @param format An enumeration: 0 for KML, 1 for JSON, 2 for GeoJSON.
      * @param symStd An enumeration: 0 for 2525Bch2, 1 for 2525C.
      * @return A JSON or KML string representation of the graphic.
      */
@@ -1664,6 +1664,22 @@ public class MultiPointHandler {
                         jsonContent = jsonContent.substring(0,idx) + LookAtTag + jsonContent.substring(idx);
                     }
                 }
+            }
+            else if (format == 2)
+            {
+                jsonOutput.append("{\"type\":\"FeatureCollection\",\"features\":");
+                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getLineColor());
+                jsonOutput.append(jsonContent);
+                jsonOutput.append(",\"properties\":{\"id\":\"");
+                jsonOutput.append(id);
+                jsonOutput.append("\",\"name\":\"");
+                jsonOutput.append(name);
+                jsonOutput.append("\",\"description\":\"");
+                jsonOutput.append(description);
+                jsonOutput.append("\",\"symbolID\":\"");
+                jsonOutput.append(symbolCode);
+                jsonOutput.append("\"}}");
+                
             }
 
         } catch (Exception exc) {
