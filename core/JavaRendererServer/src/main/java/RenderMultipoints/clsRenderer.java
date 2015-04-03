@@ -1392,6 +1392,7 @@ public final class clsRenderer {
                     }
                     TGLight tg1 = clsUtilityCPOF.GetCircularRangeFanFillTG(tg);
                     tg1.set_Fillstyle(savefillStyle);
+                    tg1.set_SymbolId(tg.get_SymbolId());
                     //check assignment (pass which clip object is not null)
                     if (clipBounds != null) {
                         rangeFanFillShapes = clsRenderer2.GetLineArray(tg1, converter, isTextFlipped, clipBounds);
