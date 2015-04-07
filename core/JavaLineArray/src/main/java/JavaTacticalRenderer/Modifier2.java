@@ -3615,15 +3615,19 @@ public class Modifier2 {
             ArrayList<Point2D>ptsPoly=new ArrayList();
             Point2D ptPoly=null;
             float[] coords = new float[6];
+            int zeros=0;
             for (PathIterator i = shape.getPathIterator(null); !i.isDone(); i.next())
             {
                 int type = i.currentSegment(coords);
+                if(type==0 && zeros==2)
+                    break;
                 switch (type) {
                     case PathIterator.SEG_MOVETO:
                         ptPoly=new Point2D.Double(coords[0],coords[1]);
-                        ptsPoly.add(ptPoly);                        
+                        ptsPoly.add(ptPoly);
+                        zeros++;
                         break;
-                    case PathIterator.SEG_LINETO:
+                    case PathIterator.SEG_LINETO:                            
                         ptPoly=new Point2D.Double(coords[0], coords[1]);
                         ptsPoly.add(ptPoly);
                         break;
@@ -3632,7 +3636,7 @@ public class Modifier2 {
                     case PathIterator.SEG_CUBICTO:  //curveTo was used for HOLD, BRDGHD and some METOC's
                         break;
                     case PathIterator.SEG_CLOSE:    //closePath was never used
-                        break;
+                        break;                        
                 }
             }
             if(ptsPoly.size()>0)
@@ -3720,28 +3724,39 @@ public class Modifier2 {
                 case 151408:    //eny spt anticipated
                     Shape2 shape=shapes.get(shapes.size()-1);                    
                     ArrayList<POINT2>pts=getShapePoints(shape.getShape());
-                    if(n==3)
+                    n=pts.size(); //was tg.Pixels.size()
+                    if(n==4)    //was 3
                     {
                         pt0=pts.get(0);
                         pt1=pts.get(1);
                         pt1=lineutility.MidPointDouble(pt0, pt1, 0);
                     }
+                    else if(n==6)
+                    {
+                        pt0=pts.get(3);   
+                        pt1=pts.get(4);   
+                    }
                     else
                     {
-                        pt0=pts.get(n-4);
-                        pt1=pts.get(n-3);                        
+                        pt0=pts.get(1);   //was n-4
+                        pt1=pts.get(2);   //was n-3                     
                     }
                     AddIntegralAreaModifier(tg, tg.get_N(), aboveMiddle, 0, pt0, pt1, false);
-                    if(n==3)
+                    if(n==4)
                     {
-                        pt0=pts.get(pts.size()-9);
-                        pt1=pts.get(pts.size()-8);
+                        pt0=pts.get(2);  //was pts.size()-9
+                        pt1=pts.get(3);  //was pts.size()-8
                         pt1=lineutility.MidPointDouble(pt0, pt1, 0);
                     }
+                    else if(n==6)
+                    {
+                        pt0=pts.get(0);   
+                        pt1=pts.get(1);   
+                    }   
                     else
                     {
-                        pt0=pts.get(pts.size()-10);
-                        pt1=pts.get(pts.size()-9);                        
+                        pt0=pts.get(n/2+1); //was pts.size()-10
+                        pt1=pts.get(n/2+2);  //was pts.get(pts.size()-9
                     }
                     AddIntegralAreaModifier(tg, tg.get_N(), aboveMiddle, 0, pt0, pt1, false);                    
                     break;
