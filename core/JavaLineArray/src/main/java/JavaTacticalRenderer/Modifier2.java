@@ -44,27 +44,27 @@ import java.awt.geom.Line2D;
 
 public class Modifier2 {
 
-    private POINT2[] textPath;
-    private String textID;
-    private String featureID;
-    private String text;
-    private int iteration;
-    private int justify;
-    private int type;
-    private double lineFactor;
-    private static final String _className = "Modifier2";
-    private boolean isIntegral = false;
-    private boolean fitsMBR = true;        //added 7-9-12 M. Deutch
+    public POINT2[] textPath;
+    public String textID;
+    public String featureID;
+    public String text;
+    public int iteration;
+    public int justify;
+    public int type;
+    public double lineFactor;
+    public static final String _className = "Modifier2";
+    public boolean isIntegral = false;
+    public boolean fitsMBR = true;        //added 7-9-12 M. Deutch
 
     Modifier2() {
         textPath = new POINT2[2];
     }
-    private static final int toEnd = 1;  //use both points
-    private static final int aboveMiddle = 2;    //use both points
-    private static final int area = 3;   //use one point
-    private static final int screen = 4;   //use one point, screen, cover, guard points
-    private static final int aboveEnd = 5;   //rev D mod to replace toEnd
-    private static final double fillAlphaCanObscureText = 50d;
+    public static final int toEnd = 1;  //use both points
+    public static final int aboveMiddle = 2;    //use both points
+    public static final int area = 3;   //use one point
+    public static final int screen = 4;   //use one point, screen, cover, guard points
+    public static final int aboveEnd = 5;   //rev D mod to replace toEnd
+    public static final double fillAlphaCanObscureText = 50d;
 
     private static boolean DoublesBack(POINT2 pt0, POINT2 pt1, POINT2 pt2) {
         boolean result = true;
@@ -3700,7 +3700,7 @@ public class Modifier2 {
                 case 200202:
                     ptLeft = lineutility.MidPointDouble(tg.Pixels.get(0), tg.Pixels.get(1), 0);
                     ptRight = lineutility.MidPointDouble(tg.Pixels.get(2), tg.Pixels.get(3), 0);
-                    AddIntegralAreaModifier(tg, label + " - " + tg.get_Name(), aboveMiddle, csFactor/2, ptLeft, ptRight, false);
+                    AddIntegralAreaModifier(tg, label + " - " + tg.get_Name(), aboveMiddle, -csFactor/2, ptLeft, ptRight, false);
                     break;
                 case 290600:
                     //pt0=tg.Pixels.get(7);
@@ -5678,7 +5678,6 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, label, aboveMiddle, -1, pt0, pt0, false); //ENY or N?
                     AddIntegralAreaModifier(tg, tg.get_DTG() + dash + tg.get_DTG1(), aboveMiddle, csFactor, pt0, pt0, false);
                     break;
-                case 200102:
                 case 220107:
                 case 220108:
                     label = getRevDLabel(nCode);
