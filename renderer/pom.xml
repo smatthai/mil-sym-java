@@ -6,7 +6,7 @@
 
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>mil-sym-renderer-parent</artifactId>
-	<version>0.0.52</version>
+	<version>0.0.53-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>mil-sym-renderer Parent Pom</name>
