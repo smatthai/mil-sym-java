@@ -1741,7 +1741,21 @@ public class Modifier2 {
             POINT2 ptLast,
             POINT2 ptNextToLast) {
         try {
+            POINT2 p0=null,p1=null;
+            double last=-1.0;
             switch (tg.get_LineType()) {
+                case TacticalLines.BOUNDARY:
+                    for(int j=0;j<tg.Pixels.size()-1;j++)
+                    {
+                        p0=tg.Pixels.get(j);
+                        p1=tg.Pixels.get(j+1);
+                        if(p0.x==p1.x)
+                        {
+                            p1.x+=last;
+                            last = -last;
+                        }
+                    }
+                    break;
                 case TacticalLines.PDF:
                 case TacticalLines.PL:
                 case TacticalLines.LOA:
