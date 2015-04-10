@@ -1435,6 +1435,10 @@ public final class arraysupport
                 } 
                 else
                 {
+                    pSquallPts[counter].x = StartSegPt.x;
+                    pSquallPts[counter++].y = StartSegPt.y;
+                    pSquallPts[counter].x = EndSegPt.x;
+                    pSquallPts[counter++].y = EndSegPt.y;
                     continue;
                 }
                 sign.value[0]=-1;

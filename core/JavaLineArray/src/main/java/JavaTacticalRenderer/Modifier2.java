@@ -1741,7 +1741,7 @@ public class Modifier2 {
             POINT2 ptLast,
             POINT2 ptNextToLast) {
         try {
-            POINT2 p0=null,p1=null;
+            POINT2 p0=null, p1=null;
             double last=-1.0;
             switch (tg.get_LineType()) {
                 case TacticalLines.BOUNDARY:
