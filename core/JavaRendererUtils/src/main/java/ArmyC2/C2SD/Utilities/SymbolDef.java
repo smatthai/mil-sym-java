@@ -303,12 +303,16 @@ public class SymbolDef {
             case SymbolDef.DRAW_CATEGORY_ROUTE:
                 returnVal = true;
                 break;
+            case SymbolDef.DRAW_CATEGORY_LINE:
+                if(_strModifiers.indexOf(ModifiersTG.AM_DISTANCE + ".")>-1)//air corridor
+                    returnVal = true;
+                break;
             default:
                 returnVal = false;
         }
         return returnVal;
     }
-
+    
 
     /**
      *

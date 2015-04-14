@@ -837,6 +837,10 @@ public class SymbolUtilities {
                             case SymbolDef.DRAW_CATEGORY_CIRCULAR_RANGEFAN_AUTOSHAPE:
                                 returnVal = true;
                                 break;
+                            case SymbolDef.DRAW_CATEGORY_LINE:
+                                if(sd.getModifiers().indexOf(tgModifier + ".")>-1)
+                                    returnVal = true;
+                                break;
                             default:
                                 returnVal = false;
                         }
@@ -3502,6 +3506,10 @@ public class SymbolUtilities {
                 case SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE:
                 case SymbolDef.DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE: 
                     returnVal = true;
+                    break;
+                case SymbolDef.DRAW_CATEGORY_LINE:
+                    if(sd.getModifiers().indexOf(ModifiersTG.AM_DISTANCE + ".")>-1)
+                        returnVal = true;
                     break;
                 default:
                     returnVal = false;
