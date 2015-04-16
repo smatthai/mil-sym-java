@@ -7,7 +7,7 @@
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>RendererPluginInterface</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.53</version>
+	<version>0.0.54-SNAPSHOT</version>
 
 	<name>RendererPluginInterface</name>
 	<url>http://maven.apache.org</url>
