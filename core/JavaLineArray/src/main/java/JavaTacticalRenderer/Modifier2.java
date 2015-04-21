@@ -4956,12 +4956,12 @@ public class Modifier2 {
                         }
 
                         if (x1 < x2) {
-                            //x = (int) x1 - (int) stringWidth;
-                            x = (int) x1;
+                            x = (int) x1 - (int) stringWidth;
+                            //x = (int) x1;
                             y = (int) y1 + (int) stringHeight / 2 + (int) (lineFactor * stringHeight);
                         } else {
-                            //x = (int) x1;
-                            x = (int) x1 - (int) stringWidth;
+                            x = (int) x1;
+                            //x = (int) x1 - (int) stringWidth;
                             y = (int) y1 + (int) stringHeight / 2 + (int) (lineFactor * stringHeight);
                         }
                         tx = new AffineTransform();
@@ -4978,8 +4978,12 @@ public class Modifier2 {
                         if (lineType == TacticalLines.LC || tg.get_Client().equalsIgnoreCase("ge")) {
                             direction = switchDirection(direction);
                         }
-
-                        //pt2 = lineutility.ExtendDirectedLine(pt1, pt0, pt1, direction, lineFactor * stringHeight);
+                        
+                        if(x1<=x2)
+                        {
+                            dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                            pt0 = lineutility.ExtendAlongLineDouble(pt1, pt0, dist+stringWidth);
+                        }
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
 
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
@@ -4999,8 +5003,6 @@ public class Modifier2 {
                         tx = new AffineTransform();
                         tx.rotate(theta, x1, y1);
                         tx.translate(x, y);
-                        //dist = lineutility.CalcDistanceDouble(pt0, pt1);
-                        //direction = 2;
                         if (lineFactor >= 0) {
                             direction = 2;
                         } else {
@@ -5010,8 +5012,12 @@ public class Modifier2 {
                         if (lineType == TacticalLines.LC || tg.get_Client().equalsIgnoreCase("ge")) {
                             direction = switchDirection(direction);
                         }
-
-                        //pt2 = lineutility.ExtendDirectedLine(pt1, pt0, pt1, direction, lineFactor * stringHeight);
+                        
+                        if(x1<=x2)
+                        {
+                            dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                            pt0 = lineutility.ExtendAlongLineDouble(pt1, pt0, dist+stringWidth);
+                        }
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
 
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
