@@ -463,6 +463,10 @@ public class MultiPointHandler {
             double right = Double.valueOf(bounds[2]).doubleValue();
             double top = Double.valueOf(bounds[3]).doubleValue();
             double bottom = Double.valueOf(bounds[1]).doubleValue();
+            if(left==-180 && right==180)
+                return origScale;
+            else if(left==180 && right==-180)
+                return origScale;
             POINT2 ul=new POINT2(left,top);
             POINT2 ur=new POINT2(right,top);
             //POINT2 ll=new POINT2(left,bottom);
@@ -708,8 +712,10 @@ public class MultiPointHandler {
 
                 width = (int) Math.abs(rightX - leftX);
                 height = (int) Math.abs(bottomY - topY);
-
-                rect = new Rectangle(leftX, topY, width, height);
+                if(width==0 || height==0)
+                    rect=null;
+                else
+                    rect = new Rectangle(leftX, topY, width, height);
             }
         } 
         else 
