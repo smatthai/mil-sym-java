@@ -436,6 +436,8 @@ public class MultiPointHandler {
                 id.equals("G*T*K-----****X") || //counterattack.
                 id.equals("G*T*KF----****X") || //counterattack by fire.
                 id.equals("G*G*PA----****X") || //AoA for Feint
+                id.equals("G*M*ORP---****X") ||
+                id.equals("G*M*ORS---****X") ||
                 id.equals("G*T*A-----****X"))
         {
             return true;
