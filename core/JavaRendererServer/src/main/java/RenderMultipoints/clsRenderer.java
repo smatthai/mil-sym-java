@@ -36,12 +36,7 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.Rectangle;
-//import java.awt.geom.Area;
-//import java.awt.Polygon;
-//import javax.jws.soap.SOAPBinding.Style;
-//import java.awt.Polygon;
-//import java.awt.geom.Line2D;
-
+import ArmyC2.C2SD.Utilities.RendererSettings;
 //import java.awt.font.TextLayout;
 /**
  * Rendering class
@@ -237,7 +232,8 @@ public final class clsRenderer {
             setClientCoords(milStd, tg);
             //build tg.Pixels
             tg.Pixels = clsUtility.LatLongToPixels(tg.LatLongs, converter);
-            tg.set_Font(new Font("Arial", Font.PLAIN, 12));
+            //tg.set_Font(new Font("Arial", Font.PLAIN, 12));
+            tg.set_Font(RendererSettings.getInstance().getLabelFont());
             //diagnostic
             tg.set_FillColor(milStd.getFillColor());
             //tg.set_FillColor(Color.CYAN);
