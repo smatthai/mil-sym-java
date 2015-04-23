@@ -50,6 +50,10 @@ public class ShapeInfo {
     public static int SHAPE_TYPE_SINGLE_POINT_OUTLINE=16;
     public static int SHAPE_TYPE_UNIT_OUTLINE=17;
 
+    public static int justify_left=0;
+    public static int justify_center=1;
+    public static int justify_right=2;
+    
 
     protected Shape _Shape;
     private Stroke stroke;
@@ -69,7 +73,7 @@ public class ShapeInfo {
     private Point2D _ModifierStringPosition = null;
     private double _ModifierStringAngle = 0;
     private Object _Tag = null;
-
+    private int _justify=justify_left;
     //for google earth
     private ArrayList<ArrayList<Point2D>> _Polylines = null;
 
@@ -420,4 +424,13 @@ public class ShapeInfo {
         _Polylines = value;
     }
 
+    public int getTextJustify()
+    {
+        return _justify;
+    }
+
+    public void setTextJustify(int value)
+    {
+        _justify = value;
+    }
 }

@@ -55,10 +55,11 @@ public class Modifier2 {
     public static final String _className = "Modifier2";
     public boolean isIntegral = false;
     public boolean fitsMBR = true;        //added 7-9-12 M. Deutch
-
+    
     Modifier2() {
         textPath = new POINT2[2];
     }
+    //static methods and properties
     public static final int toEnd = 1;  //use both points
     public static final int aboveMiddle = 2;    //use both points
     public static final int area = 3;   //use one point
@@ -4927,13 +4928,6 @@ public class Modifier2 {
                 stringWidth = (double) metrics.stringWidth(s) + 1;
                 stringHeight = (double) font.getSize();
 
-                //diagnostic
-//                if(tg.get_Client().equalsIgnoreCase("ge"))                
-//                {
-//                    toEndToAboveMiddle(modifier,stringWidth);                
-//                    stringHeight/=2;
-//                }
-                //end section
                 double x1 = 0, y1 = 0, x2 = 0, y2 = 0, dist = 0;
                 pt0 = modifier.textPath[0];
                 x1 = pt0.x;
@@ -4949,6 +4943,7 @@ public class Modifier2 {
                 pt0 = new POINT2(x1, y1);
                 pt1 = new POINT2(x2, y2);
                 midPt = new POINT2((x1 + x2) / 2, (y1 + y2) / 2);
+                int justify=ShapeInfo.justify_left;
                 switch (modifier.type) {
                     case aboveEnd:
                         if (x1 == x2) {
@@ -4980,12 +4975,11 @@ public class Modifier2 {
                         }
                         
                         if(x1<=x2)
-                        {
-                            dist=lineutility.CalcDistanceDouble(pt0, pt1);
-                            pt0 = lineutility.ExtendAlongLineDouble(pt1, pt0, dist+stringWidth);
-                        }
+                            justify=ShapeInfo.justify_right;
+                        else
+                            justify=ShapeInfo.justify_left;
+                        
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
-
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
                         break;
                     case toEnd: //corresponds to LabelAndTextBeforeLineTG                                                
@@ -5014,10 +5008,10 @@ public class Modifier2 {
                         }
                         
                         if(x1<=x2)
-                        {
-                            dist=lineutility.CalcDistanceDouble(pt0, pt1);
-                            pt0 = lineutility.ExtendAlongLineDouble(pt1, pt0, dist+stringWidth);
-                        }
+                            justify=ShapeInfo.justify_right;
+                        else
+                            justify=ShapeInfo.justify_left;
+                        
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
 
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
@@ -5204,6 +5198,7 @@ public class Modifier2 {
                 shape2.setModifierString(s);
                 //shape2.setModifierStringPosition(glyphPosition);//M. Deutch 7-6-11
                 shape2.setModifierStringAngle(theta * 180 / Math.PI);
+                shape2.setTextJustify(justify);
                 if (shape2 != null) {
                     shapes.add(shape2);
                 }

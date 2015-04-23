@@ -508,6 +508,5 @@ public class TGLight {
 
     public void set_UseDashArray(boolean value) {
         _useDashArray = value;
-    }
-
+    }    
 }
