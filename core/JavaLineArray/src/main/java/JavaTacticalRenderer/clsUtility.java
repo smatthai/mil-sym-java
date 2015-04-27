@@ -1127,6 +1127,25 @@ public final class clsUtility {
             boolean hasFill=LinesWithFill(lineType);
             boolean isChange1Area = clsUtility.IsChange1Area(lineType, null);
             boolean isClosedPolygon = clsUtility.isClosedPolygon(lineType);
+            if(tg.get_FillColor()==null)
+            {
+                switch(tg.get_LineType())
+                {
+                    case TacticalLines.AC:
+                    case TacticalLines.SAAFR:
+                    case TacticalLines.MRR:
+                    case TacticalLines.MRR_USAS:
+                    case TacticalLines.UAV:
+                    case TacticalLines.UAV_USAS:
+                    case TacticalLines.LLTR:
+                        shape=shapes.get(shapes.size()-1);
+                        shapes.clear();
+                        shapes.add(shape);
+                        break;
+                    default:
+                        break;
+                }
+            }
             for (j = 0; j < shapes.size(); j++) {
                 shape = shapes.get(j);
                 if (shape == null || shape.getShape() == null) {
