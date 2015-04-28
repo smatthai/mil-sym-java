@@ -1138,6 +1138,14 @@ public final class clsUtility {
                     case TacticalLines.UAV:
                     case TacticalLines.UAV_USAS:
                     case TacticalLines.LLTR:
+                    case TacticalLines.CATK:
+                    case TacticalLines.AXAD:
+                    case TacticalLines.AIRAOA:
+                    case TacticalLines.AAAAA:
+                    case TacticalLines.SPT:
+                    case TacticalLines.AAFNT:		//40
+                    case TacticalLines.MAIN:
+                    case TacticalLines.CATKBYFIRE:	//80
                         shape=shapes.get(shapes.size()-1);
                         shapes.clear();
                         shapes.add(shape);

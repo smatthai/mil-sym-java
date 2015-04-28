@@ -408,6 +408,8 @@ public final class clsRenderer2 {
                 return;
             if(tg.Pixels==null || tg.Pixels.size()==0)
                 return;
+            if(tg.get_FillColor()==null)
+                return;
             
             int linetype=tg.get_LineType();
             int j=0;
