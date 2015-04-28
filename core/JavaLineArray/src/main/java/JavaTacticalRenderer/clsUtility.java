@@ -24,6 +24,7 @@ import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.RendererException;
 import ArmyC2.C2SD.Utilities.RendererSettings;
+import ArmyC2.C2SD.Utilities.ShapeInfo;
 import java.awt.Polygon;
 import java.awt.geom.Line2D;
 /**
@@ -1138,6 +1139,10 @@ public final class clsUtility {
                     case TacticalLines.UAV:
                     case TacticalLines.UAV_USAS:
                     case TacticalLines.LLTR:
+                        shape=shapes.get(shapes.size()-1);
+                        shapes.clear();
+                        shapes.add(shape);
+                        break;
                     case TacticalLines.CATK:
                     case TacticalLines.AXAD:
                     case TacticalLines.AIRAOA:
@@ -1145,10 +1150,15 @@ public final class clsUtility {
                     case TacticalLines.SPT:
                     case TacticalLines.AAFNT:		//40
                     case TacticalLines.MAIN:
-                    case TacticalLines.CATKBYFIRE:	//80
-                        shape=shapes.get(shapes.size()-1);
-                        shapes.clear();
-                        shapes.add(shape);
+                    case TacticalLines.CATKBYFIRE:	//80                        
+                        ArrayList<Shape2> tempShapes=new ArrayList();
+                        for(j=0;j<shapes.size();j++)
+                        {
+                            shape=shapes.get(j);
+                            if(shape.getShapeType() != ShapeInfo.SHAPE_TYPE_FILL)
+                                tempShapes.add(shape);
+                        }
+                        shapes=tempShapes;
                         break;
                     default:
                         break;
