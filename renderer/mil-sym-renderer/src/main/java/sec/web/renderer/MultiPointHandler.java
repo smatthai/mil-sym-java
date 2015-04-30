@@ -709,6 +709,22 @@ public class MultiPointHandler {
                 bottomY = (int)temp.getY();
                 rightX = (int)temp.getX();
                 //////////////////
+                //diagnostic clipping does not work at large scales
+                if(scale>10e6)
+                {
+                    //get widest point in the AOI
+                    double midLat=0;
+                    if(bottom<0 && top >0)
+                        midLat=0;
+                    else if(bottom<0 && top<0)
+                        midLat=top;
+                    else if(bottom>0 && top>0)
+                        midLat=bottom;
+                    
+                    temp = ipc.GeoToPixels(new Point2D.Double(right, midLat));
+                    rightX = (int)temp.getX();
+                }
+                //end section
 
                 width = (int) Math.abs(rightX - leftX);
                 height = (int) Math.abs(bottomY - topY);
@@ -716,6 +732,7 @@ public class MultiPointHandler {
                     rect=null;
                 else
                     rect = new Rectangle(leftX, topY, width, height);
+                
             }
         } 
         else 
@@ -1207,7 +1224,6 @@ public class MultiPointHandler {
                 //TODO: swap two lines below when ready for coordinate update
                 ipc = new PointConverter(controlLong, controlLat, scale);
                 //ipc = new PointConverter(left, top, right, bottom, scale);
-
                 temp = ipc.GeoToPixels(new Point2D.Double(left, top));
                 leftX = (int)temp.getX();
                 topY = (int)temp.getY();
@@ -1215,8 +1231,23 @@ public class MultiPointHandler {
                 temp = ipc.GeoToPixels(new Point2D.Double(right, bottom));
                 bottomY = (int)temp.getY();
                 rightX = (int)temp.getX();
+                //diagnostic clipping does not work for large scales
+                if(scale>10e6)
+                {
+                    //get widest point in the AOI
+                    double midLat=0;
+                    if(bottom<0 && top >0)
+                        midLat=0;
+                    else if(bottom<0 && top<0)
+                        midLat=top;
+                    else if(bottom>0 && top>0)
+                        midLat=bottom;
+                    
+                    temp = ipc.GeoToPixels(new Point2D.Double(right, midLat));
+                    rightX = (int)temp.getX();
+                }
+                //end section
                 //////////////////
-
                 width = (int) Math.abs(rightX - leftX);
                 height = (int) Math.abs(bottomY - topY);
 
