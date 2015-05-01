@@ -3477,38 +3477,9 @@ public final class arraysupport
                     //comment 2 lines for CS
                     pt0 = lineutility.MidPointDouble(pLinePoints[0], pLinePoints[1], 0);
                     pt1 = lineutility.MidPointDouble(pLinePoints[2], pLinePoints[3], 0);
-                    //uncomment 3 line for CS
-                    //pt0=new POINT2(pt2);
-                    //d=lineutility.CalcDistanceDouble(pt4, pt2);
-                    //pt1=lineutility.ExtendAlongLineDouble(pLinePoints[0], pLinePoints[1], d);
-                    //end section
-                    
-//                    pts = new POINT2[2];
-//                    pts[0] = new POINT2(pt0);
-//                    pts[1] = new POINT2(pt1);
-//                    pointCounter = lineutility.BoundPointsCount(pts, 2);
-//                    segments = new int[pointCounter];
-//                    pts = new POINT2[pointCounter];
-//                    lineutility.InitializePOINT2Array(pts);
-//                    pts[0] = new POINT2(pt0);
-//                    pts[1] = new POINT2(pt1);
-//                    lineutility.BoundPoints(pts, 2, segments);
-//                    for (j = 0; j < pointCounter - 1; j++) {
-//                        if (segments[j] == 1) {
-//                            pt0 = new POINT2(pts[j]);
-//                            pt1 = new POINT2(pts[j + 1]);
-//                            break;
-//                        }
-//                    }
-
-//                    for (j = 3; j < vblCounter; j++) {
-//                        pLinePoints[j] = new POINT2(pLinePoints[3]);
-//                        pLinePoints[j].style = 5;
-//                    }
-//                    pLinePoints[1].style = 5;
-//
-                    //added section 10-27-20
-                    POINT2[]savepoints=null;
+                    POINT2[]savepoints=new POINT2[2];
+                    savepoints[0]=new POINT2(pt0);
+                    savepoints[1]=new POINT2(pt1);
                     Boolean drawJaggies=true;
                     if(clipBounds != null)
                     {
@@ -3519,6 +3490,13 @@ public final class arraysupport
                         {
                             pt0=savepoints[0];
                             pt1=savepoints[1];
+                        }
+                        else
+                        {
+                            savepoints=new POINT2[2];
+                            savepoints[0]=new POINT2(pt0);
+                            savepoints[1]=new POINT2(pt1);
+                            drawJaggies=false;
                         }
                         
                         midpt=lineutility.MidPointDouble(pt0, pt1, 0);
