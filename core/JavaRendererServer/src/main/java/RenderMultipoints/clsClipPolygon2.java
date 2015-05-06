@@ -745,7 +745,7 @@ public final class clsClipPolygon2 {
      * @param clipBounds
      * @return
      */
-    protected static ArrayList<Point2D> ClipPolygon(TGLight tg,
+    public static ArrayList<Point2D> ClipPolygon(TGLight tg,
             Rectangle2D clipBounds) {
         ArrayList<Point2D> poly = new ArrayList();
         try {
