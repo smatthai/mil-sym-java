@@ -4943,6 +4943,7 @@ public class Modifier2 {
                 pt0 = new POINT2(x1, y1);
                 pt1 = new POINT2(x2, y2);
                 midPt = new POINT2((x1 + x2) / 2, (y1 + y2) / 2);
+                Point2D modifierPosition=null;  //use this if using justify
                 int justify=ShapeInfo.justify_left;
                 switch (modifier.type) {
                     case aboveEnd:
@@ -4981,6 +4982,7 @@ public class Modifier2 {
                         
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
+                        modifierPosition=new Point2D.Double(pt3.x,pt3.y);
                         break;
                     case toEnd: //corresponds to LabelAndTextBeforeLineTG                                                
                         if (x1 == x2) {
@@ -5015,6 +5017,7 @@ public class Modifier2 {
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
 
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
+                        modifierPosition=new Point2D.Double(pt3.x,pt3.y);
                         break;
                     case aboveMiddle:
                         //use the geo midpoint for this, otherwise it strays
@@ -5066,22 +5069,23 @@ public class Modifier2 {
                         }
 
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
+                        justify=ShapeInfo.justify_center;
+                        modifierPosition=new Point2D.Double(midPt.x,midPt.y);
                         break;
                     case area:
                         theta = 0;
-                        //g2d.rotate(0, x1, y1);
 
                         x = (int) x1 - (int) stringWidth / 2;
                         y = (int) y1 + (int) (stringHeight / 2) + (int) (1.25 * lineFactor * stringHeight);
 
-                        //tx = g2d.getTransform();
                         tx = new AffineTransform();
                         tx.translate(x, y);
 
                         //pt2 = new POINT2(midPt.x + stringWidth / 2 - 1, midPt.y);
                         //pt3 = new POINT2(midPt.x + 1.5 * stringWidth + 1, midPt.y);
                         glyphPosition = new Point(x, y);
-                        //glyphPosition=new Point2D.Double(x,y);
+                        justify=ShapeInfo.justify_center;
+                        modifierPosition=new Point2D.Double(x1,y1);                        
                         break;
                     case screen:    //for SCREEN, GUARD, COVER, not currently used
                         if (tg.Pixels.size() >= 14) {
@@ -5117,16 +5121,9 @@ public class Modifier2 {
                             x = (int) x1 - (int) stringWidth / 2;
                             y = (int) y1 - (int) stringHeight / 2 + (int) (lineFactor * stringHeight);
                             y = (int) y1 + (int) (stringHeight / 2) + (int) (lineFactor * stringHeight);
-                            //g2d.setColor(tg.get_LineColor());
-                            //tx = g2d.getTransform();
                             tx = new AffineTransform();
                             tx.rotate(theta, x1, y1);
                             tx.translate(x, y);
-                            //Add AffineTransform to Shape2
-                            //pt2 = new POINT2(midPt);
-                            //pt3 = new POINT2(midPt);
-                            //pt2.x += stringWidth / 2;
-                            //pt3.x += 1.5 * stringWidth;
                         } else {
                             theta = 0;
                             x = (int) tg.Pixels.get(0).x;
@@ -5134,18 +5131,13 @@ public class Modifier2 {
                             x = (int) x - (int) stringWidth / 2;
                             y = (int) y - (int) stringHeight / 2 + (int) (lineFactor * stringHeight);
                             y = (int) y + (int) (stringHeight / 2) + (int) (lineFactor * stringHeight);
-                            //g2d.setColor(tg.get_LineColor());
                             tx = g2d.getTransform();
                             tx.translate(x, y);
-                            //Add AffineTransform to Shape2
-                            //pt2 = new POINT2(midPt);
-                            //pt3 = new POINT2(midPt);
-                            //pt2.x += stringWidth / 2;
-                            //pt3.x += 1.5 * stringWidth;
                         }
 
                         glyphPosition = new Point(x, y);
-                        //glyphPosition=new Point2D.Double(x,y);
+                        justify=ShapeInfo.justify_center;
+                        modifierPosition=new Point2D.Double(x1,y1);                        
                         break;
                     default:
                         break;
@@ -5155,23 +5147,6 @@ public class Modifier2 {
                     tx.scale(1, -1);
                 }
 
-//                dist=lineutility.CalcDistanceDouble(pt0, pt1);
-//                int direction=-1;
-//                if(lineFactor-0.5>0)
-//                    direction=2;
-//                else
-//                    direction=3;
-//
-//                //calculate the start postition for the modifier
-//                pt2=lineutility.ExtendDirectedLine(pt1, pt0, pt1, direction, 1.25*(lineFactor-0.5)*stringHeight);
-//                pt3=lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, 1.25*(lineFactor-0.5)*stringHeight);
-//                if(pt2.x<pt3.x)
-//                    pt2 = lineutility.ExtendAlongLineDouble(pt2, pt3, dist);
-//                else
-//                    pt2 = lineutility.ExtendAlongLineDouble(pt2, pt3, dist+stringWidth);
-//
-//                //glyphPosition=new Point2D.Double(pt2.x,pt2.y);
-//                glyphPosition=new Point((int)pt2.x,(int)pt2.y);
                 shape2 = new Shape2(Shape2.SHAPE_TYPE_MODIFIER_FILL);
 
                 shape2.setStroke(new BasicStroke(0, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 3));
@@ -5196,6 +5171,8 @@ public class Modifier2 {
                 //shape2.setGlyphPosition(new Point(0,0));
                 //added two settings for use by GE
                 shape2.setModifierString(s);
+                //clients should use getModifierStringPosition if they are using horizontal justification to calculate text placement
+                shape2.setModifierStringPosition(modifierPosition);
                 //shape2.setModifierStringPosition(glyphPosition);//M. Deutch 7-6-11
                 shape2.setModifierStringAngle(theta * 180 / Math.PI);
                 shape2.setTextJustify(justify);
