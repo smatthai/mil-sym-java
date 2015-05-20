@@ -2983,8 +2983,7 @@ public class Modifier2 {
                 case TacticalLines.AIRHEAD:
                     GetMBR(tg, ul, ur, lr, ll);
                     AddIntegralAreaModifier(tg, label, aboveMiddle, 1.35 * factor * csFactor, ll, lr, false);
-                    //AddIntegralAreaModifier(tg, "(PL " + tg.get_Name() + ")", aboveMiddle, 1.1*(factor*csFactor + csFactor), ll, lr,false);
-                    AddIntegralAreaModifier(tg, tg.get_Name(), aboveMiddle, 1.1 * (factor * csFactor + csFactor), ll, lr, false);
+                    //AddIntegralAreaModifier(tg, tg.get_Name(), aboveMiddle, 1.1 * (factor * csFactor + csFactor), ll, lr, false);
                     break;
                 case TacticalLines.CONVOY:
                 case TacticalLines.HCONVOY:
