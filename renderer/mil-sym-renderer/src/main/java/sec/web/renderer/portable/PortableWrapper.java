@@ -37,7 +37,7 @@ public class PortableWrapper {
                 }
                 
                 SECRenderer sr = SECRenderer.getInstance();
-                sr.matchSECWebRendererAppletDefaultRendererSettings();
+                //sr.matchSECWebRendererAppletDefaultRendererSettings();
                 sr.refreshPlugins();
                 
                 Boolean spOn = true;

@@ -329,7 +329,12 @@ public class SymbolDraw {
             if(originalText.getAffineTransform() != null)
                 siOutline.setAffineTransform(new AffineTransform(originalText.getAffineTransform()));
 
-            siOutline.setLineColor(getIdealTextBackgroundColor(textColor));
+            if(originalText.getTextBackgroundColor() != null)
+            {
+                siOutline.setLineColor(originalText.getTextBackgroundColor());
+            }
+            else
+                siOutline.setLineColor(getIdealTextBackgroundColor(textColor));
 
             //siOutline.setStroke(new BasicStroke(2));
             siOutline.setStroke(new BasicStroke(outlineSize,BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 3));
@@ -388,7 +393,13 @@ public class SymbolDraw {
             if(originalText.getTextLayout() != null)
             {
                 textColor = originalText.getLineColor();        //textlayout
-                backgroundColor = getIdealTextBackgroundColor(textColor);
+                if(originalText.getTextBackgroundColor() != null)
+                {
+                    backgroundColor = originalText.getTextBackgroundColor();
+                }
+                else
+                    backgroundColor = getIdealTextBackgroundColor(textColor);
+                
                 outlineShapes = new ArrayList<ShapeInfo>();
 
                 for(int i = 1; i <= thickness; i++)
@@ -905,7 +916,11 @@ public class SymbolDraw {
             tempRect = originalText.getTextLayout().getPixelBounds(null, (float)originalText.getGlyphPosition().getX(), (float)originalText.getGlyphPosition().getY());
             //tempRect.setRect(temp.getTextLayout().getBounds());
             background = new ShapeInfo(new Rectangle(tempRect.x - 2, tempRect.y - 2, tempRect.width + 4, tempRect.height + 4));
-            if(RendererSettings.getInstance().getLabelBackgroundColor() != null)
+            if(originalText.getTextBackgroundColor() != null)
+            {
+                background.setFillColor(originalText.getTextBackgroundColor());
+            }
+            else if(RendererSettings.getInstance().getLabelBackgroundColor() != null)
             {
                 background.setFillColor(RendererSettings.getInstance().getLabelBackgroundColor());
             }
@@ -943,19 +958,35 @@ public class SymbolDraw {
      */
     public static ShapeInfo CreateModifierShapeInfo(TextLayout text, String modifierValue, double x, double y)
     {
-        return CreateModifierShapeInfo(text, modifierValue, x, y, Color.BLACK);
+        return CreateModifierShapeInfo(text, modifierValue, x, y, Color.BLACK, null);
+    }
+    
+    /**
+     * 
+     * @param text
+     * @param modifierValue
+     * @param x
+     * @param y
+     * @param textColor
+     * @deprecated 
+     * @return 
+     */
+    public static ShapeInfo CreateModifierShapeInfo(TextLayout text, String modifierValue, double x, double y, Color textColor)
+    {
+        return CreateModifierShapeInfo(text, modifierValue, x, y, textColor, null);
     }
 
     /**
-     *
+     * 
      * @param text
      * @param modifierValue
      * @param x
      * @param y
      * @param textColor Null == Black
-     * @return
+     * @param textBackgroundColor null == renderer decides
+     * @return 
      */
-    public static ShapeInfo CreateModifierShapeInfo(TextLayout text, String modifierValue, double x, double y, Color textColor)
+    public static ShapeInfo CreateModifierShapeInfo(TextLayout text, String modifierValue, double x, double y, Color textColor, Color textBackgroundColor)
     {
         try
         {
@@ -989,6 +1020,9 @@ public class SymbolDraw {
 
             si.setStroke(new BasicStroke(0,BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 3));
             si.setShapeType(ShapeInfo.SHAPE_TYPE_UNIT_DISPLAY_MODIFIER);
+            
+            if(textBackgroundColor != null)
+                si.setTextBackgroundColor(textBackgroundColor);
 
             return si;
         }

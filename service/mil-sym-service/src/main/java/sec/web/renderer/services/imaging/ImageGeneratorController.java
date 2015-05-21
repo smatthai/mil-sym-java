@@ -59,6 +59,16 @@ public class ImageGeneratorController {
                     }
                     SECRenderer.getInstance().printManifestInfo();
                     
+                    //get textBackgroundMethod
+                    String textBackgroundMethod = props.getProperty("textBackgroundMethod");
+                    System.out.println("textBackgroundMethod:  " + textBackgroundMethod);
+                    if(SymbolUtilities.isNumber(textBackgroundMethod))
+                    {
+                        RendererSettings.getInstance().setTextBackgroundMethod(Integer.parseInt(textBackgroundMethod));
+                    }
+                    
+                    SECRenderer.getInstance().printManifestInfo();
+                    
 		} catch (Exception exc1) {
 			System.err.println(exc1.getMessage());
 			exc1.printStackTrace();

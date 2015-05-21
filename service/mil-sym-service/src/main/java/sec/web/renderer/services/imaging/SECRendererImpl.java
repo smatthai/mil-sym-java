@@ -8,7 +8,7 @@ public class SECRendererImpl {
 	
 	public SECRendererImpl() {
 		sr = SECRenderer.getInstance();
-		sr.matchSECWebRendererAppletDefaultRendererSettings();
+		//sr.matchSECWebRendererAppletDefaultRendererSettings();
 	}
 	
 	

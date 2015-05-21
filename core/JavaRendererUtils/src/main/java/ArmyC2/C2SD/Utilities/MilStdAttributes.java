@@ -23,6 +23,16 @@ public class MilStdAttributes {
     public static final String FillColor = "FILLCOLOR";
     
     /*
+     * Fill color of the symbol. hex value
+     */
+    public static final String TextColor = "TEXTCOLOR";
+    
+    /*
+     * Fill color of the symbol. hex value
+     */
+    public static final String TextBackgroundColor = "TEXTBACKGROUNDCOLOR";
+    
+    /*
      * size of the single point image
      */
     public static final String PixelSize = "SIZE";

@@ -6,6 +6,7 @@ package ArmyC2.C2SD.Rendering;
 
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.IPointConversion;
+import ArmyC2.C2SD.Utilities.MilStdAttributes;
 import ArmyC2.C2SD.Utilities.MilStdSymbol;
 import ArmyC2.C2SD.Utilities.ModifiersTG;
 import ArmyC2.C2SD.Utilities.ModifiersUnits;
@@ -174,7 +175,7 @@ public class SinglePointRenderer {
             int charFrameIndex = UnitFontLookup.getFrameCode(symbolID, charFillIndex,symStd);
             
             int charFrameAssumedIndex = -1;
-            if(symStd > RendererSettings.Symbology_2525Bch2_USAS_13_14)
+            if(symStd == RendererSettings.Symbology_2525C)
             {
                 char affiliation = symbol.getSymbolID().charAt(1);
                 switch(affiliation)
@@ -184,7 +185,23 @@ public class SinglePointRenderer {
                     case 'S':
                     case 'G':
                     case 'M':
-                        charFrameAssumedIndex = charFrameIndex - 1;
+                        if(symbol.getSymbolID().charAt(2) == 'U' && 
+                                symbol.getSymbolID().substring(4, 6).equals("WM"))
+                        {
+                            if(symbol.getSymbolID().charAt(3) != 'A')
+                            {
+                                charFillIndex++;
+                            }
+                            charFrameAssumedIndex = charFillIndex - 1;
+                            charFrameIndex = -1;
+                            
+                        }
+                        else
+                        {
+                            charFrameIndex = charFillIndex + 2;
+                            charFrameAssumedIndex = charFillIndex + 1;
+                        }
+                        
                         break;
                 }
             }
@@ -451,6 +468,8 @@ public class SinglePointRenderer {
                     siSymbol1 = new ShapeInfo(gvSymbol1, pixel);
                 if(gvSymbol2 != null)
                     siSymbol2 = new ShapeInfo(gvSymbol2, pixel);
+                
+                
 
                 if(siFrameAssumed != null)
                     siFrameAssumed.setLineColor(Color.WHITE);
@@ -458,6 +477,8 @@ public class SinglePointRenderer {
                     siFrame.setLineColor(symbol.getLineColor());//AffiliationColors.FriendlyUnitLineColor);
                 if(siFill != null)
                     siFill.setLineColor(symbol.getFillColor());//AffiliationColors.FriendlyUnitFillColor);
+
+                
                 if(siSymbol1 != null)
                 {
                     Color c1 = lookup.getColor1();
@@ -469,6 +490,27 @@ public class SinglePointRenderer {
                     Color c2 = lookup.getColor2();
                     siSymbol2.setLineColor(new Color(c2.getRed(), c2.getGreen(), 
                             c2.getBlue(), symbol.getLineColor().getAlpha()));
+                }
+                
+                //Just for sea mines
+                if(symbol.getSymbolID().charAt(2) == 'U' &&
+                                symbol.getSymbolID().substring(4, 6).equals("WM"))
+                {
+                    if(symStd == RendererSettings.Symbology_2525Bch2_USAS_13_14)
+                    {
+                        siFill.setLineColor(symbol.getFillColor());
+                        siSymbol1.setLineColor(symbol.getLineColor());
+                    }
+                    else if(symStd == RendererSettings.Symbology_2525C)
+                    {
+                        siFill.setLineColor(symbol.getLineColor());
+                    }
+                    
+                }
+                else if(symbol.getSymbolID().charAt(2) == 'S' &&
+                    symbol.getSymbolID().charAt(4) == 'O')//own track, //SUSPO
+                {
+                    siFill.setLineColor(symbol.getLineColor());
                 }
             }
 
@@ -488,9 +530,11 @@ public class SinglePointRenderer {
             ArrayList<ShapeInfo> shapes = new ArrayList<ShapeInfo>();
 
             //add shapes to the collection
+            if(siFrameAssumed != null && charFrameIndex == -1)
+                shapes.add(siFrameAssumed);
             if(siFill != null)
                 shapes.add(siFill);
-            if(siFrameAssumed != null)
+            if(siFrameAssumed != null && charFrameIndex > 0)
                 shapes.add(siFrameAssumed);
             if(siFrame != null)
                 shapes.add(siFrame);
@@ -531,12 +575,12 @@ public class SinglePointRenderer {
                 symbolBounds.grow(symbol.getOutlineWidth(), symbol.getOutlineWidth());
 
             //Process display modifiers///////////////////////
-            ProcessUnitDisplayModifiers(symbol.getSymbolID(), shapes, symbolBounds, pixelSize,symStd);
+            ProcessUnitDisplayModifiers(symbol.getSymbolID(), shapes, symbolBounds, pixelSize,symStd, symbol.getTextColor(), symbol.getTextBackgroundColor());
 
             //Process unit affiliation modifier
             if(symbol.getDrawAffiliationModifierAsLabel()==false)
             {
-                ProcessUnitAffiliationModifiers(symbol.getSymbolID(), shapes, symbolBounds,symStd);
+                ProcessUnitAffiliationModifiers(symbol.getSymbolID(), shapes, symbolBounds,symStd, symbol.getTextColor(), symbol.getTextBackgroundColor());
             }
             else
             {
@@ -608,6 +652,16 @@ public class SinglePointRenderer {
 
                 
                 Color textColor = Color.BLACK;
+                Color textBackgroundColor = null;
+                if(symbol.getTextColor() != null)
+                {
+                    textColor = symbol.getTextColor();
+                }
+                if(symbol.getTextBackgroundColor() != null)
+                {
+                    textBackgroundColor = symbol.getTextBackgroundColor();
+                }
+                    
 
                 if(RendererSettings.getInstance().getLabelForegroundColor() != null)
                 {
@@ -615,7 +669,7 @@ public class SinglePointRenderer {
                     //textColor = symbol.getLineColor();
                 }
                 
-                ArrayList<ShapeInfo> msTemp = GetUnitModifierShape(symbol.getSymbolID(), symbol.getModifierMap(), frc, _ModifierFont, bounds, echelonBounds, affiliationBounds, textColor);
+                ArrayList<ShapeInfo> msTemp = GetUnitModifierShape(symbol.getSymbolID(), symbol.getModifierMap(), frc, _ModifierFont, bounds, echelonBounds, affiliationBounds, textColor, textBackgroundColor);
                 msTemp = SymbolDraw.ProcessModifierBackgrounds(msTemp);
                 symbol.setModifierShapes(msTemp);
 
@@ -708,7 +762,7 @@ public class SinglePointRenderer {
      * @param shapes
      * @param bounds
      */
-    private void ProcessUnitAffiliationModifiers(String SymbolID, ArrayList<ShapeInfo> shapes, Rectangle bounds,int symStd)
+    private void ProcessUnitAffiliationModifiers(String SymbolID, ArrayList<ShapeInfo> shapes, Rectangle bounds,int symStd, Color textColor, Color textBackgroundColor)
     {
         int x = 0;
         int y = 0;
@@ -805,7 +859,8 @@ public class SinglePointRenderer {
                 y = bounds.y - offset;
             }
             
-            siAffiliation = SymbolDraw.CreateModifierShapeInfo(text, textChar, x, y);
+           
+            siAffiliation = SymbolDraw.CreateModifierShapeInfo(text, textChar, x, y, textColor, textBackgroundColor);
 
             siAffiliation.setShapeType(ShapeInfo.SHAPE_TYPE_UNIT_AFFILIATION_MODIFIER);
 
@@ -839,7 +894,7 @@ public class SinglePointRenderer {
      * @param pixelSize
      * @param symStd 
      */
-    private void ProcessUnitDisplayModifiers(String SymbolID, ArrayList<ShapeInfo> shapes, Rectangle bounds, double pixelSize,int symStd)
+    private void ProcessUnitDisplayModifiers(String SymbolID, ArrayList<ShapeInfo> shapes, Rectangle bounds, double pixelSize,int symStd, Color textColor, Color textBackgroundColor)
     {
        // Path2D displayModifiers = new Path2D.Double();
         try
@@ -862,7 +917,7 @@ public class SinglePointRenderer {
                     String echelon = SymbolID.substring(11, 12);
                     if(!echelon.equals("-") && !echelon.equals("*"))
                     {
-                        siTemp = CreateEchelonShapeInfo(SymbolID.substring(11, 12), _fontRenderContext, bounds);
+                        siTemp = CreateEchelonShapeInfo(SymbolID.substring(11, 12), _fontRenderContext, bounds, textColor, textBackgroundColor);
                         if(siTemp != null)
                         {
                             //
@@ -1323,7 +1378,7 @@ public class SinglePointRenderer {
         return bars;
     }
 
-    private ShapeInfo CreateEchelonShapeInfo(String echelon, FontRenderContext frc, Rectangle bounds)
+    private ShapeInfo CreateEchelonShapeInfo(String echelon, FontRenderContext frc, Rectangle bounds, Color textColor, Color textBackgroundColor)
     {
         ShapeInfo siEchelon = null;
 
@@ -1375,7 +1430,7 @@ public class SinglePointRenderer {
                         y = y - 1;
                     }
 
-                    siEchelon = SymbolDraw.CreateModifierShapeInfo(text, echelonText, x, y);
+                    siEchelon = SymbolDraw.CreateModifierShapeInfo(text, echelonText, x, y, textColor, textBackgroundColor);
                     siEchelon.setShapeType(ShapeInfo.SHAPE_TYPE_UNIT_ECHELON);
 
                 }
@@ -1999,6 +2054,7 @@ public class SinglePointRenderer {
     {
 
         Color textColor = null;
+        Color textBackgroundColor = null;
         String validModifiers = "";
         SymbolDef sDef = null;
         ArrayList<ShapeInfo> modifierShapes = null;
@@ -2011,7 +2067,11 @@ public class SinglePointRenderer {
             validModifiers = sDef.getModifiers();
         }
 
-        if(_RendererSettings.getLabelForegroundColor() != null)
+        if(symbol.getTextColor() != null)
+        {
+            textColor = symbol.getTextColor();
+        }
+        else if(_RendererSettings.getLabelForegroundColor() != null)
         {
             textColor = _RendererSettings.getLabelForegroundColor();
         }
@@ -2021,6 +2081,11 @@ public class SinglePointRenderer {
         }
         else
             textColor = Color.BLACK;
+        
+        if(symbol.getTextBackgroundColor() != null)
+        {
+            textBackgroundColor = symbol.getTextBackgroundColor();
+        }
 
 
         Rectangle symbolBounds = symbol.getSymbolExtent();
@@ -2030,7 +2095,7 @@ public class SinglePointRenderer {
             symbolBounds.grow(symbol.getOutlineWidth(), symbol.getOutlineWidth());
         
         modifierShapes = ProcessSPTGModifiers(symbol.getSymbolID(), validModifiers,
-                                     symbol.getModifierMap(), symbolBounds,_fontRenderContext, _ModifierFont,textColor,symStd);
+                                     symbol.getModifierMap(), symbolBounds,_fontRenderContext, _ModifierFont,textColor,textBackgroundColor,symStd);
         return modifierShapes;
 
     }
@@ -2052,7 +2117,7 @@ public class SinglePointRenderer {
      */
     private static ArrayList<ShapeInfo> ProcessSPTGModifiers(String milStdCode,
             String validModifiers, Map<String, String> modifiers, Rectangle bounds,
-                                    FontRenderContext frc, Font labelFont, Color textColor,int symStd)
+                                    FontRenderContext frc, Font labelFont, Color textColor, Color textBackgroundColor, int symStd)
     {
         ArrayList<ShapeInfo> modifierShapes = null;
 
@@ -2072,7 +2137,7 @@ public class SinglePointRenderer {
             
             if(SymbolUtilities.isTGSPWithIntegralText(milStdCode))
             {
-                alTemp.addAll(CreateTGSPIntegralText(milStdCode, bounds, frc, labelFont, textColor,symStd));
+                alTemp.addAll(CreateTGSPIntegralText(milStdCode, bounds, frc, labelFont, textColor, textBackgroundColor, symStd));
             }
 
             //if symbol can have modifiers and has pass modifier values, create modifier text
@@ -2114,12 +2179,12 @@ public class SinglePointRenderer {
 
                                 if(specialLayout)
                                 {
-                                    alTemp2 = GetSPTGSpecialModifierShape(milStdCode, modifierString, modifierName, frc, labelFont, bounds, textColor);
+                                    alTemp2 = GetSPTGSpecialModifierShape(milStdCode, modifierString, modifierName, frc, labelFont, bounds, textColor, textBackgroundColor);
                                 }
                                 else
                                 {
                                     //ErrorLogger.LogMessage(modifierString);
-                                    alTemp2 = GetSPTGModifierShape(milStdCode, modifierString, modifierName, frc, labelFont, bounds, textColor);
+                                    alTemp2 = GetSPTGModifierShape(milStdCode, modifierString, modifierName, frc, labelFont, bounds, textColor, textBackgroundColor);
                                 }
 
                                 if(alTemp2 != null && alTemp2.size() > 0)
@@ -2161,7 +2226,7 @@ public class SinglePointRenderer {
      * Typically set to true when label font is too big to position modifiers accurately.
      * @return
      */
-    private static ArrayList<ShapeInfo> GetSPTGModifierShape(String symbolID, String modifierValue, String modifierName, FontRenderContext frc, Font labelFont, Rectangle bounds, Color TextColor)
+    private static ArrayList<ShapeInfo> GetSPTGModifierShape(String symbolID, String modifierValue, String modifierName, FontRenderContext frc, Font labelFont, Rectangle bounds, Color TextColor, Color textBackgroundColor)
     {
         //Shout(modifierName, modifierValue);
 
@@ -2283,7 +2348,7 @@ public class SinglePointRenderer {
 
                 //have the position, now create the shape
                 ShapeInfo si = null;
-                si = SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor);
+                si = SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, textBackgroundColor);
 
                 alTemp = new ArrayList<ShapeInfo>(1);
                 alTemp.add(si);
@@ -2313,7 +2378,7 @@ public class SinglePointRenderer {
      * @param bounds
      * @return
      */
-    private static ArrayList<ShapeInfo> GetSPTGSpecialModifierShape(String symbolID, String modifierValue, String modifierName, FontRenderContext frc, Font labelFont, Rectangle bounds, Color textColor)
+    private static ArrayList<ShapeInfo> GetSPTGSpecialModifierShape(String symbolID, String modifierValue, String modifierName, FontRenderContext frc, Font labelFont, Rectangle bounds, Color textColor, Color textBackgroundColor)
     {
         //Shout(modifierName, modifierValue);
 
@@ -2559,7 +2624,7 @@ public class SinglePointRenderer {
                 //Shape label = gv.getGlyphOutline(y, x, y);
 
                 ShapeInfo si = null;
-                si = SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, textColor);
+                si = SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, textColor, textBackgroundColor);
 
                 ArrayList<ShapeInfo> siList = new ArrayList<ShapeInfo>(1);
                 siList.add(si);
@@ -2568,7 +2633,7 @@ public class SinglePointRenderer {
                 {
 
                     ShapeInfo si2 = null;
-                    si2 = SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x2, y2, textColor);
+                    si2 = SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x2, y2, textColor, textBackgroundColor);
 
                     siList.add(si2);
                 }
@@ -2759,7 +2824,7 @@ public class SinglePointRenderer {
      * may need to be repositioned.
      * @return
      */
-    private static ArrayList<ShapeInfo> GetUnitModifierShape(String symbolID, Map<String,String> modifiers, FontRenderContext frc, Font labelFont, Rectangle bounds, Rectangle echelonBounds, Rectangle affiliationBounds, Color TextColor)
+    private static ArrayList<ShapeInfo> GetUnitModifierShape(String symbolID, Map<String,String> modifiers, FontRenderContext frc, Font labelFont, Rectangle bounds, Rectangle echelonBounds, Rectangle affiliationBounds, Color TextColor, Color TextBackgroundColor)
     {
         double bufferXL = 5;
         double bufferXR = 5;
@@ -2863,7 +2928,7 @@ public class SinglePointRenderer {
                     y = bounds.y + y;
                 }
 
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
             if(modifiers.containsKey(ModifiersUnits.G_STAFF_COMMENTS))
             {
@@ -2889,7 +2954,7 @@ public class SinglePointRenderer {
                 }
                 
                
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
 
                 //Concession for cpof name label
                 if((x + text.getBounds().getWidth() + 3) > cpofNameX)
@@ -2911,7 +2976,7 @@ public class SinglePointRenderer {
                 y = bounds.y + y;
                 
                 
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
             if(modifiers.containsKey(ModifiersUnits.H_ADDITIONAL_INFO_1))
             {
@@ -2927,7 +2992,7 @@ public class SinglePointRenderer {
                 y = ((y * 0.5) + (labelHeight * 0.5));
                 y = bounds.y + y;
                 
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
                 
                 //Concession for cpof name label
                 if((x + text.getBounds().getWidth() + 3) > cpofNameX)
@@ -2951,7 +3016,7 @@ public class SinglePointRenderer {
                     y =  y + ((labelHeight + bufferText));
                     y = bounds.y + y;
                 }
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
             if(modifiers.containsKey(ModifiersUnits.M_HIGHER_FORMATION) ||
                        modifiers.containsKey(ModifiersUnits.CC_COUNTRY_CODE))
@@ -2984,7 +3049,7 @@ public class SinglePointRenderer {
                     y =  y + ((labelHeight + bufferText));
                     y = bounds.y + y;
                 }
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
                 
                 //Concession for cpof name label
                 if((x + text.getBounds().getWidth() + 3) > cpofNameX)
@@ -3008,7 +3073,7 @@ public class SinglePointRenderer {
                     y = y + ((labelHeight + bufferText)*2);
                     y = bounds.y + y;
                 }
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
             if(modifiers.containsKey(ModifiersUnits.J_EVALUATION_RATING) ||
                     modifiers.containsKey(ModifiersUnits.K_COMBAT_EFFECTIVENESS) ||
@@ -3051,7 +3116,7 @@ public class SinglePointRenderer {
                     y = y + ((labelHeight + bufferText)*2);
                     y = bounds.y + y;
                 }
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
                 
                 //Concession for cpof name label
                 if((x + text.getBounds().getWidth() + 3) > cpofNameX)
@@ -3078,7 +3143,7 @@ public class SinglePointRenderer {
                     y = y - ((labelHeight + bufferText)*2);
                     y = bounds.y + y;
                 }
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
             if(modifiers.containsKey(ModifiersUnits.F_REINFORCED_REDUCED) ||
                     modifiers.containsKey(ModifiersUnits.E_FRAME_SHAPE_MODIFIER))
@@ -3146,7 +3211,7 @@ public class SinglePointRenderer {
                         y = y - ((labelHeight + bufferText)*2);
                         y = bounds.y + y;
                     }
-                    alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                    alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
 
                     //Concession for cpof name label
                     if((x + text.getBounds().getWidth() + 3) > cpofNameX)
@@ -3161,7 +3226,7 @@ public class SinglePointRenderer {
                 labelWidth = labelBounds.width;//not needed for right side labels
                 x = (bounds.x + (bounds.width * 0.5)) - (labelWidth * 0.5);
                 y = bounds.y - bufferY - descent;
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
             if(modifiers.containsKey(ModifiersUnits.AA_SPECIAL_C2_HQ))
             {
@@ -3177,7 +3242,7 @@ public class SinglePointRenderer {
                 y = bounds.y + y;
                 
                 
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
             if(modifiers.containsKey(ModifiersUnits.CN_CPOF_NAME_LABEL))
             {
@@ -3194,7 +3259,7 @@ public class SinglePointRenderer {
                 y = bounds.y + y;
                 
                 
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
             if(modifiers.containsKey(ModifiersUnits.SCC_SONAR_CLASSIFICATION_CONFIDENCE))
             {
@@ -3222,7 +3287,7 @@ public class SinglePointRenderer {
                         y = bounds.y + y;
 
 
-                        alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor));
+                        alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
                     }
                 }
 
@@ -3324,7 +3389,7 @@ public class SinglePointRenderer {
      * @param symbolBounds
      * @return
      */
-    private static ArrayList<ShapeInfo> CreateTGSPIntegralText(String SymbolID, Rectangle2D symbolBounds, FontRenderContext frc, Font labelFont, Color textColor,int symStd)
+    private static ArrayList<ShapeInfo> CreateTGSPIntegralText(String SymbolID, Rectangle2D symbolBounds, FontRenderContext frc, Font labelFont, Color textColor, Color textBackgroundColor, int symStd)
     {
 
         double bufferXL = 6;
@@ -3475,7 +3540,7 @@ public class SinglePointRenderer {
             {
                 
                 ShapeInfo si1 = null;
-                si1 = SymbolDraw.CreateModifierShapeInfo(text1, strText1, x, y, textColor);
+                si1 = SymbolDraw.CreateModifierShapeInfo(text1, strText1, x, y, textColor, textBackgroundColor);
 
                 returnVal.add(si1);
             }
@@ -3483,7 +3548,7 @@ public class SinglePointRenderer {
             {
                 
                 ShapeInfo si2 = null;
-                si2 = SymbolDraw.CreateModifierShapeInfo(text2, strText2, x2, y2, textColor);
+                si2 = SymbolDraw.CreateModifierShapeInfo(text2, strText2, x2, y2, textColor, textBackgroundColor);
 
                 returnVal.add(si2);
             }

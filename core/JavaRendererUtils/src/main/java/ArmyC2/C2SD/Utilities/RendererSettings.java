@@ -24,7 +24,7 @@ public class RendererSettings {
 
     //outline approach.  none, filled rectangle, outline (default),
     //outline quick (outline will not exceed 1 pixels).
-    private static int _TextBackgroundMethod = 0;
+    private static int _TextBackgroundMethod = 3;
     /**
      * There will be no background for text
      */
@@ -56,7 +56,7 @@ public class RendererSettings {
     private static int _TextBackgroundAutoColorThreshold = 160;
 
     //if TextBackgroundMethod_OUTLINE is set, This value determnies the width of that outline.
-    private static int _TextOutlineWidth = 4;
+    private static int _TextOutlineWidth = 2;
 
     //label foreground color, uses line color of symbol if null.
     private static Color _ColorLabelForeground = null; //Color.BLACK;
@@ -67,7 +67,7 @@ public class RendererSettings {
     private static int _UnitRenderMethod = 1;
     private static int _TextRenderMethod = 1;
     
-    private static int _SymbolOutlineWidth = 0;
+    private static int _SymbolOutlineWidth = 1;
     
     
 

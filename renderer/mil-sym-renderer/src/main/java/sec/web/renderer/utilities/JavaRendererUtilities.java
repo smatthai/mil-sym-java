@@ -287,6 +287,8 @@ public class JavaRendererUtilities {
             String value = null;
             String lineColor = null;
             String fillColor = null;
+            String textColor = null;
+            String textBackgroundColor = null;
             String size = null;
             String scale = null;
             String keepUnitRatio = null;
@@ -318,6 +320,14 @@ public class JavaRendererUtilities {
                         else if(key.equalsIgnoreCase(MilStdAttributes.FillColor))
                         {
                             fillColor = value;
+                        }
+                        else if(key.equalsIgnoreCase(MilStdAttributes.TextColor))
+                        {
+                            textColor = value;
+                        }
+                        else if(key.equalsIgnoreCase(MilStdAttributes.TextBackgroundColor))
+                        {
+                            textBackgroundColor = value;
                         }
                         else if(key.equalsIgnoreCase(MilStdAttributes.PixelSize))
                         {
@@ -472,6 +482,36 @@ public class JavaRendererUtilities {
                     {
                         System.err.println("Error parsing fillColor: " + fillColor);
                         System.err.println(nfe2.getMessage());
+                    }
+                }
+                
+                if(textColor != null)
+                {
+                    try
+                    {
+                        Color tc = SymbolUtilities.getColorFromHexString(textColor);
+                        //System.out.println(String.valueOf(fc.getAlpha()));
+                        symbol.setTextColor(tc);
+                    }
+                    catch(Exception nfe3)
+                    {
+                        System.err.println("Error parsing textColor: " + textColor);
+                        System.err.println(nfe3.getMessage());
+                    }
+                }
+                
+                if(textBackgroundColor != null)
+                {
+                    try
+                    {
+                        Color tbc = SymbolUtilities.getColorFromHexString(textBackgroundColor);
+                        //System.out.println(String.valueOf(fc.getAlpha()));
+                        symbol.setTextBackgroundColor(tbc);
+                    }
+                    catch(Exception nfe4)
+                    {
+                        System.err.println("Error parsing textBackgroundColor: " + textColor);
+                        System.err.println(nfe4.getMessage());
                     }
                 }
 

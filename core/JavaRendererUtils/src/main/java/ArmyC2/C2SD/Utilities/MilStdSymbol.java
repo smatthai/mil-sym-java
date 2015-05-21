@@ -68,6 +68,8 @@ public class MilStdSymbol {
         Integer _LineWidth = 3;
         Color _LineColor = null;
         Color _FillColor = null;
+        Color _TextColor = null;
+        Color _TextBackgroundColor = null;
         TexturePaint _FillStyle = null;
         double _Rotation = 0.0;//DEGREES
         
@@ -514,7 +516,42 @@ public class MilStdSymbol {
 		{
                         return _FillColor;
 		}
+                
+                /**
+                 *
+                 * @param value
+                 */
+                public void setTextColor(Color value)
+		{
+			_TextColor = value;
+		}
 
+                /**
+                 *
+                 * @return
+                 */
+                public Color getTextColor()
+		{
+                        return _TextColor;
+		}
+
+                /**
+                 *
+                 * @param value
+                 */
+                public void setTextBackgroundColor(Color value)
+		{
+			_TextBackgroundColor = value;
+		}
+
+                /**
+                 *
+                 * @return
+                 */
+                public Color getTextBackgroundColor()
+		{
+                        return _TextBackgroundColor;
+		}
 
                 /**
                  *

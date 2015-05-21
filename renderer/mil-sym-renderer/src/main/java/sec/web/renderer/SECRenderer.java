@@ -174,20 +174,21 @@ public class SECRenderer {
 	/**
 	 * Sets the rendering settings defaults to match the defaults that are set
 	 * in the SECWebRenderer applet.
+         * @deprecated 
 	 */
 	public void matchSECWebRendererAppletDefaultRendererSettings() {
 		// Set Renderer
 		// Settings/////////////////////////////////////////////////
-		RendererSettings.getInstance().setSinglePointSymbolOutlineWidth(1);
-		RendererSettings.getInstance().setTextRenderMethod(RendererSettings.RenderMethod_NATIVE);
+		//RendererSettings.getInstance().setSinglePointSymbolOutlineWidth(1);
+		//RendererSettings.getInstance().setTextRenderMethod(RendererSettings.RenderMethod_NATIVE);
 		// RendererSettings.getInstance().setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_COLORFILL);
 		// RendererSettings.getInstance().setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE);
-		RendererSettings.getInstance().setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE_QUICK);
-		RendererSettings.getInstance().setTextOutlineWidth(2);
+		//RendererSettings.getInstance().setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE_QUICK);
+		//RendererSettings.getInstance().setTextOutlineWidth(2);
 		//RendererSettings.getInstance().setLabelForegroundColor(Color.BLACK);
 		//RendererSettings.getInstance().setLabelBackgroundColor(new Color(255, 255, 255, 200));
 		//RendererSettings.getInstance().setSymbologyStandard(RendererSettings.Symbology_2525Bch2_USAS_13_14);
-                RendererSettings.getInstance().setLabelFont("arial", Font.BOLD, 12);//, false, 0.05f);
+                //RendererSettings.getInstance().setLabelFont("arial", Font.BOLD, 12);//, false, 0.05f);
 		// RendererSettings.getInstance().setLabelBackgroundColor(Color.WHITE);
 		// RendererSettings.getInstance().setLabelFont("arial",
 		// Font.BOLD, 12);//default

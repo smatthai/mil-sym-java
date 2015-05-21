@@ -26,7 +26,7 @@ public class ImagingUtils {
 	
 	
 	public ImagingUtils() {
-		sr.matchSECWebRendererAppletDefaultRendererSettings();
+		//sr.matchSECWebRendererAppletDefaultRendererSettings();
 		this.previousPluginContent = sr.getListOfLoadedPlugins();
 	}
 

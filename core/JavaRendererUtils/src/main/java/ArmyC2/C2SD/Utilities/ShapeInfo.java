@@ -63,6 +63,7 @@ public class ShapeInfo {
     private int shapeType=-1;
     private Color lineColor = null;
     private Color fillColor = null;
+    private Color textBackgoundColor = null;
     private int lineWidth = 2;
     private AffineTransform affineTransform = null;
 
@@ -362,6 +363,15 @@ public class ShapeInfo {
     public Color getFillColor()
     {
         return fillColor;
+    }
+    
+    public void setTextBackgroundColor(Color value)
+    {
+        textBackgoundColor=value;
+    }
+    public Color getTextBackgroundColor()
+    {
+        return textBackgoundColor;
     }
 
     public void setAffineTransform(AffineTransform value)
