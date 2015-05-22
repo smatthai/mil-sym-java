@@ -77,6 +77,8 @@ public class MultiPointHandler {
     private final static String FILL_COLOR = "fillColor";
     private final static String LINE_COLOR = "lineColor";
     private final static String LINE_THICKNESS = "lineThickness";
+    private final static String TEXT_COLOR = "textColor";
+    private final static String TEXT_BACKGROUND_COLOR = "textBackgroundColor";
     private final static String USE_DASH_ARRAY = "useDashArray";
     
     private final static String SYMBOL_FILL_ICON_SIZE = "symbolFillIconSize";
@@ -2364,6 +2366,8 @@ public class MultiPointHandler {
         // Stores colors for symbol.
         String fillColor = null;
         String lineColor = null;
+        String textColor = null;
+        String textBackgroundColor = null;
         
         int lineWidth = 0;
         boolean useDashArray = symbol.getUseDashArray();
@@ -2559,6 +2563,13 @@ public class MultiPointHandler {
                 lineColor = jsonModifiersArray.getString(LINE_COLOR);
             }
             
+            if (jsonModifiersArray.has(TEXT_COLOR) && !jsonModifiersArray.isNull(TEXT_COLOR)) {
+                textColor = jsonModifiersArray.getString(TEXT_COLOR);
+            }
+            if (jsonModifiersArray.has(TEXT_BACKGROUND_COLOR) && !jsonModifiersArray.isNull(TEXT_BACKGROUND_COLOR)) {
+                textBackgroundColor = jsonModifiersArray.getString(TEXT_BACKGROUND_COLOR);
+            }
+            
             if (jsonModifiersArray.has(LINE_THICKNESS) && !jsonModifiersArray.isNull(LINE_THICKNESS)) {
                 lineWidth = jsonModifiersArray.getInt(LINE_THICKNESS);
             }
@@ -2614,6 +2625,24 @@ public class MultiPointHandler {
             
             if (lineWidth > 0) {
                 symbol.setLineWidth(lineWidth);
+            }
+            
+            if(textColor != null)
+            {
+                symbol.setTextColor(SymbolUtilities.getColorFromHexString(textColor));
+            }
+            else
+            {
+                symbol.setTextColor(symbol.getLineColor());
+            }
+            
+            if(textBackgroundColor != null)
+            {
+                symbol.setTextColor(SymbolUtilities.getColorFromHexString(textColor));
+            }
+            else
+            {
+                symbol.setTextBackgroundColor(SymbolDraw.getIdealTextBackgroundColor(symbol.getTextColor()));
             }
             
             if(altMode != null)
