@@ -858,12 +858,13 @@ public class MultiPointHandler {
 
                 Color textColor = null;
                 
-                textColor = mSymbol.getLineColor();
+                //textColor = mSymbol.getLineColor();
+                textColor = mSymbol.getTextColor();
                 String hexColor = SymbolUtilities.colorToHexString(textColor, true);
                 if(hexColor.equals("#FF000000"))//black
                     textColor = Color.white;//textColor = "#FFFFFFFF";
                 
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize,textColor);
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor);
                 
                 //if there's a symbol fill or line pattern, add to KML//////////
                 if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
@@ -916,7 +917,7 @@ public class MultiPointHandler {
             else if (format == 2)
             {
                 jsonOutput.append("{\"type\":\"FeatureCollection\",\"features\":");
-                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getLineColor());
+                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getTextColor());
                 jsonOutput.append(jsonContent);
                 jsonOutput.append(",\"properties\":{\"id\":\"");
                 jsonOutput.append(id);
@@ -1675,7 +1676,7 @@ public class MultiPointHandler {
                 
                 Color textColor = null;
                 
-                textColor = mSymbol.getLineColor();
+                textColor = mSymbol.getTextColor();
                 String hexColor = SymbolUtilities.colorToHexString(textColor, true);
                 if(hexColor.equals("#FF000000"))//black
                     textColor = Color.white;//textColor = "#FFFFFFFF";
@@ -1709,7 +1710,7 @@ public class MultiPointHandler {
             else if (format == 2)
             {
                 jsonOutput.append("{\"type\":\"FeatureCollection\",\"features\":");
-                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getLineColor());
+                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getTextColor());
                 jsonOutput.append(jsonContent);
                 jsonOutput.append(",\"properties\":{\"id\":\"");
                 jsonOutput.append(id);

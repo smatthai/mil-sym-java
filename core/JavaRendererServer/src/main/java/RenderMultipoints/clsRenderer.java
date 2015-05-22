@@ -37,6 +37,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.Rectangle;
 import ArmyC2.C2SD.Utilities.RendererSettings;
+import ArmyC2.C2SD.Utilities.SymbolDraw;
 //import java.awt.font.TextLayout;
 /**
  * Rendering class
@@ -240,8 +241,18 @@ public final class clsRenderer {
             tg.set_LineColor(milStd.getLineColor());
             tg.set_LineThickness(milStd.getLineWidth());
             tg.set_TexturePaint(milStd.getFillStyle());
-            tg.set_FontBackColor(Color.WHITE);
-            tg.set_TextColor(tg.get_LineColor());
+            
+            if(milStd.getTextColor()!=null)
+                tg.set_TextColor(milStd.getTextColor());
+            else
+                tg.set_TextColor(tg.get_LineColor());
+            
+            //tg.set_FontBackColor(Color.WHITE);
+            if(milStd.getTextBackgroundColor()!=null)
+                tg.set_FontBackColor(milStd.getTextBackgroundColor());
+            else
+                tg.set_FontBackColor(SymbolDraw.getIdealTextBackgroundColor(tg.get_TextColor()));
+            
             //tg.set_LineStyle(1);
             if (milStd.getModifier(ModifiersTG.W_DTG_1) != null) {
                 tg.set_DTG(milStd.getModifier(ModifiersTG.W_DTG_1));
