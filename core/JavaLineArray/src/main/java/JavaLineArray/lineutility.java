@@ -2444,12 +2444,18 @@ public final class lineutility {
             pArcLinePoints = new POINT2[numarcpts];
             InitializePOINT2Array(pArcLinePoints);
             increment = (endangle - startangle) / (numarcpts - 1);
-
-            C.x = (int) ((double) e.x - (dRadius / length)
-                    * ((double) a.x - (double) e.x));
-            C.y = (int) ((double) e.y - (dRadius / length)
-                    * ((double) a.y - (double) e.y));
-
+            if(dRadius != 0 && length != 0)
+            {
+                C.x = (int) ((double) e.x - (dRadius / length)
+                        * ((double) a.x - (double) e.x));
+                C.y = (int) ((double) e.y - (dRadius / length)
+                        * ((double) a.y - (double) e.y));
+            }
+            else
+            {
+                C.x=e.x;
+                C.y=e.y;
+            }
             for (j = 0; j < numarcpts; j++) {
                 //pArcLinePoints[j]=pResultLinePoints[0];	//initialize
                 pArcLinePoints[j].x = (int) (dRadius * Math.cos(startangle + j * increment));
