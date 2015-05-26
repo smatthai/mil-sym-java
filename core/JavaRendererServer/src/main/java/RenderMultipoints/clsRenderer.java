@@ -419,6 +419,7 @@ public final class clsRenderer {
                         H2 = AM.get(0).toString();
                         tg.set_H2(H2);
                     }
+                    if(H2 != null && !H2.isEmpty())
                     for (j = 0; j < tg.LatLongs.size(); j++) {
                         if (tg.LatLongs.size() > j) {
                             if (!Double.isNaN(Double.parseDouble(H2))) {
