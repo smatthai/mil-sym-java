@@ -917,7 +917,7 @@ public class MultiPointHandler {
             else if (format == 2)
             {
                 jsonOutput.append("{\"type\":\"FeatureCollection\",\"features\":");
-                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getTextColor());
+                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getTextColor(), mSymbol.getTextBackgroundColor());
                 jsonOutput.append(jsonContent);
                 jsonOutput.append(",\"properties\":{\"id\":\"");
                 jsonOutput.append(id);
@@ -1710,7 +1710,7 @@ public class MultiPointHandler {
             else if (format == 2)
             {
                 jsonOutput.append("{\"type\":\"FeatureCollection\",\"features\":");
-                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getTextColor());
+                jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getTextColor(), mSymbol.getTextBackgroundColor());
                 jsonOutput.append(jsonContent);
                 jsonOutput.append(",\"properties\":{\"id\":\"");
                 jsonOutput.append(id);
@@ -3009,7 +3009,7 @@ public class MultiPointHandler {
      * @param normalize
      * @return 
      */
-        private static String GeoJSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, boolean normalize, Color lineColor) {
+        private static String GeoJSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, boolean normalize, Color textColor, Color textBackgroundColor) {
 
         String jstr = "";
         ShapeInfo tempModifier = null;
@@ -3035,7 +3035,7 @@ public class MultiPointHandler {
         for (int j = 0; j < len2; j++) {
             tempModifier = modifiers.get(j);
             
-            String labelsToAdd = LabelToGeoJSONString(tempModifier, ipc, normalize, lineColor);
+            String labelsToAdd = LabelToGeoJSONString(tempModifier, ipc, normalize, textColor, textBackgroundColor);
             if (labelsToAdd.length() > 0) {
                 fc.append(",");
                 fc.append(labelsToAdd);
@@ -4115,14 +4115,16 @@ public class MultiPointHandler {
      * @param normalize
      * @return 
      */
-        private static String LabelToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize, Color lineColor) {
+        private static String LabelToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize, Color textColor, Color textBackgroundColor) {
         
         
         StringBuilder JSONed = new StringBuilder();
         StringBuilder properties = new StringBuilder();
         StringBuilder geometry = new StringBuilder();
         
-        Color outlineColor = SymbolDraw.getIdealTextBackgroundColor(lineColor);
+        Color outlineColor = SymbolDraw.getIdealTextBackgroundColor(textColor);
+        if(textBackgroundColor != null)
+            outlineColor = textBackgroundColor;
 
         
 
@@ -4151,7 +4153,7 @@ public class MultiPointHandler {
             JSONed.append("{\"type\":\"Feature\",\"properties\":{\"label\":\"");
             JSONed.append(text);
             JSONed.append("\",\"pointRadius\":0,\"fontColor\":\"");
-            JSONed.append(SymbolUtilities.colorToHexString(lineColor, false));
+            JSONed.append(SymbolUtilities.colorToHexString(textColor, false));
             JSONed.append("\",\"fontSize\":\"");
             JSONed.append(String.valueOf(RS.getLabelFontSize()) + "pt\"");
             JSONed.append(",\"fontFamily\":\"");
