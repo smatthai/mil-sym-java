@@ -425,7 +425,7 @@ public final class clsRenderer {
                             if (!Double.isNaN(Double.parseDouble(H2))) {
                                 if (j == 0) {
                                     dist = Double.parseDouble(H2);
-                                    pt0 = tg.LatLongs.get(0);
+                                    pt0 = new POINT2(tg.LatLongs.get(0));
                                     pt1 = mdlGeodesic.geodesic_coordinate(pt0, dist, 45);//45 is arbitrary
                                     Point2D pt02d = new Point2D.Double(pt0.x, pt0.y);
                                     Point2D pt12d = new Point2D.Double(pt1.x, pt1.y);
