@@ -5084,7 +5084,7 @@ public class Modifier2 {
                         //pt3 = new POINT2(midPt.x + 1.5 * stringWidth + 1, midPt.y);
                         glyphPosition = new Point(x, y);
                         justify=ShapeInfo.justify_center;
-                        modifierPosition=new Point2D.Double(x1,y1);                        
+                        modifierPosition=new Point2D.Double(x,y);                        
                         break;
                     case screen:    //for SCREEN, GUARD, COVER, not currently used
                         if (tg.Pixels.size() >= 14) {
