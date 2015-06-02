@@ -83,11 +83,30 @@ public class TacticalGraphicLookup {
       //String description = XMLUtil.parseTagValue(data, "<DESCRIPTION>", "</DESCRIPTION>");
       String mapping = XMLUtil.parseTagValue(data, "<MAPPING>", "</MAPPING>");
 
+      mapping = checkMappingIndex(mapping);
+      
       //System.out.println(basicID + ": " + mapping);
       lookup.put(basicID, Integer.parseInt(mapping));
 
     }
   }
+  
+    /**
+   * Until XML files are updated, we need to shift the index
+   * @param index
+   * @return 
+   */  
+ private static String checkMappingIndex(String index)
+ {
+      int i = -1;
+      if(SymbolUtilities.isNumber(index))
+      {
+          i = Integer.valueOf(index);
+          
+       	  return String.valueOf(i + 57000);
+      }
+      return index;
+ }
   
     /**
    * given the milstd symbol code, find the font index for the symbol.

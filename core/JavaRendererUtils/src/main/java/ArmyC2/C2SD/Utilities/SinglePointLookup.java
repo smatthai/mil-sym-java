@@ -116,6 +116,9 @@ public class SinglePointLookup {
         String mappingA = XMLUtil.parseTagValue(data, "<MAPPINGA>", "</MAPPINGA>");
         String width = XMLUtil.parseTagValue(data, "<WIDTH>", "</WIDTH>");
         String height = XMLUtil.parseTagValue(data, "<HEIGHT>", "</HEIGHT>");
+        
+        mappingP = checkMappingIndex(mappingP);
+        mappingA = checkMappingIndex(mappingA);
 
         spli = new SinglePointLookupInfo(basicID,description,mappingP,mappingA,width,height);
 
@@ -126,6 +129,23 @@ public class SinglePointLookup {
 
     }
   }
+  
+    /**
+   * Until XML files are updated, we need to shift the index
+   * @param index
+   * @return 
+   */  
+ private static String checkMappingIndex(String index)
+ {
+      int i = -1;
+      if(SymbolUtilities.isNumber(index))
+      {
+          i = Integer.valueOf(index);
+          
+       	  return String.valueOf(i + 57000);
+      }
+      return index;
+ }
 
   /**
    * given the milstd symbol code, find the font index for the symbol.

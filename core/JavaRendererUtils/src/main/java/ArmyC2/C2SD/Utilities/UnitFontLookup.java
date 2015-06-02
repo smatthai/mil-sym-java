@@ -124,6 +124,14 @@ public class UnitFontLookup {
       String c2 = XMLUtil.parseTagValue(data, "<MAPPING2COLOR>", "</MAPPING2COLOR>");
 
       UnitFontLookupInfo uflTemp = null;
+      
+      //Check for bad font locations and remap
+      m1u = checkMappingIndex(m1u);
+      m1f = checkMappingIndex(m1f);
+      m1n = checkMappingIndex(m1n);
+      m1h = checkMappingIndex(m1h);
+      m2 = checkMappingIndex(m2);
+      ////////////////////////////////////////
 
       uflTemp =  new UnitFontLookupInfo(ID, description, m1u, m1f, m1n, m1h, c1, m2, c2);
 
@@ -136,6 +144,27 @@ public class UnitFontLookup {
         }
     }
 
+  }
+  
+    /**
+   * Until XML files are updated, we need to shift the index
+   * @param index
+   * @return 
+   */  
+  private static String checkMappingIndex(String index)
+  {
+      int i = -1;
+      if(SymbolUtilities.isNumber(index))
+      {
+          i = Integer.valueOf(index);
+          
+          if(i < 9000)
+        	  return String.valueOf(i + 57000);
+          else
+        	  return String.valueOf(i + 54000);
+      }          
+      return index;//*/
+ 
   }
 
   /**
@@ -564,7 +593,7 @@ public class UnitFontLookup {
           ErrorLogger.LogException("UnitFontLookup", "getFillCode", exc, Level.SEVERE);
       }
 
-      return returnVal;
+      return returnVal + 57000;
   }
 
   public static int getFrameCode(String SymbolID, int FillCode)
