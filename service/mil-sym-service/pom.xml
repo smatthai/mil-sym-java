@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>sec.web.renderer</groupId>
 		<artifactId>mil-sym-svc-parent</artifactId>
-		<version>0.0.57-SNAPSHOT</version>
+		<version>0.0.57</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>			
