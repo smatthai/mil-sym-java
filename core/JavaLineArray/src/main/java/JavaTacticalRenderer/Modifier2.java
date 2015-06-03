@@ -5015,7 +5015,7 @@ public class Modifier2 {
                         
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
 
-                        glyphPosition = new Point((int) pt3.x, (int) pt3.y);
+                        glyphPosition = new Point((int) pt3.x, (int) pt3.y);                             
                         modifierPosition=new Point2D.Double(pt3.x,pt3.y);
                         break;
                     case aboveMiddle:
@@ -5054,22 +5054,33 @@ public class Modifier2 {
                             lineFactor += 0.5;
                         }
 
-                        if (lineFactor >= 0) {
+                        if (lineFactor >= 0) 
+                        {
                             pt3 = lineutility.ExtendDirectedLine(pt0, pt2, pt2, 3, Math.abs((lineFactor) * stringHeight));
-                        } else {
+                            midPt = lineutility.ExtendDirectedLine(pt0, midPt, midPt, 3, Math.abs((lineFactor) * stringHeight));
+                        } 
+                        else 
+                        {
                             pt3 = lineutility.ExtendDirectedLine(pt0, pt2, pt2, 2, Math.abs((lineFactor) * stringHeight));
+                            midPt = lineutility.ExtendDirectedLine(pt0, midPt, midPt, 2, Math.abs((lineFactor) * stringHeight));
                         }
                         //pt3=lineutility.ExtendDirectedLine(pt0, pt2, pt2, 2, lineFactor*stringHeight);
-                        if (x1 == x2 && y1 > y2) {
+                        if (x1 == x2 && y1 > y2) 
+                        {
                             pt3 = lineutility.ExtendDirectedLine(pt0, pt2, pt2, 1, Math.abs((lineFactor) * stringHeight));
+                            midPt = lineutility.ExtendDirectedLine(pt0, midPt, midPt, 1, Math.abs((lineFactor) * stringHeight));
                         }
-                        if (x1 == x2 && y1 < y2) {
+                        if (x1 == x2 && y1 < y2) 
+                        {
                             pt3 = lineutility.ExtendDirectedLine(pt0, pt2, pt2, 0, Math.abs((lineFactor) * stringHeight));
+                            midPt = lineutility.ExtendDirectedLine(pt0, midPt, midPt, 0, Math.abs((lineFactor) * stringHeight));
                         }
 
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
-                        justify=ShapeInfo.justify_center;
-                        modifierPosition=new Point2D.Double(midPt.x,midPt.y);
+                        //diagnostic
+                        //glyphPosition = new Point((int) midPt.x, (int) midPt.y);
+                        justify=ShapeInfo.justify_center;                                                                        
+                        modifierPosition=new Point2D.Double(midPt.x,midPt.y);                        
                         break;
                     case area:
                         theta = 0;
@@ -5083,8 +5094,10 @@ public class Modifier2 {
                         //pt2 = new POINT2(midPt.x + stringWidth / 2 - 1, midPt.y);
                         //pt3 = new POINT2(midPt.x + 1.5 * stringWidth + 1, midPt.y);
                         glyphPosition = new Point(x, y);
+                        //diagnostic
+                        //glyphPosition = new Point((int)x1, y);
                         justify=ShapeInfo.justify_center;
-                        modifierPosition=new Point2D.Double(x,y);                        
+                        modifierPosition=new Point2D.Double(x1,y);                        
                         break;
                     case screen:    //for SCREEN, GUARD, COVER, not currently used
                         if (tg.Pixels.size() >= 14) {
