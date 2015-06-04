@@ -503,14 +503,14 @@ public class SinglePointRenderer {
                     }
                     else if(symStd == RendererSettings.Symbology_2525C)
                     {
-                        siFill.setLineColor(symbol.getLineColor());
+                        //siFill.setLineColor(symbol.getLineColor());
                     }
                     
                 }
                 else if(symbol.getSymbolID().charAt(2) == 'S' &&
                     symbol.getSymbolID().charAt(4) == 'O')//own track, //SUSPO
                 {
-                    siFill.setLineColor(symbol.getLineColor());
+                    siFill.setLineColor(symbol.getFillColor());
                 }
             }
 
