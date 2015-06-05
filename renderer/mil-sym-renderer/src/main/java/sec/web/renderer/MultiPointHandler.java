@@ -758,7 +758,10 @@ public class MultiPointHandler {
         //M. Deutch 9-26-11
         //rect=null;
         if(crossesIDL(geoCoords)==true)
+        {
             normalize=true;
+            ((PointConverter)ipc).set_normalize(true);
+        }
         else
             normalize=false;
 
@@ -1277,7 +1280,10 @@ public class MultiPointHandler {
         //M. Deutch 9-26-11
         //rect=null;
         if(crossesIDL(geoCoords)==true)
+        {
             normalize=true;
+            ((PointConverter)ipc).set_normalize(true);
+        }
         else
             normalize=false;
 
@@ -2203,7 +2209,10 @@ public class MultiPointHandler {
             //M. Deutch 9-26-11
             //rect=null;
             if(crossesIDL(geoCoords)==true)
+            {
                 normalize=true;
+                ((PointConverter)ipc).set_normalize(true);
+            }
             else
                 normalize=false;
 
@@ -2851,7 +2860,10 @@ public class MultiPointHandler {
         //M. Deutch 9-26-11
         //rect=null;
         if(crossesIDL(geoCoords)==true)
+        {
             normalize=true;
+            ((PointConverter)ipc).set_normalize(true);
+        }
         else
             normalize=false;
 

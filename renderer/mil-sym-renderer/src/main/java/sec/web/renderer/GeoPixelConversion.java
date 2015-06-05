@@ -24,17 +24,18 @@ public class GeoPixelConversion {
         return latitude;
     }
 
-    public static double long2x(double longitude, double scale, double longOrigin, double latitude, double metPerPix) {
+    public static double long2x(double longitude, double scale, double longOrigin, double latitude, double metPerPix,boolean normalize) {
         
         double longRem = longitude-longOrigin;
-
-        if (longRem > 180) {
-            longRem -= 360;
+        if(normalize)
+        {
+            if (longRem > 180) {
+                longRem -= 360;
+            }
+            if (longRem < -180) {
+                longRem += 360;
+            }        
         }
-        if (longRem < -180) {
-            longRem += 360;
-        }        
-
         double metersPerDeg = GetMetersPerDegAtLat(latitude);
         double pixDis = (longRem * metersPerDeg) / metPerPix;
         return pixDis;
