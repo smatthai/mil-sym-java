@@ -1792,12 +1792,20 @@ public class MultiPointHandler {
                     return message;
                 }
             }
-            else if(symbolID.startsWith("BS_") || symbolID.startsWith("BBS_"))
+            else if(symbolID.startsWith("BS_"))
             {
                 //Will need to be updated to do a more thorough check for
                 //basic shapes and buffered basic shapes.
                 //Return true for now.
                 return "true";
+            }
+            else if(symbolID.startsWith("BBS_"))
+            {
+                ArrayList<Double> AM = symbol.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
+                if(AM != null && AM.size() > 0 && AM.get(0) >= 0 && symbol.getFillColor() != null)
+                    return "true";
+                else
+                    return "false, Buffered Basic Shapes require a width (AM) and a fill color.";
             }
             else
             {
