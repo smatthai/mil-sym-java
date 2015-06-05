@@ -18,7 +18,7 @@ public class PointConverter implements IPointConversion
     private double _controlLong=0;
     private double _scale=0;
     private double _metersPerPixel=0;
-    private boolean _normalize=false;
+    private boolean _normalize=true;
     public void set_normalize(boolean value)
     {
         _normalize=value;

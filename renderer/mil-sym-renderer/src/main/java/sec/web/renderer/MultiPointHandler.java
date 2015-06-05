@@ -762,8 +762,11 @@ public class MultiPointHandler {
             normalize=true;
             ((PointConverter)ipc).set_normalize(true);
         }
-        else
+        else      
+        {
             normalize=false;
+            ((PointConverter)ipc).set_normalize(false);
+        }
 
         //seems to work ok at world view
         if(normalize)
@@ -1285,8 +1288,10 @@ public class MultiPointHandler {
             ((PointConverter)ipc).set_normalize(true);
         }
         else
+        {
             normalize=false;
-
+            ((PointConverter)ipc).set_normalize(false);
+        }
 
         //seems to work ok at world view
         if(normalize)
@@ -2214,8 +2219,10 @@ public class MultiPointHandler {
                 ((PointConverter)ipc).set_normalize(true);
             }
             else
+            {
                 normalize=false;
-
+                ((PointConverter)ipc).set_normalize(false);
+            }
             //seems to work ok at world view
             if(normalize)
             {
@@ -2865,8 +2872,10 @@ public class MultiPointHandler {
             ((PointConverter)ipc).set_normalize(true);
         }
         else
+        {
             normalize=false;
-
+            ((PointConverter)ipc).set_normalize(false);
+        }
         //seems to work ok at world view
         if(normalize)
         {
