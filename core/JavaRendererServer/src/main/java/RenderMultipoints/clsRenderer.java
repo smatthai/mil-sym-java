@@ -673,6 +673,18 @@ public final class clsRenderer {
                 tg.set_H2(strH2);
                 tg.set_H1(strH1);
             }
+            switch(lineType)
+            {
+                case TacticalLines.BBS_AREA:
+                case TacticalLines.BBS_LINE:
+                case TacticalLines.BBS_POINT:
+                case TacticalLines.BBS_RECTANGLE:
+                    if(tg.get_FillColor()==null)
+                        tg.set_FillColor(Color.LIGHT_GRAY);
+                    break;
+                default:
+                    break;
+            }
             //Mil-Std-2525C stuff
             switch (lineType) {
                 case TacticalLines.PAA_RECTANGULAR_REVC:
