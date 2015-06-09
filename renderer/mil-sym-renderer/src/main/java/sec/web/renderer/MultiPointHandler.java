@@ -4045,8 +4045,8 @@ public class MultiPointHandler {
         
         String color = SymbolUtilities.colorToHexString(textColor, true);
         color = JavaRendererUtilities.ARGBtoABGR(color.substring(1));
-        
-        if (text != null && text.equals("") == false) {
+        float kmlScale = RendererSettings.getInstance().getKMLLabelScale();
+        if (kmlScale > 0 && text != null && text.equals("") == false) {
             kml.append("<Placemark>");//("<Placemark id=\"" + id + "_lp" + i + "\">");
             kml.append("<name>" + cdataStart + text + cdataEnd + "</name>");
             kml.append("<Style>");
@@ -4059,7 +4059,7 @@ public class MultiPointHandler {
             kml.append("</IconStyle>");
             kml.append("<LabelStyle>");
             kml.append("<color>" + color + "</color>");
-            kml.append("<scale>.8</scale>");
+            kml.append("<scale>" + String.valueOf(kmlScale) + "</scale>");
             kml.append("</LabelStyle>");
             kml.append("</Style>");
             kml.append("<Point>");
