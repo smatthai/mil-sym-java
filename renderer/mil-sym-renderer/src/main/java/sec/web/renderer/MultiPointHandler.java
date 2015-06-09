@@ -1813,10 +1813,10 @@ public class MultiPointHandler {
             else if(symbolID.startsWith("BBS_"))
             {
                 ArrayList<Double> AM = symbol.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
-                if(AM != null && AM.size() > 0 && AM.get(0) >= 0 && symbol.getFillColor() != null)
+                if(AM != null && AM.size() > 0 && AM.get(0) >= 0)
                     return "true";
                 else
-                    return "false, Buffered Basic Shapes require a width (AM) and a fill color.";
+                    return "false, Buffered Basic Shapes require a width (AM).";
             }
             else
             {
