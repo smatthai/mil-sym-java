@@ -3162,14 +3162,31 @@ public class Modifier2 {
                 case TacticalLines.MRR:
                 case TacticalLines.UAV:
                 case TacticalLines.LLTR:
-                    if (tg.getSymbologyStandard() == RendererSettings.Symbology_2525C) {
+                    if (tg.getSymbologyStandard() == RendererSettings.Symbology_2525C) {    
                         AddIntegralModifier(tg, label + " " + tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -4 * csFactor, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -5 * csFactor, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Width: " + tg.get_H2(), aboveMiddle, -6 * csFactor, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Name: " + tg.get_Name(), aboveMiddle, -7 * csFactor, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "DTG Start: " + tg.get_DTG(), aboveMiddle, -3 * csFactor, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "DTG End: " + tg.get_DTG1(), aboveMiddle, -2 * csFactor, middleSegment, middleSegment + 1, false);
+//                        AddIntegralModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -4 * csFactor, middleSegment, middleSegment + 1, false);
+//                        AddIntegralModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -5 * csFactor, middleSegment, middleSegment + 1, false);
+//                        AddIntegralModifier(tg, "Width: " + tg.get_H2(), aboveMiddle, -6 * csFactor, middleSegment, middleSegment + 1, false);
+//                        AddIntegralModifier(tg, "Name: " + tg.get_Name(), aboveMiddle, -7 * csFactor, middleSegment, middleSegment + 1, false);
+//                        AddIntegralModifier(tg, "DTG Start: " + tg.get_DTG(), aboveMiddle, -3 * csFactor, middleSegment, middleSegment + 1, false);
+//                        AddIntegralModifier(tg, "DTG End: " + tg.get_DTG1(), aboveMiddle, -2 * csFactor, middleSegment, middleSegment + 1, false);
+                        
+                        pt0=new POINT2(tg.Pixels.get(middleSegment));
+                        pt1=new POINT2(tg.Pixels.get(middleSegment+1));  
+                        if(pt0.y<pt1.y)
+                            pt1.y=pt0.y;
+                        else
+                            pt0.y=pt1.y;
+                        pt0.y-=pt0.style/2;
+                        pt1.y-=pt0.style/2;
+                        //AddIntegralAreaModifier(tg, label + " " + tg.get_Name(), aboveMiddle, 0, pt0, pt1, false);
+                        AddIntegralAreaModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -4 * csFactor, pt0, pt1, false);
+                        AddIntegralAreaModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -5 * csFactor, pt0, pt1, false);
+                        AddIntegralAreaModifier(tg, "Width: " + tg.get_H2(), aboveMiddle, -6 * csFactor, pt0, pt1, false);
+                        AddIntegralAreaModifier(tg, "Name: " + tg.get_Name(), aboveMiddle, -7 * csFactor, pt0, pt1, false);
+                        AddIntegralAreaModifier(tg, "DTG Start: " + tg.get_DTG(), aboveMiddle, -3 * csFactor, pt0, pt1, false);
+                        AddIntegralAreaModifier(tg, "DTG End: " + tg.get_DTG1(), aboveMiddle, -2 * csFactor, pt0, pt1, false);
+
                     } else {
                         AddIntegralModifier(tg, label, aboveMiddle, -0.5, middleSegment, middleSegment + 1, false);
                         AddIntegralModifier(tg, tg.get_DTG() + dash + tg.get_DTG1(), aboveMiddle, 0.5, middleSegment, middleSegment + 1, false);
