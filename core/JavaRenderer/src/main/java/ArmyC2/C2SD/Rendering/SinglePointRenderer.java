@@ -340,24 +340,25 @@ public class SinglePointRenderer {
 
             Point2D.Double location = coords.get(0);
 
-            Point pixel = converter.GeoToPixels(location);
+            //Point pixel = converter.GeoToPixels(location);
+            Point2D pixel = converter.GeoToPixels(location);
 
 
             Rectangle2D symbolBounds2D = null;
 
             if(gvFrame != null)
-                symbolBounds2D = gvFrame.getPixelBounds(frc, pixel.x, pixel.y);
+                symbolBounds2D = gvFrame.getPixelBounds(frc, (int)pixel.getX(), (int)pixel.getY());
             else if(gvFill != null)
-                symbolBounds2D = gvFill.getPixelBounds(frc, pixel.x, pixel.y);
+                symbolBounds2D = gvFill.getPixelBounds(frc, (int)pixel.getX(), (int)pixel.getY());
             else if(gvSymbol1 != null)
-                symbolBounds2D = gvSymbol1.getPixelBounds(frc, pixel.x, pixel.y);
+                symbolBounds2D = gvSymbol1.getPixelBounds(frc, (int)pixel.getX(), (int)pixel.getY());
             else if(gvSymbol2 != null)
-                symbolBounds2D = gvSymbol2.getPixelBounds(frc, pixel.x, pixel.y);
+                symbolBounds2D = gvSymbol2.getPixelBounds(frc, (int)pixel.getX(), (int)pixel.getY());
             else
             {
                 if(pixelSize > 0)
                 {   //ideally doesn't get to this point
-                    symbolBounds2D = new Rectangle2D.Double(pixel.x - (pixelSize/2), pixel.y - (pixelSize/2), pixelSize, pixelSize);
+                    symbolBounds2D = new Rectangle2D.Double(pixel.getX() - (pixelSize/2), pixel.getY() - (pixelSize/2), pixelSize, pixelSize);
                 }
             }
             
@@ -382,13 +383,15 @@ public class SinglePointRenderer {
                         affiliation.equals("N") ||
                         affiliation.equals("L"))
                 {
-                    pixel.x = pixel.x + (int)(symbolBounds2D.getWidth() / 2.0);
-                    pixel.y = pixel.y - (int)(symbolBounds2D.getHeight() * 1.5);
+                    double x = pixel.getX() + (int)(symbolBounds2D.getWidth() / 2.0);
+                    double y = pixel.getY() - (int)(symbolBounds2D.getHeight() * 1.5);
+                    pixel.setLocation(x, y);
                 }
                 else
                 {
-                    pixel.x = pixel.x + (int)(symbolBounds2D.getWidth() / 2.0);
-                    pixel.y = pixel.y - (int)(symbolBounds2D.getHeight());
+                    double x = pixel.getX() + (int)(symbolBounds2D.getWidth() / 2.0);
+                    double y = pixel.getY() - (int)(symbolBounds2D.getHeight());
+                    pixel.setLocation(x, y);
                 }
 
             }
@@ -403,15 +406,15 @@ public class SinglePointRenderer {
             if(renderMethod == RendererSettings.RenderMethod_SHAPES)
             {
                 if(gvFrameAssumed != null)
-                    shapeFrameAssumed = gvFrameAssumed.getGlyphOutline(0, pixel.x, pixel.y);
+                    shapeFrameAssumed = gvFrameAssumed.getGlyphOutline(0, (int)pixel.getX(), (int)pixel.getY());
                 if(gvFrame != null)
-                    shapeFrame = gvFrame.getGlyphOutline(0, pixel.x, pixel.y);
+                    shapeFrame = gvFrame.getGlyphOutline(0, (int)pixel.getX(), (int)pixel.getY());
                 if(gvFill != null)
-                shapeFill = gvFill.getGlyphOutline(0, pixel.x, pixel.y);
+                shapeFill = gvFill.getGlyphOutline(0, (int)pixel.getX(), (int)pixel.getY());
                 if(gvSymbol1 != null)
-                    shapeSymbol1 = gvSymbol1.getGlyphOutline(0, pixel.x, pixel.y);
+                    shapeSymbol1 = gvSymbol1.getGlyphOutline(0, (int)pixel.getX(), (int)pixel.getY());
                 if(gvSymbol2 != null)
-                    shapeSymbol2 = gvSymbol2.getGlyphOutline(0, pixel.x, pixel.y);
+                    shapeSymbol2 = gvSymbol2.getGlyphOutline(0, (int)pixel.getX()  , (int)pixel.getY());
             }
 
 
@@ -557,13 +560,13 @@ public class SinglePointRenderer {
 
             //get current symbol bounds
             if(gvFrame != null)
-                symbolBounds = gvFrame.getPixelBounds(frc, pixel.x, pixel.y);
+                symbolBounds = gvFrame.getPixelBounds(frc, (int)pixel.getX(), (int)pixel.getY());
             else if(gvFill != null)
-                symbolBounds = gvFill.getPixelBounds(frc, pixel.x, pixel.y);
+                symbolBounds = gvFill.getPixelBounds(frc, (int)pixel.getX(), (int)pixel.getY());
             else if(gvSymbol1 != null)
-                symbolBounds = gvSymbol1.getPixelBounds(frc, pixel.x, pixel.y);
+                symbolBounds = gvSymbol1.getPixelBounds(frc, (int)pixel.getX(), (int)pixel.getY());
             else if(gvSymbol2 != null)
-                symbolBounds = gvSymbol2.getPixelBounds(frc, pixel.x, pixel.y);
+                symbolBounds = gvSymbol2.getPixelBounds(frc, (int)pixel.getX(), (int)pixel.getY());
 
             //check if we're drawing below items////////////////////////////////
             String drawModifiers = symbol.getModifier("showdisplaymodifiers");
@@ -1899,7 +1902,8 @@ public class SinglePointRenderer {
 
             Point2D.Double location = coords.get(0);
 
-            Point pixel = converter.GeoToPixels(location);
+            //Point pixel = converter.GeoToPixels(location);
+            Point2D pixel = converter.GeoToPixels(location);
 
             //get shapes based on coordinates
             Shape shapeFill = null;
@@ -1907,8 +1911,9 @@ public class SinglePointRenderer {
             if(tgRenderMethod == RendererSettings.RenderMethod_SHAPES)
             {
                 if(gvFill != null)
-                    shapeFill = gvFill.getGlyphOutline(0, pixel.x, pixel.y);
-                shapeFrame = gvFrame.getGlyphOutline(0, pixel.x, pixel.y);
+                    shapeFill = gvFill.getGlyphOutline(0, (int)pixel.getX(), (int)pixel.getY());
+                
+                shapeFrame = gvFrame.getGlyphOutline(0, (int)pixel.getX(), (int)pixel.getY());
             }
             //ErrorLogger.LogMessage("X: " + String.valueOf(pixel.x) + "Y: " + String.valueOf(pixel.y), Boolean.TRUE);
 

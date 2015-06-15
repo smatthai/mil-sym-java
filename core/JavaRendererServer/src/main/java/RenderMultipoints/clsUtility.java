@@ -429,10 +429,13 @@ public final class clsUtility {
         POINT2 pt2 = new POINT2();
         try
         {
-            Point2D.Double pt2d=POINT2ToPoint2D(ptLatLong);
-            Point pt=converter.GeoToPixels(pt2d);
+            //Point2D pt2d=POINT2ToPoint2D(ptLatLong);
+            Point2D pt2d=new Point2D.Double(ptLatLong.x,ptLatLong.y);
+            //Point pt=converter.GeoToPixels(pt2d);
+            Point2D pt2d2=converter.GeoToPixels(pt2d);
 
-            pt2=PointToPOINT2(pt);
+            //pt2=PointToPOINT2(pt);
+            pt2=new POINT2(pt2d2.getX(),pt2d2.getY());
             pt2.style=ptLatLong.style;
 
         } catch (Exception e) {
@@ -465,7 +468,7 @@ public final class clsUtility {
 
             //Point2D pt1Geo2d=converter.convertPixelsToLonLat(pt1.x, pt1.y);
             Point pt=new Point((int)pt1.x,(int)pt1.y);
-            Point2D.Double pt1Geo2d=converter.PixelsToGeo(pt);
+            Point2D pt1Geo2d=converter.PixelsToGeo(pt);
 
             POINT2 pt1geo=new POINT2(pt1Geo2d.getX(),pt1Geo2d.getY());
             POINT2 ptj=null,ptjGeo=null;
@@ -708,9 +711,12 @@ public final class clsUtility {
         POINT2 pt2 = new POINT2();
         try
         {
-            Point pt=POINT2ToPoint(ptPixels);
-            Point2D.Double pt2d=converter.PixelsToGeo(pt);
-            pt2=Point2DToPOINT2(pt2d);
+            //Point pt=POINT2ToPoint(ptPixels);
+            Point2D pt2d=new Point2D.Double(ptPixels.x,ptPixels.y);
+            //Point2D.Double pt2d=converter.PixelsToGeo(pt);
+            pt2d=converter.PixelsToGeo(pt2d);
+            //pt2=Point2DToPOINT2(pt2d);
+            pt2=new POINT2(pt2d.getX(),pt2d.getY());
             pt2.style=ptPixels.style;
         }
         catch(Exception exc)

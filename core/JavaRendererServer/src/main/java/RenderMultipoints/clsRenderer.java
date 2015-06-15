@@ -855,8 +855,9 @@ public final class clsRenderer {
                         tg.Pixels.add(ptPixels);
                         Point pt = clsUtility.POINT2ToPoint(ptPixels);
                         //in case it needs the corresponding geo point
-                        Point2D.Double ptGeo2d = converter.PixelsToGeo(pt);
-                        POINT2 ptGeo = clsUtility.Point2DToPOINT2(ptGeo2d);
+                        Point2D ptGeo2d = converter.PixelsToGeo(pt);
+                        //POINT2 ptGeo = clsUtility.Point2DToPOINT2(ptGeo2d);
+                        POINT2 ptGeo = new POINT2(ptGeo2d.getX(),ptGeo2d.getY());
                         tg.LatLongs.add(ptGeo);
                         //}
                         break;

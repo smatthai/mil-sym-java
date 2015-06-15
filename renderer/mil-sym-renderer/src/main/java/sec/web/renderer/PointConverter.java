@@ -93,7 +93,6 @@ public class PointConverter implements IPointConversion
         }
         return ptPixels;
     }
-
     public Point2D PixelsToGeo(Point2D pixel)
     {
         Point2D.Double pt2dGeo=null;

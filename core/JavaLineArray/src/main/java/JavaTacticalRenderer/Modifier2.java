@@ -2643,9 +2643,11 @@ public class Modifier2 {
             {
                 ptCenter = mdlGeodesic.geodesic_center(tg.LatLongs);
                 if (ptCenter != null) {
-                    Point pt = converter.GeoToPixels(new Point2D.Double(ptCenter.x, ptCenter.y));
-                    ptCenter.x = pt.x;
-                    ptCenter.y = pt.y;
+                    //Point pt = converter.GeoToPixels(new Point2D.Double(ptCenter.x, ptCenter.y));
+                    Point2D pt2d=new Point2D.Double(ptCenter.x, ptCenter.y);
+                    pt2d = converter.GeoToPixels(pt2d);
+                    ptCenter.x = pt2d.getX();
+                    ptCenter.y = pt2d.getY();
                 } else {
                     ptCenter = lineutility.CalcCenterPointDouble2(pts, pts.length);
                 }
@@ -5039,14 +5041,18 @@ public class Modifier2 {
                         //use the geo midpoint for this, otherwise it strays
                         dist = lineutility.CalcDistanceDouble(pt0, pt1);
                         if (converter != null && dist > 100 && lineType != TacticalLines.BOUNDARY) {
-                            Point2D.Double pt1Geo = converter.PixelsToGeo(new Point((int) pt0.x, (int) pt0.y));
-                            Point2D.Double pt2Geo = converter.PixelsToGeo(new Point((int) pt1.x, (int) pt1.y));
+                            //Point2D.Double pt1Geo = converter.PixelsToGeo(new Point((int) pt0.x, (int) pt0.y));
+                            Point2D pt2d=new Point2D.Double(pt0.x,pt0.y);
+                            Point2D pt1Geo = converter.PixelsToGeo(pt2d);
+                            //Point2D.Double pt2Geo = converter.PixelsToGeo(new Point((int) pt1.x, (int) pt1.y));
+                            pt2d=new Point2D.Double(pt1.x,pt1.y);
+                            Point2D pt2Geo = converter.PixelsToGeo(pt2d);
                             ref<double[]> a12 = new ref<double[]>();
                             ref<double[]> a21 = new ref<double[]>();
                             a12.value = new double[1];
                             a21.value = new double[1];
-                            dist = mdlGeodesic.geodesic_distance(new POINT2(pt1Geo.x, pt1Geo.y), new POINT2(pt2Geo.x, pt2Geo.y), a12, a21);
-                            POINT2 midPtGeo = mdlGeodesic.geodesic_coordinate(new POINT2(pt1Geo.x, pt1Geo.y), dist / 2, a12.value[0]);
+                            dist = mdlGeodesic.geodesic_distance(new POINT2(pt1Geo.getX(), pt1Geo.getY()), new POINT2(pt2Geo.getX(), pt2Geo.getY()), a12, a21);
+                            POINT2 midPtGeo = mdlGeodesic.geodesic_coordinate(new POINT2(pt1Geo.getX(), pt1Geo.getY()), dist / 2, a12.value[0]);
                             Point2D midPt2D = converter.GeoToPixels(new Point2D.Double(midPtGeo.x, midPtGeo.y));
                             midPt.x = midPt2D.getX();
                             midPt.y = midPt2D.getY();
@@ -5446,9 +5452,11 @@ public class Modifier2 {
             {
                 ptCenter = mdlGeodesic.geodesic_center(tg.LatLongs);
                 if (ptCenter != null) {
-                    Point pt = converter.GeoToPixels(new Point2D.Double(ptCenter.x, ptCenter.y));
-                    ptCenter.x = pt.x;
-                    ptCenter.y = pt.y;
+                    Point2D pt2d=new Point2D.Double(ptCenter.x,ptCenter.y);
+                    //Point pt = converter.GeoToPixels(new Point2D.Double(ptCenter.x, ptCenter.y));
+                    pt2d = converter.GeoToPixels(pt2d);
+                    ptCenter.x = pt2d.getX();
+                    ptCenter.y = pt2d.getY();
                 } else {
                     ptCenter = lineutility.CalcCenterPointDouble2(pts, pts.length);
                 }

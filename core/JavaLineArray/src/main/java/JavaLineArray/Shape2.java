@@ -45,14 +45,10 @@ public class Shape2 extends ShapeInfo
     }
     public void lineTo(POINT2 pt)
     {
-        //gp=(GeneralPath)_Shape;
-        //gp.lineTo((int)pt.x, (int)pt.y);
-        ((GeneralPath)_Shape).lineTo((int)pt.x, (int)pt.y);
+        ((GeneralPath)_Shape).lineTo(pt.x, pt.y);
     }
     public void moveTo(POINT2 pt)
     {
-        //gp=(GeneralPath)_Shape;
-        //gp.moveTo((int)pt.x, (int)pt.y);
-        ((GeneralPath)_Shape).moveTo((int)pt.x, (int)pt.y);
+        ((GeneralPath)_Shape).moveTo(pt.x, pt.y);
     }
 }

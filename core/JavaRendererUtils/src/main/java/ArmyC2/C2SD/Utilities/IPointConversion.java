@@ -19,9 +19,9 @@ public interface IPointConversion {
 //                            double geoTop, double geoLeft,
 //                            double geoBottom, double geoRight);
 
-    public Point2D.Double PixelsToGeo(Point pixel);
+//    public Point2D.Double PixelsToGeo(Point pixel);
 
-    public Point GeoToPixels(Point2D.Double coord);
+//    public Point GeoToPixels(Point2D.Double coord);
 
     public Point2D PixelsToGeo(Point2D pixel);
 
