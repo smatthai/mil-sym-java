@@ -1238,11 +1238,15 @@ public class MultiPointHandler {
                 //TODO: swap two lines below when ready for coordinate update
                 ipc = new PointConverter(controlLong, controlLat, scale);
                 //ipc = new PointConverter(left, top, right, bottom, scale);
-                temp = ipc.GeoToPixels(new Point2D.Double(left, top));
+                Point2D lt=new Point2D.Double(left,top);
+                //temp = ipc.GeoToPixels(new Point2D.Double(left, top));
+                temp = ipc.GeoToPixels(lt);
                 leftX = (int)temp.getX();
                 topY = (int)temp.getY();
-
-                temp = ipc.GeoToPixels(new Point2D.Double(right, bottom));
+                
+                Point2D rb=new Point2D.Double(right,bottom);
+                //temp = ipc.GeoToPixels(new Point2D.Double(right, bottom));
+                temp = ipc.GeoToPixels(rb);
                 bottomY = (int)temp.getY();
                 rightX = (int)temp.getX();
                 //diagnostic clipping does not work for large scales
@@ -1257,7 +1261,9 @@ public class MultiPointHandler {
                     else if(bottom>0 && top>0)
                         midLat=bottom;
                     
-                    temp = ipc.GeoToPixels(new Point2D.Double(right, midLat));
+                    Point2D rmid=new Point2D.Double(right,midLat);
+                    //temp = ipc.GeoToPixels(new Point2D.Double(right, midLat));
+                    temp = ipc.GeoToPixels(rmid);
                     rightX = (int)temp.getX();
                 }
                 //end section
