@@ -234,7 +234,7 @@ public final class clsRenderer {
             //build tg.Pixels
             tg.Pixels = clsUtility.LatLongToPixels(tg.LatLongs, converter);
             //tg.set_Font(new Font("Arial", Font.PLAIN, 12));
-            tg.set_Font(RendererSettings.getInstance().getLabelFont());
+            tg.set_Font(RendererSettings.getInstance().getMPLabelFont());
             //diagnostic
             tg.set_FillColor(milStd.getFillColor());
             //tg.set_FillColor(Color.CYAN);

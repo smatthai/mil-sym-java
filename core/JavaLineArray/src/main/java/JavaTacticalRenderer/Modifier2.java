@@ -4913,6 +4913,8 @@ public class Modifier2 {
             if (font == null) {
                 font = g2d.getFont();
             }
+            if(font.getSize()==0)
+                return;
             g2d.setFont(font);
             FontMetrics metrics = g2d.getFontMetrics();
             //we need a background color
@@ -4924,7 +4926,6 @@ public class Modifier2 {
             if (textColor == null) {
                 textColor = tg.get_LineColor();
             }
-
             int direction = -1;
             Point glyphPosition = null;
             //boolean isIntegral=false;
