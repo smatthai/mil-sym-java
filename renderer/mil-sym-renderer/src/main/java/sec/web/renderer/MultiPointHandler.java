@@ -760,9 +760,9 @@ public class MultiPointHandler {
             Point2D ptCoordsUL=getGeoUL(geoCoords);            
             ipc = new PointConverter(ptCoordsUL.getX(), ptCoordsUL.getY(), scale);            
         }
-        //M. Deutch 9-26-11
         //rect=null;
-        if(crossesIDL(geoCoords)==true)
+        //if(crossesIDL(geoCoords)==true)
+        if(Math.abs(right-left)>180)
         {
             normalize=true;
             ((PointConverter)ipc).set_normalize(true);
@@ -1111,7 +1111,6 @@ public class MultiPointHandler {
         return pi;
 
     }
-
         /**
      * Deutch updated version
      * @param id
@@ -1291,9 +1290,9 @@ public class MultiPointHandler {
             Point2D ptCoordsUL=getGeoUL(geoCoords);            
             ipc = new PointConverter(ptCoordsUL.getX(), ptCoordsUL.getY(), scale);            
         }
-        //M. Deutch 9-26-11
-        //rect=null;
-        if(crossesIDL(geoCoords)==true)
+        
+        //if(crossesIDL(geoCoords)==true)
+        if(Math.abs(right-left)>180)
         {
             normalize=true;
             ((PointConverter)ipc).set_normalize(true);
@@ -2222,9 +2221,8 @@ public class MultiPointHandler {
 
             geoCoords = symbol.getCoordinates();
 
-            //M. Deutch 9-26-11
-            //rect=null;
-            if(crossesIDL(geoCoords)==true)
+            //if(crossesIDL(geoCoords)==true)
+            if(Math.abs(right-left)>180)
             {
                 normalize=true;
                 ((PointConverter)ipc).set_normalize(true);
@@ -2875,9 +2873,9 @@ public class MultiPointHandler {
             Point2D ptCoordsUL=getGeoUL(geoCoords);            
             ipc = new PointConverter(ptCoordsUL.getX(), ptCoordsUL.getY(), scale);            
         }
-        //M. Deutch 9-26-11
-        //rect=null;
-        if(crossesIDL(geoCoords)==true)
+        
+        //if(crossesIDL(geoCoords)==true)
+        if(Math.abs(right-left)>180)
         {
             normalize=true;
             ((PointConverter)ipc).set_normalize(true);
