@@ -21,13 +21,17 @@ public class PointConversion implements IPointConversion {
     double _geoLeft = 0;
     double _geoBottom = 0;
     double _geoRight = 0;
-
+    boolean _normalize = true;
     //pixels to geo
     //double _geoMultiplierX = 0;
     //double _geoMultiplierY = 0;
     //geo to pixels
     double _pixelMultiplierX = 0;
     double _pixelMultiplierY = 0;
+    public void set_normalize(boolean value)
+    {
+        _normalize=value;
+    }
 
     public PointConversion(int pixelWidth, int pixelHeight,
                             double geoTop, double geoLeft,
@@ -106,7 +110,16 @@ public class PointConversion implements IPointConversion {
         //double yMultiplier = _pixelMultiplierY;//(_geoTop - _geoBottom) / ((double)_PixelHeight) ;
         double temp;
 
-        temp = ((coord.x  - _geoLeft) / _pixelMultiplierX);//xMultiplier);
+        //temp = ((coord.x  - _geoLeft) / _pixelMultiplierX);//xMultiplier);
+        double calcValue=coord.getX()  - _geoLeft;
+        if(_normalize)
+        {
+            if(calcValue<-180)
+                calcValue+=360;
+            else if(calcValue>180)
+                calcValue-=360;
+        }
+        temp = (calcValue / _pixelMultiplierX);//xMultiplier);
 
         pixel.x = (int)temp;
 
@@ -140,8 +153,16 @@ public class PointConversion implements IPointConversion {
         //double xMultiplier = _pixelMultiplierX;//(_geoRight - _geoLeft) / ((double)_pixelWidth) ;
         //double yMultiplier = _pixelMultiplierY;//(_geoTop - _geoBottom) / ((double)_PixelHeight) ;
         double temp;
-
-        temp = ((coord.getX()  - _geoLeft) / _pixelMultiplierX);//xMultiplier);
+        //temp = ((coord.getX()  - _geoLeft) / _pixelMultiplierX);//xMultiplier);
+        double calcValue=coord.getX()  - _geoLeft;
+        if(_normalize)
+        {
+            if(calcValue<-180)
+                calcValue+=360;
+            else if(calcValue>180)
+                calcValue-=360;
+        }
+        temp = (calcValue / _pixelMultiplierX);
 
         pixel.x = (int)temp;
 

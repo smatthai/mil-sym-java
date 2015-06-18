@@ -599,7 +599,6 @@ public class MultiPointHandler {
         int j=0;
         ArrayList<Point2D.Double> bboxCoords = null;
         if (bbox != null && bbox.equals("") == false) {            
-            //ArrayList<Point2D> bboxCoords = null;
             String[] bounds = null;
             if(bbox.contains(" "))//trapezoid
             {
@@ -675,32 +674,7 @@ public class MultiPointHandler {
                 POINT2 ptBottom=mdlGeodesic.geodesic_coordinate(ptTop,dist,180.0);
                 bottom=ptBottom.y;
             }
-            //end section
             
-            // move these inside the bbox block above
-            //left = Double.valueOf(bounds[0]).doubleValue();
-            //right = Double.valueOf(bounds[2]).doubleValue();
-            //top = Double.valueOf(bounds[3]).doubleValue();
-            //bottom = Double.valueOf(bounds[1]).doubleValue();
-
-            //added 2 lines Deutch 6-29-11
-            //controlLong = left;
-            //controlLat = top;
-            //end section
-
-            /*//old conversion
-            int leftX = (int) GeoPixelConversion.long2x(left, scale, controlLong, top, metPerPix);
-            int rightX = (int) GeoPixelConversion.long2x(right, scale, controlLong, top, metPerPix);
-
-            int topY = (int) GeoPixelConversion.lat2y(top, scale, controlLat, metPerPix);
-            int bottomY = (int) GeoPixelConversion.lat2y(bottom, scale, controlLat, metPerPix);
-            //*/
-
-            //new conversion
-            //M. Deutch 11-29-12
-            //TODO: swap two lines below when ready for coordinate update
-            //ipc = new PointConverter(left, top, scale);
-            //ipc = new PointConverter(left, top, right, bottom, scale);
             Point2D lt=new Point2D.Double(left,top);
             Point2D rb=new Point2D.Double(right,bottom);
             if(bboxCoords==null)
@@ -760,7 +734,7 @@ public class MultiPointHandler {
             Point2D ptCoordsUL=getGeoUL(geoCoords);            
             ipc = new PointConverter(ptCoordsUL.getX(), ptCoordsUL.getY(), scale);            
         }
-        //rect=null;
+        
         //if(crossesIDL(geoCoords)==true)
         if(Math.abs(right-left)>180)
         {
@@ -774,45 +748,28 @@ public class MultiPointHandler {
         }
 
         //seems to work ok at world view
-        if(normalize)
-        {
-            NormalizeGECoordsToGEExtents(0,360,geoCoords);
-        }
-
-        //commented out by deutch 5/22/2012
-        /*
-        //use an ipc based on the geocoords because of normalizing, not on the bbox
-        Point2D pt2d=getControlPoint(geoCoords);
-        controlLong=pt2d.getX();
-        controlLat=pt2d.getY();
-        //if(controlLong>left)
-            ipc = new PointConverter(controlLong, controlLat, scale);
-        //*////////////////////////////////
+        //if(normalize)
+        //{
+        //    NormalizeGECoordsToGEExtents(0,360,geoCoords);
+        //}
         
-        //M. Deutch 10-3-11
-        //must shift the rect pixels to synch with the new ipc
-        //the old ipc was in synch with the bbox, so rect x,y was always 0,0
-        //the new ipc synchs with the upper left of the geocoords so the boox is shifted
-        //and therefore the clipping rectangle must shift by the delta x,y between
-        //the upper left corner of the original bbox and the upper left corner of the geocoords
-
         ArrayList<Point2D.Double> geoCoords2 = new ArrayList<Point2D.Double>();
         geoCoords2.add(new Point2D.Double(left,top));
         geoCoords2.add(new Point2D.Double(right,bottom));
 
-        if(normalize)
-            NormalizeGECoordsToGEExtents(0,360,geoCoords2);
+        //if(normalize)
+            //NormalizeGECoordsToGEExtents(0,360,geoCoords2);
 
-        //disable clipping
+        //disable clipping unless it spans IDL
         if(ShouldClipSymbol(symbolCode)==false)
-            rect = null;//disable clipping
+            if(crossesIDL(geoCoords)==false)
+                rect = null;
 
         tgl.set_SymbolId(symbolCode);// "GFGPSLA---****X" AMBUSH symbol code
         tgl.set_Pixels(null);
 
         try {
 
-            //String fillColor = null;
             MilStdSymbol mSymbol = new MilStdSymbol(symbolCode, null, geoCoords, null);
 
             mSymbol.setUseDashArray(false);
@@ -1326,7 +1283,8 @@ public class MultiPointHandler {
 
 
         if(ShouldClipSymbol(symbolCode)==false)
-            rect = null;//disable clipping
+            if(crossesIDL(geoCoords)==false)
+                rect = null;//disable clipping
 
         tgl.set_SymbolId(symbolCode);// "GFGPSLA---****X" AMBUSH symbol code
         tgl.set_Pixels(null);
@@ -1640,7 +1598,17 @@ public class MultiPointHandler {
             int rightX;
             int width;
             int height;
-            if(ShouldClipSymbol(symbolCode))
+            boolean normalize = false;
+            if(Math.abs(right-left)>180)
+            {
+                ((PointConversion)ipc).set_normalize(true);                
+                normalize=true;
+            }
+            else      
+            {
+                ((PointConversion)ipc).set_normalize(false);
+            }
+            if(ShouldClipSymbol(symbolCode) || crossesIDL(geoCoords))
             {
                 temp = ipc.GeoToPixels(new Point2D.Double(left, top));
                 leftX = (int)temp.getX();
@@ -1683,7 +1651,7 @@ public class MultiPointHandler {
             shapes = mSymbol.getSymbolShapes();
             modifiers = mSymbol.getModifierShapes();
 
-            boolean normalize = false;
+            //boolean normalize = false;
 
             if (format == 1) {
                 jsonOutput.append("{\"type\":\"symbol\",");
@@ -2279,6 +2247,7 @@ public class MultiPointHandler {
             }
             //disable clipping
             if(ShouldClipSymbol(symbolCode)==false)
+                if(crossesIDL(geoCoords)==false)
                 rect = null;//disable clipping
 
             tgl.set_SymbolId(symbolCode);// "GFGPSLA---****X" AMBUSH symbol code
