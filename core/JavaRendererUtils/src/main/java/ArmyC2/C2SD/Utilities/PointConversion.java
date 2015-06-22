@@ -164,10 +164,10 @@ public class PointConversion implements IPointConversion {
         }
         temp = (calcValue / _pixelMultiplierX);
 
-        pixel.x = (int)temp;
+        pixel.x = temp;
 
         temp = ((_geoTop - coord.getY()) / _pixelMultiplierY);//yMultiplier);
-        pixel.y = (int)temp;
+        pixel.y = temp;
 
         return pixel;
     }
