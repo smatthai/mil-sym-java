@@ -4185,7 +4185,7 @@ public class MultiPointHandler {
             //JSONed.append(",\"labelAlign\":\"lm\"");
             JSONed.append(",\"labelAlign\":\"");
             JSONed.append(strJustify);
-            JSONed.append("\",\"labelBaseline\":\"middle\"");
+            JSONed.append("\",\"labelBaseline\":\"middle");
             JSONed.append("\",\"labelXOffset\":0");
             JSONed.append(",\"labelYOffset\":0");
             JSONed.append(",\"labelOutlineColor\":\"");
