@@ -4137,7 +4137,8 @@ public class MultiPointHandler {
 
         //AffineTransform at = shapeInfo.getAffineTransform();
         //Point2D coord = (Point2D)new Point2D.Double(at.getTranslateX(), at.getTranslateY());
-        Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getGlyphPosition().getX(), shapeInfo.getGlyphPosition().getY());
+        //Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getGlyphPosition().getX(), shapeInfo.getGlyphPosition().getY());
+        Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getModifierStringPosition().getX(), shapeInfo.getModifierStringPosition().getY());
         Point2D geoCoord = ipc.PixelsToGeo(coord);
         //M. Deutch 9-27-11
         if(normalize)
@@ -4152,6 +4153,15 @@ public class MultiPointHandler {
 
 
         String text = shapeInfo.getModifierString();
+        
+        int justify=shapeInfo.getTextJustify();
+        String strJustify="";
+        if(justify==0)
+            strJustify="left";
+        if(justify==1)
+            strJustify="center";
+        if(justify==2)
+            strJustify="right";
         
         RendererSettings RS = RendererSettings.getInstance();
 
@@ -4172,8 +4182,11 @@ public class MultiPointHandler {
             else
                 JSONed.append("\",\"fontWeight\":\"normal\"");
             
-            JSONed.append(",\"labelAlign\":\"lm\"");
-            JSONed.append(",\"labelXOffset\":0");
+            //JSONed.append(",\"labelAlign\":\"lm\"");
+            JSONed.append(",\"labelAlign\":\"");
+            JSONed.append(strJustify);
+            JSONed.append("\",\"labelBaseline\":\"middle\"");
+            JSONed.append("\",\"labelXOffset\":0");
             JSONed.append(",\"labelYOffset\":0");
             JSONed.append(",\"labelOutlineColor\":\"");
             JSONed.append(SymbolUtilities.colorToHexString(outlineColor, false));
