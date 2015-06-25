@@ -4994,10 +4994,17 @@ public class Modifier2 {
                             direction = switchDirection(direction);
                         }
                         
-                        if(x1<=x2)
+                        if(x1<x2)
                             justify=ShapeInfo.justify_right;
                         else
                             justify=ShapeInfo.justify_left;
+                        if(x1==x2)
+                        {
+                            if(y1>y2)
+                                justify=ShapeInfo.justify_right;
+                            else
+                                justify=ShapeInfo.justify_left;
+                        }
                         
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
@@ -5028,10 +5035,17 @@ public class Modifier2 {
                             direction = switchDirection(direction);
                         }
                         
-                        if(x1<=x2)
+                        if(x1<x2)
                             justify=ShapeInfo.justify_right;
                         else
                             justify=ShapeInfo.justify_left;
+                        if(x1==x2)
+                        {
+                            if(y1>y2)
+                                justify=ShapeInfo.justify_right;
+                            else
+                                justify=ShapeInfo.justify_left;
+                        }
                         
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
 
