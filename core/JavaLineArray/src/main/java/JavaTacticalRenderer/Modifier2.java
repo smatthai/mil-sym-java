@@ -4998,9 +4998,9 @@ public class Modifier2 {
                             justify=ShapeInfo.justify_right;
                         else
                             justify=ShapeInfo.justify_left;
-                        if(x1==x2)
+                        if(Math.round(x1)==Math.round(x2))
                         {
-                            if(y1>y2)
+                            if(y1<y2)
                                 justify=ShapeInfo.justify_right;
                             else
                                 justify=ShapeInfo.justify_left;
@@ -5039,9 +5039,9 @@ public class Modifier2 {
                             justify=ShapeInfo.justify_right;
                         else
                             justify=ShapeInfo.justify_left;
-                        if(x1==x2)
+                        if(Math.round(x1)==Math.round(x2))
                         {
-                            if(y1>y2)
+                            if(y1<y2)
                                 justify=ShapeInfo.justify_right;
                             else
                                 justify=ShapeInfo.justify_left;
