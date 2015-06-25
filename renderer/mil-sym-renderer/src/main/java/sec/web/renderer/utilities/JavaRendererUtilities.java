@@ -756,11 +756,11 @@ public class JavaRendererUtilities {
                                 returnValue = true;
                             }
                         }
-                        else if (jsonModifiersArray.has("additionalInfo1") && !jsonModifiersArray.isNull("additionalInfo1") &&
+                        /*else if (jsonModifiersArray.has("additionalInfo1") && !jsonModifiersArray.isNull("additionalInfo1") &&
                                 jsonModifiersArray.has("additionalInfo2") && !jsonModifiersArray.isNull("additionalInfo2") ) 
                         {
                             returnValue = true;
-                        }
+                        }//*/
                         else if (jsonModifiersArray.has("additionalInfo1") && !jsonModifiersArray.isNull("additionalInfo1")) 
                         {
 
