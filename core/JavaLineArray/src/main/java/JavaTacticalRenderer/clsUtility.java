@@ -1872,7 +1872,7 @@ public final class clsUtility {
             {
                 ptLast=new POINT2(tg.Pixels.get(j-1));
                 ptCurrent=new POINT2(tg.Pixels.get(j));
-                if(ptCurrent.x==ptLast.x)
+                if(Math.round(ptCurrent.x)==Math.round(ptLast.x))
                 {
                     ptCurrent.x += Math.pow(-1,j);
                     tg.Pixels.set(j, ptCurrent);
