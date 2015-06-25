@@ -4156,15 +4156,13 @@ public class MultiPointHandler {
         String text = shapeInfo.getModifierString();
         
         int justify=shapeInfo.getTextJustify();
-        String strJustify="";
+        String strJustify="left";
         if(justify==0)
             strJustify="left";
-        if(justify==1)
+        else if(justify==1)
             strJustify="center";
-        if(justify==2)
+        else if(justify==2)
             strJustify="right";
-        else
-            strJustify="left";
         
         RendererSettings RS = RendererSettings.getInstance();
 
