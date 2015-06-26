@@ -3,7 +3,7 @@ package sec.web.renderer;
 public class GeoPixelConversion {
 
     private static double inchPerMeter = 39.3700787;
-    private static double pixelsPerInch = 96;
+    private static double pixelsPerInch = 96.0;
     private static double METERS_PER_DEG = 111319.49079327357264771338267056;
 
     public static double metersPerPixel(double scale) {

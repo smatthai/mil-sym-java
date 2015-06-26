@@ -1862,6 +1862,7 @@ public final class clsUtility {
                 case TacticalLines.ALT:
                 case TacticalLines.ONEWAY:
                 case TacticalLines.TWOWAY:
+                case TacticalLines.ATWALL:
                     break;
                 default:
                     return;
@@ -1872,9 +1873,11 @@ public final class clsUtility {
             {
                 ptLast=new POINT2(tg.Pixels.get(j-1));
                 ptCurrent=new POINT2(tg.Pixels.get(j));
-                if(Math.round(ptCurrent.x)==Math.round(ptLast.x))
+                double d=Math.abs(ptCurrent.x-ptLast.x);
+                if(d<=1)
                 {
-                    ptCurrent.x += Math.pow(-1,j);
+                    //ptCurrent.x += Math.pow(-1,j);
+                    ptCurrent.x = ptLast.x + Math.pow(-1,j);
                     tg.Pixels.set(j, ptCurrent);
                 }
             }

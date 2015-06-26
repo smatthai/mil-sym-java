@@ -1237,7 +1237,41 @@ public final class clsRenderer {
                     new RendererException("Failed inside renderWithPolylines", exc));
         }
     }
-
+    /**
+     * truncate pixels to integer values
+     * @param tg
+     * @return shallow copy of the original pixels
+     */
+    private static ArrayList<POINT2> truncatePixels(TGLight tg) {
+        ArrayList<POINT2>savePixels=null;
+        try 
+        {
+            if(tg.Pixels==null)
+                return null;
+            if(tg.Pixels.isEmpty())
+                return tg.Pixels;
+            
+            savePixels=new ArrayList();
+            int j=0;
+            POINT2 pt=null;
+            for(j=0;j<tg.Pixels.size();j++)
+            {
+                pt=new POINT2(tg.Pixels.get(j));
+                savePixels.add(pt);
+            }
+            double x=0,y=0;
+            for(j=0;j<tg.Pixels.size();j++)
+            {
+                pt=tg.Pixels.get(j);
+                pt.x=(int)pt.x;
+                pt.y=(int)pt.y; //not sure if this line is necessary
+            }
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "truncatePixels",
+                    new RendererException("Failed inside truncatePixels", exc));
+        }
+        return savePixels;
+    }
     /**
      * Generic Tester says Tiger but use right mouse down. Refresh button says
      * SECRenderer or GE. Google Earth renderer tester: Called by
@@ -1258,7 +1292,7 @@ public final class clsRenderer {
             Object clipArea) //was Rectangle2D
     {
         try {
-            setTGProperties(tg);
+            setTGProperties(tg);                        
             double scale = getScale(tg, converter, clipArea);
             Rectangle2D clipBounds = null;
             //diagnostic 1-9-13
@@ -1360,9 +1394,14 @@ public final class clsRenderer {
             tg.modifiers = new ArrayList();
             BufferedImage bi = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = bi.createGraphics();
-            //Modifier2.AddModifiersGeo(tg,g2d,clipArea,converter);
+            
+            //Modifier2.AddModifiersGeo2(tg, g2d, clipArea, converter);
+            ArrayList<POINT2>dblPixels=truncatePixels(tg);
             Modifier2.AddModifiersGeo2(tg, g2d, clipArea, converter);
-
+            //restore original pixels
+            tg.Pixels=dblPixels;
+            //end section
+            
             clsUtilityCPOF.FilterPoints2(tg, converter);
             JavaTacticalRenderer.clsUtility.FilterVerticalSegments(tg);
             clsUtility.FilterAXADPoints(tg, converter);
@@ -1370,10 +1409,8 @@ public final class clsRenderer {
 
             ArrayList<Shape2> linesWithFillShapes = null;
 
-            //diagnostic
             ArrayList<POINT2> savePixels = tg.Pixels;
             tg.Pixels = origFillPixels;
-            //end section
 
             //check assignment
             if (clipBounds != null) {
@@ -1383,12 +1420,8 @@ public final class clsRenderer {
             } else if (clipArea == null) {
                 linesWithFillShapes = clsClipPolygon2.LinesWithFill(tg, clipBounds);
             }
-
-            //diagnostic
             tg.Pixels = savePixels;
-            //end section
 
-            //add section M. Deutch 11-4-2011
             ArrayList rangeFanFillShapes = null;
             //do not fill the original shapes for circular range fans
             int savefillStyle = tg.get_FillStyle();
@@ -1449,14 +1482,11 @@ public final class clsRenderer {
                 shapes = clsUtilityCPOF.postClipShapes(tg, shapes, clipPoints);
             }
 
-            //CPOF 6.0 diagnostic
-            //returns early if textSpecs are null
-            //currently the client is ignoring these
             if (modifierShapeInfos != null) {
-                //BufferedImage bi=new BufferedImage(8,8,BufferedImage.TYPE_INT_ARGB);
-                //Graphics2D g2d=bi.createGraphics();
                 ArrayList<Shape2> textSpecs = new ArrayList();
+                dblPixels=truncatePixels(tg);
                 JavaTacticalRenderer.Modifier2.DisplayModifiers2(tg, g2d, textSpecs, isTextFlipped, converter);
+                tg.Pixels=dblPixels;
                 Shape2ToShapeInfo(modifierShapeInfos, textSpecs);
             }
             Shape2ToShapeInfo(shapeInfos, shapes);

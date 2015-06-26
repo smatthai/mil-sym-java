@@ -299,7 +299,8 @@ public final class clsClipQuad {
             Point2D ul=currentEdge.getP2();
             
             //no vertical client segments
-            if(current.getX()==previous.getX())            
+            //if(current.getX()==previous.getX())            
+            if(Math.abs(current.getX()-previous.getX())<1)            
                 current.setLocation(current.getX()+1, current.getY());                
             
             double m1=( ul.getY()-ll.getY() )/( ul.getX()-ll.getX() );
@@ -361,9 +362,13 @@ public final class clsClipQuad {
             }
                 
             //no vertical segments
-            if(pt2.getX()==pt1.getX())
+//            if(pt2.getX()==pt1.getX())
+//                pt2.setLocation(pt2.getX()+1, pt2.getY());
+//            if(pt2.getY()==pt1.getY())
+//                pt2.setLocation(pt2.getX(), pt2.getY()+1);
+            if(Math.abs(pt2.getX()-pt1.getX())<1)
                 pt2.setLocation(pt2.getX()+1, pt2.getY());
-            if(pt2.getY()==pt1.getY())
+            if(Math.abs(pt2.getY()-pt1.getY())<1)
                 pt2.setLocation(pt2.getX(), pt2.getY()+1);
             
             for (j = 0; j < pts.size(); j++) 
@@ -701,17 +706,6 @@ public final class clsClipQuad {
                     new RendererException("Failed inside fillDMA", exc));
         }
         return shapes;
-    }
-    private static Boolean isClosed(ArrayList<POINT2> pts)
-    {
-        boolean closed=false;
-        if(pts==null || pts.isEmpty())
-            return false;
-        POINT2 pt0=pts.get(0);
-        POINT2 ptLast=pts.get(pts.size()-1);
-        if(pt0.x==ptLast.x && pt0.y==ptLast.y)
-            closed=true;
-        return closed;
     }
     /**
      * 

@@ -47,7 +47,8 @@ public final class clsClipPolygon2 {
             {
                 ptIntersect=new Point2D.Double();
                 edge_x = edgePt1.getX();
-                if (pt1.getX() == pt0.getX())
+                //if (pt1.getX() == pt0.getX())
+                if (Math.abs(pt1.getX() - pt0.getX())<1)
                     pt1.setLocation(pt1.getX()+1, pt1.getY());
 
                 m = (pt1.getY() - pt0.getY()) / (pt1.getX() - pt0.getX());
@@ -59,7 +60,8 @@ public final class clsClipPolygon2 {
             {
                 ptIntersect=new Point2D.Double();
                 edge_y = edgePt1.getY();
-                if (pt1.getX() == pt0.getX())
+                //if (pt1.getX() == pt0.getX())
+                if (Math.abs(pt1.getX() - pt0.getX())<1)
                     pt1.setLocation(pt1.getX()+1, pt1.getY());
 
                 m = (pt1.getY() - pt0.getY()) / (pt1.getX() - pt0.getX());
