@@ -1242,36 +1242,36 @@ public final class clsRenderer {
      * @param tg
      * @return shallow copy of the original pixels
      */
-    private static ArrayList<POINT2> truncatePixels(TGLight tg) {
-        ArrayList<POINT2>savePixels=null;
-        try 
-        {
-            if(tg.Pixels==null)
-                return null;
-            if(tg.Pixels.isEmpty())
-                return tg.Pixels;
-            
-            savePixels=new ArrayList();
-            int j=0;
-            POINT2 pt=null;
-            for(j=0;j<tg.Pixels.size();j++)
-            {
-                pt=new POINT2(tg.Pixels.get(j));
-                savePixels.add(pt);
-            }
-            double x=0,y=0;
-            for(j=0;j<tg.Pixels.size();j++)
-            {
-                pt=tg.Pixels.get(j);
-                pt.x=(int)pt.x;
-                pt.y=(int)pt.y; //not sure if this line is necessary
-            }
-        } catch (Exception exc) {
-            ErrorLogger.LogException(_className, "truncatePixels",
-                    new RendererException("Failed inside truncatePixels", exc));
-        }
-        return savePixels;
-    }
+//    private static ArrayList<POINT2> truncatePixels(TGLight tg) {
+//        ArrayList<POINT2>savePixels=null;
+//        try 
+//        {
+//            if(tg.Pixels==null)
+//                return null;
+//            if(tg.Pixels.isEmpty())
+//                return tg.Pixels;
+//            
+//            savePixels=new ArrayList();
+//            int j=0;
+//            POINT2 pt=null;
+//            for(j=0;j<tg.Pixels.size();j++)
+//            {
+//                pt=new POINT2(tg.Pixels.get(j));
+//                savePixels.add(pt);
+//            }
+//            double x=0,y=0;
+//            for(j=0;j<tg.Pixels.size();j++)
+//            {
+//                pt=tg.Pixels.get(j);
+//                pt.x=(int)pt.x;
+//                pt.y=(int)pt.y; //not sure if this line is necessary
+//            }
+//        } catch (Exception exc) {
+//            ErrorLogger.LogException(_className, "truncatePixels",
+//                    new RendererException("Failed inside truncatePixels", exc));
+//        }
+//        return savePixels;
+//    }
     /**
      * Generic Tester says Tiger but use right mouse down. Refresh button says
      * SECRenderer or GE. Google Earth renderer tester: Called by
@@ -1396,10 +1396,10 @@ public final class clsRenderer {
             Graphics2D g2d = bi.createGraphics();
             
             //Modifier2.AddModifiersGeo2(tg, g2d, clipArea, converter);
-            ArrayList<POINT2>dblPixels=truncatePixels(tg);
+            //ArrayList<POINT2>dblPixels=truncatePixels(tg);
             Modifier2.AddModifiersGeo2(tg, g2d, clipArea, converter);
             //restore original pixels
-            tg.Pixels=dblPixels;
+            //tg.Pixels=dblPixels;
             //end section
             
             clsUtilityCPOF.FilterPoints2(tg, converter);
@@ -1484,9 +1484,9 @@ public final class clsRenderer {
 
             if (modifierShapeInfos != null) {
                 ArrayList<Shape2> textSpecs = new ArrayList();
-                dblPixels=truncatePixels(tg);
+                //dblPixels=truncatePixels(tg);
                 JavaTacticalRenderer.Modifier2.DisplayModifiers2(tg, g2d, textSpecs, isTextFlipped, converter);
-                tg.Pixels=dblPixels;
+                //tg.Pixels=dblPixels;
                 Shape2ToShapeInfo(modifierShapeInfos, textSpecs);
             }
             Shape2ToShapeInfo(shapeInfos, shapes);
