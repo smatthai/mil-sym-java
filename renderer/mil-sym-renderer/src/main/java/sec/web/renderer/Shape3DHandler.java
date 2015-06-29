@@ -87,7 +87,8 @@ public class Shape3DHandler {
      * @param shapeType A 15 character ID of the type of symbol to draw.
      * @param description A brief description of what the symbol represents.  
      * Generic text that does not require any format.
-     * @param color The fill color of the graphic
+     * @param lineColor The line color of the graphic
+     * @param fillColor The fill color of the graphic
      * @param altitudeMode Indicates whether the symbol should interpret 
      * altitudes as above sea level or above ground level. Options are 
      * "relativeToGround" (from surface of earth), "absolute" (sea level), 
@@ -104,7 +105,7 @@ public class Shape3DHandler {
      * @return A KML string that represents a placemark for the 3D shape
      */
     public static String render3dSymbol(String name, String id, String shapeType,
-            String description, String color, String altitudeMode,
+            String description, String lineColor, String fillColor, String altitudeMode,
             String controlPoints,
             SymbolModifiers attributes) {
 
@@ -120,27 +121,27 @@ public class Shape3DHandler {
         }
                 
         if (shapeType.equals(CYLINDER)) {
-            result = buildCylinder(controlPoints, id, name, description, color, convertedAltitudeMode, attributes);            
+            result = buildCylinder(controlPoints, id, name, description, lineColor, fillColor, convertedAltitudeMode, attributes);            
         } else if (shapeType.equals(ORBIT)) {
-            result = buildOrbit(controlPoints, id, name, description, color, convertedAltitudeMode, attributes);
+            result = buildOrbit(controlPoints, id, name, description, lineColor, fillColor, convertedAltitudeMode, attributes);
             //return buildKml(result, id, name, color);
         } else if (shapeType.equals(RADARC)) {
-            result = buildRadarc(controlPoints, id, name, description, color, convertedAltitudeMode, attributes);
+            result = buildRadarc(controlPoints, id, name, description, lineColor, fillColor, convertedAltitudeMode, attributes);
             //return buildKml(result, id, name, color);
         } else if (shapeType.equals(POLYARC)) {
-            result = buildPolyArc(controlPoints, id, name, description, color, convertedAltitudeMode, attributes);
+            result = buildPolyArc(controlPoints, id, name, description, lineColor, fillColor, convertedAltitudeMode, attributes);
             //return buildKml(result, id, name, color);
         } else if (shapeType.equals(ROUTE)) {
-            result = buildRoute(controlPoints, id, name, description, color, convertedAltitudeMode, attributes);
+            result = buildRoute(controlPoints, id, name, description, lineColor, fillColor, convertedAltitudeMode, attributes);
             //return buildKml(result, id, name, color);
         } else if (shapeType.equals(POLYGON)) {
-            result = buildPolygon(controlPoints, id, name, description, color, convertedAltitudeMode, attributes);
+            result = buildPolygon(controlPoints, id, name, description, lineColor, fillColor, convertedAltitudeMode, attributes);
             //return buildKml(result, id, name, color);
         } else if (shapeType.equals(CAKE)) {
-            result = buildCake(controlPoints, id, name, description, color, convertedAltitudeMode, attributes);
+            result = buildCake(controlPoints, id, name, description, lineColor, fillColor, convertedAltitudeMode, attributes);
             //return buildKml(result, id, name, color);
         } else if (shapeType.equals(TRACK)) {
-            result = buildTrack(controlPoints, id, name, description, color, convertedAltitudeMode, attributes);
+            result = buildTrack(controlPoints, id, name, description, lineColor, fillColor, convertedAltitudeMode, attributes);
             //return buildKml(result, id, name, color);
         } else {
             StringBuilder sb = new StringBuilder();
@@ -174,7 +175,7 @@ public class Shape3DHandler {
      * @return 
      */
     public static String buildPolygon(String controlPoints, String id, 
-            String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, 
+            String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, 
             SymbolModifiers attributes) {
                 
         StringBuilder output = new StringBuilder();       
@@ -190,7 +191,7 @@ public class Shape3DHandler {
 
                 // Build the polyarc
                 pointArrayStringList = XsltCoordinateWrapper.getPolygonKml(
-                        latlons, id, name, description, color, altitudeMode,
+                        latlons, id, name, description, lineColor, fillColor, altitudeMode,
                         attributes.X_ALTITUDE_DEPTH.get(0), 
                         attributes.X_ALTITUDE_DEPTH.get(1));
             } else {
@@ -213,7 +214,7 @@ public class Shape3DHandler {
      * @return 
      */
     public static String buildCylinder(String controlPoints, String id, 
-            String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, 
+            String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, 
             SymbolModifiers attributes) {
         StringBuilder output = new StringBuilder();        
         String pointArrayStringList = "";
@@ -244,7 +245,7 @@ public class Shape3DHandler {
                         
             // Build the cylinder
             pointArrayStringList = XsltCoordinateWrapper.getCircleKml(pivotx,
-                    pivoty, id, name, description, color, altitudeMode,
+                    pivoty, id, name, description, lineColor, fillColor, altitudeMode,
                     attributes.AM_DISTANCE.get(0),
                     attributes.X_ALTITUDE_DEPTH.get(0),
                     attributes.X_ALTITUDE_DEPTH.get(1));                       
@@ -256,7 +257,7 @@ public class Shape3DHandler {
 
     }
 
-    public static String buildKml(String[] coords, String id, String name, String color) {
+    public static String buildKml(String[] coords, String id, String name, String lineColor, String fillColor) {
         StringBuilder kml = new StringBuilder();
         kml.append("<Placemark>");
         kml.append("<name>");
@@ -268,12 +269,12 @@ public class Shape3DHandler {
         kml.append("<Style>");
         kml.append("<PolyStyle>");
         kml.append("<color>");
-        kml.append(color);
+        kml.append(fillColor);
         kml.append("</color>");
 
         kml.append("</PolyStyle>");
         kml.append("<LineStyle>");
-        kml.append(color);
+        kml.append(lineColor);
         kml.append("</LineStyle>");
         kml.append("</Style>");
         kml.append("<MultiGeometry>");
@@ -303,7 +304,7 @@ public class Shape3DHandler {
      * @return 
      */
     public static String buildOrbit(String controlPoints, String id, 
-            String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, 
+            String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, 
             SymbolModifiers attributes) {
 
         StringBuilder output = new StringBuilder();        
@@ -344,7 +345,7 @@ public class Shape3DHandler {
 
             // Build the orbit
             pointArrayStringList = XsltCoordinateWrapper.getOrbitKml(point1x, point1y,
-                    point2x, point2y, id, name, description, color,  altitudeMode, attributes.AM_DISTANCE.get(0), attributes.X_ALTITUDE_DEPTH.get(0), attributes.X_ALTITUDE_DEPTH.get(1));
+                    point2x, point2y, id, name, description, lineColor, fillColor,  altitudeMode, attributes.AM_DISTANCE.get(0), attributes.X_ALTITUDE_DEPTH.get(0), attributes.X_ALTITUDE_DEPTH.get(1));
 
         } catch (Exception e) {
             pointArrayStringList = "";                                     
@@ -362,7 +363,7 @@ public class Shape3DHandler {
      * @return 
      */
     public static String buildRadarc(String controlPoints, String id, 
-            String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, 
+            String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, 
             SymbolModifiers attributes) {
 
         StringBuilder output = new StringBuilder();      
@@ -393,7 +394,7 @@ public class Shape3DHandler {
 
             // Build the orbit
             pointArrayStringList = XsltCoordinateWrapper.getRadarcKml(pivotx, pivoty,
-                    id, name, description, color, altitudeMode,
+                    id, name, description, lineColor, fillColor, altitudeMode,
                     attributes.AM_DISTANCE.get(0), 
                     attributes.AM_DISTANCE.get(1), 
                     attributes.AN_AZIMUTH.get(0), 
@@ -418,7 +419,7 @@ public class Shape3DHandler {
      * @return 
      */
     public static String buildPolyArc(String controlPoints, String id, 
-            String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, 
+            String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, 
             SymbolModifiers attributes) {
         StringBuilder output = new StringBuilder();
         
@@ -450,7 +451,7 @@ public class Shape3DHandler {
 
                 // Build the polyarc
                 pointArrayStringList = XsltCoordinateWrapper.getPolyarcKml(points,
-                        pivotx, pivoty, id, name, description, color, altitudeMode,
+                        pivotx, pivoty, id, name, description, lineColor, fillColor, altitudeMode,
                         attributes.AM_DISTANCE.get(0),
                         attributes.AN_AZIMUTH.get(0), attributes.AN_AZIMUTH.get(1),
                         attributes.X_ALTITUDE_DEPTH.get(0), attributes.X_ALTITUDE_DEPTH.get(1));
@@ -474,7 +475,7 @@ public class Shape3DHandler {
      * @return 
      */
     public static String buildRoute(String controlPoints, String id, 
-            String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, 
+            String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, 
             SymbolModifiers attributes) {
         
         String pointArrayStringList = "";  
@@ -494,7 +495,7 @@ public class Shape3DHandler {
                 
                 // Build the polyarc
                 pointArrayStringList = XsltCoordinateWrapper.getRouteKml(latlons,
-                        id, name, description, color, altitudeMode,
+                        id, name, description, lineColor, fillColor, altitudeMode,
                         leftWidth, rightWidth, attributes.X_ALTITUDE_DEPTH.get(0), attributes.X_ALTITUDE_DEPTH.get(1));
 
             } else {
@@ -521,7 +522,7 @@ public class Shape3DHandler {
      * @return 
      */
     public static String buildCake(String controlPoints, String id, 
-            String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, 
+            String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, 
             SymbolModifiers attributes) {
 
         StringBuilder output = new StringBuilder();        
@@ -581,7 +582,7 @@ public class Shape3DHandler {
 
                 }
 
-                pointArrayStringList = kmlRender.getKml(letThemEat, id, name, description, color);
+                pointArrayStringList = kmlRender.getKml(letThemEat, id, name, description, lineColor, fillColor);
                 
             } else {
                 // if not enough points throw exception
@@ -602,7 +603,7 @@ public class Shape3DHandler {
      * @return 
      */
     public static String buildTrack(String controlPoints, String id, 
-            String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, 
+            String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, 
             SymbolModifiers attributes) {
               
         String pointArrayStringList = "";        
@@ -680,7 +681,7 @@ public class Shape3DHandler {
 
                 }
                 
-                pointArrayStringList = kmlRender.getKml(track, id, name, description, color);
+                pointArrayStringList = kmlRender.getKml(track, id, name, description, lineColor, fillColor);
 
             } else {                
                 //throw invalid number of points exception

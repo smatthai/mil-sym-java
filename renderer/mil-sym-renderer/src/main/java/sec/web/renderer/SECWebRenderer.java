@@ -955,7 +955,7 @@ public class SECWebRenderer extends Applet {
      * @return A KML string that represents a placemark for the 3D shape
      */
     public String Render3dSymbol(String name, String id, String shapeType, 
-            String description, String color, String altitudeMode, 
+            String description, String lineColor, String fillColor, String altitudeMode, 
             String controlPoints,
             String attributes) {
         
@@ -1020,7 +1020,7 @@ public class SECWebRenderer extends Applet {
             // Send to the 3D renderer for generating the 3D point and creating
             // the KML to return.            
             returnValue = Shape3DHandler.render3dSymbol(name, id, shapeType, 
-                description, color, altitudeMode, controlPoints, modifiers);            
+                description, lineColor, fillColor, altitudeMode, controlPoints, modifiers);            
         } 
         catch (JSONException je) {
             ErrorLogger.LogException(this.getName(), "Render3dSymbol()", je);
@@ -1104,7 +1104,8 @@ public class SECWebRenderer extends Applet {
             int altitudeDepthLength = 0;
             int distanceLength = 0;
             int azimuthLength = 0;
-            String color = "";
+            String lineColor = "";
+            String fillColor = "";
             
             lumpCrabJSON = new JSONObject(modifiers);
             
@@ -1131,24 +1132,42 @@ public class SECWebRenderer extends Applet {
                     distanceLength = distanceJSON.length();
                 } 
                 
+                if (modifiersJSON.has("lineColor") && !modifiersJSON.isNull("lineColor"))
+                {
+                    lineColor = modifiersJSON.getString("lineColor");
+                }
+                else
+                {   
+                    Color c = SymbolUtilities.getLineColorOfAffiliation(symbolCode);
+                    lineColor = Integer.toHexString(c.getRGB());
+                    //color = JavaRendererUtilities.getAffiliationFillColor(symbolCode);
+                    // ensure that some color is selected.  If no color can be
+                    // found, use black.
+                    if (lineColor == null)
+                    {
+                        lineColor = "FF000000";
+                    }
+                }
+                
                 if (modifiersJSON.has("fillColor") && !modifiersJSON.isNull("fillColor"))
                 {
-                    color = modifiersJSON.getString("fillColor");
+                    fillColor = modifiersJSON.getString("fillColor");
                 }
                 else
                 {   
                     Color c = SymbolUtilities.getFillColorOfAffiliation(symbolCode);
-                    color = Integer.toHexString(c.getRGB());
+                    fillColor = Integer.toHexString(c.getRGB());
                     //color = JavaRendererUtilities.getAffiliationFillColor(symbolCode);
                     // ensure that some color is selected.  If no color can be
                     // found, use black.
-                    if (color == null)
+                    if (fillColor == null)
                     {
-                        color = "AA000000";
+                        fillColor = "AA000000";
                     }
                 }
                 
-                color = JavaRendererUtilities.ARGBtoABGR(color);
+                fillColor = JavaRendererUtilities.ARGBtoABGR(fillColor);
+                lineColor = JavaRendererUtilities.ARGBtoABGR(lineColor);
 
                 // if it's a killbox, need to set minimum alt to 0.
                 if (symbolId.startsWith("AKP") && altitudeDepthLength == 1)
@@ -1192,7 +1211,7 @@ public class SECWebRenderer extends Applet {
                         symbolId.equals("AAMH--")) // HIMEZ
                 {
                     output = Shape3DHandler.buildPolygon(controlPoints, id, name, 
-                        description, color, convertedAltitudeMode, attributes);
+                        description, lineColor, fillColor, convertedAltitudeMode, attributes);
                 }
                 else if (symbolId.equals("ACAR--") || // ACA - rectangular
                         symbolId.equals("AKPR--") || // Killbox - rectangular
@@ -1203,13 +1222,13 @@ public class SECWebRenderer extends Applet {
                         symbolId.equals("ALL---"))   // LLTR
                 {
                     output = Shape3DHandler.buildTrack(controlPoints, id, name, 
-                        description, color, convertedAltitudeMode, attributes);
+                        description, lineColor, fillColor, convertedAltitudeMode, attributes);
                 }
                 else if (symbolId.equals("ACAC--") || // ACA - circular
                         symbolId.equals("AKPC--"))    // Killbox - circular
                 {
                     output = Shape3DHandler.buildCylinder(controlPoints, id, name, 
-                        description, color, convertedAltitudeMode, attributes);
+                        description, lineColor, fillColor, convertedAltitudeMode, attributes);
 
                 }   
 

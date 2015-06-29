@@ -108,44 +108,44 @@ public class XsltCoordinateWrapper {
 	//==========================================================================================
 	//==========================================================================================
 	
-	public static String getLineKml(String[] points, String id, String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, double minAltitude, double maxAltitude) {
+	public static String getLineKml(String[] points, String id, String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, double minAltitude, double maxAltitude) {
 		KmlRenderer renderer = new KmlRenderer();		
-		return renderer.getKml(getLine(points, altitudeMode, minAltitude, maxAltitude), id, name, description, color);
+		return renderer.getKml(getLine(points, altitudeMode, minAltitude, maxAltitude), id, name, description, lineColor, fillColor);
 	
 	}
 	
-	public static String getCircleKml(double pivotX, double pivotY, String id, String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, double radius, double minAltitude,
+	public static String getCircleKml(double pivotX, double pivotY, String id, String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, double radius, double minAltitude,
 			double maxAltitude) {
 		KmlRenderer renderer = new KmlRenderer();
-		return renderer.getKml(getCircle(pivotX, pivotY, altitudeMode, radius, minAltitude, maxAltitude), id, name, description, color);
+		return renderer.getKml(getCircle(pivotX, pivotY, altitudeMode, radius, minAltitude, maxAltitude), id, name, description, lineColor, fillColor);
 	}
 	
-	public static String getOrbitKml(double point1X, double point1Y, double point2X, double point2Y, String id, String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, double width,
+	public static String getOrbitKml(double point1X, double point1Y, double point2X, double point2Y, String id, String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, double width,
 			double minAltitude, double maxAltitude) {
 		KmlRenderer renderer = new KmlRenderer();
-		return renderer.getKml(getOrbit(point1X, point1Y, point2X, point2Y, altitudeMode, width, minAltitude, maxAltitude), id, name, description, color);
+		return renderer.getKml(getOrbit(point1X, point1Y, point2X, point2Y, altitudeMode, width, minAltitude, maxAltitude), id, name, description, lineColor, fillColor);
 	}
 	
-	public static String getRouteKml(String[] points, String id, String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, double leftWidth, double rightWidth, double minAltitude, double maxAltitude) {
+	public static String getRouteKml(String[] points, String id, String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, double leftWidth, double rightWidth, double minAltitude, double maxAltitude) {
 		KmlRenderer renderer = new KmlRenderer();		
-		return renderer.getKml(getRoute(points, altitudeMode, leftWidth, rightWidth, minAltitude, maxAltitude), id, name, description, color);				
+		return renderer.getKml(getRoute(points, altitudeMode, leftWidth, rightWidth, minAltitude, maxAltitude), id, name, description, lineColor, fillColor);				
 	}
 	
-	public static String getPolygonKml(String[] points, String id, String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, double minAltitude, double maxAltitude) {
+	public static String getPolygonKml(String[] points, String id, String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, double minAltitude, double maxAltitude) {
 		KmlRenderer renderer = new KmlRenderer();
-		return renderer.getKml(getPolygon(points, altitudeMode, minAltitude, maxAltitude), id, name, description, color);
+		return renderer.getKml(getPolygon(points, altitudeMode, minAltitude, maxAltitude), id, name, description, lineColor, fillColor);
 	}
 	
-	public static String getRadarcKml(double pivotX, double pivotY, String id, String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, double innerRadius, double outerRadius,
+	public static String getRadarcKml(double pivotX, double pivotY, String id, String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, double innerRadius, double outerRadius,
 			double leftAzimuth, double rightAzimuth, double minAltitude, double maxAltitude) {
 		KmlRenderer renderer = new KmlRenderer();
-		return renderer.getKml(getRadarc(pivotX, pivotY, altitudeMode, innerRadius, outerRadius, leftAzimuth, rightAzimuth, minAltitude, maxAltitude), id, name, description, color);
+		return renderer.getKml(getRadarc(pivotX, pivotY, altitudeMode, innerRadius, outerRadius, leftAzimuth, rightAzimuth, minAltitude, maxAltitude), id, name, description, lineColor, fillColor);
 	}
 	
-	public static String getPolyarcKml(String[] points, double pivotX, double pivotY, String id, String name, String description, String color, KmlOptions.AltitudeMode altitudeMode, double radius,
+	public static String getPolyarcKml(String[] points, double pivotX, double pivotY, String id, String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, double radius,
 			double leftAzimuth, double rightAzimuth, double minAltitude, double maxAltitude) {
 		KmlRenderer renderer = new KmlRenderer();
-		return renderer.getKml(getPolyarc(points, pivotX, pivotY, altitudeMode, radius, leftAzimuth, rightAzimuth, minAltitude, maxAltitude), id, name, description, color);
+		return renderer.getKml(getPolyarc(points, pivotX, pivotY, altitudeMode, radius, leftAzimuth, rightAzimuth, minAltitude, maxAltitude), id, name, description, lineColor, fillColor);
 	}
 	
 	
