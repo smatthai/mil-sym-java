@@ -2796,7 +2796,7 @@ public final class Channels {
             //diagnostic
             if(vbiDrawThis==TacticalLines.BBS_LINE)
             {
-                shapes.remove(1);
+                //shapes.remove(1);
                 shape=new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
                 shape.moveTo(pOriginalLinePoints[0]);
                 for(j=1;j<pOriginalLinePoints.length;j++)
