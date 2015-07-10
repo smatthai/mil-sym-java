@@ -16,6 +16,8 @@ public class Radarc extends AArc {
 	
 	@Override
 	protected Shape createShape() {
+            //diagnostic
+                this.setLimit(8);
 		GeoArc arc = new GeoArc(pivot, radiusMeters * 2, radiusMeters * 2, leftAzimuthDegrees, rightAzimuthDegrees,
 				maxDistanceMeters, flatnessDistanceMeters, limit);
 		Area shape = new Area(arc);
