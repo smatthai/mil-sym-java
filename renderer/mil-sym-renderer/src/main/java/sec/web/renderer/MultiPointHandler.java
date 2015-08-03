@@ -955,6 +955,8 @@ public class MultiPointHandler {
     static private String AddImageFillToKML(ArrayList<JavaLineArray.POINT2> tgPoints,
             String jsonContent, MilStdSymbol mSymbol, IPointConversion ipc, Boolean normalize)
     {
+        if(tgPoints==null || tgPoints.size()==0)
+            return null;
         //get original point values in pixel form                    
         ArrayList<Point2D> pixelPoints = new ArrayList<Point2D>();
         Path2D path = new Path2D.Double();
