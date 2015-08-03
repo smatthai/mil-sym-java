@@ -41,6 +41,7 @@ import JavaTacticalRenderer.TGLight;
 import RenderMultipoints.clsRenderer;
 import JavaLineArray.POINT2;
 import JavaTacticalRenderer.mdlGeodesic;
+import RenderMultipoints.clsClipPolygon2;
 import java.awt.Font;
 import java.util.logging.Level;
 
@@ -801,7 +802,10 @@ public class MultiPointHandler {
                     mSymbol.getModifierMap().containsKey(SYMBOL_LINE_IDS))
             {
                 tgl = clsRenderer.createTGLightFromMilStdSymbol(mSymbol, ipc);
-                tgPoints = tgl.get_Pixels();
+                //tgPoints = tgl.get_Pixels();
+                Rectangle2D rect2d=new Rectangle2D.Double(rect.x,rect.y,rect.width,rect.height);
+                clsClipPolygon2.ClipPolygon(tgl, rect2d);
+                tgPoints = tgl.get_Pixels();                
             }
             
             //old interface
@@ -1330,7 +1334,10 @@ public class MultiPointHandler {
                     mSymbol.getModifierMap().containsKey(SYMBOL_LINE_IDS))
             {
                 tgl = clsRenderer.createTGLightFromMilStdSymbol(mSymbol, ipc);
-                tgPoints = tgl.get_Pixels();
+                //tgPoints = tgl.get_Pixels();
+                Rectangle2D rect2d=new Rectangle2D.Double(rect.x,rect.y,rect.width,rect.height);
+                clsClipPolygon2.ClipPolygon(tgl, rect2d);
+                tgPoints = tgl.get_Pixels();                
             }
 //            clsRenderer.render_GE(tgl, shapes, modifiers, ipc, rect);
             //new interface
@@ -1656,7 +1663,10 @@ public class MultiPointHandler {
                         mSymbol.getModifierMap().containsKey(SYMBOL_LINE_IDS))
             {
                 tgl = clsRenderer.createTGLightFromMilStdSymbol(mSymbol, ipc);
-                tgPoints = tgl.get_Pixels();
+                //tgPoints = tgl.get_Pixels();
+                Rectangle2D rect2d=new Rectangle2D.Double(rect.x,rect.y,rect.width,rect.height);
+                clsClipPolygon2.ClipPolygon(tgl, rect2d);
+                tgPoints = tgl.get_Pixels();                
             }
             
             //new interface

@@ -907,6 +907,10 @@ public class SECWebRenderer extends Applet {
         String output = "";
         try
         {
+            if(sps != null && spsPortNumber==-1)
+            {
+                spsPortNumber = sps.getPortNumber();
+            }
             output = MultiPointHandler.RenderSymbol2D(id, name, description, 
                     symbolCode, controlPoints, pixelWidth, pixelHeight, bbox, 
                     modifiers, format, symStd);
