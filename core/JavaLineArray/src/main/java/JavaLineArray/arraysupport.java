@@ -453,8 +453,13 @@ public final class arraysupport
                         if(lineType==TacticalLines.BELT1 && oppSegment!=j)	//change 2
                             continue;
 
-                        if ((pLinePoints[j].y <= Y0 && pLinePoints[j + 1].y >= Y0) ||
-                                (pLinePoints[j].y >= Y0 && pLinePoints[j + 1].y <= Y0)) {
+                        //if ((pLinePoints[j].y <= Y0 && pLinePoints[j + 1].y >= Y0) ||
+                                //(pLinePoints[j].y >= Y0 && pLinePoints[j + 1].y <= Y0)) 
+                        if ((pLinePoints[j].y < Y0 && pLinePoints[j + 1].y > Y0) ||
+                            (pLinePoints[j].y > Y0 && pLinePoints[j + 1].y < Y0) ||
+                            (pLinePoints[j].y < Y0 && pLinePoints[j + 1].y == Y0) ||
+                             (pLinePoints[j].y == Y0 && pLinePoints[j + 1].y < Y0)) 
+                        {
                             bolVertical2 = lineutility.CalcTrueSlopeDouble(pLinePoints[j], pLinePoints[j + 1], m);
                             if (bolVertical2 == 1 && m.value[0] == 0) //current segment is horizontal, this should not happen
                             {	//counter unaffected
@@ -498,8 +503,13 @@ public final class arraysupport
                             if(lineType==TacticalLines.BELT1 && oppSegment!=j)
                                 continue;
 
-                            if ((pLinePoints[j].x <= X0 && pLinePoints[j + 1].x >= X0) ||
-                                (pLinePoints[j].x >= X0 && pLinePoints[j + 1].x <= X0)) {
+                            //if ((pLinePoints[j].x <= X0 && pLinePoints[j + 1].x >= X0) ||
+                              //  (pLinePoints[j].x >= X0 && pLinePoints[j + 1].x <= X0)) 
+                            if ((pLinePoints[j].x < X0 && pLinePoints[j + 1].x > X0) ||
+                                (pLinePoints[j].x > X0 && pLinePoints[j + 1].x < X0) ||
+                                (pLinePoints[j].x < X0 && pLinePoints[j + 1].x == X0) ||
+                                 (pLinePoints[j].x == X0 && pLinePoints[j + 1].x < X0)) 
+                            {
                             bolVertical2 = lineutility.CalcTrueSlopeDouble(pLinePoints[j], pLinePoints[j + 1], m);
                             if (bolVertical2 == 0) //current segment is vertical, this should not happen
                             {	//counter unaffected
