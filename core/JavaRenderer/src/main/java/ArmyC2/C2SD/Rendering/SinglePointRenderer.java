@@ -448,7 +448,13 @@ public class SinglePointRenderer {
                     siFill.setFillColor(symbol.getFillColor());//AffiliationColors.FriendlyUnitFillColor);
                 if(siSymbol1 != null)
                 {
-                    Color c1 = lookup.getColor1();
+                    Color c1 = null;
+                    
+                    if(symbol.getIconColor() != null)
+                        c1 = symbol.getIconColor();
+                    else
+                        c1 = lookup.getColor1();
+                    
                     siSymbol1.setFillColor(new Color(c1.getRed(), c1.getGreen(),
                             c1.getBlue(), symbol.getLineColor().getAlpha()));
                 }
@@ -484,7 +490,14 @@ public class SinglePointRenderer {
                 
                 if(siSymbol1 != null)
                 {
-                    Color c1 = lookup.getColor1();
+                    //Color c1 = lookup.getColor1();
+                    Color c1 = null;
+                    
+                    if(symbol.getIconColor() != null)
+                        c1 = symbol.getIconColor();
+                    else
+                        c1 = lookup.getColor1();
+                    
                     siSymbol1.setLineColor(new Color(c1.getRed(), c1.getGreen(), 
                             c1.getBlue(), symbol.getLineColor().getAlpha()));
                 }

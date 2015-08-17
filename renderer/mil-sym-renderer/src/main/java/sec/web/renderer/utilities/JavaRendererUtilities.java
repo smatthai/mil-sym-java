@@ -285,6 +285,7 @@ public class JavaRendererUtilities {
             MilStdSymbol symbol = null;
             String key = null;
             String value = null;
+            String iconColor = null;
             String lineColor = null;
             String fillColor = null;
             String textColor = null;
@@ -320,6 +321,10 @@ public class JavaRendererUtilities {
                         else if(key.equalsIgnoreCase(MilStdAttributes.FillColor))
                         {
                             fillColor = value;
+                        }
+                        else if(key.equalsIgnoreCase(MilStdAttributes.IconColor))
+                        {
+                            iconColor = value;
                         }
                         else if(key.equalsIgnoreCase(MilStdAttributes.TextColor))
                         {
@@ -497,6 +502,21 @@ public class JavaRendererUtilities {
                     {
                         System.err.println("Error parsing textColor: " + textColor);
                         System.err.println(nfe3.getMessage());
+                    }
+                }
+                
+                if(iconColor != null)
+                {
+                    try
+                    {
+                        Color ic = SymbolUtilities.getColorFromHexString(iconColor);
+                        //System.out.println(String.valueOf(fc.getAlpha()));
+                        symbol.setIconColor(ic);
+                    }
+                    catch(Exception nfe4)
+                    {
+                        System.err.println("Error parsing iconColor: " + iconColor);
+                        System.err.println(nfe4.getMessage());
                     }
                 }
                 

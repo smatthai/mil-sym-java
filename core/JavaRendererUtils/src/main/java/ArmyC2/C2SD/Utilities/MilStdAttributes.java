@@ -22,6 +22,11 @@ public class MilStdAttributes {
      */
     public static final String FillColor = "FILLCOLOR";
     
+    /**
+     * Used to change the icon from its normally black color.
+     */
+    public static final String IconColor = "ICONCOLOR";
+    
     /*
      * Fill color of the symbol. hex value
      */

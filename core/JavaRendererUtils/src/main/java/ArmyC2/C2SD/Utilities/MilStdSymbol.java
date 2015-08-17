@@ -66,6 +66,7 @@ public class MilStdSymbol {
         private Boolean _KeepUnitRatio = true;
 
         Integer _LineWidth = 3;
+        Color _IconColor = null;
         Color _LineColor = null;
         Color _FillColor = null;
         Color _TextColor = null;
@@ -605,6 +606,24 @@ public class MilStdSymbol {
                 public Color getLineColor()
 		{
                     return _LineColor;
+		}
+                
+                /**
+                 *
+                 * @param value
+                 */
+                public void setIconColor(Color value)
+		{
+                    _IconColor = value;
+		}
+
+                /**
+                 *
+                 * @return
+                 */
+                public Color getIconColor()
+		{
+                    return _IconColor;
 		}
                 
                 /**
