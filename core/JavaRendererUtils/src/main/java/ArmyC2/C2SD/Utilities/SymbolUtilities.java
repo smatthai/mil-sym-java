@@ -1734,8 +1734,26 @@ public class SymbolUtilities {
     }
     return false;
   }
-
-  /**
+  
+  public static boolean isMETOCWithIconFill(String symbolID)
+  {
+      if(symbolID.equals("WOS-HPFF----A--") ||
+              symbolID.equals("WO-DHHDF----A--") ||
+              symbolID.equals("WO-DHHDK----A--") ||
+              symbolID.equals("WO-DBSM-----A--") ||
+              symbolID.equals("WO-DBST-----A--") ||
+              symbolID.equals("WO-DL-SA----A--") ||
+              symbolID.equals("WO-DMOA-----A--"))
+      {
+          return true;
+      }
+      else
+      {
+          return false;
+      }
+  }
+  
+   /**
    * Determines if a String represents a valid number
    * @param text
    * @return "1.56" == true, "1ab" == false
