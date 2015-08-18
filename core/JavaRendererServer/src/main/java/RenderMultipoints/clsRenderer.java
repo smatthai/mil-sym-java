@@ -619,7 +619,7 @@ public final class clsRenderer {
                 case TacticalLines.KILLBOXPURPLE_RECTANGULAR:
                     ArrayList<Double> X = milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
                     String strH1 = "";
-                    if (X != null) {
+                    if (X != null && !X.isEmpty()) {
                         //strH1=Double.toString(X.get(0));
                         //tg.set_H1(strH1);
                         x_alt = X.get(0) * feetPerMeter;
