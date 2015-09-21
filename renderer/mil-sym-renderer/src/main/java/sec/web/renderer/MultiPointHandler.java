@@ -3426,7 +3426,8 @@ public class MultiPointHandler {
                     kml.append(longitude);
                     kml.append(",");
                     kml.append(latitude);
-                    kml.append(" ");
+                    if(j<shape.size()-1)
+                        kml.append(" ");
                 }
 
                 kml.append("</coordinates>");
@@ -3495,7 +3496,8 @@ public class MultiPointHandler {
                     kml.append(longitude);
                     kml.append(",");
                     kml.append(latitude);
-                    kml.append(" ");
+                    if(j<shape.size()-1)
+                        kml.append(" ");
                 }
 
                 kml.append("</coordinates>");                
