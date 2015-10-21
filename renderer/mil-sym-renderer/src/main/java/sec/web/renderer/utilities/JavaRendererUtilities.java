@@ -88,8 +88,13 @@ public class JavaRendererUtilities {
      * AABBGGRR
      */
     public static String ARGBtoABGR(String rgbString) {
+        if(rgbString.length()==6)
+        {
+            String s="FF";
+            rgbString=s.concat(rgbString);
+        }
         char[] c = rgbString.toCharArray();
-
+        
         char temp1 = c[2];
         char temp2 = c[3];
         c[2] = c[6];
