@@ -848,6 +848,8 @@ public final class arraysupport
                 case TacticalLines.CORDONKNOCK:
                 case TacticalLines.CORDONSEARCH:
                 case TacticalLines.ISOLATE:
+                    if(dRadius>100)
+                        dLength=0.8*dRadius;
                     for (j = 1; j <= 23; j++) {
                         if (j % 3 == 0) {
                             midPts[k].x = pt0.x - (long) ((dLength / dRadius) * (pt0.x - ptsArc[j].x));
