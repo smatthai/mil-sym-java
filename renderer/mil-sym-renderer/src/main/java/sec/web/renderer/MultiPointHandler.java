@@ -839,15 +839,18 @@ public class MultiPointHandler {
                     textColor = Color.white;//textColor = "#FFFFFFFF";
                 
                 jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor);
+                jsonOutput.append(jsonContent);
                 
                 //if there's a symbol fill or line pattern, add to KML//////////
                 if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
                         mSymbol.getModifierMap().containsKey(SYMBOL_LINE_IDS))
                 {
                     String fillKML = AddImageFillToKML(tgPoints, jsonContent, mSymbol, ipc, normalize);
-                    if(fillKML != null && fillKML.equals("")==false)
+                    //if(fillKML != null && fillKML.equals("")==false)
+                    if(fillKML != null && !fillKML.isEmpty()) 
                     {
-                        jsonContent = fillKML;
+                        //jsonContent = fillKML;
+                        jsonOutput.append(fillKML); 
                     }
                     
                     // <editor-fold defaultstate="collapsed" desc="code moved to AddImageFillToKML">
@@ -886,7 +889,7 @@ public class MultiPointHandler {
                     
                 }///end if symbol fill or line pattern//////////////////////////
 
-                jsonOutput.append(jsonContent);
+                //jsonOutput.append(jsonContent);
             }
             else if (format == 2)
             {
@@ -1703,19 +1706,22 @@ public class MultiPointHandler {
                     textColor = Color.white;//textColor = "#FFFFFFFF";
                 
                 jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize,textColor);
+                jsonOutput.append(jsonContent);
                 
                 //if there's a symbol fill or line pattern, add to KML//////////
                 if(mSymbol.getModifierMap().containsKey(SYMBOL_FILL_IDS) || 
                         mSymbol.getModifierMap().containsKey(SYMBOL_LINE_IDS))
                 {
                     String fillKML = AddImageFillToKML(tgPoints, jsonContent, mSymbol, ipc, normalize);
-                    if(fillKML != null && fillKML.equals("")==false)
+                    //if(fillKML != null && fillKML.equals("")==false)
+                    if(fillKML != null && !fillKML.isEmpty()) 
                     {
-                        jsonContent = fillKML;
+                        //jsonContent = fillKML;
+                        jsonOutput.append(fillKML); 
                     }
                 }///end if symbol fill or line pattern//////////////////////////
                 
-                jsonOutput.append(jsonContent);
+                //jsonOutput.append(jsonContent);
                 
                 if(mSymbol.getModifierMap().containsKey(MilStdAttributes.LookAtTag) &&
                         mSymbol.getModifierMap().get(MilStdAttributes.LookAtTag).toLowerCase().equals("true"))
