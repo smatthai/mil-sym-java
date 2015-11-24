@@ -1772,6 +1772,45 @@ public final class arraysupport
         }
         return pEllipsePoints;
     }
+    /**
+     * Calculate an ellipse and rotate about it's center by azimuth in degrees
+     * @param ptCenter
+     * @param ptWidth
+     * @param ptHeight
+     * @param azimuth
+     * @return 
+     */
+    private static POINT2[] getRotatedEllipsePoints(POINT2 ptCenter, POINT2 ptWidth, POINT2 ptHeight, double azimuth)
+    {        
+        POINT2[]pResultPoints=null;
+        try
+        {
+            POINT2[]pEllipsePoints=new POINT2[36];
+            int l=0,j=0;
+            double dFactor=0;
+            double a=lineutility.CalcDistanceDouble(ptCenter, ptWidth);
+            double b=lineutility.CalcDistanceDouble(ptCenter, ptHeight);
+            lineutility.InitializePOINT2Array(pEllipsePoints);
+            for (l = 1; l < 37; l++)
+            {
+                dFactor = (10.0 * l) * Math.PI / 180.0;
+                pEllipsePoints[l - 1].x = ptCenter.x + (int) (a * Math.cos(dFactor));
+                pEllipsePoints[l - 1].y = ptCenter.y + (int) (b * Math.sin(dFactor));
+                pEllipsePoints[l - 1].style = 0;
+            }
+            lineutility.RotateGeometryDouble(pEllipsePoints, 36, azimuth-90);
+            pResultPoints=new POINT2[37];
+            for(j=0;j<36;j++)
+                pResultPoints[j]=pEllipsePoints[j];
+            pResultPoints[36]=pEllipsePoints[0];
+        }
+        catch(Exception exc)
+        {
+            ErrorLogger.LogException(_className, "GetRotatedEllipsePoints",
+                    new RendererException("GetRotateEllipsePoints", exc));
+        }
+        return pResultPoints;
+    }
     private static int GetLVOPoints(int linetype, POINT2[] pOriginalLinePoints, POINT2[] pLinePoints, int vblCounter)
     {
         int lEllipseCounter = 0;
@@ -2491,7 +2530,8 @@ public final class arraysupport
                     pt0=pLinePoints[0];//the center of the ellipse
                     pt1=pLinePoints[1];//the width of the ellipse
                     pt2=pLinePoints[2];//the height of the ellipse
-                    pLinePoints=getEllipsePoints(pt0,pt1,pt2);
+                    double azimuth=pLinePoints[3].x;
+                    pLinePoints=getRotatedEllipsePoints(pt0,pt1,pt2,azimuth);
                     acCounter=37;
                     break;
                 case TacticalLines.OVERHEAD_WIRE:

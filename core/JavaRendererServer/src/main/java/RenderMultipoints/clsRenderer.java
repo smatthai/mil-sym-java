@@ -301,6 +301,30 @@ public final class clsRenderer {
             double x_alt = 0;
             int n_alt = 0;
             String strXAlt = "";
+            if(lineType==TacticalLines.BS_ELLIPSE)
+            {
+                ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
+                ArrayList<Double> AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
+                if(AM != null && AM.size()>=2 && AN != null && AN.size()>=1)
+                {
+                    POINT2 ptAzimuth=new POINT2(0,0);
+                    ptAzimuth.x=AN.get(0);
+                    POINT2 ptCenter=tg.Pixels.get(0);
+                    POINT2 pt0 = mdlGeodesic.geodesic_coordinate(tg.LatLongs.get(0), AM.get(0), 90);//semi-major axis
+                    POINT2 pt1 = mdlGeodesic.geodesic_coordinate(tg.LatLongs.get(0), AM.get(1), 0);//semi-minor axis
+                    Point2D pt02d = new Point2D.Double(pt0.x, pt0.y);
+                    Point2D pt12d = new Point2D.Double(pt1.x, pt1.y);
+                    pt02d = converter.GeoToPixels(pt02d);
+                    pt12d = converter.GeoToPixels(pt12d);
+                    pt0=new POINT2(pt02d.getX(),pt02d.getY());
+                    pt1=new POINT2(pt12d.getX(),pt12d.getY());
+                    tg.Pixels=new ArrayList<POINT2>();
+                    tg.Pixels.add(ptCenter);
+                    tg.Pixels.add(pt0);
+                    tg.Pixels.add(pt1);   
+                    tg.Pixels.add(ptAzimuth);
+                }
+            }
             //construct the H1 and H2 modifiers for sector from the mss AM, AN, and X arraylists            
             if (lineType == TacticalLines.RANGE_FAN_SECTOR) {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
