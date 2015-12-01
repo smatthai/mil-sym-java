@@ -305,6 +305,10 @@ public final class clsRenderer {
             {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
+                if(AN==null)
+                    AN=new ArrayList<Double>();
+                if(AN.size()<1)
+                    AN.add(new Double(0));
                 if(AM != null && AM.size()>=2 && AN != null && AN.size()>=1)
                 {
                     POINT2 ptAzimuth=new POINT2(0,0);
