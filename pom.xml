@@ -6,7 +6,7 @@
 
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>mil-sym-java</artifactId>
-	<version>0.0.70</version>
+	<version>0.0.71</version>
 	<packaging>pom</packaging>
 	
 	<name>mil-sym-java Master Pom</name>
