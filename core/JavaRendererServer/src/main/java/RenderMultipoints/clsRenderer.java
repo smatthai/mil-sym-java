@@ -1445,13 +1445,17 @@ public final class clsRenderer {
             tg.Pixels = savePixels;
             
             //diagnostic
-            if(linetype==TacticalLines.BOUNDARY)
+            HashMap<Integer, Color> hmap = JavaTacticalRenderer.clsUtility.getMSRSegmentColors(tg);
+            if(hmap==null || hmap.isEmpty())
             {
-                //use flot for the interpolation interval, this is subject to change
-                tg.set_LineType(TacticalLines.FLOT);
-                JavaTacticalRenderer.clsUtility.InterpolatePixels(tg);
-                //reset the linetype
-                tg.set_LineType(TacticalLines.BOUNDARY);
+                if(linetype==TacticalLines.BOUNDARY)
+                {
+                    //use flot for the interpolation interval, this is subject to change
+                    tg.set_LineType(TacticalLines.FLOT);
+                    JavaTacticalRenderer.clsUtility.InterpolatePixels(tg);
+                    //reset the linetype
+                    tg.set_LineType(TacticalLines.BOUNDARY);
+                }
             }
             //end section
 
