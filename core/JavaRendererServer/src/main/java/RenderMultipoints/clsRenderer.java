@@ -1423,13 +1423,17 @@ public final class clsRenderer {
             BufferedImage bi = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = bi.createGraphics();
             
-            //Modifier2.AddModifiersGeo2(tg, g2d, clipArea, converter);
-            //ArrayList<POINT2>dblPixels=truncatePixels(tg);
             Modifier2.AddModifiersGeo2(tg, g2d, clipArea, converter);
-            //restore original pixels
-            //tg.Pixels=dblPixels;
+            //diagnostic
+            if(linetype==TacticalLines.BOUNDARY)
+            {
+                //use flot for the interpolation interval
+                tg.set_LineType(TacticalLines.FLOT);
+                JavaTacticalRenderer.clsUtility.InterpolatePixels(tg);
+                //reset the linetype
+                tg.set_LineType(TacticalLines.BOUNDARY);
+            }
             //end section
-            
             clsUtilityCPOF.FilterPoints2(tg, converter);
             JavaTacticalRenderer.clsUtility.FilterVerticalSegments(tg);
             clsUtility.FilterAXADPoints(tg, converter);
