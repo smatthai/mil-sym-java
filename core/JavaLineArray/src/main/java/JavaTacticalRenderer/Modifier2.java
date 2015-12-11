@@ -4723,7 +4723,7 @@ public class Modifier2 {
 
                         pt0 = tg.Pixels.get(j);
                         pt1 = tg.Pixels.get(j + 1);
-                        lineTooShort = GetBoundarySegmentTooShort(tg, g2d, j);
+                        //lineTooShort = GetBoundarySegmentTooShort(tg, g2d, j);
                         if (segShape != null) {
                             segShape.moveTo(pt0);
                         } else {
@@ -4731,7 +4731,9 @@ public class Modifier2 {
                         }
 
                         //uncoment comment to remove line breaks for GE
-                        if (lineTooShort || tg.get_Client().equals("ge")) {
+                        //if (lineTooShort || tg.get_Client().equals("ge")) 
+                        if (tg.get_Client().equals("ge") || GetBoundarySegmentTooShort(tg, g2d, j)==true) 
+                        {
                             if (segShape != null) {
                                 segShape.lineTo(pt1);
                                 shapes.add(segShape);
