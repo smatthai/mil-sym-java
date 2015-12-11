@@ -1424,16 +1424,6 @@ public final class clsRenderer {
             Graphics2D g2d = bi.createGraphics();
             
             Modifier2.AddModifiersGeo2(tg, g2d, clipArea, converter);
-            //diagnostic
-            if(linetype==TacticalLines.BOUNDARY)
-            {
-                //use flot for the interpolation interval
-                tg.set_LineType(TacticalLines.FLOT);
-                JavaTacticalRenderer.clsUtility.InterpolatePixels(tg);
-                //reset the linetype
-                tg.set_LineType(TacticalLines.BOUNDARY);
-            }
-            //end section
             clsUtilityCPOF.FilterPoints2(tg, converter);
             JavaTacticalRenderer.clsUtility.FilterVerticalSegments(tg);
             clsUtility.FilterAXADPoints(tg, converter);
@@ -1443,7 +1433,7 @@ public final class clsRenderer {
 
             ArrayList<POINT2> savePixels = tg.Pixels;
             tg.Pixels = origFillPixels;
-
+            
             //check assignment
             if (clipBounds != null) {
                 linesWithFillShapes = clsClipPolygon2.LinesWithFill(tg, clipBounds);
@@ -1453,6 +1443,17 @@ public final class clsRenderer {
                 linesWithFillShapes = clsClipPolygon2.LinesWithFill(tg, clipBounds);
             }
             tg.Pixels = savePixels;
+            
+            //diagnostic
+            if(linetype==TacticalLines.BOUNDARY)
+            {
+                //use flot for the interpolation interval, this is subject to change
+                tg.set_LineType(TacticalLines.FLOT);
+                JavaTacticalRenderer.clsUtility.InterpolatePixels(tg);
+                //reset the linetype
+                tg.set_LineType(TacticalLines.BOUNDARY);
+            }
+            //end section
 
             ArrayList rangeFanFillShapes = null;
             //do not fill the original shapes for circular range fans
