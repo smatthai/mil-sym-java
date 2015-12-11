@@ -4683,7 +4683,7 @@ public class Modifier2 {
             //String strENY=null;
             int stringWidthEchelonSymbol = 0;
             int stringWidthENY = 0;
-            boolean lineTooShort = false;
+            //boolean lineTooShort = false;
             //int middleSegment = tg.Pixels.size() / 2 - 1;
             POINT2 ptEchelonStart = null, ptEchelonEnd = null, midpt,
                     ptENY0Start = null, ptENY0End = null, ptENY1Start, ptENY1End, pt0 = null, pt1 = null;
