@@ -81,7 +81,7 @@ public final class clsClipPolygon2 {
      * @param clipBounds
      * @return
      */
-    private static ArrayList<Point2D> clipTop(ArrayList<Point2D> pts,
+    private static ArrayList<Point2D> clipTop(TGLight tg,ArrayList<Point2D> pts,
             Rectangle2D clipBounds) {
         ArrayList<Point2D> ptsResult = new ArrayList();
         try {
@@ -118,6 +118,7 @@ public final class clsClipPolygon2 {
                     if (intersectPt != null) {
                         ptsResult.add(intersectPt);
                     }
+                    tg.set_WasClipped(true);
                 }
                 //both outside
                 if (previous.getY() < ul.getY() && current.getY() < ul.getY()) {
@@ -132,6 +133,7 @@ public final class clsClipPolygon2 {
                         ptsResult.add(intersectPt);
                     }
                     ptsResult.add(current);
+                    tg.set_WasClipped(true);
                 }
             }
         } catch (Exception exc) {
@@ -147,7 +149,7 @@ public final class clsClipPolygon2 {
      * @param clipBounds
      * @return
      */
-    private static ArrayList<Point2D> clipBottom(ArrayList<Point2D> pts,
+    private static ArrayList<Point2D> clipBottom(TGLight tg, ArrayList<Point2D> pts,
             Rectangle2D clipBounds) {
         ArrayList<Point2D> ptsResult = new ArrayList();
         try {
@@ -188,6 +190,7 @@ public final class clsClipPolygon2 {
                     {
                         ptsResult.add(intersectPt);
                     }
+                    tg.set_WasClipped(true);
                 }
                 //both outside
                 if (previous.getY() > lr.getY() && current.getY() > lr.getY())
@@ -205,6 +208,7 @@ public final class clsClipPolygon2 {
 
                     //if(j!=0 || clsUtility.isClosedPolygon(tg.get_LineType())==true)
                     ptsResult.add(current);
+                    tg.set_WasClipped(true);
                 }
             }
         } catch (Exception exc) {
@@ -220,7 +224,7 @@ public final class clsClipPolygon2 {
      * @param clipBounds
      * @return
      */
-    private static ArrayList<Point2D> clipRight(ArrayList<Point2D> pts,
+    private static ArrayList<Point2D> clipRight(TGLight tg,ArrayList<Point2D> pts,
             Rectangle2D clipBounds) {
         ArrayList<Point2D> ptsResult = new ArrayList();
         try {
@@ -253,6 +257,7 @@ public final class clsClipPolygon2 {
                     if (intersectPt != null) {                        
                         ptsResult.add(intersectPt);                        
                     }
+                    tg.set_WasClipped(true);
                 }
                 //both outside
                 if (previous.getX() > lr.getX() && current.getX() > lr.getX()) {
@@ -269,6 +274,7 @@ public final class clsClipPolygon2 {
 
                     //if(j!=0 || clsUtility.isClosedPolygon(tg.get_LineType())==true)
                     ptsResult.add(current);
+                    tg.set_WasClipped(true);
                 }
             }
         } catch (Exception exc) {
@@ -284,7 +290,7 @@ public final class clsClipPolygon2 {
      * @param clipBounds
      * @return
      */
-    private static ArrayList<Point2D> clipLeft(ArrayList<Point2D> pts,
+    private static ArrayList<Point2D> clipLeft(TGLight tg, ArrayList<Point2D> pts,
             Rectangle2D clipBounds) {
         ArrayList<Point2D> ptsResult = new ArrayList();
         try {
@@ -322,6 +328,7 @@ public final class clsClipPolygon2 {
                     if (intersectPt != null) {
                         ptsResult.add(intersectPt);
                     }
+                    tg.set_WasClipped(true);
                 }
                 //both outside
                 if (previous.getX() < ll.getX() && current.getX() < ll.getX()) {
@@ -338,6 +345,7 @@ public final class clsClipPolygon2 {
 
                     //if(j!=0 || clsUtility.isClosedPolygon(tg.get_LineType())==true)
                     ptsResult.add(current);
+                    tg.set_WasClipped(true);
                 }
             }
         } catch (Exception exc) {
@@ -782,10 +790,10 @@ public final class clsClipPolygon2 {
             //SetClipRegion(clipBounds);
             //expand the clip bounds by 10 pixels
 
-            poly = clipRight(polygon, clipBounds2);
-            poly = clipTop(poly, clipBounds2);
-            poly = clipLeft(poly, clipBounds2);
-            poly = clipBottom(poly, clipBounds2);
+            poly = clipRight(tg, polygon, clipBounds2);
+            poly = clipTop(tg, poly, clipBounds2);
+            poly = clipLeft(tg, poly, clipBounds2);
+            poly = clipBottom(tg, poly, clipBounds2);
 
             if (isClosed)
             {
@@ -892,10 +900,10 @@ public final class clsClipPolygon2 {
             //SetClipRegion(clipBounds);
             //expand the clip bounds by 10 pixels
 
-            poly = clipRight(polygon, clipBounds);
-            poly = clipTop(poly, clipBounds);
-            poly = clipLeft(poly, clipBounds);
-            poly = clipBottom(poly, clipBounds);
+            poly = clipRight(null, polygon, clipBounds);
+            poly = clipTop(null, poly, clipBounds);
+            poly = clipLeft(null, poly, clipBounds);
+            poly = clipBottom(null, poly, clipBounds);
 
             if (isClosed)
             {

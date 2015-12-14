@@ -1193,6 +1193,7 @@ public final class clsRenderer {
             render_GE(tg, shapeInfos, modifierShapeInfos, converter, clipArea);
             mss.setSymbolShapes(shapeInfos);
             mss.setModifierShapes(modifierShapeInfos);
+            mss.set_WasClipped(tg.get_WasClipped());
         } catch (Exception exc) {
             ErrorLogger.LogException("clsRenderer", "renderWithPolylines",
                     new RendererException("Failed inside renderWithPolylines", exc));
