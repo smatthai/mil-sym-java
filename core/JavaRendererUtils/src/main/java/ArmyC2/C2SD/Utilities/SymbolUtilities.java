@@ -903,6 +903,10 @@ public class SymbolUtilities {
                     {
                         retColor = getLineColorOfWeather(symbolID);
                     }
+                    else if(SymbolUtilities.isEMSNaturalEvent(symbolID))
+                    {
+                        retColor = Color.black;
+                    }
                     else if(SymbolUtilities.isObstacle(symbolID))
                     {
                         retColor = Color.GREEN;	// Green
@@ -3802,6 +3806,7 @@ public class SymbolUtilities {
     try
     {
       if(strSymbolID != null && strSymbolID.length() == 15 &&
+          isWeather(strSymbolID)==false &&
           strAffiliationID != null && strAffiliationID.length() == 1)
       {
         String strChangedID = strSymbolID.substring(0, 1) + strAffiliationID.toUpperCase() + strSymbolID.substring(2, 15);
