@@ -4707,7 +4707,16 @@ public class Modifier2 {
                     if (echelonSymbol != null && !echelonSymbol.isEmpty()) {
                         stringWidthEchelonSymbol = metrics.stringWidth(echelonSymbol);
                     }
-
+                    //diagnostic
+                    if(hmap==null || hmap.isEmpty())
+                    {
+                        shape.moveTo(tg.Pixels.get(0));
+                        for(j=1;j<tg.Pixels.size();j++)
+                            shape.lineTo(tg.Pixels.get(j));
+                        shapes.add(shape);
+                        break;                        
+                    }
+                    //end section
                     for (j = 0; j < tg.Pixels.size() - 1; j++) {
                         segShape = null;
                         if (hmap != null) {
