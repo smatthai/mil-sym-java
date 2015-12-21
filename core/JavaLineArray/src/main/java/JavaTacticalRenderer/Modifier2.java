@@ -2427,7 +2427,8 @@ public class Modifier2 {
             if (tg.Pixels == null || tg.Pixels.isEmpty()) {
                 return;
             }
-            ArrayList<POINT2>origPoints=lineutility.getDeepCopy(tg.Pixels);
+            //ArrayList<POINT2>origPoints=lineutility.getDeepCopy(tg.Pixels);
+            ArrayList<POINT2>origPoints=null;
             Font font = tg.get_Font();
             boolean shiftLines = Channels.getShiftLines();
             boolean usas = false, foundSegment = false;
@@ -2603,6 +2604,7 @@ public class Modifier2 {
                 case TacticalLines.BBS_LINE:
                 case TacticalLines.BBS_AREA:
                     //case TacticalLines.LAA:
+                    origPoints=lineutility.getDeepCopy(tg.Pixels);
                     break;
                 default:    //exit early for those not applicable
                     return;
@@ -3824,6 +3826,80 @@ public class Modifier2 {
             if (tg.Pixels == null || tg.Pixels.isEmpty()) {
                 return;
             }
+            //diagnostic
+            //add early return for linetypes not affected
+            switch(tg.get_LineType())
+            {
+                case TacticalLines.BS_RECTANGLE:
+                case TacticalLines.BBS_RECTANGLE:
+                case TacticalLines.BREACH:
+                case TacticalLines.BYPASS:
+                case TacticalLines.CANALIZE:
+                case TacticalLines.PENETRATE:
+                case TacticalLines.CLEAR:
+                case TacticalLines.DISRUPT:
+                case TacticalLines.FIX:
+                case TacticalLines.ISOLATE:
+                case TacticalLines.OCCUPY:
+                case TacticalLines.RETAIN:
+                case TacticalLines.SECURE:
+                case TacticalLines.CONTAIN:
+                case TacticalLines.SEIZE:
+                case TacticalLines.SEIZE_REVC:
+                case TacticalLines.CORDONKNOCK:
+                case TacticalLines.CORDONSEARCH:
+                case TacticalLines.FOLLA:
+                case TacticalLines.FOLSP:
+                case TacticalLines.ACA_RECTANGULAR:
+                case TacticalLines.ACA_CIRCULAR:
+                case TacticalLines.RECTANGULAR:
+                case TacticalLines.CIRCULAR:
+                case TacticalLines.BBS_POINT:
+                case TacticalLines.FSA_CIRCULAR:
+                case TacticalLines.ATI_CIRCULAR:
+                case TacticalLines.CFFZ_CIRCULAR:
+                case TacticalLines.SENSOR_CIRCULAR:
+                case TacticalLines.CENSOR_CIRCULAR:
+                case TacticalLines.DA_CIRCULAR:
+                case TacticalLines.CFZ_CIRCULAR:
+                case TacticalLines.ZOR_CIRCULAR:
+                case TacticalLines.TBA_CIRCULAR:
+                case TacticalLines.TVAR_CIRCULAR:
+                case TacticalLines.FFA_CIRCULAR:
+                case TacticalLines.NFA_CIRCULAR:
+                case TacticalLines.RFA_CIRCULAR:
+                case TacticalLines.KILLBOXBLUE_CIRCULAR:
+                case TacticalLines.KILLBOXPURPLE_CIRCULAR:
+                case TacticalLines.BLOCK:
+                case TacticalLines.HOLD:
+                case TacticalLines.BRDGHD:
+                case TacticalLines.HOLD_GE:
+                case TacticalLines.BRDGHD_GE:
+                case TacticalLines.FFA_RECTANGULAR:
+                case TacticalLines.NFA_RECTANGULAR:
+                case TacticalLines.RFA_RECTANGULAR:
+                case TacticalLines.KILLBOXBLUE_RECTANGULAR:
+                case TacticalLines.KILLBOXPURPLE_RECTANGULAR:
+                case TacticalLines.FSA_RECTANGULAR:
+                case TacticalLines.ATI_RECTANGULAR:
+                case TacticalLines.CFFZ_RECTANGULAR:
+                case TacticalLines.SENSOR_RECTANGULAR:
+                case TacticalLines.CENSOR_RECTANGULAR:
+                case TacticalLines.DA_RECTANGULAR:
+                case TacticalLines.CFZ_RECTANGULAR:
+                case TacticalLines.ZOR_RECTANGULAR:
+                case TacticalLines.TBA_RECTANGULAR:
+                case TacticalLines.TVAR_RECTANGULAR:
+                case TacticalLines.PAA_RECTANGULAR:
+                case TacticalLines.PAA_RECTANGULAR_REVC:
+                case TacticalLines.PAA_CIRCULAR:
+                case TacticalLines.RANGE_FAN:
+                case TacticalLines.RANGE_FAN_SECTOR:
+                    break;
+                default:
+                    return;                
+            }
+            //end section
             ArrayList<POINT2>origPoints=lineutility.getDeepCopy(tg.Pixels);
             if (tg.modifiers == null) {
                 tg.modifiers = new ArrayList();
