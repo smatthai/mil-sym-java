@@ -581,6 +581,15 @@ public class MultiPointHandler {
         //ArrayList<Point2D.Double> pixels = new ArrayList<Point2D.Double>();
         ArrayList<Point2D.Double> geoCoords = new ArrayList<Point2D.Double>();
         int len = coordinates.length;
+        //diagnostic create geoCoords here
+        Point2D coordsUL=null;
+        for (int i = 0; i < len; i++) 
+        {
+            String[] coordPair = coordinates[i].split(",");
+            Double latitude = Double.valueOf(coordPair[1].trim()).doubleValue();
+            Double longitude = Double.valueOf(coordPair[0].trim()).doubleValue();
+            geoCoords.add(new Point2D.Double(longitude, latitude));
+        }
 
         IPointConversion ipc = null;
 
@@ -675,7 +684,7 @@ public class MultiPointHandler {
                 POINT2 ptBottom=mdlGeodesic.geodesic_coordinate(ptTop,dist,180.0);
                 bottom=ptBottom.y;
             }
-            
+
             Point2D lt=new Point2D.Double(left,top);
             Point2D rb=new Point2D.Double(right,bottom);
             if(bboxCoords==null)
@@ -705,6 +714,19 @@ public class MultiPointHandler {
                     Point2D rightMidLat=new Point2D.Double(right, midLat);
                     temp = ipc.GeoToPixels(rightMidLat);
                     rightX = (int)temp.getX();
+                    
+                    //diagnostic get the bbox origin closer coords left origin for greater accuracy
+                    coordsUL=getGeoUL(geoCoords);
+                    temp = ipc.GeoToPixels(coordsUL);
+                    if((int)temp.getX()>0 && (int)temp.getX()<rightX)
+                    {
+                        //shhift the ipc to the coords upper left x so that conversions will be more accurate for the large scale
+                        ipc = new PointConverter(coordsUL.getX(), top, scale);
+                        //shift the rect left to compenstate for the shifted ipc so that we can maintain the original clipping area
+                        leftX -= (int)temp.getX();
+                        rightX -= (int)temp.getX();
+                    }
+                    //end diagnostic
                 }
                 //end section
 
@@ -722,14 +744,14 @@ public class MultiPointHandler {
             rect = null;
         }
         //end section
-
-        for (int i = 0; i < len; i++) 
-        {
-            String[] coordPair = coordinates[i].split(",");
-            Double latitude = Double.valueOf(coordPair[1].trim()).doubleValue();
-            Double longitude = Double.valueOf(coordPair[0].trim()).doubleValue();
-            geoCoords.add(new Point2D.Double(longitude, latitude));
-        }
+//diagnostic move following section
+//        for (int i = 0; i < len; i++) 
+//        {
+//            String[] coordPair = coordinates[i].split(",");
+//            Double latitude = Double.valueOf(coordPair[1].trim()).doubleValue();
+//            Double longitude = Double.valueOf(coordPair[0].trim()).doubleValue();
+//            geoCoords.add(new Point2D.Double(longitude, latitude));
+//        }
         if(ipc==null)
         {
             Point2D ptCoordsUL=getGeoUL(geoCoords);            
