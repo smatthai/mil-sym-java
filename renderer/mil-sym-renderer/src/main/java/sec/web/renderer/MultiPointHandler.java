@@ -718,14 +718,15 @@ public class MultiPointHandler {
                     //diagnostic get the bbox origin closer coords left origin for greater accuracy
                     coordsUL=getGeoUL(geoCoords);
                     temp = ipc.GeoToPixels(coordsUL);
-                    if((int)temp.getX()>0 && (int)temp.getX()<rightX)
-                    {
-                        //shhift the ipc to the coords upper left x so that conversions will be more accurate for the large scale
-                        ipc = new PointConverter(coordsUL.getX(), top, scale);
-                        //shift the rect left to compenstate for the shifted ipc so that we can maintain the original clipping area
-                        leftX -= (int)temp.getX();
-                        rightX -= (int)temp.getX();
-                    }
+                    left=coordsUL.getX();
+                    top=coordsUL.getY();
+                    //shift the ipc to coordsUL origin so that conversions will be more accurate for large scales.
+                    ipc = new PointConverter(left, top, scale);
+                    //shift the rect to compenstate for the shifted ipc so that we can maintain the original clipping area.
+                    leftX -= (int)temp.getX();
+                    rightX -= (int)temp.getX();
+                    topY -= (int)temp.getY();
+                    bottomY -= (int)temp.getY();
                     //end diagnostic
                 }
                 //end section
