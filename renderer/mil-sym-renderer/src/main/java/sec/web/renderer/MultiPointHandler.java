@@ -703,19 +703,17 @@ public class MultiPointHandler {
                 if(scale>10e6)
                 {
                     //get widest point in the AOI
-                    double midLat=0;
-                    if(bottom<0 && top >0)
-                        midLat=0;
-                    else if(bottom<0 && top<0)
-                        midLat=top;
-                    else if(bottom>0 && top>0)
-                        midLat=bottom;
-                    //temp = ipc.GeoToPixels(new Point2D.Double(right, midLat));
-                    Point2D rightMidLat=new Point2D.Double(right, midLat);
-                    temp = ipc.GeoToPixels(rightMidLat);
-                    rightX = (int)temp.getX();
-                    
-                    //diagnostic get the bbox origin closer coords left origin for greater accuracy
+//                    double midLat=0;
+//                    if(bottom<0 && top >0)
+//                        midLat=0;
+//                    else if(bottom<0 && top<0)
+//                        midLat=top;
+//                    else if(bottom>0 && top>0)
+//                        midLat=bottom;
+//                    Point2D rightMidLat=new Point2D.Double(right, midLat);
+//                    temp = ipc.GeoToPixels(rightMidLat);
+//                    rightX = (int)temp.getX();
+                    //diagnostic replace above by using a new ipc based on the coordinates MBR
                     coordsUL=getGeoUL(geoCoords);
                     temp = ipc.GeoToPixels(coordsUL);
                     left=coordsUL.getX();
