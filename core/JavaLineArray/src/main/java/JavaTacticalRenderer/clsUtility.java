@@ -1296,8 +1296,8 @@ public final class clsUtility {
                             grid = bi.createGraphics();
                             grid.setColor(GetOpaqueColor(tg.get_LineColor()));
                             grid.setStroke(new BasicStroke(2));
-                            grid.drawLine(0, 0, 8, 8);
-                            grid.drawLine(0, 8, 8, 0);
+                            grid.drawLine(2, 2, 6, 6);
+                            grid.drawLine(2, 6, 6, 2);
                             tp = new TexturePaint(bi, rect);
                             shape.setTexturePaint(tp);
                             shape.setFillColor(tg.get_FillColor());
