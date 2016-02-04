@@ -1282,7 +1282,7 @@ public final class clsUtility {
                             //rect = new Rectangle2D.Double(0, 0, 20, 20);
                             grid = bi.createGraphics();
                             grid.setColor(GetOpaqueColor(tg.get_LineColor()));
-                            grid.setStroke(new BasicStroke(2));
+                            grid.setStroke(new BasicStroke(1));
                             grid.drawLine(4, 2, 4, 6);
                             grid.drawLine(2, 4, 6, 4);
                             tp = new TexturePaint(bi, rect);
@@ -1291,13 +1291,13 @@ public final class clsUtility {
                             grid.dispose();
                             break;
                         case 8://GraphicProperties.FILL_TYPE_XHATCH:
-                            rect = new Rectangle2D.Double(0, 0, 8, 8);
+                            rect = new Rectangle2D.Double(0, 0, 10, 10);
                             //rect = new Rectangle2D.Double(0, 0, 20, 20);
                             grid = bi.createGraphics();
                             grid.setColor(GetOpaqueColor(tg.get_LineColor()));
-                            grid.setStroke(new BasicStroke(2));
-                            grid.drawLine(2, 2, 6, 6);
-                            grid.drawLine(2, 6, 6, 2);
+                            grid.setStroke(new BasicStroke(1));
+                            grid.drawLine(2, 2, 8, 8);                            
+                            grid.drawLine(2, 8, 8, 2);
                             tp = new TexturePaint(bi, rect);
                             shape.setTexturePaint(tp);
                             shape.setFillColor(tg.get_FillColor());
