@@ -186,7 +186,8 @@ public class SinglePointRenderer {
                     case 'G':
                     case 'M':
                         if(symbol.getSymbolID().charAt(2) == 'U' && 
-                                symbol.getSymbolID().substring(4, 6).equals("WM"))
+                                (symbolID.substring(4, 6).equals("WM") ||
+                                symbolID.substring(4, 7).equals("WDM")))
                         {
                             if(symbol.getSymbolID().charAt(3) != 'A')
                             {
