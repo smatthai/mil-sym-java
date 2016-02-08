@@ -7,7 +7,7 @@
 
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>rendering-sample-1</artifactId>
-	<version>0.0.73</version>
+	<version>0.0.74</version>
 	<packaging>jar</packaging>
 	
 	<name>rendering-sample-1</name>
