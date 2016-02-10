@@ -473,8 +473,9 @@ public class MultiPointHandler {
             POINT2 ul=new POINT2(left,top);
             POINT2 ur=new POINT2(right,top);
             //POINT2 ll=new POINT2(left,bottom);
-            double widthInMeters=mdlGeodesic.geodesic_distance(ul, ur, null, null);
-            //double metersHigh=mdlGeodesic.geodesic_distance(ul, ll, null, null);
+            POINT2 lr=new POINT2(right,bottom);
+            //double widthInMeters=mdlGeodesic.geodesic_distance(ul, ur, null, null);
+            double widthInMeters=mdlGeodesic.geodesic_distance(ul, lr, null, null);
             double maxWidthInPixels=_maxPixelWidth;   //this should be RendererSettings.getMaxPixels
             double minScale=(maxWidthInPixels/widthInMeters)*(1.0d/96.0d)*(1.0d/39.37d);
             minScale=1.0d/minScale;
