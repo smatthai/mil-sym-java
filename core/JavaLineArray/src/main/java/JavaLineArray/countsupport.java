@@ -368,7 +368,7 @@ public final class countsupport
                     break;
                 case TacticalLines.FORDIF:
                     dRadius = lineutility.CalcDistanceToLineDouble(pLinePoints[0], pLinePoints[1], pLinePoints[2]);
-                    count=(int)( (dRadius/5)*3);
+                    count=(int)( (dRadius/5)*3)+6;
                     if(clipBounds != null)
                     {
                         double width=clipBounds.getWidth();
