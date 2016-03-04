@@ -94,6 +94,12 @@ public class MilStdAttributes {
      */
     public static final String UseDashArray = "USEDASHARRAY";
     
+    /**
+     * for singlepoints, if set to "true", no labels will be drawn and you
+     * will just get the core symbol.
+     */
+    public static final String DrawAsIcon = "ICON";
+    
     public static ArrayList<String> GetModifierList()
     {
         ArrayList<String> list = new ArrayList<String>();

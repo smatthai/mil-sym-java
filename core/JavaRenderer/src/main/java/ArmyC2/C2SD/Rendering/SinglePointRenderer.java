@@ -2004,9 +2004,18 @@ public class SinglePointRenderer {
             Map modifiers = symbol.getModifierMap();
 
             //ErrorLogger.LogMessage(PrintList(modifiers));
-
+            boolean drawAsIcon = false;
+            if(modifiers != null && modifiers.containsKey(MilStdAttributes.DrawAsIcon))
+            {
+                String val = String.valueOf(modifiers.get(MilStdAttributes.DrawAsIcon));
+                
+                if(val != null & val.equalsIgnoreCase("true"))
+                {
+                    drawAsIcon = true;
+                }
+            }
             //TODO:  separate itegral text from modifier process
-            if((modifiers != null && modifiers.size() > 0) || SymbolUtilities.isTGSPWithIntegralText(symbol.getSymbolID()))// || SymbolUtilities.isTGSPWithIntegralText(symbol.getSymbolID()))
+            if(drawAsIcon==false && ((modifiers != null && modifiers.size() > 0) || SymbolUtilities.isTGSPWithIntegralText(symbol.getSymbolID())))// || SymbolUtilities.isTGSPWithIntegralText(symbol.getSymbolID()))
             {
                 //process modifiers
                 ArrayList<ShapeInfo> modifiersShapes = ProcessSinglePointModifiers(symbol);

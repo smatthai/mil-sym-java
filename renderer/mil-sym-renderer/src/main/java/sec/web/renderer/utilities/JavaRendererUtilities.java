@@ -1123,7 +1123,7 @@ public class JavaRendererUtilities {
             iconInfo.put(MilStdAttributes.OutlineColor,params.get(MilStdAttributes.OutlineColor));
         }
         iconInfo.put(MilStdAttributes.OutlineSymbol,"false");
-        iconInfo.put("ICON","true");
+        iconInfo.put(MilStdAttributes.DrawAsIcon,"true");
         return iconInfo;
             
     }

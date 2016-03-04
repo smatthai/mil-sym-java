@@ -274,12 +274,15 @@ public class SinglePointServer {
                                     // System.out.println(symbolID);
                                     if(_renderType == RENDER_TYPE_IMAGE)
                                     {
-                                        if(params.containsKey("ICON"))
+                                        if(params.containsKey(MilStdAttributes.DrawAsIcon))
                                         {
-                                            isIcon = Boolean.parseBoolean(params.get("ICON"));
-                                            params = JavaRendererUtilities.parseIconParameters(symbolID, params);
-                                            symbolID = sanitizeSymbolID(symbolID);
+                                            isIcon = Boolean.parseBoolean(params.get(MilStdAttributes.DrawAsIcon));
+                                            if(isIcon)
+                                            {
+                                                params = JavaRendererUtilities.parseIconParameters(symbolID, params);
+                                            }
                                         }
+                                        symbolID = sanitizeSymbolID(symbolID);
                                         pngResponse = getSinglePointBytes(symbolID, params);
                                     }
                                     else if(_renderType == RENDER_TYPE_KML)
@@ -294,8 +297,8 @@ public class SinglePointServer {
                                         if(symbolID.indexOf("?") > -1)
                                             symbolID = symbolID.substring(0,symbolID.indexOf("?"));
 
-                                        if(params.containsKey("ICON")&& 
-                                                (Boolean.parseBoolean(params.get("ICON")) == true))
+                                        if(params.containsKey(MilStdAttributes.DrawAsIcon)&& 
+                                                (Boolean.parseBoolean(params.get(MilStdAttributes.DrawAsIcon)) == true))
                                         {
                                             params = JavaRendererUtilities.parseIconParameters(symbolID, params);
                                             symbolID = sanitizeSymbolID(symbolID);
