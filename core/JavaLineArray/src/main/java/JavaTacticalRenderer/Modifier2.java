@@ -2405,7 +2405,125 @@ public class Modifier2 {
         }
         return;
     }
+    /**
+     * scale the line factor for closed areas
+     * @param tg 
+     */
+    private static void scaleModifiers(TGLight tg)
+    {
+        try
+        {
+            if(RendererSettings.getInstance().getAutoCollapseModifiers()==false)
+                return;
+            //exit if there are no modifiers or it's not a closed area
+            if(tg.modifiers==null || tg.modifiers.isEmpty())
+                return;
+            int linetype=tg.get_LineType();
+            boolean isClosedPolygon = clsUtility.isClosedPolygon(linetype);
+            boolean isChange1Area=clsUtility.IsChange1Area(linetype, null);
+            if(!isClosedPolygon && !isChange1Area)
+                return;
+            POINT2 ptUl=new POINT2(),ptUr=new POINT2(),ptLr=new POINT2(),ptLl=new POINT2();
+            GetMBR(tg,ptUl,ptUr,ptLr,ptLl);
+            int sz=tg.get_Font().getSize();
+            //heightMBR is half the MBR height
+            double heightMBR=Math.abs(ptLr.y-ptUr.y)/2;
+            double heightModifiers=0;
+            ArrayList<Modifier2> modifiers=tg.modifiers;
+            double minLF=modifiers.get(0).lineFactor;
+            int j=0;
+            for(j=1;j<modifiers.size();j++)
+            {
+                if(modifiers.get(j).lineFactor<minLF)
+                    minLF=modifiers.get(j).lineFactor;
+            }
+            heightModifiers=Math.abs(minLF)*sz;
+            boolean expandModifiers=false,shrinkModifiers=false;
+            if(heightModifiers>heightMBR)
+                shrinkModifiers=true;
+            else if(heightModifiers<0.5*heightMBR)
+                expandModifiers=true;
+            
+            boolean addEllipses=false;
+            ArrayList<Modifier2>modifiers2=new ArrayList();
+            Modifier2 modifier=null,modifier2=null;
+            //modifierE is ellipses modifier
+            Modifier2 modifierE=modifiers.get(0);
+            if(expandModifiers)
+            {
+                double factor=heightMBR/heightModifiers;
+                factor=1+(factor-1)/4;
+                if (factor>2)
+                        factor=2;
+                for(j=0;j<modifiers.size();j++)
+                {
+                    modifiers.get(j).lineFactor*=factor;
+                }
+            }
+            else if(shrinkModifiers)
+            {                
+                double deltaLF=(heightModifiers-heightMBR)/sz;
+                double newLF=0;
+                //use maxLF for the ellipses modifier
+                double maxLF=heightMBR/sz+1;
+                double tempLF=modifiers.get(0).lineFactor;
+                //calculate ellipses modifier
+                if(Math.abs(newLF*sz)<heightMBR)
+                {                        
+                    addEllipses=true;
+                    for(j=0;j<modifiers.size();j++)
+                    {
+                        modifier=modifiers.get(j);
+                        if(modifier.lineFactor>=tempLF && modifier.lineFactor<=maxLF)
+                        {
+                            tempLF=modifier.lineFactor;
+                            modifierE=modifier;
+                        }
 
+                    }
+                }
+                for(j=0;j<modifiers.size();j++)
+                {                    
+                    modifier=modifiers.get(j);
+                    newLF=modifier.lineFactor+deltaLF;
+                    if(Math.abs(newLF*sz)>heightMBR)                        
+                    {                        
+                        //we can't have any modifiers is the label won't fit.
+                        if(modifier.lineFactor==minLF)
+                        {
+                            modifiers2.clear();
+                            break;
+                        }
+                        continue;
+                    }
+                    modifier2=new Modifier2();
+                    modifier2.text=modifier.text;
+                    modifier2.textID=modifier.textID;
+                    modifier2.textPath=modifier.textPath;
+                    modifier2.justify=modifier.justify;
+                    modifier2.featureID=modifier.featureID;
+                    modifier2.type=modifier.type;
+                    modifier2.iteration=modifier.iteration;
+                    modifier2.isIntegral=modifier.isIntegral;
+                    modifier2.lineFactor=newLF;
+                    modifier2.fitsMBR=true;
+                    modifiers2.add(modifier2);
+                }
+                if(addEllipses)
+                {
+                    modifierE.text="...";
+                    modifiers2.add(modifierE);
+                }
+                if(modifiers2.isEmpty()) {
+                } else {
+                    tg.set_Modifiers(modifiers2);
+                }
+            }   //end shrink modifiers
+        }
+        catch (Exception exc) {
+            ErrorLogger.LogException(_className, "scaleModifiers",
+                    new RendererException("Failed inside scaleModifiers", exc));
+        }}
     /**
      * Function to replace AddModifiers for most clients. The additional
      * converter parameter enables better accuracy locating the modifiers. Do
@@ -3609,6 +3727,7 @@ public class Modifier2 {
                     break;
             }
             tg.Pixels=origPoints;
+            scaleModifiers(tg);
         } catch (Exception exc) {
             //clsUtility.WriteFile("Error in Modifier2.AddModifiers");
             ErrorLogger.LogException(_className, "AddModifiers",
@@ -4351,6 +4470,7 @@ public class Modifier2 {
                 default:
                     break;
             }//end switch
+            scaleModifiers(tg);
             tg.Pixels=origPoints;
             g2d.dispose();
             g2d = null;

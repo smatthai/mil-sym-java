@@ -66,6 +66,11 @@ public class RendererSettings {
     private static int _SymbolRenderMethod = 1;
     private static int _UnitRenderMethod = 1;
     private static int _TextRenderMethod = 1;
+    /**
+     * Collapse labels for fire support areas when the symbol isn't large enough to show all
+     * the labels.
+     */
+    private static boolean _AutoCollapseModifiers = true;
     
     private static int _SymbolOutlineWidth = 1;
     
@@ -235,6 +240,23 @@ public class RendererSettings {
     {
         return _UseLineInterpolation;
     }
+    /**
+     * Collapse Modifiers for fire support areas when the symbol isn't large enough to show all
+     * the labels.  Identifying label will always be visible.  Zooming in, to make the symbol larger,
+     * will make more modifiers visible.  Resizing the symbol can also make more modifiers visible.
+     * @param value
+     */
+    public void setAutoCollapseModifiers(boolean value) {_AutoCollapseModifiers = value;}
+
+    public boolean getAutoCollapseModifiers() {return _AutoCollapseModifiers;}
+
+    /**
+     * determines what kind of java objects will be generated when processing
+     * a symbol. RenderMethod_SHAPES is simpler as everything is treated
+     * the same. RenderMethod_NATIVE is faster but, in addition to shapes,
+     * uses GlyphVectors and TextLayouts.
+     * @param method like RendererSetting.RenderMethod_SHAPES
+     */
 
     /**
      * determines what kind of java objects will be generated when processing
