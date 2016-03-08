@@ -2468,7 +2468,7 @@ public class Modifier2 {
                 double maxLF=heightMBR/sz+1;
                 double tempLF=modifiers.get(0).lineFactor;
                 //calculate ellipses modifier
-                if(Math.abs(newLF*sz)<heightMBR)
+                if(Math.abs(newLF*sz)<=heightMBR)
                 {                        
                     addEllipses=true;
                     for(j=0;j<modifiers.size();j++)
@@ -2511,7 +2511,12 @@ public class Modifier2 {
                 }
                 if(addEllipses)
                 {
-                    modifierE.text="...";
+                    //modifierE.text="...";
+                    //use platoon echelon symbol fo the ellipses
+                    Character letter = (char) 9679;
+                    String s = Character.toString(letter);
+                    String echelonSymbol = s + s + s;
+                    modifierE.text=echelonSymbol;
                     modifiers2.add(modifierE);
                 }
                 if(modifiers2.isEmpty()) {
