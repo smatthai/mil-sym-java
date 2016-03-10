@@ -2430,13 +2430,24 @@ public class Modifier2 {
             double heightMBR=Math.abs(ptLr.y-ptUr.y)/2;
             double heightModifiers=0;
             ArrayList<Modifier2> modifiers=tg.modifiers;
-            double minLF=modifiers.get(0).lineFactor;
+            Modifier2 modifier=null;
+            double minLF=Integer.MAX_VALUE;
             int j=0;
-            for(j=1;j<modifiers.size();j++)
+            boolean type3Area=false;
+            for(j=0;j<modifiers.size();j++)
             {
-                if(modifiers.get(j).lineFactor<minLF)
-                    minLF=modifiers.get(j).lineFactor;
+                modifier=modifiers.get(j);
+                if(modifier.type != area)
+                    continue;
+                
+                type3Area=true;
+                if(modifier.lineFactor<minLF)
+                    minLF=modifier.lineFactor;
             }
+            //if there are no 'area' modifiers then exit early
+            if(!type3Area)
+                return;
+            
             heightModifiers=Math.abs(minLF)*sz;
             boolean expandModifiers=false,shrinkModifiers=false;
             if(heightModifiers>heightMBR)
@@ -2444,11 +2455,9 @@ public class Modifier2 {
             else if(heightModifiers<0.5*heightMBR)
                 expandModifiers=true;
             
-            boolean addEllipses=false;
-            ArrayList<Modifier2>modifiers2=new ArrayList();
-            Modifier2 modifier=null,modifier2=null;
+            boolean addEllipsis=false;
             //modifierE is ellipses modifier
-            Modifier2 modifierE=modifiers.get(0);
+            Modifier2 modifierE=new Modifier2();
             if(expandModifiers)
             {
                 double factor=heightMBR/heightModifiers;
@@ -2457,72 +2466,60 @@ public class Modifier2 {
                         factor=2;
                 for(j=0;j<modifiers.size();j++)
                 {
-                    modifiers.get(j).lineFactor*=factor;
+                    modifier=modifiers.get(j);
+                    if(modifier.type != area)
+                        continue;
+                    modifier.lineFactor*=factor;
                 }
             }
             else if(shrinkModifiers)
             {                
                 double deltaLF=(heightModifiers-heightMBR)/sz;
                 double newLF=0;
-                //use maxLF for the ellipses modifier
-                double maxLF=heightMBR/sz+1;
-                double tempLF=modifiers.get(0).lineFactor;
-                //calculate ellipses modifier
-                if(Math.abs(newLF*sz)<=heightMBR)
-                {                        
-                    addEllipses=true;
-                    for(j=0;j<modifiers.size();j++)
-                    {
-                        modifier=modifiers.get(j);
-                        if(modifier.lineFactor>=tempLF && modifier.lineFactor<=maxLF)
-                        {
-                            tempLF=modifier.lineFactor;
-                            modifierE=modifier;
-                        }
-
-                    }
-                }
+                //use maxLF for the ellipsis modifier
+                double maxLF=0;
                 for(j=0;j<modifiers.size();j++)
                 {                    
                     modifier=modifiers.get(j);
+                    if(modifier.type != area)
+                        continue;
                     newLF=modifier.lineFactor+deltaLF;
-                    if(Math.abs(newLF*sz)>heightMBR)                        
+                    if(Math.abs(newLF*sz)>=heightMBR)                        
                     {                        
-                        //we can't have any modifiers is the label won't fit.
-                        if(modifier.lineFactor==minLF)
+                        //flag the modifier to remove
+                        if(modifier.lineFactor>minLF)
                         {
-                            modifiers2.clear();
-                            break;
+                            modifier.type=7;
+                            addEllipsis=true;
                         }
+                        modifier.lineFactor=newLF;
+                        modifierE.type=area;
+                        modifierE.textPath=modifier.textPath;
                         continue;
                     }
-                    modifier2=new Modifier2();
-                    modifier2.text=modifier.text;
-                    modifier2.textID=modifier.textID;
-                    modifier2.textPath=modifier.textPath;
-                    modifier2.justify=modifier.justify;
-                    modifier2.featureID=modifier.featureID;
-                    modifier2.type=modifier.type;
-                    modifier2.iteration=modifier.iteration;
-                    modifier2.isIntegral=modifier.isIntegral;
-                    modifier2.lineFactor=newLF;
-                    modifier2.fitsMBR=true;
-                    modifiers2.add(modifier2);
+                    modifier.lineFactor=newLF;
                 }
-                if(addEllipses)
+                ArrayList<Modifier2>modifiers2=new ArrayList();
+                for(j=0;j<modifiers.size();j++)
                 {
-                    //modifierE.text="...";
-                    //use platoon echelon symbol fo the ellipses
+                    modifier=modifiers.get(j);
+                    if(modifier.type!=7)
+                    {
+                        if(modifier.lineFactor>maxLF)
+                            maxLF=modifier.lineFactor;
+                        modifiers2.add(modifier);
+                    }                    
+                }
+                if(addEllipsis)
+                {
                     Character letter = (char) 9679;
                     String s = Character.toString(letter);
                     String echelonSymbol = s + s + s;
                     modifierE.text=echelonSymbol;
+                    modifierE.lineFactor=maxLF+1;
                     modifiers2.add(modifierE);
                 }
-                if(modifiers2.isEmpty()) {
-                } else {
-                    tg.set_Modifiers(modifiers2);
-                }
+                tg.modifiers=modifiers2;
             }   //end shrink modifiers
         }
         catch (Exception exc) {
