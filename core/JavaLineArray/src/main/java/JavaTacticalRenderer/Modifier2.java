@@ -2415,6 +2415,8 @@ public class Modifier2 {
         {
             if(RendererSettings.getInstance().getAutoCollapseModifiers()==false)
                 return;
+            if(!tg.get_Client().equalsIgnoreCase("ge"))
+                return;
             //exit if there are no modifiers or it's not a closed area
             if(tg.modifiers==null || tg.modifiers.isEmpty())
                 return;
@@ -2490,7 +2492,8 @@ public class Modifier2 {
                         if(modifier.lineFactor>minLF)
                         {
                             modifier.type=7;
-                            addEllipsis=true;
+                            if(!modifier.text.isEmpty())
+                                addEllipsis=true;
                         }
                         modifier.lineFactor=newLF;
                         modifierE.type=area;
