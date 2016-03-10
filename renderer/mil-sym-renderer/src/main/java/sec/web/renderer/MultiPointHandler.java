@@ -2991,6 +2991,7 @@ public class MultiPointHandler {
         kml.append("<Folder id=\"" + id + "\">");
         kml.append("<name>" + cdataStart + name + cdataEnd + "</name>");        
         kml.append("<visibility>1</visibility>");
+
         for (int i = 0; i < len; i++) {
 
             String shapesToAdd = ShapeToKMLString(name, description, symbolCode, shapes.get(i), ipc, normalize);
@@ -2999,7 +3000,8 @@ public class MultiPointHandler {
 
         int len2 = modifiers.size();
 
-        for (int j = 0; j < len2; j++) {
+        for (int j = 0; j < len2; j++) 
+        {
 
             tempModifier = modifiers.get(j);
 
@@ -3008,6 +3010,7 @@ public class MultiPointHandler {
             //AdjustModifierPointToCenter(tempModifier);
 
             String labelsToAdd = LabelToKMLString(tempModifier, ipc, normalize,textColor);
+            
             kml.append(labelsToAdd);
         }
 
@@ -3049,14 +3052,17 @@ public class MultiPointHandler {
                 + "\"lines\": [" + lines + "],";
         int len2 = modifiers.size();
         labels = "";
-        for (int j = 0; j < len2; j++) {
+        for (int j = 0; j < len2; j++) 
+        {
             tempModifier = modifiers.get(j);
             
             
             //AdjustModifierPointToCenter(tempModifier);
             String labelsToAdd = LabelToJSONString(tempModifier, ipc, normalize);
-            if (labelsToAdd.length() > 0) {
-                if (labels.length() > 0) {
+            if (labelsToAdd.length() > 0) 
+            {
+                if (labels.length() > 0) 
+                {
                     labels += ",";
                 }
 
@@ -3099,11 +3105,13 @@ public class MultiPointHandler {
 
         int len2 = modifiers.size();
 
-        for (int j = 0; j < len2; j++) {
+        for (int j = 0; j < len2; j++) 
+        {
             tempModifier = modifiers.get(j);
             
             String labelsToAdd = LabelToGeoJSONString(tempModifier, ipc, normalize, textColor, textBackgroundColor);
-            if (labelsToAdd.length() > 0) {
+            if (labelsToAdd.length() > 0) 
+            {
                 fc.append(",");
                 fc.append(labelsToAdd);
             }

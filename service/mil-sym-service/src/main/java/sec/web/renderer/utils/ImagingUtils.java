@@ -40,6 +40,10 @@ public class ImagingUtils {
 			String val = request.getParameter(key);
                         if(val != null && val.equals("") == false)
                         {
+                            if(val.toLowerCase().contains("script>"))
+                            {
+                                val="";
+                            }
                             params.put(key.toUpperCase(), val);
                         }
 			

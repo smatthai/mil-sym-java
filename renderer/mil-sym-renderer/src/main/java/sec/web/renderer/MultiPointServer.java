@@ -183,6 +183,16 @@ public class MultiPointServer {
                 {
                     //Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(symbolCode);
                     Map<String,String> params = (Map<String,String>)he.getAttribute("parameters");
+                    
+                    for (Map.Entry<String, String> entry : params.entrySet())
+                    {
+                        String test = entry.getValue().toLowerCase();
+                        if(test.contains("script>"))
+                        {
+                            entry.setValue("");
+                        }
+                    }
+
                     String symbolID = null;
                     
                     int questionIndex = symbolCode.lastIndexOf('?');
@@ -190,6 +200,8 @@ public class MultiPointServer {
                         symbolID = java.net.URLDecoder.decode(symbolCode, "UTF-8");
                     else
                         symbolID = java.net.URLDecoder.decode(symbolCode.substring(0, questionIndex), "UTF-8");
+                    
+                    
 
                     if(is2D == false)
                     {
