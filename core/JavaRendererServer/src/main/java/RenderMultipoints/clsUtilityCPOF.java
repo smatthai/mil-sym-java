@@ -2263,7 +2263,7 @@ public final class clsUtilityCPOF {
      * @param clipBounds
      * @return a single clipped shapeSpec
      */
-    protected static ArrayList<Shape2> buildShapeSpecFromPoints(Shape2 shapeSpec,   //the original ShapeSpec
+    protected static ArrayList<Shape2> buildShapeSpecFromPoints(TGLight tg0,Shape2 shapeSpec,   //the original ShapeSpec
             ArrayList<POINT2>pts,
             Object clipArea)
     {
@@ -2427,6 +2427,7 @@ public final class clsUtilityCPOF {
                 //not relevant since this is the last shape
                 //pts2.clear();
                 //pts2.add(pt);
+                tg0.set_WasClipped(tg.get_WasClipped());
             }
             //create the shapespec here
             //initialize the clipped ShapeSpec
@@ -2561,7 +2562,7 @@ public final class clsUtilityCPOF {
                     }//end switch
                 }   //end for pathiterator i
                 //shapeSpec=buildShapeSpecFromPoints(shapeSpec,pts,clipBounds);
-                tempShapes=buildShapeSpecFromPoints(shapeSpec,pts,clipArea);
+                tempShapes=buildShapeSpecFromPoints(tg,shapeSpec,pts,clipArea);
                 //shapeSpecs2[j]=shapeSpec;
                 //shapeSpecs2.add(shapeSpec);
                 shapeSpecs2.addAll(tempShapes);
