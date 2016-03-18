@@ -2522,9 +2522,14 @@ public class Modifier2 {
                         factor=2;
                 for(j=0;j<modifiers.size();j++)
                 {
-                    modifier=modifiers.get(j);
-                    if(modifier.type != area)
-                        continue;
+                    modifier=modifiers.get(j);                        
+                    if(modifier.type==aboveMiddle)
+                    {
+                        if(isChange1Area==false)
+                            continue;
+                    }
+                    else if(modifier.type!=area)
+                            continue;
                     modifier.lineFactor*=factor;
                 }
             }
@@ -2537,10 +2542,13 @@ public class Modifier2 {
                 for(j=0;j<modifiers.size();j++)
                 {                    
                     modifier=modifiers.get(j);
-                    if(modifier.type == toEnd)
-                        continue;
-                    if(modifier.type == aboveMiddle && isChange1Area==false)
-                        continue;
+                    if(modifier.type==aboveMiddle)
+                    {
+                        if(isChange1Area==false)
+                            continue;
+                    }
+                    else if(modifier.type!=area)
+                            continue;
                     newLF=modifier.lineFactor+deltaLF;
                     if(Math.abs(newLF*sz)>=heightMBR)                        
                     {                        
