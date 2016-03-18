@@ -2405,6 +2405,50 @@ public class Modifier2 {
         }
         return;
     }
+    private static double getChange1Height(TGLight tg)
+    {
+        double height=0;
+        try
+        {
+            switch(tg.get_LineType())
+            {
+                case TacticalLines.PAA_RECTANGULAR_REVC:
+                case TacticalLines.PAA_RECTANGULAR:
+                case TacticalLines.FSA_RECTANGULAR:
+                case TacticalLines.FFA_RECTANGULAR:
+                case TacticalLines.ACA_RECTANGULAR:
+                case TacticalLines.NFA_RECTANGULAR:
+                case TacticalLines.RFA_RECTANGULAR:
+                case TacticalLines.ATI_RECTANGULAR:
+                case TacticalLines.CFFZ_RECTANGULAR:
+                case TacticalLines.SENSOR_RECTANGULAR:
+                case TacticalLines.CENSOR_RECTANGULAR:
+                case TacticalLines.DA_RECTANGULAR:
+                case TacticalLines.CFZ_RECTANGULAR:
+                case TacticalLines.ZOR_RECTANGULAR:
+                case TacticalLines.TBA_RECTANGULAR:
+                case TacticalLines.TVAR_RECTANGULAR:
+                case TacticalLines.KILLBOXBLUE_RECTANGULAR:
+                case TacticalLines.KILLBOXPURPLE_RECTANGULAR:
+                    break;
+                default:
+                    return 0;
+            }
+            double x1=tg.Pixels.get(0).x;
+            double y1=tg.Pixels.get(0).y;
+            double x2=tg.Pixels.get(1).x;
+            double y2=tg.Pixels.get(1).y;
+            double deltax=x2-x1;
+            double deltay=y2-y1;
+            height=Math.sqrt(deltax*deltax+deltay*deltay);
+        }
+        catch (Exception exc) {
+            ErrorLogger.LogException(_className, "getChange1Height",
+                    new RendererException("Failed inside getChange1Height", exc));
+        }
+        return height;
+    }
+    
     /**
      * scale the line factor for closed areas
      * @param tg 
@@ -2429,25 +2473,35 @@ public class Modifier2 {
             GetMBR(tg,ptUl,ptUr,ptLr,ptLl);
             int sz=tg.get_Font().getSize();
             //heightMBR is half the MBR height
-            double heightMBR=Math.abs(ptLr.y-ptUr.y)/2;
+            //double heightMBR=Math.abs(ptLr.y-ptUr.y)/2;
+            double heightMBR=0;
+            double change1Height=getChange1Height(tg);
+            if(change1Height <= 0)
+                heightMBR=Math.abs(ptLr.y-ptUr.y)/2;
+            else
+                heightMBR=change1Height;
+            
             double heightModifiers=0;
             ArrayList<Modifier2> modifiers=tg.modifiers;
             Modifier2 modifier=null;
             double minLF=Integer.MAX_VALUE;
             int j=0;
-            boolean type3Area=false;
+            boolean isValid=false;
             for(j=0;j<modifiers.size();j++)
             {
                 modifier=modifiers.get(j);
-                if(modifier.type != area)
+                //if(modifier.type == area)
+                    //type3Area=true;
+                if(modifier.type==toEnd)
                     continue;
-                
-                type3Area=true;
+                if(modifier.type==aboveMiddle && isChange1Area==false)
+                    continue;
                 if(modifier.lineFactor<minLF)
                     minLF=modifier.lineFactor;
+                isValid=true;
             }
             //if there are no 'area' modifiers then exit early
-            if(!type3Area)
+            if(!isValid)
                 return;
             
             heightModifiers=Math.abs(minLF)*sz;
@@ -2483,7 +2537,9 @@ public class Modifier2 {
                 for(j=0;j<modifiers.size();j++)
                 {                    
                     modifier=modifiers.get(j);
-                    if(modifier.type != area)
+                    if(modifier.type == toEnd)
+                        continue;
+                    if(modifier.type == aboveMiddle && isChange1Area==false)
                         continue;
                     newLF=modifier.lineFactor+deltaLF;
                     if(Math.abs(newLF*sz)>=heightMBR)                        
@@ -2491,12 +2547,14 @@ public class Modifier2 {
                         //flag the modifier to remove
                         if(modifier.lineFactor>minLF)
                         {
+                            modifierE.type=modifier.type;
                             modifier.type=7;
                             if(!modifier.text.isEmpty())
                                 addEllipsis=true;
                         }
                         modifier.lineFactor=newLF;
-                        modifierE.type=area;
+                        //modifierE.type=area;
+                        //modifierE.type=modifier.type;
                         modifierE.textPath=modifier.textPath;
                         continue;
                     }
