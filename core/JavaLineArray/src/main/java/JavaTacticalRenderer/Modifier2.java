@@ -2412,8 +2412,8 @@ public class Modifier2 {
         {
             switch(tg.get_LineType())
             {
-                case TacticalLines.PAA_RECTANGULAR_REVC:
-                case TacticalLines.PAA_RECTANGULAR:
+                //case TacticalLines.PAA_RECTANGULAR_REVC:
+                //case TacticalLines.PAA_RECTANGULAR:
                 case TacticalLines.FSA_RECTANGULAR:
                 case TacticalLines.FFA_RECTANGULAR:
                 case TacticalLines.ACA_RECTANGULAR:
@@ -2466,9 +2466,20 @@ public class Modifier2 {
                 return;
             int linetype=tg.get_LineType();
             boolean isClosedPolygon = clsUtility.isClosedPolygon(linetype);
-            boolean isChange1Area=clsUtility.IsChange1Area(linetype, null);
+            boolean isChange1Area=clsUtility.IsChange1Area(linetype, null);            
             if(!isClosedPolygon && !isChange1Area)
                 return;
+            switch(linetype)
+            {
+                case TacticalLines.PAA_CIRCULAR:
+                case TacticalLines.PAA_RECTANGULAR:
+                case TacticalLines.PAA_RECTANGULAR_REVC:
+                case TacticalLines.RANGE_FAN:
+                case TacticalLines.RANGE_FAN_SECTOR:
+                    return;
+                default:
+                    break;
+            }
             POINT2 ptUl=new POINT2(),ptUr=new POINT2(),ptLr=new POINT2(),ptLl=new POINT2();
             GetMBR(tg,ptUl,ptUr,ptLr,ptLl);
             int sz=tg.get_Font().getSize();
