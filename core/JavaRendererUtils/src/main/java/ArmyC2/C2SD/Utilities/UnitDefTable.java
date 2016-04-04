@@ -139,7 +139,8 @@ public class UnitDefTable {
      *
      * @desc Returns a SymbolDef from the SymbolDefTable that matches the passed in Symbol Id
      *
-     * @param strBasicSymbolID - IN - A 15 character MilStd code
+     * @param basicSymbolID - IN - A 15 character MilStd code
+     * @param symStd 0 for 2525Bch2, 1 for 2525C
      * @return SymbolDef whose Symbol Id matches what is passed in
      */
     public UnitDef getUnitDef(String basicSymbolID, int symStd)
@@ -148,10 +149,20 @@ public class UnitDefTable {
         if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
         {
             returnVal = (UnitDef)_UnitDefinitionsB.get(basicSymbolID);
+            if(returnVal == null)
+            {
+                basicSymbolID = basicSymbolID.replace("*****","H****");
+                returnVal = _UnitDefinitionsB.get(basicSymbolID);
+            }
         }
         else if(symStd==RendererSettings.Symbology_2525C)
         {
             returnVal = (UnitDef)_UnitDefinitionsC.get(basicSymbolID);
+            if(returnVal == null)
+            {
+                basicSymbolID = basicSymbolID.replace("*****","H****");
+                returnVal = _UnitDefinitionsC.get(basicSymbolID);
+            }
         }
         return returnVal;
     }
