@@ -142,7 +142,7 @@ public class JavaRenderer implements IJavaRenderer {
     {
        String message = null;
        String basicSymbolID =  symbolCode;
-       basicSymbolID = SymbolUtilities.getBasicSymbolID(basicSymbolID);
+       basicSymbolID = SymbolUtilities.getBasicSymbolIDStrict(basicSymbolID);
         //ErrorLogger.LogMessage("TEST");
        try
        {

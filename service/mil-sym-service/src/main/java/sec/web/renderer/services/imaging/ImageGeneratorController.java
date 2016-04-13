@@ -50,7 +50,7 @@ public class ImageGeneratorController {
 		try 
                 {
                     Properties props = ResourceUtils.loadResource("properties/prop.properties", this.getClass().getClassLoader());
-                    //get rendering standard
+                    //get rendering standard////////////////////////////////////
                     String symStd = props.getProperty("symStd");
                     System.out.println("SymStd:  " + symStd);
                     if(SymbolUtilities.isNumber(symStd))
@@ -59,13 +59,19 @@ public class ImageGeneratorController {
                     }
                     SECRenderer.getInstance().printManifestInfo();
                     
-                    //get textBackgroundMethod
+                    //get textBackgroundMethod//////////////////////////////////
                     String textBackgroundMethod = props.getProperty("textBackgroundMethod");
                     System.out.println("textBackgroundMethod:  " + textBackgroundMethod);
                     if(SymbolUtilities.isNumber(textBackgroundMethod))
                     {
                         RendererSettings.getInstance().setTextBackgroundMethod(Integer.parseInt(textBackgroundMethod));
                     }
+
+                    //autoCollapseModifiers/////////////////////////////////////
+                    String autoCollapseModifiers = props.getProperty("autoCollapseModifiers");
+                    System.out.println("autoCollapseModifiers:  " + autoCollapseModifiers);
+                    RendererSettings.getInstance().setAutoCollapseModifiers(Boolean.parseBoolean(autoCollapseModifiers));
+                    
                     
                     SECRenderer.getInstance().printManifestInfo();
                     

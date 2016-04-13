@@ -77,7 +77,36 @@ public class SymbolUtilities {
           else if(isInstallation(strSymbolID))
               strRetSymbolID = strRetSymbolID + "H****";
           else
-            strRetSymbolID = strRetSymbolID + "*****";
+          {
+              strRetSymbolID = strRetSymbolID + "*****";
+              UnitDefTable udt = UnitDefTable.getInstance();
+                String temp = strRetSymbolID;
+                for(int i = 0; i < 2; i++)
+                {
+                    if(udt.HasUnitDef(temp,i)==true)
+                    {
+                        return temp;
+                    }
+                    else
+                    {
+                        temp = temp.substring(0,10) + "H****";
+                        if(udt.HasUnitDef(temp,i)==true)
+                        {
+                            return temp;
+                        }
+                        else
+                        {
+                            temp = temp.substring(0,10) + "MO***";
+                            if(udt.HasUnitDef(temp,i)==true)
+                            {
+                                return temp;
+                            }
+                        }
+                    }
+                    temp = temp.substring(0,10) + "*****";
+                }
+          }
+            
           return strRetSymbolID;
         }
         else if(isEngineeringOverlayObstacle(strSymbolID))
@@ -109,6 +138,39 @@ public class SymbolUtilities {
     }
     return "";
   }
+  
+    public static String getBasicSymbolIDStrict(String strSymbolID)
+    {
+        StringBuilder sb = new StringBuilder();
+        if(strSymbolID != null && strSymbolID.length() == 15)
+        {
+            char scheme = strSymbolID.charAt(0);
+            if(scheme == 'G')
+            {
+                sb.append(strSymbolID.charAt(0));
+                sb.append("*");
+                sb.append(strSymbolID.charAt(2));
+                sb.append("*");
+                sb.append(strSymbolID.substring(4, 10));
+                sb.append("****X");
+            }
+            else if(scheme != 'W' && scheme != 'B')
+            {
+                sb.append(strSymbolID.charAt(0));
+                sb.append("*");
+                sb.append(strSymbolID.charAt(2));
+                sb.append("*");
+                sb.append(strSymbolID.substring(4, 10));
+                sb.append("*****");
+            }
+            else
+            {
+                return strSymbolID;
+            }
+            return sb.toString();
+        }
+        return strSymbolID;
+    }
 
 
 
@@ -3215,7 +3277,7 @@ public class SymbolUtilities {
    */
     public static boolean isEMSEquipment(String strSymbolID)
     {
-        String basicCode = getBasicSymbolID(strSymbolID);
+        String basicCode = getBasicSymbolIDStrict(strSymbolID);
         boolean blRetVal = false;
         try
         {

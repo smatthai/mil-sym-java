@@ -597,7 +597,7 @@ public class UnitFontLookupC {
               returnVal = 837;//index in font file
           }
           
-          if(SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*X-----*****"))
+          if(SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*X-----*****"))
           {
               if(status=='A')
                   returnVal = returnVal+2;
@@ -612,9 +612,9 @@ public class UnitFontLookupC {
           {
               if(SymbolID.indexOf("WM")==4 || //Sea Mine
                       SymbolID.indexOf("WDM")==4 ||//Sea Mine Decoy
-                      SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*E-----*****") ||
-                      SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*V-----*****") ||
-                      SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*X-----*****"))
+                      SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*E-----*****") ||
+                      SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*V-----*****") ||
+                      SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*X-----*****"))
               {
                   returnVal++;
 
@@ -625,7 +625,7 @@ public class UnitFontLookupC {
                       returnVal++;
 
               }
-              else if(SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*ND----*****"))
+              else if(SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*ND----*****"))
               {
                   returnVal = 2121;
               }
@@ -657,7 +657,7 @@ public class UnitFontLookupC {
               {
                     returnVal = 2115;
               }
-              else if(SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*ND----*****"))
+              else if(SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*ND----*****"))
               {
                     returnVal = 2121;
               }//
@@ -687,13 +687,13 @@ public class UnitFontLookupC {
           {
               if(SymbolID.indexOf("WM")==4 || //Sea Mine
                       SymbolID.indexOf("WDM")==4 ||//Sea Mine Decoy
-                      SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*E-----*****") ||
-                      SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*V-----*****") ||
-                      SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*X-----*****"))
+                      SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*E-----*****") ||
+                      SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*V-----*****") ||
+                      SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*X-----*****"))
               {
                   returnVal = -1;
               }
-              else if(SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*ND----*****"))
+              else if(SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*ND----*****"))
               {
                   returnVal = -1;
               }
@@ -716,11 +716,11 @@ public class UnitFontLookupC {
               {
                     returnVal = -1;
               }
-              else if(SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*ND----*****"))
+              else if(SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*ND----*****"))
               {
                     returnVal = -1;
               }//
-              else if(SymbolUtilities.getBasicSymbolID(SymbolID).equalsIgnoreCase("S*U*X-----*****"))
+              else if(SymbolUtilities.getBasicSymbolIDStrict(SymbolID).equalsIgnoreCase("S*U*X-----*****"))
               {
                   returnVal = -1;
               }
@@ -746,11 +746,7 @@ public class UnitFontLookupC {
   {
     try
     {
-        String code = SymbolUtilities.getBasicSymbolID(SymbolID);
-//        if(SymbolUtilities.isSIGINT(SymbolID))
-//            code = code.substring(0, 10) + "--***";
-//        else
-            code = code.substring(0, 10) + "*****";
+        String code = SymbolUtilities.getBasicSymbolIDStrict(SymbolID);
 
         UnitFontLookupInfo data = hashMap.get(code);
 
