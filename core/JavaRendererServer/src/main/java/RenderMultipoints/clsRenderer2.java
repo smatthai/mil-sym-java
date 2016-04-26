@@ -69,24 +69,24 @@ public final class clsRenderer2 {
             
             //if colors are not set then use one shape
             //assumes colors may be set if string is comma delimited
-            String strH=tg.get_H();
-            if(strH != null && !strH.isEmpty())
-            {               
-                String[] strs=strH.split(",");
-                if(strs.length<2)
-                {
-                    //shape=new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
-                    //shape.setLineColor(tg.get_LineColor());
-                    //shape.setStroke(stroke);
-                    shape.moveTo(tg.Pixels.get(0));
-                    for(j=1;j<tg.Pixels.size();j++)
-                    {
-                        shape.lineTo(tg.Pixels.get(j));
-                    }
-                    shapes.add(shape);
-                    return;
-                }
-            }
+//            String strH=tg.get_H();
+//            if(strH != null && !strH.isEmpty())
+//            {               
+//                String[] strs=strH.split(",");
+//                if(strs.length<2)
+//                {
+//                    //shape=new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
+//                    //shape.setLineColor(tg.get_LineColor());
+//                    //shape.setStroke(stroke);
+//                    shape.moveTo(tg.Pixels.get(0));
+//                    for(j=1;j<tg.Pixels.size();j++)
+//                    {
+//                        shape.lineTo(tg.Pixels.get(j));
+//                    }
+//                    shapes.add(shape);
+//                    return;
+//                }
+//            }
                         
             //if the hashmap contains the segment then use the color corresponding to the segment
             //in the hashtable to create a one segment shape to add to the shape array.
