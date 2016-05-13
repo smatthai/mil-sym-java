@@ -2675,7 +2675,8 @@ public final class clsUtilityCPOF {
             int j=0,k=0,n=0;
             POINT2 pt0=null,pt1=null,pt=null;
             double dist=0;
-            double interval=1000000;//was 200
+            //double interval=1000000;
+            double interval=250000;
             double az=0;
             
             double maxDist=0;
@@ -2757,7 +2758,8 @@ public final class clsUtilityCPOF {
             
             ArrayList<POINT2>resultPts=new ArrayList();
             int lineType=tg.get_LineType();
-            double interval=1000000;//was 200
+            //double interval=1000000;
+            double interval=250000;
             //conservative interval in meters
             //return early for those lines not requiring pre-segmenting geo points
             switch(lineType)
