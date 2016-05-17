@@ -4870,7 +4870,7 @@ public final class lineutility {
             POINT2 pt=null;
             for(j=0;j<pts.size();j++)
             {                
-                pt=new POINT2(pts.get(j).x,pts.get(j).y);
+                pt=new POINT2(pts.get(j).x,pts.get(j).y,pts.get(j).style);
                 deepCopy.add(pt);
             }
         }
