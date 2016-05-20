@@ -1353,6 +1353,7 @@ public final class clsRenderer {
                     clipPoints = (ArrayList<Point2D>) clipArea;
                 }
             }
+            double zoomFactor=clsUtilityGE.getZoomFactor(clipBounds, clipPoints, tg.Pixels);
             //add sub-section to test clipArea if client passes the rectangle
             boolean useClipPoints = false;
             if (useClipPoints == true && clipBounds != null) {
@@ -1389,7 +1390,7 @@ public final class clsRenderer {
             clsUtilityGE.setSplineLinetype(tg);
             setHostileLC(tg);
 
-            clsUtilityCPOF.SegmentGeoPoints(tg, converter);
+            clsUtilityCPOF.SegmentGeoPoints(tg, converter, zoomFactor);
             if (clipBounds != null || clipPoints != null) {
                 if (clsUtilityCPOF.canClipPoints(tg)) {
                     //check assignment
@@ -1767,7 +1768,7 @@ public final class clsRenderer {
             BufferedImage bi = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = bi.createGraphics();
 
-            clsUtilityCPOF.SegmentGeoPoints(tg, converter);
+            clsUtilityCPOF.SegmentGeoPoints(tg, converter,1);
             clsUtility.FilterAXADPoints(tg, converter);
 
             //prevent vertical segments for oneway, twoway, alt
