@@ -2930,7 +2930,7 @@ public final class clsUtilityCPOF {
             useVincenty = true;
             if(useVincenty)
             {
-                resultPts=tg.LatLongs=toGeodesic(tg.LatLongs,interval);
+                resultPts=toGeodesic(tg.LatLongs,interval);
                 tg.LatLongs=resultPts;
                 tg.Pixels=RenderMultipoints.clsUtility.LatLongToPixels(tg.LatLongs, converter);
                 return;
