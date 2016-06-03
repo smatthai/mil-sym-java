@@ -2743,6 +2743,87 @@ public final class clsUtilityCPOF {
         }
     }
     /**
+     * Similar to Vincenty algorithm for more accurate interpolation of geo anchor points
+     * @param points the anchor points
+     * @param n number of points per segment
+     * @return the interpolated points
+     */
+    private static ArrayList<POINT2> toGeodesic(ArrayList<POINT2> points, double interval) {
+        ArrayList<POINT2> locs = new ArrayList<POINT2>();
+        try {
+            int i = 0, k = 0, n=0;            
+            for (i = 0; i < points.size() - 1; i++) 
+            {
+                // Convert coordinates from degrees to Radians
+                //var lat1 = points[i].latitude * (PI / 180);
+                //var lon1 = points[i].longitude * (PI / 180);
+                //var lat2 = points[i + 1].latitude * (PI / 180);
+                //var lon2 = points[i + 1].longitude * (PI / 180);                
+                double lat1 = Math.toRadians(points.get(i).y);
+                double lon1 = Math.toRadians(points.get(i).x);
+                double lat2 = Math.toRadians(points.get(i + 1).y);
+                double lon2 = Math.toRadians(points.get(i + 1).x);
+                // Calculate the total extent of the route
+                //var d = 2 * asin(sqrt(pow((sin((lat1 - lat2) / 2)), 2) + cos(lat1) * cos(lat2) * pow((sin((lon1 - lon2) / 2)), 2)));
+                double d = 2 * Math.asin(Math.sqrt(Math.pow((Math.sin((lat1 - lat2) / 2)), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow((Math.sin((lon1 - lon2) / 2)), 2)));
+                                
+                double dist=mdlGeodesic.geodesic_distance(points.get(i), points.get(i+1), null, null);
+                //double dist=d;
+                float flt=(float)dist/(float)interval;
+                n=Math.round(flt);
+                if(n<1)
+                    n=1;
+                if(n>32)
+                    n=32;
+                // Calculate  positions at fixed intervals along the route
+                for (k = 0; k <= n; k++) 
+                {
+                    //we must preserve the anchor points
+                    if(k==0)
+                    {
+                        locs.add(new POINT2(points.get(i)));
+                        continue;
+                    }
+                    else if(k==n)
+                    {
+                        if(i==points.size()-2)
+                            locs.add(new POINT2(points.get(i+1)));
+                        break;                        
+                    }
+                    //var f = (k / n);
+                    //var A = sin((1 - f) * d) / sin(d);
+                    //var B = sin(f * d) / sin(d);
+                    double f = ((double)k / (double)n);
+                    double A = Math.sin((1 - f) * d) / Math.sin(d);
+                    double B = Math.sin(f * d) / Math.sin(d);
+                    // Obtain 3D Cartesian coordinates of each point
+                    //var x = A * cos(lat1) * cos(lon1) + B * cos(lat2) * cos(lon2);
+                    //var y = A * cos(lat1) * sin(lon1) + B * cos(lat2) * sin(lon2);
+                    //var z = A * sin(lat1) + B * sin(lat2);
+                    double x = A * Math.cos(lat1) * Math.cos(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
+                    double y = A * Math.cos(lat1) * Math.sin(lon1) + B * Math.cos(lat2) * Math.sin(lon2);
+                    double z = A * Math.sin(lat1) + B * Math.sin(lat2);
+                    // Convert these to latitude/longitude
+                    //var lat = atan2(z, sqrt(pow(x, 2) + pow(y, 2)));
+                    //var lon = atan2(y, x);
+                    double lat = Math.atan2(z, Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
+                    double lon = Math.atan2(y, x);
+                    lat *= 180.0 / Math.PI;
+                    lon *= 180.0 / Math.PI;
+                    POINT2 pt = new POINT2(lon, lat);
+                    locs.add(pt);
+                }
+            }
+        } 
+        catch (Exception exc) 
+        {
+            ErrorLogger.LogException(_className, "toGeodesic",
+                    new RendererException("Failed inside toGeodesic", exc));
+            return null;
+        }
+        return locs;
+    }
+    /**
      * Pre-segment the lines based on max or min latitude for the segment interval. This is necessary because
      * GeoPixelconversion does not work well over distance greater than 1M meters, especially at extreme latitudes.
      * @param geoPoints
@@ -2839,10 +2920,21 @@ public final class clsUtilityCPOF {
             if(interval>maxDist)
                 interval=maxDist;
             
-            if(zoomFactor>0 && zoomFactor<0.1)
-                zoomFactor=0.1;
+            if(zoomFactor>0 && zoomFactor<0.01)
+                zoomFactor=0.01;
             if(zoomFactor>0 && zoomFactor<1)
                 interval *= zoomFactor;
+            
+            boolean useVincenty=false;
+            //uncomment one line to use Vincenty algorithm
+            useVincenty = true;
+            if(useVincenty)
+            {
+                resultPts=tg.LatLongs=toGeodesic(tg.LatLongs,interval);
+                tg.LatLongs=resultPts;
+                tg.Pixels=RenderMultipoints.clsUtility.LatLongToPixels(tg.LatLongs, converter);
+                return;
+            }
             
             for(j=0;j<tg.LatLongs.size()-1;j++)
             {
