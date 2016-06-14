@@ -1750,8 +1750,7 @@ public class Modifier2 {
                         p0 = tg.Pixels.get(j);
                         p1 = tg.Pixels.get(j + 1);
                         //if (p0.x == p1.x) 
-                        if (Math.abs(p0.x - p1.x)<1) 
-                        {
+                        if (Math.abs(p0.x - p1.x) < 1) {
                             p1.x += last;
                             last = -last;
                         }
@@ -1774,13 +1773,11 @@ public class Modifier2 {
                 case TacticalLines.HOLD_GE:
                 case TacticalLines.BRDGHD_GE:
                     //if (pt0 != null && pt1 != null && pt0.x == pt1.x) 
-                    if (pt0 != null && pt1 != null && Math.abs(pt0.x - pt1.x)<1) 
-                    {
+                    if (pt0 != null && pt1 != null && Math.abs(pt0.x - pt1.x) < 1) {
                         pt1.x += 1;
                     }
                     //if (ptLast != null && ptNextToLast != null && ptNextToLast.x == ptLast.x) 
-                    if (ptLast != null && ptNextToLast != null && Math.abs(ptNextToLast.x - ptLast.x)<1) 
-                    {
+                    if (ptLast != null && ptNextToLast != null && Math.abs(ptNextToLast.x - ptLast.x) < 1) {
                         ptNextToLast.x += 1;
                     }
                     break;
@@ -1792,6 +1789,85 @@ public class Modifier2 {
                     new RendererException("Failed inside shiftModifierPath", exc));
         }
         return;
+    }
+
+    /**
+     * Areas with two alternating labels.
+     *
+     * @param tg
+     * @param label
+     * @param eny
+     * @param g2d
+     * @return
+     */
+    private static boolean areasWithTwoLabels(TGLight tg, String label, String eny, Graphics2D g2d) {
+        boolean result = false;
+        try {
+            switch (tg.get_LineType()) {
+                case TacticalLines.DUMMY:
+                    if (!tg.get_Affiliation().equalsIgnoreCase("H")) {
+                        eny = "";
+                    }
+                    break;
+                default:
+                    return false;
+            }
+            FontMetrics metrics = g2d.getFontMetrics();
+            double labelLength = metrics.stringWidth(label);
+            double enyLength = metrics.stringWidth(eny);
+            int j = 0;
+            POINT2 pt0 = null, pt1 = null, pt2;
+            String last = eny;
+            double dist = 0;
+            int sumLabel = 0, sumENY = 0;
+            for (j = 0; j < tg.Pixels.size() - 1; j++) {
+                if (eny.isEmpty()) {
+                    last = eny;
+                }
+                pt0 = tg.Pixels.get(j);
+                pt1 = tg.Pixels.get(j + 1);
+                dist = lineutility.CalcDistanceDouble(pt0, pt1);
+                if (dist > 1.5 * labelLength && last.equalsIgnoreCase(eny)) {
+                    last = label;
+                    sumLabel++;
+                } else if (dist > 1.5 * enyLength && last.equalsIgnoreCase(label)) {
+                    sumENY++;
+                    last = eny;
+                }
+            }
+            if (eny.isEmpty()) {
+                if (sumENY < 2) {
+                    sumENY = 2;
+                }
+            }
+            //if we don't have at least 2 valid segments for both the label and the ENY then return false
+            if (sumLabel < 2 || sumENY < 2) {
+                return false;
+            }
+            //at this point we have valid pixels for alternating labels, i.e. at least one of each will appear
+            for (j = 0; j < tg.Pixels.size() - 1; j++) {
+                if (eny.isEmpty()) {
+                    last = eny;
+                }
+                pt0 = tg.Pixels.get(j);
+                pt1 = tg.Pixels.get(j + 1);
+                dist = lineutility.CalcDistanceDouble(pt0, pt1);
+                if (dist > 1.5 * labelLength && last.equalsIgnoreCase(eny)) {
+                    //add the label
+                    AddIntegralAreaModifier(tg, label, aboveMiddle, 0, pt0, pt1, true);
+                    last = label;
+                } else if (dist > 1.5 * enyLength && last.equalsIgnoreCase(label)) {
+                    //add the eny
+                    AddIntegralAreaModifier(tg, eny, aboveMiddle, 0, pt0, pt1, true);
+                    last = eny;
+                }
+            }
+            return true;
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "areasWithTwoLabels",
+                    new RendererException("Failed inside areasWithTwoLabels", exc));
+        }
+        return result;
     }
 
     /**
@@ -2405,13 +2481,11 @@ public class Modifier2 {
         }
         return;
     }
-    private static double getChange1Height(TGLight tg)
-    {
-        double height=0;
-        try
-        {
-            switch(tg.get_LineType())
-            {
+
+    private static double getChange1Height(TGLight tg) {
+        double height = 0;
+        try {
+            switch (tg.get_LineType()) {
                 //case TacticalLines.PAA_RECTANGULAR_REVC:
                 //case TacticalLines.PAA_RECTANGULAR:
                 case TacticalLines.FSA_RECTANGULAR:
@@ -2434,43 +2508,44 @@ public class Modifier2 {
                 default:
                     return 0;
             }
-            double x1=tg.Pixels.get(0).x;
-            double y1=tg.Pixels.get(0).y;
-            double x2=tg.Pixels.get(1).x;
-            double y2=tg.Pixels.get(1).y;
-            double deltax=x2-x1;
-            double deltay=y2-y1;
-            height=Math.sqrt(deltax*deltax+deltay*deltay);
-        }
-        catch (Exception exc) {
+            double x1 = tg.Pixels.get(0).x;
+            double y1 = tg.Pixels.get(0).y;
+            double x2 = tg.Pixels.get(1).x;
+            double y2 = tg.Pixels.get(1).y;
+            double deltax = x2 - x1;
+            double deltay = y2 - y1;
+            height = Math.sqrt(deltax * deltax + deltay * deltay);
+        } catch (Exception exc) {
             ErrorLogger.LogException(_className, "getChange1Height",
                     new RendererException("Failed inside getChange1Height", exc));
         }
         return height;
     }
-    
+
     /**
      * scale the line factor for closed areas
-     * @param tg 
+     *
+     * @param tg
      */
-    private static void scaleModifiers(TGLight tg)
-    {
-        try
-        {
-            if(RendererSettings.getInstance().getAutoCollapseModifiers()==false)
+    private static void scaleModifiers(TGLight tg) {
+        try {
+            if (RendererSettings.getInstance().getAutoCollapseModifiers() == false) {
                 return;
-            if(!tg.get_Client().equalsIgnoreCase("ge"))
+            }
+            if (!tg.get_Client().equalsIgnoreCase("ge")) {
                 return;
+            }
             //exit if there are no modifiers or it's not a closed area
-            if(tg.modifiers==null || tg.modifiers.isEmpty())
+            if (tg.modifiers == null || tg.modifiers.isEmpty()) {
                 return;
-            int linetype=tg.get_LineType();
+            }
+            int linetype = tg.get_LineType();
             boolean isClosedPolygon = clsUtility.isClosedPolygon(linetype);
-            boolean isChange1Area=clsUtility.IsChange1Area(linetype, null);            
-            if(!isClosedPolygon && !isChange1Area)
+            boolean isChange1Area = clsUtility.IsChange1Area(linetype, null);
+            if (!isClosedPolygon && !isChange1Area) {
                 return;
-            switch(linetype)
-            {
+            }
+            switch (linetype) {
                 case TacticalLines.PAA_CIRCULAR:
                 case TacticalLines.PAA_RECTANGULAR:
                 case TacticalLines.PAA_RECTANGULAR_REVC:
@@ -2480,132 +2555,131 @@ public class Modifier2 {
                 default:
                     break;
             }
-            POINT2 ptUl=new POINT2(),ptUr=new POINT2(),ptLr=new POINT2(),ptLl=new POINT2();
-            GetMBR(tg,ptUl,ptUr,ptLr,ptLl);
-            int sz=tg.get_Font().getSize();
+            POINT2 ptUl = new POINT2(), ptUr = new POINT2(), ptLr = new POINT2(), ptLl = new POINT2();
+            GetMBR(tg, ptUl, ptUr, ptLr, ptLl);
+            int sz = tg.get_Font().getSize();
             //heightMBR is half the MBR height
             //double heightMBR=Math.abs(ptLr.y-ptUr.y)/2;
-            double heightMBR=0;
-            double change1Height=getChange1Height(tg);
-            if(change1Height <= 0)
-                heightMBR=Math.abs(ptLr.y-ptUr.y)/2;
-            else
-                heightMBR=change1Height;
-            
-            double heightModifiers=0;
-            ArrayList<Modifier2> modifiers=tg.modifiers;
-            Modifier2 modifier=null;
-            double minLF=Integer.MAX_VALUE;
-            int j=0;
-            boolean isValid=false;
-            for(j=0;j<modifiers.size();j++)
-            {
-                modifier=modifiers.get(j);
+            double heightMBR = 0;
+            double change1Height = getChange1Height(tg);
+            if (change1Height <= 0) {
+                heightMBR = Math.abs(ptLr.y - ptUr.y) / 2;
+            } else {
+                heightMBR = change1Height;
+            }
+
+            double heightModifiers = 0;
+            ArrayList<Modifier2> modifiers = tg.modifiers;
+            Modifier2 modifier = null;
+            double minLF = Integer.MAX_VALUE;
+            int j = 0;
+            boolean isValid = false;
+            for (j = 0; j < modifiers.size(); j++) {
+                modifier = modifiers.get(j);
                 //if(modifier.type == area)
-                    //type3Area=true;
-                if(modifier.type==toEnd)
+                //type3Area=true;
+                if (modifier.type == toEnd) {
                     continue;
-                if(modifier.type==aboveMiddle && isChange1Area==false)
+                }
+                if (modifier.type == aboveMiddle && isChange1Area == false) {
                     continue;
-                if(modifier.lineFactor<minLF)
-                    minLF=modifier.lineFactor;
-                isValid=true;
+                }
+                if (modifier.lineFactor < minLF) {
+                    minLF = modifier.lineFactor;
+                }
+                isValid = true;
             }
             //if there are no 'area' modifiers then exit early
-            if(!isValid)
+            if (!isValid) {
                 return;
-            
-            heightModifiers=Math.abs(minLF)*sz;
-            boolean expandModifiers=false,shrinkModifiers=false;
-            if(heightModifiers>heightMBR)
-                shrinkModifiers=true;
-            else if(heightModifiers<0.5*heightMBR)
-                expandModifiers=true;
-            
-            boolean addEllipsis=false;
-            //modifierE is ellipses modifier
-            Modifier2 modifierE=new Modifier2();
-            if(expandModifiers)
-            {
-                double factor=heightMBR/heightModifiers;
-                factor=1+(factor-1)/4;
-                if (factor>2)
-                        factor=2;
-                for(j=0;j<modifiers.size();j++)
-                {
-                    modifier=modifiers.get(j);                        
-                    if(modifier.type==aboveMiddle)
-                    {
-                        if(isChange1Area==false)
-                            continue;
-                    }
-                    else if(modifier.type!=area)
-                            continue;
-                    modifier.lineFactor*=factor;
-                }
             }
-            else if(shrinkModifiers)
-            {                
-                double deltaLF=(heightModifiers-heightMBR)/sz;
-                double newLF=0;
-                //use maxLF for the ellipsis modifier
-                double maxLF=0;
-                for(j=0;j<modifiers.size();j++)
-                {                    
-                    modifier=modifiers.get(j);
-                    if(modifier.type==aboveMiddle)
-                    {
-                        if(isChange1Area==false)
+
+            heightModifiers = Math.abs(minLF) * sz;
+            boolean expandModifiers = false, shrinkModifiers = false;
+            if (heightModifiers > heightMBR) {
+                shrinkModifiers = true;
+            } else if (heightModifiers < 0.5 * heightMBR) {
+                expandModifiers = true;
+            }
+
+            boolean addEllipsis = false;
+            //modifierE is ellipses modifier
+            Modifier2 modifierE = new Modifier2();
+            if (expandModifiers) {
+                double factor = heightMBR / heightModifiers;
+                factor = 1 + (factor - 1) / 4;
+                if (factor > 2) {
+                    factor = 2;
+                }
+                for (j = 0; j < modifiers.size(); j++) {
+                    modifier = modifiers.get(j);
+                    if (modifier.type == aboveMiddle) {
+                        if (isChange1Area == false) {
                             continue;
-                    }
-                    else if(modifier.type!=area)
-                            continue;
-                    newLF=modifier.lineFactor+deltaLF;
-                    if(Math.abs(newLF*sz)>=heightMBR)                        
-                    {                        
-                        //flag the modifier to remove
-                        if(modifier.lineFactor>minLF)
-                        {
-                            modifierE.type=modifier.type;
-                            modifier.type=7;
-                            if(!modifier.text.isEmpty())
-                                addEllipsis=true;
                         }
-                        modifier.lineFactor=newLF;
-                        //modifierE.type=area;
-                        //modifierE.type=modifier.type;
-                        modifierE.textPath=modifier.textPath;
+                    } else if (modifier.type != area) {
                         continue;
                     }
-                    modifier.lineFactor=newLF;
+                    modifier.lineFactor *= factor;
                 }
-                ArrayList<Modifier2>modifiers2=new ArrayList();
-                for(j=0;j<modifiers.size();j++)
-                {
-                    modifier=modifiers.get(j);
-                    if(modifier.type!=7)
-                    {
-                        if(modifier.lineFactor>maxLF)
-                            maxLF=modifier.lineFactor;
+            } else if (shrinkModifiers) {
+                double deltaLF = (heightModifiers - heightMBR) / sz;
+                double newLF = 0;
+                //use maxLF for the ellipsis modifier
+                double maxLF = 0;
+                for (j = 0; j < modifiers.size(); j++) {
+                    modifier = modifiers.get(j);
+                    if (modifier.type == aboveMiddle) {
+                        if (isChange1Area == false) {
+                            continue;
+                        }
+                    } else if (modifier.type != area) {
+                        continue;
+                    }
+                    newLF = modifier.lineFactor + deltaLF;
+                    if (Math.abs(newLF * sz) >= heightMBR) {
+                        //flag the modifier to remove
+                        if (modifier.lineFactor > minLF) {
+                            modifierE.type = modifier.type;
+                            modifier.type = 7;
+                            if (!modifier.text.isEmpty()) {
+                                addEllipsis = true;
+                            }
+                        }
+                        modifier.lineFactor = newLF;
+                        //modifierE.type=area;
+                        //modifierE.type=modifier.type;
+                        modifierE.textPath = modifier.textPath;
+                        continue;
+                    }
+                    modifier.lineFactor = newLF;
+                }
+                ArrayList<Modifier2> modifiers2 = new ArrayList();
+                for (j = 0; j < modifiers.size(); j++) {
+                    modifier = modifiers.get(j);
+                    if (modifier.type != 7) {
+                        if (modifier.lineFactor > maxLF) {
+                            maxLF = modifier.lineFactor;
+                        }
                         modifiers2.add(modifier);
-                    }                    
+                    }
                 }
-                if(addEllipsis)
-                {
+                if (addEllipsis) {
                     Character letter = (char) 9679;
                     String s = Character.toString(letter);
                     String echelonSymbol = s + s + s;
-                    modifierE.text=echelonSymbol;
-                    modifierE.lineFactor=maxLF+1;
+                    modifierE.text = echelonSymbol;
+                    modifierE.lineFactor = maxLF + 1;
                     modifiers2.add(modifierE);
                 }
-                tg.modifiers=modifiers2;
+                tg.modifiers = modifiers2;
             }   //end shrink modifiers
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             ErrorLogger.LogException(_className, "scaleModifiers",
                     new RendererException("Failed inside scaleModifiers", exc));
-        }}
+        }
+    }
+
     /**
      * Function to replace AddModifiers for most clients. The additional
      * converter parameter enables better accuracy locating the modifiers. Do
@@ -2628,7 +2702,7 @@ public class Modifier2 {
                 return;
             }
             //ArrayList<POINT2>origPoints=lineutility.getDeepCopy(tg.Pixels);
-            ArrayList<POINT2>origPoints=null;
+            ArrayList<POINT2> origPoints = null;
             Font font = tg.get_Font();
             boolean shiftLines = Channels.getShiftLines();
             boolean usas = false, foundSegment = false;
@@ -2804,7 +2878,7 @@ public class Modifier2 {
                 case TacticalLines.BBS_LINE:
                 case TacticalLines.BBS_AREA:
                     //case TacticalLines.LAA:
-                    origPoints=lineutility.getDeepCopy(tg.Pixels);
+                    origPoints = lineutility.getDeepCopy(tg.Pixels);
                     break;
                 default:    //exit early for those not applicable
                     return;
@@ -2894,6 +2968,8 @@ public class Modifier2 {
                     AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, true);
                     break;
                 case TacticalLines.DUMMY:
+                    if(areasWithTwoLabels(tg,tg.get_H(),tg.get_N(),g2d)==true)
+                        break;
                     if (affiliation != null && affiliation.equals("H")) {
                         AddIntegralModifier(tg, tg.get_N(), aboveMiddle, 0, 0, 1, true);
                         AddIntegralModifier(tg, tg.get_N(), aboveMiddle, 0, lastIndex / 2, lastIndex / 2 + 1, true);
@@ -3337,39 +3413,39 @@ public class Modifier2 {
                     break;
                 case TacticalLines.SAAFR:
                     pt0 = new POINT2(tg.Pixels.get(middleSegment));
-                    dist=pt0.style/tg.get_Font().getSize();
+                    dist = pt0.style / tg.get_Font().getSize();
                     dist /= 2;
                     if (tg.getSymbologyStandard() == RendererSettings.Symbology_2525C) {
                         AddIntegralModifier(tg, "SAAFR " + tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -4 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -5 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Width: " + tg.get_H2(), aboveMiddle, -6 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Name: " + tg.get_Name(), aboveMiddle, -7 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "DTG Start: " + tg.get_DTG(), aboveMiddle, -3 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "DTG End: " + tg.get_DTG1(), aboveMiddle, -2 * csFactor-dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -4 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -5 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Width: " + tg.get_H2(), aboveMiddle, -6 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Name: " + tg.get_Name(), aboveMiddle, -7 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "DTG Start: " + tg.get_DTG(), aboveMiddle, -3 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "DTG End: " + tg.get_DTG1(), aboveMiddle, -2 * csFactor - dist, middleSegment, middleSegment + 1, false);
                     } else {
                         AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -2 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -3 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Width: " + tg.get_H2(), aboveMiddle, -4 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Name: " + tg.get_Name(), aboveMiddle, -5 * csFactor-dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -2 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -3 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Width: " + tg.get_H2(), aboveMiddle, -4 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Name: " + tg.get_Name(), aboveMiddle, -5 * csFactor - dist, middleSegment, middleSegment + 1, false);
                     }
                     break;
                 case TacticalLines.AC:
                     pt0 = new POINT2(tg.Pixels.get(middleSegment));
-                    dist=pt0.style/tg.get_Font().getSize();
+                    dist = pt0.style / tg.get_Font().getSize();
                     dist /= 2;
                     if (tg.getSymbologyStandard() == RendererSettings.Symbology_2525C) {
                         AddIntegralModifier(tg, label + " " + tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -4 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -5 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Width: " + tg.get_H2(), aboveMiddle, -6 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "Name: " + tg.get_Name(), aboveMiddle, -7 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "DTG Start: " + tg.get_DTG(), aboveMiddle, -3 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, "DTG End: " + tg.get_DTG1(), aboveMiddle, -2 * csFactor-dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Max Alt: " + tg.get_H1(), aboveMiddle, -4 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Min Alt: " + tg.get_H(), aboveMiddle, -5 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Width: " + tg.get_H2(), aboveMiddle, -6 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "Name: " + tg.get_Name(), aboveMiddle, -7 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "DTG Start: " + tg.get_DTG(), aboveMiddle, -3 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "DTG End: " + tg.get_DTG1(), aboveMiddle, -2 * csFactor - dist, middleSegment, middleSegment + 1, false);
                     } else {
-                        AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, -0.5 * csFactor-dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, tg.get_T1(), aboveMiddle, 0.5 * csFactor-dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, -0.5 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, tg.get_T1(), aboveMiddle, 0.5 * csFactor - dist, middleSegment, middleSegment + 1, false);
                     }
                     break;
                 case TacticalLines.MRR_USAS:
@@ -3808,7 +3884,7 @@ public class Modifier2 {
                 default:
                     break;
             }
-            tg.Pixels=origPoints;
+            tg.Pixels = origPoints;
             scaleModifiers(tg);
         } catch (Exception exc) {
             //clsUtility.WriteFile("Error in Modifier2.AddModifiers");
@@ -4029,8 +4105,7 @@ public class Modifier2 {
             }
             //diagnostic
             //add early return for linetypes not affected
-            switch(tg.get_LineType())
-            {
+            switch (tg.get_LineType()) {
                 case TacticalLines.BS_RECTANGLE:
                 case TacticalLines.BBS_RECTANGLE:
                 case TacticalLines.BREACH:
@@ -4098,10 +4173,10 @@ public class Modifier2 {
                 case TacticalLines.RANGE_FAN_SECTOR:
                     break;
                 default:
-                    return;                
+                    return;
             }
             //end section
-            ArrayList<POINT2>origPoints=lineutility.getDeepCopy(tg.Pixels);
+            ArrayList<POINT2> origPoints = lineutility.getDeepCopy(tg.Pixels);
             if (tg.modifiers == null) {
                 tg.modifiers = new ArrayList();
             }
@@ -4553,7 +4628,7 @@ public class Modifier2 {
                     break;
             }//end switch
             scaleModifiers(tg);
-            tg.Pixels=origPoints;
+            tg.Pixels = origPoints;
             g2d.dispose();
             g2d = null;
         } catch (Exception exc) {
@@ -4591,8 +4666,9 @@ public class Modifier2 {
             String[] az = T.split(",");
             double min = 0, max = 0;
             int numSectors = az.length / 2;
-            if(!H1.isEmpty())
+            if (!H1.isEmpty()) {
                 altitudes = H1.split(",");
+            }
             //there must be at least one sector
             if (numSectors < 1) {
                 return false;
@@ -4644,8 +4720,7 @@ public class Modifier2 {
                 pt2.y = pt22d.getY();
                 locModifier.add(pt2);
             }
-            if(altitudes != null)
-            {
+            if (altitudes != null) {
                 for (int k = 0; k < altitudes.length; k++) {
                     if (k >= locModifier.size()) {
                         break;
@@ -4990,13 +5065,13 @@ public class Modifier2 {
                         stringWidthEchelonSymbol = metrics.stringWidth(echelonSymbol);
                     }
                     //diagnostic
-                    if(hmap==null || hmap.isEmpty())
-                    {
+                    if (hmap == null || hmap.isEmpty()) {
                         shape.moveTo(tg.Pixels.get(0));
-                        for(j=1;j<tg.Pixels.size();j++)
+                        for (j = 1; j < tg.Pixels.size(); j++) {
                             shape.lineTo(tg.Pixels.get(j));
+                        }
                         shapes.add(shape);
-                        break;                        
+                        break;
                     }
                     //end section
                     for (j = 0; j < tg.Pixels.size() - 1; j++) {
@@ -5023,8 +5098,7 @@ public class Modifier2 {
 
                         //uncoment comment to remove line breaks for GE
                         //if (lineTooShort || tg.get_Client().equals("ge")) 
-                        if (tg.get_Client().equals("ge") || GetBoundarySegmentTooShort(tg, g2d, j)==true) 
-                        {
+                        if (tg.get_Client().equals("ge") || GetBoundarySegmentTooShort(tg, g2d, j) == true) {
                             if (segShape != null) {
                                 segShape.lineTo(pt1);
                                 shapes.add(segShape);
