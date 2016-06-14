@@ -1821,9 +1821,10 @@ public class Modifier2 {
             double dist = 0;
             int sumLabel = 0, sumENY = 0;
             for (j = 0; j < tg.Pixels.size() - 1; j++) {
-                if (eny.isEmpty()) {
-                    last = eny;
-                }
+                if(eny.isEmpty() && last.equalsIgnoreCase(label))
+                    last=eny;
+                if(label.isEmpty() && last.equalsIgnoreCase(eny))
+                    last=label;
                 pt0 = tg.Pixels.get(j);
                 pt1 = tg.Pixels.get(j + 1);
                 dist = lineutility.CalcDistanceDouble(pt0, pt1);
@@ -1840,25 +1841,28 @@ public class Modifier2 {
                     sumENY = 2;
                 }
             }
-            //if we don't have at least 2 valid segments for both the label and the ENY then return false
-            if (sumLabel < 2 || sumENY < 2) {
+            if (sumLabel + sumENY < 4) {
                 return false;
             }
             //at this point we have valid pixels for alternating labels, i.e. at least one of each will appear
+            last=eny;
             for (j = 0; j < tg.Pixels.size() - 1; j++) {
-                if (eny.isEmpty()) {
-                    last = eny;
-                }
+                if(eny.isEmpty() && last.equalsIgnoreCase(label))
+                    last=eny;
+                if(label.isEmpty() && last.equalsIgnoreCase(eny))
+                    last=label;
                 pt0 = tg.Pixels.get(j);
                 pt1 = tg.Pixels.get(j + 1);
                 dist = lineutility.CalcDistanceDouble(pt0, pt1);
                 if (dist > 1.5 * labelLength && last.equalsIgnoreCase(eny)) {
                     //add the label
-                    AddIntegralAreaModifier(tg, label, aboveMiddle, 0, pt0, pt1, true);
+                    if(!label.isEmpty())
+                        AddIntegralAreaModifier(tg, label, aboveMiddle, 0, pt0, pt1, true);
                     last = label;
                 } else if (dist > 1.5 * enyLength && last.equalsIgnoreCase(label)) {
                     //add the eny
-                    AddIntegralAreaModifier(tg, eny, aboveMiddle, 0, pt0, pt1, true);
+                    if(!eny.isEmpty())
+                        AddIntegralAreaModifier(tg, eny, aboveMiddle, 0, pt0, pt1, true);
                     last = eny;
                 }
             }
