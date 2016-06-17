@@ -13,10 +13,10 @@
 	<description>mil-sym-java Master Pom</description>
 
 	<modules>
-		<module>core/pom.xml</module>
-		<module>renderer/pom.xml</module>
-		<module>service/pom.xml</module>
-		<module>samples/pom.xml</module>
+		<module>core</module>
+		<module>renderer</module>
+		<module>service</module>
+		<module>samples</module>
 	</modules>
 
 	<build>
