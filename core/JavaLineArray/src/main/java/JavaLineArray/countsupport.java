@@ -64,6 +64,7 @@ public final class countsupport
             switch (vbiDrawThis)
             {
                 case TacticalLines.BS_ELLIPSE:
+                case TacticalLines.PBS_ELLIPSE:
                     count=37;
                     break;
                 case TacticalLines.BS_CROSS:

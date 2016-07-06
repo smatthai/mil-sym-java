@@ -316,6 +316,7 @@ public final class clsUtility {
                 case TacticalLines.BBS_RECTANGLE:
                 case TacticalLines.BS_RECTANGLE:
                 case TacticalLines.BS_ELLIPSE:
+                case TacticalLines.PBS_ELLIPSE:
                 case TacticalLines.BS_CROSS:
                 case TacticalLines.BS_BBOX:
                 case TacticalLines.BBS_POINT:

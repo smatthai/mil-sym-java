@@ -209,6 +209,8 @@ public final class CELineArray {
                 
                 if(strLine.equalsIgnoreCase("BS_ELLIPSE"))
                     return TacticalLines.BS_ELLIPSE;
+                if(strLine.equalsIgnoreCase("PBS_ELLIPSE"))
+                    return TacticalLines.PBS_ELLIPSE;
                 if(strLine.equalsIgnoreCase("OVERHEAD_WIRE"))
                     return TacticalLines.OVERHEAD_WIRE;
                 if(strLine.equalsIgnoreCase("CORDONSEARCH"))
@@ -824,6 +826,8 @@ public final class CELineArray {
                 return TacticalLines.BS_CROSS;
             if(strLine.equalsIgnoreCase("BS_ELLIPSE-----"))
                 return TacticalLines.BS_ELLIPSE;
+            if(strLine.equalsIgnoreCase("PBS_ELLIPSE----"))
+                return TacticalLines.PBS_ELLIPSE;
             if(strLine.equalsIgnoreCase("BS_RECTANGLE---"))
                 return TacticalLines.BS_RECTANGLE;
             //buffered shapes

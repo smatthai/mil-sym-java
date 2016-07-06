@@ -301,7 +301,7 @@ public final class clsRenderer {
             double x_alt = 0;
             int n_alt = 0;
             String strXAlt = "";
-            if(lineType==TacticalLines.BS_ELLIPSE)
+            if(lineType==TacticalLines.BS_ELLIPSE || lineType==TacticalLines.PBS_ELLIPSE)
             {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);

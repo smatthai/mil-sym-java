@@ -1438,6 +1438,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.AC:
                 case TacticalLines.SAAFR:
                 case TacticalLines.BS_ELLIPSE:
+                case TacticalLines.PBS_ELLIPSE:
                     return;
                 default:
                     break;

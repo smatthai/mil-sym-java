@@ -14,6 +14,7 @@ public final class TacticalLines {
     public static final int BS_AREA=11000000;
     public static final int BS_CROSS=12000000;
     public static final int BS_ELLIPSE=13000000;
+    public static final int PBS_ELLIPSE=13000001;
     public static final int BS_RECTANGLE=14000000;
     
     public static final int BBS_LINE=15000000;
