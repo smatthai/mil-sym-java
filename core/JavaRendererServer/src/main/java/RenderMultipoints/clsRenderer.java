@@ -766,7 +766,7 @@ public final class clsRenderer {
                     break;
             }
             //Mil-std-2525C
-            if (lineType == TacticalLines.RECTANGULAR) {
+            if (lineType == TacticalLines.RECTANGULAR || lineType==TacticalLines.PBS_RECTANGLE) {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
                 //if all these conditions are not met we do not want to set any tg modifiers

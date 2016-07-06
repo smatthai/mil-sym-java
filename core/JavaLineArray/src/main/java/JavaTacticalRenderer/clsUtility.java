@@ -161,6 +161,7 @@ public final class clsUtility {
         int result = -1;
         switch (lineType) {
             case TacticalLines.RECTANGULAR:
+            case TacticalLines.PBS_RECTANGLE:
                 result = 1; //was 3
                 break;
             case TacticalLines.BBS_POINT:
@@ -1435,6 +1436,7 @@ public final class clsUtility {
                     }
                     return false;
                 case TacticalLines.RECTANGULAR:
+                case TacticalLines.PBS_RECTANGLE:
                 case TacticalLines.CIRCULAR:
                 case TacticalLines.BBS_POINT:
                 case TacticalLines.FSA_CIRCULAR:
@@ -2461,6 +2463,7 @@ public final class clsUtility {
             linetypes.put("G*FPLCR---****X", TacticalLines.RFL);
             linetypes.put("G*FPAT----****X", TacticalLines.AT);
             linetypes.put("G*FPATR---****X", TacticalLines.RECTANGULAR);
+            linetypes.put("PBS_RECTANGLE--", TacticalLines.PBS_RECTANGLE);
             linetypes.put("G*FPATC---****X", TacticalLines.CIRCULAR);
             linetypes.put("G*FPATG---****X", TacticalLines.SERIES);
             linetypes.put("G*FPATS---****X", TacticalLines.SMOKE);
