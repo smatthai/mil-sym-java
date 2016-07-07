@@ -2797,6 +2797,10 @@ public final class clsUtility {
             {
                 strMask=str;
             }
+            else if(str.equalsIgnoreCase("PBS_RECTANGLE--"))
+            {
+                strMask=str;
+            }
             else if(str.equalsIgnoreCase("BBS_RECTANGLE--"))
             {
                 strMask=str;
