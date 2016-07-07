@@ -162,7 +162,9 @@ public final class clsUtility {
         switch (lineType) {
             case TacticalLines.RECTANGULAR:
             case TacticalLines.PBS_RECTANGLE:
-                result = 1; //was 3
+            case TacticalLines.PBS_ELLIPSE:
+            case TacticalLines.BS_ELLIPSE:
+                result = 1;
                 break;
             case TacticalLines.BBS_POINT:
             case TacticalLines.CIRCULAR:

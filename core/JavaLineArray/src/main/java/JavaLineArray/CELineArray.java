@@ -562,8 +562,6 @@ public final class CELineArray {
 
                 if(strLine.equalsIgnoreCase("RECTANGULAR"))
                     return TacticalLines.RECTANGULAR;
-                if(strLine.equalsIgnoreCase("PBS_RECTANGLE"))
-                    return TacticalLines.PBS_RECTANGLE;
                 if(strLine.equalsIgnoreCase("CIRCULAR"))
                     return TacticalLines.CIRCULAR;
                 if(strLine.equalsIgnoreCase("SERIES"))
