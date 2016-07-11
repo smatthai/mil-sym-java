@@ -65,6 +65,7 @@ public final class countsupport
             {
                 case TacticalLines.BS_ELLIPSE:
                 case TacticalLines.PBS_ELLIPSE:
+                case TacticalLines.PBS_CIRCLE:
                     count=37;
                     break;
                 case TacticalLines.BS_CROSS:

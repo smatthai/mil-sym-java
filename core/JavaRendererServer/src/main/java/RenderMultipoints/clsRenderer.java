@@ -301,7 +301,7 @@ public final class clsRenderer {
             double x_alt = 0;
             int n_alt = 0;
             String strXAlt = "";
-            if(lineType==TacticalLines.BS_ELLIPSE || lineType==TacticalLines.PBS_ELLIPSE)
+            if(lineType==TacticalLines.BS_ELLIPSE || lineType==TacticalLines.PBS_ELLIPSE || lineType==TacticalLines.PBS_CIRCLE)
             {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
@@ -309,6 +309,11 @@ public final class clsRenderer {
                     AN=new ArrayList<Double>();
                 if(AN.size()<1)
                     AN.add(new Double(0));
+                if(AM.size()<2) //PBS_CIRCLE
+                {
+                    double am0=AM.get(0);
+                    AM.add(am0);
+                }
                 if(AM != null && AM.size()>=2 && AN != null && AN.size()>=1)
                 {
                     POINT2 ptAzimuth=new POINT2(0,0);
@@ -766,9 +771,14 @@ public final class clsRenderer {
                     break;
             }
             //Mil-std-2525C
-            if (lineType == TacticalLines.RECTANGULAR || lineType==TacticalLines.PBS_RECTANGLE) {
+            if (lineType == TacticalLines.RECTANGULAR || lineType==TacticalLines.PBS_RECTANGLE || lineType==TacticalLines.PBS_SQUARE) {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
+                if(AM.size()<1)
+                {
+                    double am0=AM.get(0);
+                    AM.add(am0);
+                }
                 //if all these conditions are not met we do not want to set any tg modifiers
                 if (AM != null && AM.size() > 1 && AN != null && AN.size() > 0) {
                     String strT1 = Double.toString(AM.get(0));    //width

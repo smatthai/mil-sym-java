@@ -245,6 +245,7 @@ public final class clsUtilityCPOF {
                     break;
                 case TacticalLines.RECTANGULAR:
                 case TacticalLines.PBS_RECTANGLE:
+                case TacticalLines.PBS_SQUARE:
                     tg.set_T1(length);
                     tg.set_H(width);
                     tg.set_H2(attitude);
@@ -341,6 +342,7 @@ public final class clsUtilityCPOF {
                     break;
                 case TacticalLines.RECTANGULAR:
                 case TacticalLines.PBS_RECTANGLE:
+                case TacticalLines.PBS_SQUARE:
                     if(SymbolUtilities.isNumber(tg.get_T1()))
                         length.value[0] = Double.parseDouble(tg.get_T1());
                     if(SymbolUtilities.isNumber(tg.get_H()))
@@ -590,6 +592,7 @@ public final class clsUtilityCPOF {
                     break;
                 case TacticalLines.RECTANGULAR:
                 case TacticalLines.PBS_RECTANGLE:
+                case TacticalLines.PBS_SQUARE:
                     //AFATDS swap length and width
                     //comment next three lines to render per Mil-Std-2525
                     //double temp=width.value[0];
@@ -1442,6 +1445,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.SAAFR:
                 case TacticalLines.BS_ELLIPSE:
                 case TacticalLines.PBS_ELLIPSE:
+                case TacticalLines.PBS_CIRCLE:
                     return;
                 default:
                     break;
