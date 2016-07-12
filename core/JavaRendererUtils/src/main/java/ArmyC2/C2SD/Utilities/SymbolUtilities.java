@@ -184,7 +184,7 @@ public class SymbolUtilities {
            StringBuilder sb = new StringBuilder("");
             char codingScheme = symbolID.charAt(0);
             
-            if(symbolID.startsWith("BS_") || symbolID.startsWith("BBS_"))
+            if(symbolID.startsWith("BS_") || symbolID.startsWith("BBS_") || symbolID.startsWith("PBS_"))
             {
                 return symbolID;
             }

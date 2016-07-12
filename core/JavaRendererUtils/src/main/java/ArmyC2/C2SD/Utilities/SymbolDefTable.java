@@ -265,7 +265,7 @@ public class SymbolDefTable {
                 return false;
             }
         } 
-        else if(symbolID.startsWith("BS_") || symbolID.startsWith("BBS_"))
+        else if(symbolID.startsWith("BS_") || symbolID.startsWith("BBS_") || symbolID.startsWith("PBS_"))
         {
             return true;
         }
