@@ -309,10 +309,13 @@ public final class clsRenderer {
                     AN=new ArrayList<Double>();
                 if(AN.size()<1)
                     AN.add(new Double(0));
-                if(AM.size()<2) //PBS_CIRCLE
+                if(lineType==TacticalLines.PBS_CIRCLE)
                 {
                     double am0=AM.get(0);
-                    AM.add(am0);
+                    if(AM.size()<2)
+                        AM.add(am0);
+                    else
+                        AM.set(1, am0);
                 }
                 if(AM != null && AM.size()>=2 && AN != null && AN.size()>=1)
                 {
@@ -774,10 +777,13 @@ public final class clsRenderer {
             if (lineType == TacticalLines.RECTANGULAR || lineType==TacticalLines.PBS_RECTANGLE || lineType==TacticalLines.PBS_SQUARE) {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
-                if(AM.size()<1)
+                if(lineType==TacticalLines.PBS_SQUARE)
                 {
                     double am0=AM.get(0);
-                    AM.add(am0);
+                    if(AM.size()<2)
+                        AM.add(am0);
+                    else
+                        AM.set(1,am0);
                 }
                 //if all these conditions are not met we do not want to set any tg modifiers
                 if (AM != null && AM.size() > 1 && AN != null && AN.size() > 0) {
