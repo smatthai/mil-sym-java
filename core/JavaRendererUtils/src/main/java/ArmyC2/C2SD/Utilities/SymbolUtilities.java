@@ -154,7 +154,7 @@ public class SymbolUtilities {
                 sb.append(strSymbolID.substring(4, 10));
                 sb.append("****X");
             }
-            else if(scheme != 'W' && scheme != 'B')
+            else if(scheme != 'W' && scheme != 'B'  && scheme != 'P')
             {
                 sb.append(strSymbolID.charAt(0));
                 sb.append("*");
