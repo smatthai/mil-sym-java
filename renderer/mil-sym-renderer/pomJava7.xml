@@ -7,7 +7,7 @@
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>mil-sym-renderer</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1.8</version>
+	<version>0.1.9</version>
 
 	<name>mil-sym-renderer</name>
 	<url>http://maven.apache.org</url>
