@@ -785,6 +785,11 @@ public final class clsRenderer {
                     else
                         AM.set(1,am0);
                 }
+                if(AN==null)                
+                    AN=new ArrayList();
+                
+                if(AN.isEmpty())
+                    AN.add(0d);
                 //if all these conditions are not met we do not want to set any tg modifiers
                 if (AM != null && AM.size() > 1 && AN != null && AN.size() > 0) {
                     String strT1 = Double.toString(AM.get(0));    //width
