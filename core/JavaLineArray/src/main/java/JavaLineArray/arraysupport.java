@@ -141,6 +141,7 @@ public final class arraysupport
             //segments=new long[numpts2];
             //lineutility.BoundPoints(ref pLinePoints,vblSaveCounter,ref segments);
             int numGlyphs=0;
+            double dGlyphSize=0;
             pSpikePoints = new POINT2[lCount];
             lineutility.InitializePOINT2Array(pSpikePoints);
             switch (lineType) {
@@ -159,11 +160,17 @@ public final class arraysupport
                     continue;
                 }
                 numGlyphs=(int)(dLengthSegment/dIncrement);
-                if(numGlyphs>3)                
-                    dIncrement=(int)(dLengthSegment/numGlyphs);
+                //dGlyphSize=dIncrement/2;
+                dGlyphSize=10;
+                dIncrement=(dLengthSegment/numGlyphs);
+                if(dIncrement>25)
+                {
+                    dIncrement=25;
+                    numGlyphs=(int)(dLengthSegment/dIncrement);                    
+                }
                 
                 //for (k = 0; k < dLengthSegment / 20 - 1; k++)
-                for (k = 0; k < dLengthSegment / dIncrement - 1; k++)
+                for (k = 0; k < numGlyphs; k++)
                 {
                     pSpikePoints[nCounter] = lineutility.ExtendLine2Double(pLinePoints[j + 1], pLinePoints[j], -k * dIncrement, 0);
                     nCounter++;
@@ -171,35 +178,45 @@ public final class arraysupport
                     pSpikePoints[nCounter] = lineutility.ExtendLine2Double(pLinePoints[j + 1], pLinePoints[j], -k * dIncrement - dIncrement/2, 0);
                     nCounter++;
                     pt0 = new POINT2(pSpikePoints[nCounter - 1]);
-                    pt1 = lineutility.ExtendLineDouble(pLinePoints[j], pSpikePoints[nCounter - 1], 10);
+                    //pt1 = lineutility.ExtendLineDouble(pLinePoints[j], pSpikePoints[nCounter - 1], 10);
+                    pt1 = lineutility.ExtendLineDouble(pLinePoints[j], pSpikePoints[nCounter - 1], dIncrement/2);
                     //the spikes
                     if (pLinePoints[j].x > pLinePoints[j + 1].x) {
-                        pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 3, 10);
+                        //pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 3, 10);
+                        pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 3, dGlyphSize);
                         nCounter++;
-                        pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 3, 10);
+                        //pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 3, 10);
+                        pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 3, dGlyphSize);
                         nCounter++;
                     }
                     if (pLinePoints[j].x < pLinePoints[j + 1].x) {
-                        pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 2, 10);
+                        //pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 2, 10);
+                        pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 2, dGlyphSize);
                         nCounter++;
-                        pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 2, 10);
+                        //pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 2, 10);
+                        pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 2, dGlyphSize);
                         nCounter++;
                     }
                     if (pLinePoints[j].x == pLinePoints[j + 1].x) {
                         if (pLinePoints[j].y < pLinePoints[j + 1].y) {
-                            pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 1, 10);
+                            //pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 1, 10);
+                            pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 1, dGlyphSize);
                             nCounter++;
-                            pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 1, 10);
+                            //pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 1, 10);
+                            pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 1, dGlyphSize);
                             nCounter++;
                         }
                         if (pLinePoints[j].y > pLinePoints[j + 1].y) {
-                            pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 0, 10);
+                            //pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 0, 10);
+                            pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt0, 0, dGlyphSize);
                             nCounter++;
-                            pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 0, 10);
+                            //pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 0, 10);
+                            pSpikePoints[nCounter] = lineutility.ExtendDirectedLine(pLinePoints[j], pLinePoints[j + 1], pt1, 0, dGlyphSize);
                             nCounter++;
                         }
                     }
-                    pSpikePoints[nCounter] = lineutility.ExtendLine2Double(pLinePoints[j], pSpikePoints[nCounter - 3], 10, 0);
+                    //pSpikePoints[nCounter] = lineutility.ExtendLine2Double(pLinePoints[j], pSpikePoints[nCounter - 3], 10, 0);
+                    pSpikePoints[nCounter] = lineutility.ExtendLine2Double(pLinePoints[j], pSpikePoints[nCounter - 3], dIncrement/2, 0);
                     nCounter++;
                 }//end for k
                 pSpikePoints[nCounter] = new POINT2(pLinePoints[j + 1]);
