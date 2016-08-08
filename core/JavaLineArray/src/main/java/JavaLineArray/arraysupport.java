@@ -326,7 +326,7 @@ public final class arraysupport
             POINT2[] pSpikePoints = null;
             POINT2 pt0;
             double dSpikeSize = 0;
-            int limit = 0;
+            int limit = 0, numSpikes=0;
             //POINT2 crossPt1, crossPt2;
             //end delcarations
 
@@ -338,14 +338,21 @@ public final class arraysupport
                 dLengthSegment = lineutility.CalcDistanceDouble(pLinePoints[j], pLinePoints[j + 1]);
                 dIncrement = 20;
                 dSpikeSize = 10;
-                limit = (int) (dLengthSegment / dIncrement) - 1;
-                if (limit < 1) {
-                    pSpikePoints[nCounter] = new POINT2(pLinePoints[j]);
-                    nCounter++;
-                    pSpikePoints[nCounter] = new POINT2(pLinePoints[j + 1]);
-                    nCounter++;
-                    continue;
-                }
+//  diagnostic
+                numSpikes=(int)Math.round((dLengthSegment-10)/dIncrement);
+                dIncrement=dLengthSegment/numSpikes;
+                if(dIncrement>25)
+                    dIncrement=25;
+                //limit = (int) (dLengthSegment / dIncrement) - 1;                
+                limit = numSpikes - 1;                
+//                if (limit < 1) {
+//                    pSpikePoints[nCounter] = new POINT2(pLinePoints[j]);
+//                    nCounter++;
+//                    pSpikePoints[nCounter] = new POINT2(pLinePoints[j + 1]);
+//                    nCounter++;
+//                    continue;
+//                }
+//  end section                
                 for (k = -1; k < limit; k++)//was k=0 to limit
                 {
                     pSpikePoints[nCounter] = lineutility.ExtendLine2Double(pLinePoints[j + 1], pLinePoints[j], -k * dIncrement - 30, 0);
