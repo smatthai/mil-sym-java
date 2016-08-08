@@ -340,7 +340,11 @@ public final class lineutility {
             //if (deltaX == 0) //infinite slope
             if (Math.abs(deltaX)<1) 
             {
-                deltaX = 1;
+                //deltaX = 1;
+                if(deltaX>=0)
+                    deltaX=1;
+                else
+                    deltaX=-1;
                 result = 1;
             }
             deltaY = firstLinePoint.y - lastLinePoint.y;

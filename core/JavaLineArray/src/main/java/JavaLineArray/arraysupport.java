@@ -390,8 +390,8 @@ public final class arraysupport
             //clean up
             pSpikePoints = null;
         } catch (Exception exc) {
-            ErrorLogger.LogException(_className, "GetATWallPointsDouble",
-                    new RendererException("GetATWallPointsDouble", exc));
+            ErrorLogger.LogException(_className, "GetATWallPointsDouble2",
+                    new RendererException("GetATWallPointsDouble2", exc));
         }
         return nCounter;
     }
