@@ -519,4 +519,15 @@ public class TGLight {
     {
         return _wasClipped;
     }
+    
+    //boolean determines whether to add the range and azimuth modifiers for range fans
+    private boolean _setRFText=true;
+    public boolean get_RFText()
+    {
+        return _setRFText;
+    }
+    public void set_RFText(boolean value)
+    {
+        _setRFText=value;
+    }
 }
