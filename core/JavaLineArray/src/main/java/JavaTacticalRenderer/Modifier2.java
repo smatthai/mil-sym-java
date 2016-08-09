@@ -4617,9 +4617,6 @@ public class Modifier2 {
                     }
                     if(tg.get_RFText())
                     {
-                        if (tg.Pixels.size() > j * 102 + 25) {
-                            pt0 = tg.Pixels.get(j * 102 + 25);
-                        }
                         String H2 = tg.get_H2();
                         String[] am = H2.split(",");
                         for(j=0;j<am.length;j++)
@@ -4758,8 +4755,20 @@ public class Modifier2 {
                 pt2.y = pt22d.getY();
                 locModifier.add(pt2);
                 //diagnostic
+                if(tg.get_RFText()==false)
+                    continue;
                 ptLeft = mdlGeodesic.geodesic_coordinate(pt0, radius, AN.get(2*k));
+                //need ptLeft in geo pixels                
+                pt22d = new Point2D.Double(ptLeft.x, ptLeft.y);
+                pt22d = converter.GeoToPixels(pt22d);
+                ptLeft.x = pt22d.getX();
+                ptLeft.y = pt22d.getY();
                 ptRight = mdlGeodesic.geodesic_coordinate(pt0, radius, AN.get(2*k+1));
+                //need ptRight in geo pixels                
+                pt22d = new Point2D.Double(ptRight.x, ptRight.y);
+                pt22d = converter.GeoToPixels(pt22d);
+                ptRight.x = pt22d.getX();
+                ptRight.y = pt22d.getY();
                 locAZModifier.add(ptLeft);
                 locAZModifier.add(ptRight);
                 //end section
@@ -4782,18 +4791,8 @@ public class Modifier2 {
                 pt0 = locModifier.get(k);
                 AddAreaModifier(tg, "RG " + AM.get(k+1), area, -1, pt0, pt0);
                 ptLeft=locAZModifier.get(2*k);
-                //need ptLeft in geo pixels                
-                pt22d = new Point2D.Double(ptLeft.x, ptLeft.y);
-                pt22d = converter.GeoToPixels(pt22d);
-                ptLeft.x = pt22d.getX();
-                ptLeft.y = pt22d.getY();
                 ptRight=locAZModifier.get(2*k+1);
                 AddAreaModifier(tg, az[2*k], area, 0, ptLeft, ptLeft);                        
-                //need ptRight in geo pixels                
-                pt22d = new Point2D.Double(ptRight.x, ptRight.y);
-                pt22d = converter.GeoToPixels(pt22d);
-                ptRight.x = pt22d.getX();
-                ptRight.y = pt22d.getY();
                 AddAreaModifier(tg, az[2*k+1], area, 0, ptRight, ptRight);                        
             }
             //end section
