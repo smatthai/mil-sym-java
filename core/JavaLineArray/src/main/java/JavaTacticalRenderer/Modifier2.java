@@ -4615,7 +4615,7 @@ public class Modifier2 {
                             }
                         }
                     }
-                    if(tg.get_RFText())
+                    if(!tg.get_HideOptionalLabels())
                     {
                         String H2 = tg.get_H2();
                         String[] am = H2.split(",");
@@ -4755,7 +4755,7 @@ public class Modifier2 {
                 pt2.y = pt22d.getY();
                 locModifier.add(pt2);
                 //diagnostic
-                if(tg.get_RFText()==false)
+                if(tg.get_HideOptionalLabels())
                     continue;
                 ptLeft = mdlGeodesic.geodesic_coordinate(pt0, radius, AN.get(2*k));
                 //need ptLeft in geo pixels                
@@ -4784,7 +4784,7 @@ public class Modifier2 {
             }
             //diagnostic    add range and azimuth modifiers
             //add early eixt if tg.setRangeFanAZLabels is false
-            if(tg.get_RFText()==false)
+            if(tg.get_HideOptionalLabels())
                 return true;
             for(int k=0;k<numSectors;k++)
             {

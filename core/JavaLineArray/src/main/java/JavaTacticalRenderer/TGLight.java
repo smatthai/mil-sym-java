@@ -521,13 +521,13 @@ public class TGLight {
     }
     
     //boolean determines whether to add the range and azimuth modifiers for range fans
-    private boolean _setRFText=true;
-    public boolean get_RFText()
+    private boolean _HideOptionalLabels=false;
+    public boolean get_HideOptionalLabels()
     {
-        return _setRFText;
+        return _HideOptionalLabels;
     }
-    public void set_RFText(boolean value)
+    public void set_HideOptionalLabels(boolean value)
     {
-        _setRFText=value;
+        _HideOptionalLabels=value;
     }
 }
