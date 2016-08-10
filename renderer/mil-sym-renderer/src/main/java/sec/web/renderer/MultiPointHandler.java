@@ -2466,6 +2466,7 @@ public class MultiPointHandler {
         int lineWidth = 0;
         boolean useDashArray = symbol.getUseDashArray();
         String altMode = null;
+        boolean hideOptionalLabels = false;
         
         String symbolFillIDs = null;
         String symbolFillIconSize = null;
@@ -2679,6 +2680,10 @@ public class MultiPointHandler {
                 altMode = jsonModifiersArray.getString(MilStdAttributes.AltitudeMode);
             }
             
+            if (jsonModifiersArray.has(MilStdAttributes.HideOptionalLabels)) {
+                hideOptionalLabels = jsonModifiersArray.getBoolean(MilStdAttributes.HideOptionalLabels);
+            }
+            
             // These are for when we create a area fill that is comprised of symbols//////////
             if (jsonModifiersArray.has(SYMBOL_FILL_IDS) && !jsonModifiersArray.isNull(SYMBOL_FILL_IDS)) {
                 modifierMap.put(SYMBOL_FILL_IDS, jsonModifiersArray.getString(SYMBOL_FILL_IDS));
@@ -2742,6 +2747,7 @@ public class MultiPointHandler {
             if(altMode != null)
                 symbol.setAltitudeMode(altMode);
             
+            symbol.setHideOptionalLabels(hideOptionalLabels);
             symbol.setUseDashArray(useDashArray);
 
             // Check grpahic modifiers variables.  If we set earlier, populate

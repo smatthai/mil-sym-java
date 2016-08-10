@@ -86,6 +86,8 @@ public class MilStdSymbol {
     private static int _SymbologyStandard = 0;
 
     private static String _AltitudeMode = "";
+    
+    private static boolean _HideOptionalLabels = false;
 
     private static boolean _UseDashArray = true;
 
@@ -259,6 +261,14 @@ public class MilStdSymbol {
 
     public void setUseDashArray(boolean value) {
         _UseDashArray = value;
+    }
+    
+    public boolean getHideOptionalLabels() {
+        return _HideOptionalLabels;
+    }
+
+    public void setHideOptionalLabels(boolean value) {
+        _HideOptionalLabels = value;
     }
 
     public void setUseLineInterpolation(boolean value) {
