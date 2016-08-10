@@ -100,6 +100,8 @@ public class MilStdAttributes {
      */
     public static final String DrawAsIcon = "ICON";
     
+    public static final String HideOptionalLabels = "HIDEOPTIONALLABELS";
+    
     public static ArrayList<String> GetModifierList()
     {
         ArrayList<String> list = new ArrayList<String>();
