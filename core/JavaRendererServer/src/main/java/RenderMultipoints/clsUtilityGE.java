@@ -469,18 +469,6 @@ public final class clsUtilityGE {
         {
             //this is not going to work for splines
             float[] coords = new float[6];
-//            Rectangle2D clipBounds=null;
-//            ArrayList<Point2D>clipPoints=null;
-//            
-//            if(clipArea != null)
-//            {
-//                if(clipArea.getClass().isAssignableFrom(Rectangle2D.Double.class))
-//                    clipBounds=(Rectangle2D)clipArea;
-//                if(clipArea.getClass().isAssignableFrom(Rectangle.class))
-//                    clipBounds=(Rectangle2D)clipArea;
-//                else if(clipArea.getClass().isAssignableFrom(ArrayList.class))
-//                    clipPoints=(ArrayList<Point2D>)clipArea;
-//            }
             for (PathIterator i = shape.getPathIterator(null); !i.isDone(); i.next())
             {
                 int type = i.currentSegment(coords);
@@ -499,7 +487,8 @@ public final class clsUtilityGE {
                                     ptsPoly.add(pt2d);
                                 }
                             }                           
-                            polylines2.add(ptsPoly);
+                            if(ptsPoly.size()>1)
+                                polylines2.add(ptsPoly);
                         }
                         //start the ArrayList for next Polyline                       
                         ptsPoly=new ArrayList();
@@ -538,17 +527,9 @@ public final class clsUtilityGE {
                         ptsPoly.add(pt2d);
                     }
                 }
-                polylines2.add(ptsPoly);                
+                if(ptsPoly.size()>1)
+                    polylines2.add(ptsPoly);                
             }
-            //assumes caller has set clipbounds to null if linetype is a closed polygon 
-//            if(clipBounds != null)
-//            {
-//                polylines2=ptsPolyToPtsPoly(tg,polylines2,clipBounds);
-//            }
-//            else if(clipPoints!=null)
-//            {
-//                polylines2=ptsPolyToPtsPoly(tg,polylines2,clipPoints);                
-//            }
         }
         catch (Exception exc) {
             ErrorLogger.LogException(_className, "createRenderableFromShape",
