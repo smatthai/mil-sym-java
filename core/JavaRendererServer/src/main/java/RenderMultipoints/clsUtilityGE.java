@@ -514,7 +514,7 @@ public final class clsUtilityGE {
                         break;
                 }
             }
-            if(ptsPoly.size()>0)
+            if(ptsPoly.size()>1)
             {
                 //add the last line to the ArrayList
                 //if it is a fill shape then the Google Earth linear ring requires the last point be added
@@ -527,8 +527,7 @@ public final class clsUtilityGE {
                         ptsPoly.add(pt2d);
                     }
                 }
-                if(ptsPoly.size()>1)
-                    polylines2.add(ptsPoly);                
+                polylines2.add(ptsPoly);                
             }
         }
         catch (Exception exc) {
