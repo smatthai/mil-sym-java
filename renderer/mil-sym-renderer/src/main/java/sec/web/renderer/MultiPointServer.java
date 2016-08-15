@@ -183,13 +183,17 @@ public class MultiPointServer {
                 {
                     //Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(symbolCode);
                     Map<String,String> params = (Map<String,String>)he.getAttribute("parameters");
-                    
+                    String tempVal = null;
                     for (Map.Entry<String, String> entry : params.entrySet())
                     {
-                        String test = entry.getValue().toLowerCase();
-                        if(test.contains("script>"))
+                        tempVal = entry.getValue();
+                        if(tempVal != null)
                         {
-                            entry.setValue("");
+                            String test = tempVal.toLowerCase();
+                            if(test.contains("script>"))
+                            {
+                                entry.setValue("");
+                            }
                         }
                     }
 

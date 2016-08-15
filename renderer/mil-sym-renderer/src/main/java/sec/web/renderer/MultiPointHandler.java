@@ -587,9 +587,12 @@ public class MultiPointHandler {
         for (int i = 0; i < len; i++) 
         {
             String[] coordPair = coordinates[i].split(",");
-            Double latitude = Double.valueOf(coordPair[1].trim()).doubleValue();
-            Double longitude = Double.valueOf(coordPair[0].trim()).doubleValue();
-            geoCoords.add(new Point2D.Double(longitude, latitude));
+            if(coordPair.length >= 2)
+            {
+                Double latitude = Double.valueOf(coordPair[1].trim());
+                Double longitude = Double.valueOf(coordPair[0].trim());
+                geoCoords.add(new Point2D.Double(longitude, latitude));
+            }
         }
 
         IPointConversion ipc = null;
@@ -1293,9 +1296,12 @@ public class MultiPointHandler {
         for (int i = 0; i < len; i++) 
         {
             String[] coordPair = coordinates[i].split(",");
-            Double latitude = Double.valueOf(coordPair[1].trim()).doubleValue();
-            Double longitude = Double.valueOf(coordPair[0].trim()).doubleValue();
-            geoCoords.add(new Point2D.Double(longitude, latitude));
+            if(coordPair.length >= 2)
+            {
+                Double latitude = Double.valueOf(coordPair[1].trim());
+                Double longitude = Double.valueOf(coordPair[0].trim());
+                geoCoords.add(new Point2D.Double(longitude, latitude));
+            }
         }
         if(ipc==null)
         {
@@ -1623,11 +1629,15 @@ public class MultiPointHandler {
 
         //get coordinates
         int len = coordinates.length;
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < len; i++) 
+        {
             String[] coordPair = coordinates[i].split(",");
-            Double latitude = Double.valueOf(coordPair[1].trim()).doubleValue();
-            Double longitude = Double.valueOf(coordPair[0].trim()).doubleValue();
-            geoCoords.add(new Point2D.Double(longitude, latitude));
+            if(coordPair.length >= 2)
+            {
+                Double latitude = Double.valueOf(coordPair[1].trim());
+                Double longitude = Double.valueOf(coordPair[0].trim());
+                geoCoords.add(new Point2D.Double(longitude, latitude));
+            }
         }
 
         try {
@@ -2074,11 +2084,15 @@ public class MultiPointHandler {
 
         //get coordinates
         int len = coordinates.length;
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < len; i++) 
+        {
             String[] coordPair = coordinates[i].split(",");
-            Double latitude = Double.valueOf(coordPair[1].trim()).doubleValue();
-            Double longitude = Double.valueOf(coordPair[0].trim()).doubleValue();
-            geoCoords.add(new Point2D.Double(longitude, latitude));
+            if(coordPair.length >= 2)
+            {
+                Double latitude = Double.valueOf(coordPair[1].trim());
+                Double longitude = Double.valueOf(coordPair[0].trim());
+                geoCoords.add(new Point2D.Double(longitude, latitude));
+            }
         }
 
         try {
@@ -2923,11 +2937,15 @@ public class MultiPointHandler {
         //end section
 
         //System.out.println("Pixel Coords: ");
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < len; i++) 
+        {
             String[] coordPair = coordinates[i].split(",");
-            Double latitude = Double.valueOf(coordPair[1].trim()).doubleValue();
-            Double longitude = Double.valueOf(coordPair[0].trim()).doubleValue();
-            geoCoords.add(new Point2D.Double(longitude, latitude));
+            if(coordPair.length >= 2)
+            {
+                Double latitude = Double.valueOf(coordPair[1].trim());
+                Double longitude = Double.valueOf(coordPair[0].trim());
+                geoCoords.add(new Point2D.Double(longitude, latitude));
+            }
             //pixels.add(new Point2D.Double(longitudeX, latitudeY));
 
             //System.out.println(String.valueOf(latitudeY) + ", " + String.valueOf(longitudeX));
