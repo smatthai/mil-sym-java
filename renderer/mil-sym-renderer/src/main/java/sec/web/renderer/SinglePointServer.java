@@ -33,6 +33,7 @@ import ArmyC2.C2SD.Utilities.RendererException;
 import ArmyC2.C2SD.Utilities.SinglePointFont;
 import ArmyC2.C2SD.Utilities.SinglePointLookup;
 import ArmyC2.C2SD.Utilities.SymbolDefTable;
+import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import ArmyC2.C2SD.Utilities.UnitDefTable;
 import ArmyC2.C2SD.Utilities.UnitFontLookup;
 
@@ -282,7 +283,7 @@ public class SinglePointServer {
                                                 params = JavaRendererUtilities.parseIconParameters(symbolID, params);
                                             }
                                         }
-                                        symbolID = sanitizeSymbolID(symbolID);
+                                        symbolID = SymbolUtilities.reconcileSymbolID(symbolID);
                                         pngResponse = getSinglePointBytes(symbolID, params);
                                     }
                                     else if(_renderType == RENDER_TYPE_KML)
@@ -633,12 +634,12 @@ public class SinglePointServer {
 				} 
 
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
+                                PNGInfo pi = null;
                                 if (params.containsKey("ICON") && Boolean.parseBoolean(params.get("ICON"))==true)
                                 {   //center image so you don't have to worry about getting 
                                     //the center point.
                                     BufferedImage bit = null;
-                                    PNGInfo pi = new PNGInfo(iInfo);
+                                    pi = new PNGInfo(iInfo);
                                     bit = pi.squareImage().getImage();
                                     ImageIO.write(bit, "png", baos);
                                 }
@@ -671,7 +672,7 @@ public class SinglePointServer {
                                         buffer = Integer.parseInt(params.get("BUFFER"));
                                     }
                                     
-                                    PNGInfo pi = new PNGInfo(iInfo);
+                                    pi = new PNGInfo(iInfo);
                                     if(eWidth > 0 && eHeight > 0 && ecX > 0 && ecY > 0 && buffer > 0)
                                     {
                                         pi = pi.fitImage(eWidth, eHeight, ecX, ecY, buffer);
@@ -683,27 +684,45 @@ public class SinglePointServer {
 					ImageIO.write(image, "png", baos);
                                     }
                                 }
-                                else if (symbolCode.contains("center=true"))
-                                {   //center image so you don't have to worry about getting 
+                                else 
+                                {
+                                    pi = new PNGInfo(iInfo);
+                                    boolean center = false;
+                                    boolean meta = false;
+                                    if (params.containsKey("CENTER"))
+                                    {
+                                        center = Boolean.parseBoolean(params.get("CENTER"));
+                                    }
+                                    if(params.containsKey("META"))
+                                    {
+                                        meta = Boolean.parseBoolean(params.get("META"));
+                                    }
+                                        
+                                    //center image so you don't have to worry about getting 
                                     //the center point.
-                                    BufferedImage bit = null;
-                                    bit = ImageInfo.CenterImageOnPoint(iInfo.getImage(), iInfo.getSymbolCenterPoint());
-                                    ImageIO.write(bit, "png", baos);
-                                }
-                                else if (symbolCode.contains("meta=true")) {
+                                    if(center)
+                                        pi = pi.centerImage();
+                                    
+                                    if (meta) 
+                                    {
 					// PNG with metadata takes about 8-9 milisecondsi
-					iInfo.SaveImageToPNG(ImageIO.createImageOutputStream(baos));
-				}
-                                else {
-					// regular PNG, takes about 5-6 miliseconds
-					BufferedImage image = iInfo.getImage();
-					ImageIO.write(image, "png", baos);
-				}
-
-				// Send to Byte Array
-				baos.flush();
-				byteArray = baos.toByteArray();
-				baos.close();
+                                        byteArray = pi.getImageAsByteArrayWithMetaInfo();
+                                    }
+                                    else 
+                                    {
+                                        // regular PNG, takes about 5-6 miliseconds
+                                        byteArray = pi.getImageAsByteArray();
+                                    }
+                                }
+                                
+                                
+                                if(byteArray == null)
+                                {
+                                    // Send to Byte Array
+                                    baos.flush();
+                                    byteArray = baos.toByteArray();
+                                    baos.close();
+                                }
 
 				/*
 				 * //cleanup symbol = null; pConverter = null; image = null;//
