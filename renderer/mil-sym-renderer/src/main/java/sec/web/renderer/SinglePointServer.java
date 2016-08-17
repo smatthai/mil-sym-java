@@ -283,7 +283,7 @@ public class SinglePointServer {
                                                 params = JavaRendererUtilities.parseIconParameters(symbolID, params);
                                             }
                                         }
-                                        symbolID = SymbolUtilities.reconcileSymbolID(symbolID);
+
                                         pngResponse = getSinglePointBytes(symbolID, params);
                                     }
                                     else if(_renderType == RENDER_TYPE_KML)
