@@ -3123,8 +3123,8 @@ public final class clsUtility {
         }
         catch (Exception exc)
         {
-            ErrorLogger.LogException(_className ,"getMSRSegmentColors",
-                    new RendererException("Failed inside getMSRSegmentColors", exc));
+            ErrorLogger.LogException(_className ,"getMSRSegmentColorStrings",
+                    new RendererException("Failed inside getMSRSegmentColorStrings", exc));
         }
         return hMap;
     }
