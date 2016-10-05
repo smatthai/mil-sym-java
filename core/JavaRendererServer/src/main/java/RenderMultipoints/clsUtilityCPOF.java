@@ -11,6 +11,7 @@ import JavaTacticalRenderer.mdlGeodesic;
 import JavaLineArray.POINT2;
 import JavaTacticalRenderer.clsUtility;
 import JavaTacticalRenderer.Modifier2;
+import java.util.HashMap;
 import JavaLineArray.ref;
 import java.util.ArrayList;
 import JavaLineArray.Shape2;
@@ -1798,7 +1799,7 @@ public final class clsUtilityCPOF {
                 //case TacticalLines.FIX:
                 //case TacticalLines.FOLLA:
                 //case TacticalLines.FOLSP:
-                case TacticalLines.BOUNDARY:
+//                case TacticalLines.BOUNDARY:
                 case TacticalLines.FLOT:
                 case TacticalLines.LC:
                 case TacticalLines.PL:
@@ -1916,8 +1917,8 @@ public final class clsUtilityCPOF {
                 case TacticalLines.KILLBOXPURPLE:
                 //case TacticalLines.CONVOY:
                 //case TacticalLines.HCONVOY:
-                case TacticalLines.MSR:
-                case TacticalLines.ASR:
+//                case TacticalLines.MSR:
+//                case TacticalLines.ASR:
                 case TacticalLines.ONEWAY:
                 case TacticalLines.TWOWAY:
                 case TacticalLines.ALT:
@@ -1936,6 +1937,10 @@ public final class clsUtilityCPOF {
                 //case TacticalLines.TORPEDO:
                 case TacticalLines.TGMF:
                     return true;
+                case TacticalLines.BOUNDARY:    //post clip these so there are identical points regardless whether segment data is set
+                case TacticalLines.MSR:
+                case TacticalLines.ASR:
+                    return false;
                 default:
                     return false;
             }
@@ -2625,9 +2630,10 @@ public final class clsUtilityCPOF {
                 case TacticalLines.ONEWAY:
                 case TacticalLines.ALT:
                     //added because of segment data 4-22-13
-                case TacticalLines.MSR:
-                case TacticalLines.ASR:
-                case TacticalLines.BOUNDARY:
+                    //post clipping data means we can segment the points for these  10-5-16
+                //case TacticalLines.MSR:
+                //case TacticalLines.ASR:
+                //case TacticalLines.BOUNDARY:
                     return false;
                 default:
                     break;
@@ -2756,10 +2762,13 @@ public final class clsUtilityCPOF {
      * @param n number of points per segment
      * @return the interpolated points
      */
-    private static ArrayList<POINT2> toGeodesic(ArrayList<POINT2> points, double interval) {
+    private static ArrayList<POINT2> toGeodesic(TGLight tg, double interval, HashMap hmap) {
         ArrayList<POINT2> locs = new ArrayList<POINT2>();
         try {
             int i = 0, k = 0, n=0;            
+            ArrayList<POINT2> points=tg.LatLongs;
+            String H="";
+            String color="";
             for (i = 0; i < points.size() - 1; i++) 
             {
                 // Convert coordinates from degrees to Radians
@@ -2790,12 +2799,28 @@ public final class clsUtilityCPOF {
                     if(k==0)
                     {
                         locs.add(new POINT2(points.get(i)));
+                        if (hmap != null && hmap.containsKey(i)) 
+                        {
+                            if(!H.isEmpty())
+                                H+=",";
+                            color = (String)hmap.get(i);
+                            H+=Integer.toString(locs.size()-1)+":"+color;                        
+                        }
                         continue;
                     }
                     else if(k==n)
                     {
                         if(i==points.size()-2)
+                        {
                             locs.add(new POINT2(points.get(i+1)));
+                            if (hmap != null && hmap.containsKey(i+1)) 
+                            {
+                                if(!H.isEmpty())
+                                    H+=",";
+                                color = (String)hmap.get(i+1);
+                                H+=Integer.toString(locs.size()-1)+":"+color;                        
+                            }
+                        }
                         break;                        
                     }
                     //var f = (k / n);
@@ -2820,8 +2845,17 @@ public final class clsUtilityCPOF {
                     lon *= 180.0 / Math.PI;
                     POINT2 pt = new POINT2(lon, lat);
                     locs.add(pt);
+                    if (hmap != null && hmap.containsKey(i)) 
+                    {
+                        if(!H.isEmpty())
+                            H+=",";
+                        color = (String)hmap.get(i);
+                        H+=Integer.toString(locs.size()-1)+":"+color;                        
+                    }
                 }
             }
+            if(!H.isEmpty())
+                tg.set_H(H);
         } 
         catch (Exception exc) 
         {
@@ -2934,11 +2968,17 @@ public final class clsUtilityCPOF {
                 interval *= zoomFactor;
             
             boolean useVincenty=false;
+            String H="";
+            String color="";
+            HashMap hmap=JavaTacticalRenderer.clsUtility.getMSRSegmentColorStrings(tg);
+            if(hmap != null)
+                tg.set_H("");
             //uncomment one line to use Vincenty algorithm
             useVincenty = true;
             if(useVincenty)
             {
-                resultPts=toGeodesic(tg.LatLongs,interval);
+                //resultPts=toGeodesic(tg.LatLongs,interval);
+                resultPts=toGeodesic(tg,interval,hmap);
                 tg.LatLongs=resultPts;
                 tg.Pixels=RenderMultipoints.clsUtility.LatLongToPixels(tg.LatLongs, converter);
                 return;
@@ -2955,8 +2995,17 @@ public final class clsUtilityCPOF {
                 
                 n=(int)(dist/interval);
                 if(j==0)
+                {
                     resultPts.add(pt0);
-                
+                    if (hmap != null && hmap.containsKey(j)) 
+                    {
+                        if(!H.isEmpty())
+                            H+=",";
+                        color = (String)hmap.get(j);
+                        //H+=(resultPts.size()-1).toString()+":"+color;
+                        H+=Integer.toString(resultPts.size()-1)+":"+color;                        
+                    }
+                }
                 for(k=1;k<=n;k++)
                 {
                     pt=mdlGeodesic.geodesic_coordinate(pt0,interval*k,az);
@@ -2966,11 +3015,31 @@ public final class clsUtilityCPOF {
                     //from the 2nd anchor point
                     dist=mdlGeodesic.geodesic_distance(pt,pt1,null,null);
                     if(dist>=interval/2)
+                    {
                         resultPts.add(pt);
+                        if (hmap != null && hmap.containsKey(j)) 
+                        {
+                            color = (String)hmap.get(j);
+                            if(!H.isEmpty())
+                                H+=",";
+                            //H+=(resultPts.size()-1).toString()+":"+color;
+                            H+=Integer.toString(resultPts.size()-1)+":"+color;
+                        }                        
+                    }
                 }
                 //ad the 2nd anchor point
                 resultPts.add(pt1);
+                if (hmap != null && hmap.containsKey(j+1)) 
+                {
+                    if(!H.isEmpty())
+                        H+=",";
+                    color = (String)hmap.get(j+1);
+                    //H+=(resultPts.size()-1).toString()+":"+color;
+                    H+=Integer.toString(resultPts.size()-1)+":"+color;
+                }
             }
+            if(!H.isEmpty())
+                tg.set_H(H);
             tg.LatLongs=resultPts;
             tg.Pixels=RenderMultipoints.clsUtility.LatLongToPixels(tg.LatLongs, converter);
         }

@@ -1352,14 +1352,14 @@ public final class clsRenderer {
             //reversePoints(tg);
             //save original points if segment data is set
             //we don't want to clip if segment data is set            
-            ArrayList<POINT2> origPixels = null;
-            ArrayList<POINT2> origLatLongs = null;
-            if (clsUtilityGE.segmentColorsSet(tg)) {
-                //origPixels = (ArrayList<POINT2>) tg.Pixels.clone();
-                origPixels=lineutility.getDeepCopy(tg.Pixels);
-                //origLatLongs = (ArrayList<POINT2>) tg.LatLongs.clone();
-                origLatLongs=lineutility.getDeepCopy(tg.LatLongs);
-            }
+//            ArrayList<POINT2> origPixels = null;
+//            ArrayList<POINT2> origLatLongs = null;
+//            if (clsUtilityGE.segmentColorsSet(tg)) {
+//                //origPixels = (ArrayList<POINT2>) tg.Pixels.clone();
+//                origPixels=lineutility.getDeepCopy(tg.Pixels);
+//                //origLatLongs = (ArrayList<POINT2>) tg.LatLongs.clone();
+//                origLatLongs=lineutility.getDeepCopy(tg.LatLongs);
+//            }
             //ArrayList<POINT2> origFillPixels = (ArrayList<POINT2>) tg.Pixels.clone();
             ArrayList<POINT2> origFillPixels = lineutility.getDeepCopy(tg.Pixels);
 
@@ -1427,15 +1427,15 @@ public final class clsRenderer {
             }
 
             //if MSR segment data set use original pixels unless tg.Pixels is empty from clipping
-            if (origPixels != null) {
-                if (tg.Pixels.isEmpty()) {
-                    return;
-                } else {
-                    tg.Pixels = origPixels;
-                    tg.LatLongs = origLatLongs;
-                    clipArea = null;
-                }
-            }
+//            if (origPixels != null) {
+//                if (tg.Pixels.isEmpty()) {
+//                    return;
+//                } else {
+//                    tg.Pixels = origPixels;
+//                    tg.LatLongs = origLatLongs;
+//                    clipArea = null;
+//                }
+//            }
 
             JavaTacticalRenderer.clsUtility.InterpolatePixels(tg);
 

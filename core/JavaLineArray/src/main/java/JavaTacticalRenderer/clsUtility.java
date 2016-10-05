@@ -3086,6 +3086,48 @@ public final class clsUtility {
         }
         return hMap;
     }
+    public static HashMap getMSRSegmentColorStrings(TGLight tg)
+    {   
+        HashMap hMap=null;
+        try
+        {
+            int linetype = tg.get_LineType();
+            switch (linetype) {
+                case 25221000:
+                case 25222000:
+                case 22121000:
+                    if (tg.get_H() == null || tg.get_H().isEmpty())
+                        return null;
+                    hMap = new java.util.HashMap();
+                    break;
+                default:
+                    return null;
+            }
+            String[] colorStrs = tg.get_H().split(",");
+            int j = 0;
+            int numSegs = colorStrs.length;
+            String segPlusColor = "";
+            String[] seg = null;
+            //Color color = null;
+            int index = -1;
+            for (j = 0; j < numSegs; j++) {
+                segPlusColor = colorStrs[j];
+                if (!segPlusColor.contains(":"))
+                    continue;
+                seg = segPlusColor.split(":");
+                //color = armyc2.c2sd.renderer.utilities.SymbolUtilities.getColorFromHexString(seg[1]);
+                index = Integer.parseInt(seg[0]);
+                //hMap.put(new Integer(index), color);
+                hMap.put(new Integer(index), seg[1]);
+            }            
+        }
+        catch (Exception exc)
+        {
+            ErrorLogger.LogException(_className ,"getMSRSegmentColors",
+                    new RendererException("Failed inside getMSRSegmentColors", exc));
+        }
+        return hMap;
+    }
     /**
      * @deprecated
      * tg.H must be revised for clipped MSR, ASR and Boundary
