@@ -351,13 +351,10 @@ public class TGLight {
 
                 //set the echelon from the symbol id
                 echelon = symbolId.substring(11, 12);
-            } 
-            else if (symbolId.length() >= 20) 
-            {
+            } else if (symbolId.length() >= 20) {
                 String setA = symbolId.substring(0, 10);
                 String symbolSet = setA.substring(4, 6);
-                if (symbolSet.equalsIgnoreCase("25")) 
-                {
+                if (symbolSet.equalsIgnoreCase("25")) {
 
                     affiliation = setA.substring(2, 4);
                     if (affiliation.equalsIgnoreCase("03")) {
@@ -404,7 +401,7 @@ public class TGLight {
                     }
                 }
             }
-                //build the echelon symbol from the echelon
+            //build the echelon symbol from the echelon
             //regarless of symbolId.length
             if (echelon.equals("M")) //REGION
             {
@@ -508,26 +505,36 @@ public class TGLight {
 
     public void set_UseDashArray(boolean value) {
         _useDashArray = value;
-    }    
-    
-    private boolean _wasClipped=false;
-    public void set_WasClipped(boolean value)
-    {
-        _wasClipped=value;
     }
-    public boolean get_WasClipped()
-    {
+
+    boolean _useHatchFill = false;
+
+    public boolean get_UseHatchFill() {
+        return _useHatchFill;
+    }
+
+    public void set_UseHatchFill(boolean value) {
+        _useHatchFill = value;
+    }
+
+    private boolean _wasClipped = false;
+
+    public void set_WasClipped(boolean value) {
+        _wasClipped = value;
+    }
+
+    public boolean get_WasClipped() {
         return _wasClipped;
     }
-    
+
     //boolean determines whether to add the range and azimuth modifiers for range fans
-    private boolean _HideOptionalLabels=false;
-    public boolean get_HideOptionalLabels()
-    {
+    private boolean _HideOptionalLabels = false;
+
+    public boolean get_HideOptionalLabels() {
         return _HideOptionalLabels;
     }
-    public void set_HideOptionalLabels(boolean value)
-    {
-        _HideOptionalLabels=value;
+
+    public void set_HideOptionalLabels(boolean value) {
+        _HideOptionalLabels = value;
     }
 }
