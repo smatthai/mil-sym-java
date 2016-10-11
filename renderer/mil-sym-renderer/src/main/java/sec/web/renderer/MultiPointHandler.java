@@ -81,6 +81,7 @@ public class MultiPointHandler {
     private final static String TEXT_COLOR = "textColor";
     private final static String TEXT_BACKGROUND_COLOR = "textBackgroundColor";
     private final static String USE_DASH_ARRAY = "useDashArray";
+    private final static String USE_PATTERN_FILL = "usePatternFill";
     
     private final static String SYMBOL_FILL_ICON_SIZE = "symbolFillIconSize";
     private final static String SYMBOL_FILL_IDS = "symbolFillIds";
@@ -2482,6 +2483,7 @@ public class MultiPointHandler {
         
         int lineWidth = 0;
         boolean useDashArray = symbol.getUseDashArray();
+        boolean usePatternFill = symbol.getUsePatternFill();
         String altMode = null;
         boolean hideOptionalLabels = false;
         
@@ -2692,6 +2694,13 @@ public class MultiPointHandler {
             else if (jsonModifiersArray.has(MilStdAttributes.UseDashArray) && !jsonModifiersArray.isNull(MilStdAttributes.UseDashArray)) {
                 useDashArray = jsonModifiersArray.getBoolean(MilStdAttributes.UseDashArray);
             }
+            //pattern fill (hatch lines)
+            if (jsonModifiersArray.has(USE_PATTERN_FILL) && !jsonModifiersArray.isNull(USE_PATTERN_FILL)) {
+                usePatternFill = jsonModifiersArray.getBoolean(USE_PATTERN_FILL);
+            }
+            else if (jsonModifiersArray.has(MilStdAttributes.UsePatternFill) && !jsonModifiersArray.isNull(MilStdAttributes.UsePatternFill)) {
+                usePatternFill = jsonModifiersArray.getBoolean(MilStdAttributes.UsePatternFill);
+            }
             
             if (jsonModifiersArray.has(MilStdAttributes.AltitudeMode)) {
                 altMode = jsonModifiersArray.getString(MilStdAttributes.AltitudeMode);
@@ -2766,6 +2775,7 @@ public class MultiPointHandler {
             
             symbol.setHideOptionalLabels(hideOptionalLabels);
             symbol.setUseDashArray(useDashArray);
+            symbol.setUsePatternFill(usePatternFill);
 
             // Check grpahic modifiers variables.  If we set earlier, populate
             // the fields, otherwise, ignore.

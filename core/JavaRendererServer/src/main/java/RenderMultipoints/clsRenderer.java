@@ -284,6 +284,7 @@ public final class clsRenderer {
                 tg.set_N(milStd.getModifier(ModifiersTG.N_HOSTILE));
             }
             tg.set_UseDashArray(milStd.getUseDashArray());
+            tg.set_UseHatchFill(milStd.getUsePatternFill());
             tg.set_HideOptionalLabels(milStd.getHideOptionalLabels());
                 //int lineType=CELineArray.CGetLinetypeFromString(tg.get_SymbolId());
             //int lineType=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(tg,null);
