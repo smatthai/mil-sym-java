@@ -94,6 +94,8 @@ public class MilStdAttributes {
      */
     public static final String UseDashArray = "USEDASHARRAY";
     
+    public static final String UsePatternFill = "USEPATTERNFILL";
+    
     /**
      * for singlepoints, if set to "true", no labels will be drawn and you
      * will just get the core symbol.
