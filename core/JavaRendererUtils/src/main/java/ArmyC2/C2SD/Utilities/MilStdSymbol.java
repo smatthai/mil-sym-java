@@ -65,7 +65,7 @@ public class MilStdSymbol {
     Color _TextColor = null;
     Color _TextBackgroundColor = null;
     TexturePaint _FillStyle = null;
-    Integer _intFillStyle = 0;
+    boolean _usePatternFill = false;
     double _Rotation = 0.0;//DEGREES
 
     //outline singlepoint TGs
@@ -541,16 +541,16 @@ public class MilStdSymbol {
      *
      * @param value
      */
-    public void setFillStyleEnum(int value) {
-        _intFillStyle = value;
+    public void setUsePatternFill(boolean value) {
+        _usePatternFill = value;
     }
 
     /**
      *
      * @return
      */
-    public int getFillStyleEnum() {
-        return _intFillStyle;
+    public boolean getUsePatternFill() {
+        return _usePatternFill;
     }
 
     /**
