@@ -1157,8 +1157,8 @@ public final class clsUtilityGE {
        {
             if(shapes==null || shapes.size()==0)
                 return;
-            if(tg.get_UseHatchFill())
-                return;
+            //if(tg.get_UseHatchFill())
+            //    return;
             int lineType=tg.get_LineType();            
             int hatch=tg.get_FillStyle();
             int j=0,hatch2=0;
@@ -1237,7 +1237,7 @@ public final class clsUtilityGE {
                 
                 if(hatch != Hatch_Cross)
                 {
-                    shape=buildHatchFill(shape,hatch);
+                    shape=buildHatchFill(tg,shape,hatch);
                     //shape.setStroke(new BasicStroke(1));
                     shape.setStroke(new BasicStroke(hatchLineThickness));
                     shape.setLineColor(tg.get_LineColor());
@@ -1245,8 +1245,8 @@ public final class clsUtilityGE {
                 }
                 else    //cross hatch
                 {
-                    Shape2 shapeBk=buildHatchFill(shape,Hatch_BackwardDiagonal);
-                    Shape2 shapeFwd=buildHatchFill(shape,Hatch_ForwardDiagonal);
+                    Shape2 shapeBk=buildHatchFill(tg,shape,Hatch_BackwardDiagonal);
+                    Shape2 shapeFwd=buildHatchFill(tg,shape,Hatch_ForwardDiagonal);
                     //shapeBk.setStroke(new BasicStroke(1));
                     shapeBk.setStroke(new BasicStroke(hatchLineThickness));
                     shapeBk.setLineColor(tg.get_LineColor());
@@ -1269,7 +1269,7 @@ public final class clsUtilityGE {
     /*
      * GE has no hatch utility, we need to create a shape the client can use as hatch fill
      */
-    private static Shape2 buildHatchFill(ShapeInfo shape,int hatch)
+    private static Shape2 buildHatchFill(TGLight tg,ShapeInfo shape,int hatch)
     {
         Shape2 hatchLineShape=null;
         try
@@ -1286,7 +1286,23 @@ public final class clsUtilityGE {
                 height=width;
             else
                 width=height;
-
+            //diagnostic
+            if(tg.get_UseHatchFill())
+            {
+                hatchLineShape.moveTo(new POINT2(x0,y0));
+                hatchLineShape.lineTo(new POINT2(x0+width,y0));
+                hatchLineShape.lineTo(new POINT2(x0+width,y0+width));
+                hatchLineShape.lineTo(new POINT2(x0,y0+width));
+                hatchLineShape.set_Fillstyle(hatch);
+                hatchLineShape.lineTo(new POINT2(x0,y0));
+                Area shapeArea=new Area(shape.getShape());
+                hatchLineArea=new Area(hatchLineShape.getShape());
+                //intersect the hatch lines with the original shape area to get the fill
+                hatchLineArea.intersect(shapeArea);
+                hatchLineShape.setShape(hatchLineArea);
+                return hatchLineShape;
+            }
+            //end section
             width *= 2;
             height *= 2;
             //the next two values should be equal
