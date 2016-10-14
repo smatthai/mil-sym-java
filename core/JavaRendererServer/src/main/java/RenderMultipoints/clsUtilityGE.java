@@ -1237,11 +1237,11 @@ public final class clsUtilityGE {
                 
                 if(hatch != Hatch_Cross)
                 {
-                    shape=buildHatchFill(tg,shape,hatch);
+                    Shape2 shape3=buildHatchFill(tg,shape,hatch);
                     //shape.setStroke(new BasicStroke(1));
-                    shape.setStroke(new BasicStroke(hatchLineThickness));
-                    shape.setLineColor(tg.get_LineColor());
-                    shapes.add(shape);
+                    shape3.setStroke(new BasicStroke(hatchLineThickness));
+                    shape3.setLineColor(tg.get_LineColor());
+                    shapes.add(shape3);
                 }
                 else    //cross hatch
                 {
