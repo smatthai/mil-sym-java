@@ -2490,8 +2490,8 @@ public final class clsMETOC {
                 case TacticalLines.BEACH_SLOPE_MODERATE:
                 case TacticalLines.BEACH_SLOPE_STEEP:
                 case TacticalLines.BEACH:
-                    if(tg.get_UsePatternFill())
-                        break;
+//                    if(tg.get_UsePatternFill())
+//                        break;
                     shape = shapes.get(0);
                     shape.setLineColor(tg.get_LineColor());
                     inFile = clsMETOC.class.getClassLoader().getResourceAsStream(fileName);
