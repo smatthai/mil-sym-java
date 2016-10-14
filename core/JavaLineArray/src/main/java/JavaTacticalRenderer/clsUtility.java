@@ -1213,8 +1213,8 @@ public final class clsUtility {
 
                 if (hasFill || isClosedPolygon || isChange1Area || shapeType == Shape2.SHAPE_TYPE_FILL)
                 {                    
-                    if(tg.get_UseHatchFill())
-                        break;
+//                    if(tg.get_UseHatchFill())
+//                        break;
                     switch (shape.get_FillStyle()) {
                         case 3://GraphicProperties.FILL_TYPE_RIGHT_SLANTS:
                             rect = new Rectangle2D.Double(0, 0, 8, 8);
