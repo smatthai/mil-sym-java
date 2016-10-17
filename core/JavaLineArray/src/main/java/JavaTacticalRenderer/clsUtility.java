@@ -649,6 +649,7 @@ public final class clsUtility {
             int bolMETOC=clsMETOC.IsWeather(tg.get_SymbolId());
             if(bolMETOC>0)
                 return;
+            int fillStyle=0;
             //for some of these the style must be dashed
             //clsUtility.WriteFile("ResolveModifierShape before switch " + Integer.toString(lineType));
             switch (tg.get_LineType()) {
@@ -671,10 +672,13 @@ public final class clsUtility {
                 case TacticalLines.RAD:
                 case TacticalLines.WFZ:
                 //case TacticalLines.OBSAREA:
+                    fillStyle=3;
+                    if(tg.get_UseHatchFill())
+                        fillStyle=0;
                     if (shape.getShapeType() == Shape2.SHAPE_TYPE_POLYLINE) {
                         shape.set_Style(tg.get_LineStyle());
                         shape.setLineColor(tg.get_LineColor());
-                        shape.set_Fillstyle(3 /*GraphicProperties.FILL_TYPE_RIGHT_SLANTS*/);
+                        shape.set_Fillstyle(fillStyle /*GraphicProperties.FILL_TYPE_RIGHT_SLANTS*/);   //waa 3
                         shape.setFillColor(tg.get_FillColor());
                     }
                     break;
@@ -687,10 +691,13 @@ public final class clsUtility {
                     }
                     break;
                 case TacticalLines.LAA:
+                    fillStyle=2;
+                    if(tg.get_UseHatchFill())
+                        fillStyle=0;
                     if (shape.getShapeType() == Shape2.SHAPE_TYPE_POLYLINE) {
                         shape.set_Style(tg.get_LineStyle());
                         shape.setLineColor(tg.get_LineColor());
-                        shape.set_Fillstyle(2 /*GraphicProperties.FILL_TYPE_LEFT_SLANTS*/);
+                        shape.set_Fillstyle(fillStyle /*GraphicProperties.FILL_TYPE_LEFT_SLANTS*/);//was 2
                         shape.setFillColor(tg.get_FillColor());
                     }
                     break;
@@ -1213,8 +1220,6 @@ public final class clsUtility {
 
                 if (hasFill || isClosedPolygon || isChange1Area || shapeType == Shape2.SHAPE_TYPE_FILL)
                 {                    
-//                    if(tg.get_UseHatchFill())
-//                        break;
                     switch (shape.get_FillStyle()) {
                         case 3://GraphicProperties.FILL_TYPE_RIGHT_SLANTS:
                             rect = new Rectangle2D.Double(0, 0, 8, 8);
