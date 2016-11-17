@@ -1810,7 +1810,7 @@ public final class arraysupport
      * @param azimuth
      * @return 
      */
-    private static POINT2[] getRotatedEllipsePoints(POINT2 ptCenter, POINT2 ptWidth, POINT2 ptHeight, double azimuth)
+    private static POINT2[] getRotatedEllipsePoints(POINT2 ptCenter, POINT2 ptWidth, POINT2 ptHeight, double azimuth,int lineType)
     {        
         POINT2[]pResultPoints=null;
         try
@@ -1820,15 +1820,20 @@ public final class arraysupport
             double dFactor=0;
             double a=lineutility.CalcDistanceDouble(ptCenter, ptWidth);
             double b=lineutility.CalcDistanceDouble(ptCenter, ptHeight);
+            if(lineType==TacticalLines.PBS_CIRCLE)
+                b=a;
             lineutility.InitializePOINT2Array(pEllipsePoints);
             for (l = 1; l < 37; l++)
             {
                 dFactor = (10.0 * l) * Math.PI / 180.0;
-                pEllipsePoints[l - 1].x = ptCenter.x + (int) (a * Math.cos(dFactor));
-                pEllipsePoints[l - 1].y = ptCenter.y + (int) (b * Math.sin(dFactor));
+                //pEllipsePoints[l - 1].x = ptCenter.x + (int) (a * Math.cos(dFactor));
+                //pEllipsePoints[l - 1].y = ptCenter.y + (int) (b * Math.sin(dFactor));
+                pEllipsePoints[l - 1].x = ptCenter.x + a * Math.cos(dFactor);
+                pEllipsePoints[l - 1].y = ptCenter.y + b * Math.sin(dFactor);
                 pEllipsePoints[l - 1].style = 0;
             }
-            lineutility.RotateGeometryDouble(pEllipsePoints, 36, azimuth-90);
+            if(lineType != TacticalLines.PBS_CIRCLE)
+                lineutility.RotateGeometryDouble(pEllipsePoints, 36, azimuth-90);
             pResultPoints=new POINT2[37];
             for(j=0;j<36;j++)
                 pResultPoints[j]=pEllipsePoints[j];
@@ -2563,7 +2568,7 @@ public final class arraysupport
                     pt1=pLinePoints[1];//the width of the ellipse
                     pt2=pLinePoints[2];//the height of the ellipse
                     double azimuth=pLinePoints[3].x;
-                    pLinePoints=getRotatedEllipsePoints(pt0,pt1,pt2,azimuth);
+                    pLinePoints=getRotatedEllipsePoints(pt0,pt1,pt2,azimuth,lineType);
                     acCounter=37;
                     break;
                 case TacticalLines.OVERHEAD_WIRE:
