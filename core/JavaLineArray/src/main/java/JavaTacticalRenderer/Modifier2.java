@@ -4623,7 +4623,11 @@ public class Modifier2 {
                         {
                             if (tg.Pixels.size() > j * 102 + 25) {
                                 pt0 = tg.Pixels.get(j * 102 + 25);
-                                AddAreaModifier(tg, "RG " + am[j], area, -1, pt0, pt0);
+                                //AddAreaModifier(tg, "RG " + am[j], area, -1, pt0, pt0);
+                                if(j==0)
+                                    AddAreaModifier(tg, "MIN RG " + am[j], 3, -1, pt0, pt0);
+                                else
+                                    AddAreaModifier(tg, "MIN RG " + "(" + Integer.toString(j) + ") " + am[j], 3, -1, pt0, pt0);
                             }                            
                         }
                     }// end if set range fan text
