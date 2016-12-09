@@ -1820,8 +1820,8 @@ public final class arraysupport
             double dFactor=0;
             double a=lineutility.CalcDistanceDouble(ptCenter, ptWidth);
             double b=lineutility.CalcDistanceDouble(ptCenter, ptHeight);
-            if(lineType==TacticalLines.PBS_CIRCLE)
-                b=a;
+//            if(lineType==TacticalLines.PBS_CIRCLE)
+//                b=a;
             lineutility.InitializePOINT2Array(pEllipsePoints);
             for (l = 1; l < 37; l++)
             {
