@@ -1351,8 +1351,8 @@ public final class clsMETOC {
                     tg.set_FillColor(new Color(100, 130, 255));
                     break;
                 case TacticalLines.SOLID_ROCK:
-                    tg.set_LineColor(new Color(160, 32, 240));     //purple
-                    tg.set_FillColor(new Color(160, 32, 240));
+                    tg.set_LineColor(new Color(255, 0, 255));     //magent
+                    tg.set_FillColor(new Color(255, 0, 255));
                     break;
                 case TacticalLines.VDR_LEVEL_12:
                     tg.set_LineColor(new Color(26, 153, 55));     //dark green
@@ -1421,8 +1421,8 @@ public final class clsMETOC {
                     tg.set_FillColor(new Color(0, 191, 255)); //deep sky blue
                     break;
                 case TacticalLines.LOADING_FACILITY_AREA:
-                    tg.set_LineColor(new Color(165, 42, 42));
-                    tg.set_FillColor(new Color(165, 42, 42));
+                    tg.set_LineColor(new Color(210, 180, 140));
+                    tg.set_FillColor(new Color(210, 180, 140));
                     break;
                 case TacticalLines.LOADING_FACILITY_LINE:
                     tg.set_LineColor(Color.GRAY);
@@ -1430,15 +1430,19 @@ public final class clsMETOC {
                     break;
                 case TacticalLines.DRYDOCK:
                     tg.set_LineColor(Color.BLACK);
-                    tg.set_FillColor(new Color(165, 42, 42)); //brown
+                    //tg.set_FillColor(new Color(165, 42, 42)); //brown
+                    tg.set_FillColor(new Color(205, 133, 63)); //brown
                     tg.set_LineStyle(1);
                     break;
                 case TacticalLines.FORESHORE_AREA:
-                    tg.set_LineColor(new Color(154, 205, 50));
-                    tg.set_FillColor(new Color(154, 205, 50));
+                    //tg.set_LineColor(new Color(154, 205, 50));
+                    //tg.set_FillColor(new Color(154, 205, 50));
+                    tg.set_LineColor(new Color(173, 255, 47));
+                    tg.set_FillColor(new Color(173, 255, 47));
                     break;
                 case TacticalLines.FORESHORE_LINE:
-                    tg.set_LineColor(new Color(154, 205, 50));
+                    //tg.set_LineColor(new Color(154, 205, 50));
+                    tg.set_LineColor(new Color(173, 255, 47));
                     break;
                 case TacticalLines.RESTRICTED_AREA:
                 case TacticalLines.TRAINING_AREA:
@@ -1515,8 +1519,10 @@ public final class clsMETOC {
                     tg.set_LineColor(Color.MAGENTA);
                     break;
                 case TacticalLines.ISLAND:
-                    tg.set_LineColor(new Color(165, 42, 42)); //brown
-                    tg.set_FillColor(new Color(165, 42, 42)); //brown
+                    //tg.set_LineColor(new Color(165, 42, 42)); //brown
+                    //tg.set_FillColor(new Color(165, 42, 42)); //brown
+                    tg.set_LineColor(new Color(210, 180, 140)); //tan
+                    tg.set_FillColor(new Color(210, 180, 140)); //tam
                     break;
                 case TacticalLines.SEAWALL:
                 case TacticalLines.SEAWALL_GE:
