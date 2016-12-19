@@ -1598,6 +1598,25 @@ public class SymbolUtilities {
                 }
                 else if(symbolID.equals("WO-DHPMD----A--"))//drydock
                     return new Color(188,153,58);
+                else if(symbolID.equals("WO-DOBVA----A--"))//BIOLUMINESCENCE/VDR LEVEL 1-2
+                    return new Color(26,153,77);
+                else if(symbolID.equals("WO-DOBVB----A--"))//BIOLUMINESCENCE/VDR LEVEL 2-3
+                    return new Color(26,204,77);
+                else if(symbolID.equals("WO-DOBVC----A--"))//BIOLUMINESCENCE/VDR LEVEL 3-4
+                    return new Color(128,255,51);
+                else if(symbolID.equals("WO-DOBVD----A--"))//BIOLUMINESCENCE/VDR LEVEL 4-5
+                    return new Color(204,255,26);
+                else if(symbolID.equals("WO-DOBVE----A--"))//BIOLUMINESCENCE/VDR LEVEL 5-6
+                    return new Color(255,255,0);
+                else if(symbolID.equals("WO-DOBVF----A--"))//BIOLUMINESCENCE/VDR LEVEL 6-7
+                    return new Color(255,204,0);
+                else if(symbolID.equals("WO-DOBVG----A--"))//BIOLUMINESCENCE/VDR LEVEL 7-8
+                    return new Color(255,128,0);
+                else if(symbolID.equals("WO-DOBVH----A--"))//BIOLUMINESCENCE/VDR LEVEL 8-9
+                    return new Color(255,77,0);
+                else if(symbolID.equals("WO-DOBVI----A--"))//BIOLUMINESCENCE/VDR LEVEL 9-10
+                    return new Color(255,0,0);
+                
                 else return null;
             }
 
