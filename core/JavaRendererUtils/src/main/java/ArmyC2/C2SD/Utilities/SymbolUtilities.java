@@ -1598,6 +1598,25 @@ public class SymbolUtilities {
                 }
                 else if(symbolID.equals("WO-DHPMD----A--"))//drydock
                     return new Color(188,153,58);
+                else if(symbolID.equals("WO-DOBVA----A--"))//BIOLUMINESCENCE/VDR LEVEL 1-2
+                    return new Color(26,153,77);
+                else if(symbolID.equals("WO-DOBVB----A--"))//BIOLUMINESCENCE/VDR LEVEL 2-3
+                    return new Color(26,204,77);
+                else if(symbolID.equals("WO-DOBVC----A--"))//BIOLUMINESCENCE/VDR LEVEL 3-4
+                    return new Color(128,255,51);
+                else if(symbolID.equals("WO-DOBVD----A--"))//BIOLUMINESCENCE/VDR LEVEL 4-5
+                    return new Color(204,255,26);
+                else if(symbolID.equals("WO-DOBVE----A--"))//BIOLUMINESCENCE/VDR LEVEL 5-6
+                    return new Color(255,255,0);
+                else if(symbolID.equals("WO-DOBVF----A--"))//BIOLUMINESCENCE/VDR LEVEL 6-7
+                    return new Color(255,204,0);
+                else if(symbolID.equals("WO-DOBVG----A--"))//BIOLUMINESCENCE/VDR LEVEL 7-8
+                    return new Color(255,128,0);
+                else if(symbolID.equals("WO-DOBVH----A--"))//BIOLUMINESCENCE/VDR LEVEL 8-9
+                    return new Color(255,77,0);
+                else if(symbolID.equals("WO-DOBVI----A--"))//BIOLUMINESCENCE/VDR LEVEL 9-10
+                    return new Color(255,0,0);
+                
                 else return null;
             }
 
@@ -3355,6 +3374,87 @@ public class SymbolUtilities {
         return blRetVal;
     }
     
+        /**
+     * Determines if a symbol is an EMS Installation
+     * @param strSymbolID
+     * @return 
+     */
+    public static boolean isEMSInstallation(String strSymbolID)
+    {
+        boolean blRetVal = false;
+        try
+        {
+          if(strSymbolID.charAt(0)=='E')
+          {
+            if(strSymbolID.charAt(2)=='O' &&
+                    strSymbolID.charAt(4)=='D' && strSymbolID.charAt(6)=='C')
+            {
+                blRetVal = true;
+            }
+            else if(strSymbolID.charAt(2)=='F' &&
+                    strSymbolID.substring(4, 6).equals("BA")==false)
+            {
+                blRetVal = true;
+            }
+            else if(strSymbolID.charAt(2)=='O')
+            {
+                if(strSymbolID.charAt(4)=='A')
+                {
+                    switch(strSymbolID.charAt(5))
+                    {
+                        case 'C':
+                        case 'D':
+                        case 'G':
+                        case 'J':
+                        case 'K':
+                        case 'L':
+                        case 'M':
+                            blRetVal = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if(strSymbolID.charAt(4)=='B')
+                {
+                    switch(strSymbolID.charAt(5))
+                    {
+                        case 'C':
+                        case 'E':
+                        case 'F':
+                        case 'G':
+                        case 'H':
+                        case 'I':
+                        case 'K':
+                        case 'L':
+                            blRetVal = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if(strSymbolID.charAt(4)=='C')
+                {
+                    switch(strSymbolID.charAt(5))
+                    {
+                        case 'D':
+                        case 'E':
+                            blRetVal = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+          }
+        }
+        catch(Throwable t)
+        {
+          System.out.println(t);
+        }
+        return blRetVal;
+    }
+    
     /**
      * Determines if a symbol is an EMS Incident
      * @param strSymbolID
@@ -3389,9 +3489,12 @@ public class SymbolUtilities {
   {
     try
     {
-      boolean blRetVal = ((strSymbolID.substring(0, 1).equals("S")) && (strSymbolID.substring(2, 3).equals("G")) && (strSymbolID.substring(4,
-                                                                                                                                 5).equals("I")));
-      return blRetVal;
+        boolean blRetVal = false;
+        if(strSymbolID.charAt(0)=='S')
+            blRetVal = ((strSymbolID.charAt(2) == 'G') && (strSymbolID.charAt(4) == 'I'));
+        else if((strSymbolID.charAt(0)=='E'))
+            blRetVal = isEMSInstallation(strSymbolID);
+        return blRetVal;
     }
     catch(Throwable t)
     {

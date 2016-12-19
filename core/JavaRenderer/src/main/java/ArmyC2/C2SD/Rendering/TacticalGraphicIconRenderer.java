@@ -133,6 +133,15 @@ public class TacticalGraphicIconRenderer {
                     ms.setLineColor(color);
                 }
             }
+            else
+            {
+                Color temp = SymbolUtilities.getFillColorOfWeather(symbolID);
+                if(temp == null)
+                    temp = SymbolUtilities.getLineColorOfWeather(symbolID);
+                
+                if(temp != null)
+                    ms.setLineColor(temp);
+            }
             
             int charSymbolIndex = TacticalGraphicLookup.getInstance().getCharCodeFromSymbol(id);
             
