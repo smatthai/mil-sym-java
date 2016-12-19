@@ -2641,6 +2641,7 @@ public final class clsUtility {
             metocs.put("WA-DIPFF---L---",TacticalLines.OPERATOR_FREEFORM);
             metocs.put("WO-DHHDB---L---",TacticalLines.BREAKERS);
             
+            metocs.put("WO-DIDID---L---",TacticalLines.ICE_DRIFT);
             metocs.put("WO-DILOV---L---",TacticalLines.LVO);
             metocs.put("WO-DILUC---L---",TacticalLines.UNDERCAST);
             metocs.put("WO-DILOR---L---",TacticalLines.LRO);
