@@ -610,11 +610,14 @@ public final class clsRenderer {
                                         if (!Double.isNaN(Double.parseDouble(strRadii[j]))) {
                                             pixels = Double.parseDouble(strRadii[j]) * pixelsPerMeter / 2;
                                             tg.Pixels.get(j).style = (int) pixels;
+                                            tg.LatLongs.get(j).style = (int)pixels;
                                         } else {
                                             tg.Pixels.get(j).style = (int) maxWidth;
+                                            tg.LatLongs.get(j).style = (int) maxWidth;
                                         }
                                     } else {
                                         tg.Pixels.get(j).style = (int) maxWidth;
+                                        tg.LatLongs.get(j).style = (int) maxWidth;
                                     }
                                 }
                             }
