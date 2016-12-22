@@ -2824,7 +2824,7 @@ public final class clsUtilityCPOF {
             //conservative interval in meters
             //return early for those lines not requiring pre-segmenting geo points
             boolean bolSegmentAC = false, bolIsAC = false;
-            int acWidth = 0;
+            //int acWidth = 0;
             //uncomment one line to segment AC
             bolSegmentAC = true;
             switch (lineType) {
