@@ -1349,7 +1349,8 @@ public class SymbolUtilities {
                         retColor = new Color(230,230,230);//230,230,230;	// light gray
                 }
                 else if(
-                    symbolID.equals("WO-DBSG-----A--")) // 
+                    symbolID.equals("WO-DBSG-----A--") ||
+                        symbolID.equals("WO-DBST-----A--")) // 
                 {
                         retColor = new Color(169,169,169);//169,169,169;	// dark gray
                 }
@@ -1408,22 +1409,22 @@ public class SymbolUtilities {
                 else if(
                 symbolID.equals("WO-DHCI-----A--") || //Island
                 symbolID.equals("WO-DHCB-----A--") || //Beach
-                symbolID.equals("WO-DHPMO---L---")||//offshore loading
+                symbolID.equals("WO-DHPMO----A--")||//offshore loading
                 symbolID.equals("WO-DHCI-----A--")) // mixed icing
                 {
                     retColor = new Color(210,176,106);//light/soft brown
                 }
-                else if(symbolID.substring(0,7).equals("WO-DOBVA----A--")
+                else if(symbolID.equals("WO-DOBVA----A--")
                 )
                 {
                     retColor = new Color(26,153,77);//dark green
                 }
-                else if(symbolID.substring(0,7).equals("WO-DGMBTI---A--")
+                else if(symbolID.equals("WO-DGMBTI---A--")
                 )
                 {
                     retColor = new Color(255,48,0);//orange red
                 }
-                else if(symbolID.substring(0,7).equals("WO-DGMBTH---A--")
+                else if(symbolID.equals("WO-DGMBTH---A--")
                 )
                 {
                     retColor = new Color(255,80,0);//dark orange
@@ -1590,11 +1591,14 @@ public class SymbolUtilities {
                 else if(symbolID.equals("WO-DHCW-----A--"))//water
                     return new Color(255,255,255);
                 else if (symbolID.equals("WO-DHABP----A--") ||
-                    symbolID.equals("WO-DHHD-----A--") ||
-                    symbolID.equals("WO-DHHDD----A--") ||
                     symbolID.equals("WO-DMCC-----A--")) 
                 {
                     return new Color(0,0,255);
+                }
+                else if(symbolID.equals("WO-DHHD-----A--") ||
+                    symbolID.equals("WO-DHHDD----A--"))
+                {
+                    return new Color(0,255,255);
                 }
                 else if(symbolID.equals("WO-DHPMD----A--"))//drydock
                     return new Color(188,153,58);
