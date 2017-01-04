@@ -4627,7 +4627,7 @@ public class Modifier2 {
                                 if(j==0)
                                     AddAreaModifier(tg, "MIN RG " + am[j], 3, -1, pt0, pt0);
                                 else
-                                    AddAreaModifier(tg, "MIN RG " + "(" + Integer.toString(j) + ") " + am[j], 3, -1, pt0, pt0);
+                                    AddAreaModifier(tg, "MAX RG " + "(" + Integer.toString(j) + ") " + am[j], 3, -1, pt0, pt0);
                             }                            
                         }
                     }// end if set range fan text
