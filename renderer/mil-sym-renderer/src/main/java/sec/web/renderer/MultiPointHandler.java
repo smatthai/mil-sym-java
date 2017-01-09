@@ -863,9 +863,14 @@ public class MultiPointHandler {
                 
                 //textColor = mSymbol.getLineColor();
                 textColor = mSymbol.getTextColor();
+                if(textColor == null)
+                {
+                    textColor = mSymbol.getLineColor();
+                }
                 String hexColor = SymbolUtilities.colorToHexString(textColor, true);
                 if(hexColor.equals("#FF000000"))//black
                     textColor = Color.white;//textColor = "#FFFFFFFF";
+                
                 
                 jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor);
                 jsonOutput.append(jsonContent);

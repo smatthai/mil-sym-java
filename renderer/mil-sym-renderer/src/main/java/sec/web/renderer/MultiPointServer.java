@@ -55,9 +55,12 @@ import java.net.BindException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 
@@ -174,18 +177,56 @@ public class MultiPointServer {
                 sr = SECRenderer.getInstance();
                 is2D = for2D;
             }
-            
-            private byte[] getMultiPointKML(HttpExchange he, String symbolCode)
+            /**
+             * copies Map to a new Map and cleans out values with script tags
+             * @param params
+             * @return 
+             */
+            private Map<String,String> copyParams(Map<String,String> params)
             {
-                byte[] byteArray = null;
-                String kml = null;
-                try
+                Map<String,String> copy = new HashMap<String, String>();
+                String tempVal = null;
+                
+                copy.putAll(params);
+                Iterator it = copy.entrySet().iterator();
+                boolean retry = false;
+                while(it.hasNext())
                 {
-                    //Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(symbolCode);
-                    Map<String,String> params = (Map<String,String>)he.getAttribute("parameters");
-                    String tempVal = null;
-                    for (Map.Entry<String, String> entry : params.entrySet())
+                    Map.Entry<String, String> entry = (Map.Entry<String, String>)it.next();
+                    tempVal = entry.getValue();
+                    if(tempVal != null)
                     {
+                        String test = tempVal.toLowerCase();
+                        if(test.contains("script>"))
+                        {
+                            entry.setValue("");
+                        }
+                        /*if(entry.getKey().equals("CONTROLPOINTS"))
+                        {
+                            if(entry.getValue() == null)
+                                retry = true;
+                        }//*/
+                    }
+                }//*/
+                
+                /*if(retry)
+                {
+                    try
+                    {
+                        Thread.sleep(50);
+                        ErrorLogger.LogMessage("SinglePointServer", "getMultiPointKML", "waiting for values to populate", Level.WARNING,false);
+                    }
+                    catch(InterruptedException ie)
+                    {
+                        Thread.currentThread().interrupt();
+                    }
+                    copy.clear();
+                    copy.putAll(params);
+                    it = copy.entrySet().iterator();
+                
+                    while(it.hasNext())
+                    {
+                        Map.Entry<String, String> entry = (Map.Entry<String, String>)it.next();
                         tempVal = entry.getValue();
                         if(tempVal != null)
                         {
@@ -196,7 +237,50 @@ public class MultiPointServer {
                             }
                         }
                     }
+                }//*/
 
+                return copy;
+            }
+                        
+            private byte[] getMultiPointKML(HttpExchange he, String symbolCode)
+            {
+                byte[] byteArray = null;
+                String kml = null;
+                int origCount = 0;
+                int origCount2 = 0;
+                int newCount = 0;
+                int attempts = 0;
+                int limit = 3;
+                try
+                {
+                    //Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(symbolCode);
+                    Map<String,String> params = (Map<String,String>)he.getAttribute("parameters");
+                    origCount = params.size();
+                    while(origCount < 11)
+                    {
+                        //ErrorLogger.LogMessage("SinglePointServer", "getMultiPointKML", "param size: " + String.valueOf(params.size()), Level.WARNING,false);
+                        try
+                        {
+                            Thread.sleep(5);
+                            origCount = params.size();
+                            //ErrorLogger.LogMessage("SinglePointServer", "getMultiPointKML", "Had to wait", Level.WARNING,false);
+                            //ErrorLogger.LogMessage("SinglePointServer", "getMultiPointKML", "param size: " + String.valueOf(params.size()), Level.WARNING,false);
+                        }
+                        catch(InterruptedException ie)
+                        {
+                            Thread.currentThread().interrupt();
+                        }//*/
+                        attempts++;
+                        if(attempts >= limit)
+                        {
+                            //ErrorLogger.LogMessage("SinglePointServer", "getMultiPointKML", "param size: " + String.valueOf(origCount), Level.WARNING,false);
+                            break;
+                        }
+                    }
+                    
+                    //copy and clean values
+                    params = copyParams(params);
+                    
                     String symbolID = null;
                     
                     int questionIndex = symbolCode.lastIndexOf('?');
@@ -204,42 +288,81 @@ public class MultiPointServer {
                         symbolID = java.net.URLDecoder.decode(symbolCode, "UTF-8");
                     else
                         symbolID = java.net.URLDecoder.decode(symbolCode.substring(0, questionIndex), "UTF-8");
-                    
-                    
 
-                    if(is2D == false)
+
+                    String id="";
+                    String name="";
+                    String description="";
+                    String controlPoints="";
+                    String altitudeMode="";
+                    double scale=0;
+                    String bbox="";
+                    String modifiers="";
+                    int format  = 0;
+                    int symStd = 0;
+                    int pWidth = 0;
+                    int pHeight = 0;
+                    String temp = "";
+                    try
                     {
-                        String id = params.get("ID");
-                        String name = params.get("NAME");
-                        String description = params.get("DESCRIPTION");
-                        String controlPoints = params.get("CONTROLPOINTS");
-                        String altitudeMode = params.get("ALTITUDEMODE");
-                        double scale = Double.valueOf(params.get("SCALE"));
-                        String bbox = params.get("BBOX");
-                        String modifiers = params.get("MODIFIERS");
-                        int format = Integer.parseInt(params.get("FORMAT"));
-                        int symStd = Integer.parseInt(params.get("SYMSTD"));
+                        id = params.get("ID");
+                        name = params.get("NAME");
+                        description = params.get("DESCRIPTION");
+                        controlPoints = params.get("CONTROLPOINTS");
+                        if(params.containsKey("ALTITUDEMODE"))//3D
+                            altitudeMode = params.get("ALTITUDEMODE");
+                        if(params.containsKey("SCALE"))//3D
+                        {
+                            temp = params.get("SCALE");
+                            scale = Double.valueOf(temp);
+                        }
+                        bbox = params.get("BBOX");
+                        modifiers = params.get("MODIFIERS");
                         
-                        kml = SECRenderer.getInstance().RenderMultiPointSymbol(
-                                id, name, description, symbolID, controlPoints, 
-                                altitudeMode, scale, bbox, modifiers, format, symStd);
+                        temp = params.get("FORMAT");
+                        format = Integer.parseInt(temp);
+                        temp = params.get("SYMSTD");
+                        symStd = Integer.parseInt(temp);
+                        if(params.containsKey("PIXELWIDTH"))//2D
+                        {
+                            temp = params.get("PIXELWIDTH");
+                            pWidth = Integer.parseInt(temp);
+                        }
+                        if(params.containsKey("PIXELHEIGHT"))//2D
+                        {
+                            temp = params.get("PIXELHEIGHT");
+                            pHeight = Integer.parseInt(params.get("PIXELHEIGHT"));
+                        }
                     }
-                    else
+                    catch(Exception exc1)
                     {
-                        String id = params.get("ID");
-                        String name = params.get("NAME");
-                        String description = params.get("DESCRIPTION");
-                        String controlPoints = params.get("CONTROLPOINTS");
-                        int pWidth = Integer.parseInt(params.get("PIXELWIDTH"));
-                        int pHeight = Integer.parseInt(params.get("PIXELHEIGHT"));
-                        String bbox = params.get("BBOX");
-                        String modifiers = params.get("MODIFIERS");
-                        int format = Integer.parseInt(params.get("FORMAT"));
-                        int symStd = Integer.parseInt(params.get("SYMSTD"));
-                        
-                        kml = SECRenderer.getInstance().RenderMultiPointSymbol2D(
-                                id, name, description, symbolID, controlPoints, 
-                                pWidth, pHeight, bbox, modifiers, format, symStd);
+                        ErrorLogger.LogException("SinglePointServer", "getMultiPointKML", exc1, Level.WARNING);
+                    }
+                    try
+                    {
+                        if(is2D == false)
+                        {
+                            kml = SECRenderer.getInstance().RenderMultiPointSymbol(
+                                    id, name, description, symbolID, controlPoints, 
+                                    altitudeMode, scale, bbox, modifiers, format, symStd);
+                        }
+                        else
+                        {
+                            kml = SECRenderer.getInstance().RenderMultiPointSymbol2D(
+                                    id, name, description, symbolID, controlPoints, 
+                                    pWidth, pHeight, bbox, modifiers, format, symStd);
+                        }
+                    }
+                    catch(Exception foo)
+                    {
+                        ErrorLogger.LogException("SinglePointServer", "getMultiPointKML", foo, Level.WARNING);
+                        //new String[]{"blah", "hey", "yo"}
+                        String[] parameters = null;
+                        if(is2D == false)
+                            parameters = new String[]{id, name, description, symbolID, controlPoints, altitudeMode, String.valueOf(scale), bbox, modifiers, String.valueOf(format), String.valueOf(symStd)};
+                        else
+                            parameters = new String[]{id, name, description, symbolID, controlPoints, String.valueOf(pWidth), String.valueOf(pHeight), bbox, modifiers, String.valueOf(format), String.valueOf(symStd)};
+                        ErrorLogger.LogMessage("SinglePointServer", "getMultiPointKML", "parameters: ", Level.WARNING, parameters, false);
                     }
                     
                     if(kml != null && kml.equals("")==false)
@@ -254,6 +377,10 @@ public class MultiPointServer {
                 catch(NumberFormatException nfe)
                 {
                     ErrorLogger.LogException("SinglePointServer", "getMultiPointKML", nfe, Level.WARNING);
+                }
+                catch(ConcurrentModificationException cme)
+                {
+                    ErrorLogger.LogException("SinglePointServer", "getMultiPointKML", cme, Level.WARNING);
                 }
                 catch(Exception exc)
                 {
@@ -354,7 +481,7 @@ public class MultiPointServer {
         private void parseGetParameters(HttpExchange exchange)
             throws UnsupportedEncodingException {
 
-            Map<String,String> parameters = new HashMap();
+            Map<String,String> parameters = new ConcurrentHashMap<String, String>();
             URI requestedUri = exchange.getRequestURI();
             String query = requestedUri.getRawQuery();
             parseQuery(query, parameters);
@@ -376,7 +503,7 @@ public class MultiPointServer {
             }
         }
 
-         @SuppressWarnings("unchecked")
+         //@SuppressWarnings("unchecked")
          private void parseQuery(String query, Map<String,String> parameters)
              throws UnsupportedEncodingException {
 
