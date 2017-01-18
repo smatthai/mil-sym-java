@@ -250,7 +250,7 @@ public class MultiPointServer {
                 int origCount2 = 0;
                 int newCount = 0;
                 int attempts = 0;
-                int limit = 3;
+                int limit = 4;
                 try
                 {
                     //Map<String,String> params = JavaRendererUtilities.createParameterMapFromURL(symbolCode);
@@ -261,7 +261,7 @@ public class MultiPointServer {
                         //ErrorLogger.LogMessage("SinglePointServer", "getMultiPointKML", "param size: " + String.valueOf(params.size()), Level.WARNING,false);
                         try
                         {
-                            Thread.sleep(5);
+                            Thread.sleep(10);
                             origCount = params.size();
                             //ErrorLogger.LogMessage("SinglePointServer", "getMultiPointKML", "Had to wait", Level.WARNING,false);
                             //ErrorLogger.LogMessage("SinglePointServer", "getMultiPointKML", "param size: " + String.valueOf(params.size()), Level.WARNING,false);
@@ -481,7 +481,7 @@ public class MultiPointServer {
         private void parseGetParameters(HttpExchange exchange)
             throws UnsupportedEncodingException {
 
-            Map<String,String> parameters = new ConcurrentHashMap<String, String>();
+            Map<String,String> parameters = new HashMap<String, String>();
             URI requestedUri = exchange.getRequestURI();
             String query = requestedUri.getRawQuery();
             parseQuery(query, parameters);
