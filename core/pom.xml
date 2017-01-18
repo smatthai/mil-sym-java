@@ -6,7 +6,7 @@
 
 	<groupId>sec.web.renderer</groupId>
 	<artifactId>sec-core-parent</artifactId>
-	<version>0.1.17</version>
+	<version>0.1.18</version>
 	<packaging>pom</packaging>
 	
 	<name>sec-core-parent</name>
