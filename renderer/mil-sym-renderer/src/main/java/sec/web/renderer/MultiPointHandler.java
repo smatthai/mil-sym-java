@@ -708,33 +708,21 @@ public class MultiPointHandler {
                 rightX = (int)temp.getX();
                 //////////////////
                 //diagnostic clipping does not work at large scales
-                if(scale>10e6)
-                {
-                    //get widest point in the AOI
-//                    double midLat=0;
-//                    if(bottom<0 && top >0)
-//                        midLat=0;
-//                    else if(bottom<0 && top<0)
-//                        midLat=top;
-//                    else if(bottom>0 && top>0)
-//                        midLat=bottom;
-//                    Point2D rightMidLat=new Point2D.Double(right, midLat);
-//                    temp = ipc.GeoToPixels(rightMidLat);
-//                    rightX = (int)temp.getX();
-                    //diagnostic replace above by using a new ipc based on the coordinates MBR
-                    coordsUL=getGeoUL(geoCoords);
-                    temp = ipc.GeoToPixels(coordsUL);
-                    left=coordsUL.getX();
-                    top=coordsUL.getY();
-                    //shift the ipc to coordsUL origin so that conversions will be more accurate for large scales.
-                    ipc = new PointConverter(left, top, scale);
-                    //shift the rect to compenstate for the shifted ipc so that we can maintain the original clipping area.
-                    leftX -= (int)temp.getX();
-                    rightX -= (int)temp.getX();
-                    topY -= (int)temp.getY();
-                    bottomY -= (int)temp.getY();
-                    //end diagnostic
-                }
+//                if(scale>10e6)
+//                {
+//                    coordsUL=getGeoUL(geoCoords);
+//                    temp = ipc.GeoToPixels(coordsUL);
+//                    left=coordsUL.getX();
+//                    top=coordsUL.getY();
+//                    //shift the ipc to coordsUL origin so that conversions will be more accurate for large scales.
+//                    ipc = new PointConverter(left, top, scale);
+//                    //shift the rect to compenstate for the shifted ipc so that we can maintain the original clipping area.
+//                    leftX -= (int)temp.getX();
+//                    rightX -= (int)temp.getX();
+//                    topY -= (int)temp.getY();
+//                    bottomY -= (int)temp.getY();
+//                    //end diagnostic
+//                }
                 //end section
 
                 width = (int) Math.abs(rightX - leftX);

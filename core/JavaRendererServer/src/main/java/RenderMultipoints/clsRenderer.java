@@ -1200,7 +1200,136 @@ public final class clsRenderer {
         pt0 = clipPoints.get(0);
         Point2D ptLast = clipPoints.get(clipPoints.size() - 1);
     }
-
+    /**
+     * Added function to handle when coords or display area spans IDL but not both, it prevents the symbol from rendering
+     * if the bounding rectangles don't intersect.
+     * @param tg
+     * @param converter
+     * @param clipArea
+     * @return 
+     */
+    public static boolean intersectsClipArea(TGLight tg, IPointConversion converter, Object clipArea)
+    {
+        boolean result=false;
+        try
+        {
+            if (clipArea==null || tg.LatLongs.size() < 2)
+                return true;
+            Rectangle2D clipBounds = null;
+            ArrayList<Point2D> clipPoints = null;
+            
+            if (clipArea != null) {
+                if (clipArea.getClass().isAssignableFrom(Rectangle2D.Double.class)) {
+                    clipBounds = (Rectangle2D.Double) clipArea;
+                } else if (clipArea.getClass().isAssignableFrom(Rectangle.class)) {
+                    clipBounds = (Rectangle2D) clipArea;
+                } else if (clipArea.getClass().isAssignableFrom(ArrayList.class)) {
+                    clipPoints = (ArrayList<Point2D>) clipArea;
+                }
+            }
+            //assumes we are using clipBounds
+            int j = 0;
+            double x = clipBounds.getMinX();
+            double y = clipBounds.getMinY();
+            double width = clipBounds.getWidth();
+            double height = clipBounds.getHeight();
+            POINT2 tl = new POINT2(x, y);
+            POINT2 br = new POINT2(x + width, y + height);
+            tl = clsUtility.PointPixelsToLatLong(tl, converter);
+            br = clsUtility.PointPixelsToLatLong(br, converter);
+            
+            //the latitude range
+            boolean ptInside = false, ptAbove = false, ptBelow = false;
+            for (j = 0; j < tg.LatLongs.size(); j++)
+            {
+                POINT2 pt = tg.LatLongs.get(j);
+                if (br.y <= pt.y && pt.y <= tl.y)
+                    ptInside = true;
+                if (pt.y < br.y)
+                    ptBelow = true;
+                if (pt.y > tl.y)
+                    ptAbove = true;                
+            }
+            if (!ptInside)
+            {
+                //if all the points are above the clip area
+                if (ptAbove && !ptBelow)
+                    return false;
+                //if all the points are below the clip area
+                if (!ptAbove && ptBelow)
+                    return false;
+            }
+            //if it gets this far then the latitude ranges intersect
+            //the longitude range
+            //the min and max coords longitude
+            boolean boxSpanIDL = false;
+            boolean coordSpanIDL = false;
+            if (Math.abs(br.x - tl.x) > 180)
+                boxSpanIDL = true;
+            double coordsLeft = tg.LatLongs.get(0).x;
+            double coordsRight = coordsLeft;
+            for (j = 0; j < tg.LatLongs.size(); j++)
+            {                
+                POINT2 pt=tg.LatLongs.get(j);
+                if (pt.x < coordsLeft)
+                    coordsLeft = pt.x;
+                if (pt.x > coordsRight)
+                    coordsRight = pt.x;
+            }
+            if (coordsRight - coordsLeft > 180)
+            {
+                double temp = coordsLeft;
+                coordsLeft = coordsRight;
+                coordsRight = temp;
+                coordSpanIDL=true;
+            }
+            boolean intersects=false;
+            if(coordSpanIDL && boxSpanIDL)
+                intersects=true;
+            else if(!coordSpanIDL && !boxSpanIDL)
+            {
+                //this would prevent portions of the autoshapes from rendering
+//                if(coordsLeft<=tl.x && tl.x<=coordsRight)
+//                    intersects=true;
+//                if(coordsLeft<=br.x && br.x<=coordsRight)
+//                    intersects=true;
+//                if(tl.x<=coordsLeft && coordsLeft<=br.x)
+//                    intersects=true;
+//                if(tl.x<=coordsRight && coordsRight<=br.x)
+//                    intersects=true;
+                intersects=true;
+            }
+            else if(!coordSpanIDL && boxSpanIDL)
+            {   //a coord must fall between +/-180 and tl or br
+                if(tl.x<coordsLeft && coordsLeft<180)
+                    intersects=true;
+//                if(tl.x<coordsRight && coordsRight<180)
+//                    intersects=true;
+//                if(br.x>coordsLeft && coordsLeft>-180)
+//                    intersects=true;
+                if(br.x>coordsRight && coordsRight>-180)
+                    intersects=true;
+            }
+            else if(coordSpanIDL && !boxSpanIDL)
+            {   //a box coord must fall between +/-180 and coordsleft or coordsRight
+                if(coordsLeft<tl.x && tl.x<180)
+                    intersects=true;
+//                if(coordsRight>tl.x && tl.x>-180)
+//                    intersects=true;
+//                if(coordsLeft<br.x && br.x<180)
+//                    intersects=true;
+                if(coordsRight>br.x && br.x>-180)
+                    intersects=true;
+            }
+            return intersects;
+            
+        }
+        catch (Exception exc) {
+            ErrorLogger.LogException("clsRenderer", "intersectsClipArea",
+                    new RendererException("Failed inside intersectsClipArea", exc));
+        }    
+        return result;
+    }
     /**
      * GoogleEarth renderer uses polylines for rendering
      *
@@ -1216,7 +1345,8 @@ public final class clsRenderer {
             ArrayList<ShapeInfo> shapeInfos = new ArrayList();
             ArrayList<ShapeInfo> modifierShapeInfos = new ArrayList();
             double scale = getScale(tg, converter, clipArea);
-            render_GE(tg, shapeInfos, modifierShapeInfos, converter, clipArea);
+            if (intersectsClipArea(tg, converter, clipArea))
+                render_GE(tg, shapeInfos, modifierShapeInfos, converter, clipArea);
             mss.setSymbolShapes(shapeInfos);
             mss.setModifierShapes(modifierShapeInfos);
             mss.set_WasClipped(tg.get_WasClipped());
