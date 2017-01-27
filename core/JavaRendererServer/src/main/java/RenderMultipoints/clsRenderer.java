@@ -1237,27 +1237,31 @@ public final class clsRenderer {
             POINT2 br = new POINT2(x + width, y + height);
             tl = clsUtility.PointPixelsToLatLong(tl, converter);
             br = clsUtility.PointPixelsToLatLong(br, converter);
-            
             //the latitude range
             boolean ptInside = false, ptAbove = false, ptBelow = false;
-            for (j = 0; j < tg.LatLongs.size(); j++)
+            boolean canClipPoints=clsUtilityCPOF.canClipPoints(tg);
+            if(canClipPoints)
             {
-                POINT2 pt = tg.LatLongs.get(j);
-                if (br.y <= pt.y && pt.y <= tl.y)
-                    ptInside = true;
-                if (pt.y < br.y)
-                    ptBelow = true;
-                if (pt.y > tl.y)
-                    ptAbove = true;                
-            }
-            if (!ptInside)
-            {
-                //if all the points are above the clip area
-                if (ptAbove && !ptBelow)
-                    return false;
-                //if all the points are below the clip area
-                if (!ptAbove && ptBelow)
-                    return false;
+                for (j = 0; j < tg.LatLongs.size(); j++)
+                {
+                    POINT2 pt = tg.LatLongs.get(j);
+                    if (br.y <= pt.y && pt.y <= tl.y)
+                        ptInside = true;
+                    if (pt.y < br.y)
+                        ptBelow = true;
+                    if (pt.y > tl.y)
+                        ptAbove = true;                
+                }
+
+                if (!ptInside)
+                {
+                    //if all the points are above the clip area
+                    if (ptAbove && !ptBelow)
+                        return false;
+                    //if all the points are below the clip area
+                    if (!ptAbove && ptBelow)
+                        return false;
+                }
             }
             //if it gets this far then the latitude ranges intersect
             //the longitude range
@@ -1286,39 +1290,29 @@ public final class clsRenderer {
             boolean intersects=false;
             if(coordSpanIDL && boxSpanIDL)
                 intersects=true;
-            else if(!coordSpanIDL && !boxSpanIDL)
+            else if(!coordSpanIDL && !boxSpanIDL && canClipPoints)
             {
-                //this would prevent portions of the autoshapes from rendering
-//                if(coordsLeft<=tl.x && tl.x<=coordsRight)
-//                    intersects=true;
-//                if(coordsLeft<=br.x && br.x<=coordsRight)
-//                    intersects=true;
-//                if(tl.x<=coordsLeft && coordsLeft<=br.x)
-//                    intersects=true;
-//                if(tl.x<=coordsRight && coordsRight<=br.x)
-//                    intersects=true;
-                intersects=true;
-            }
-            else if(!coordSpanIDL && boxSpanIDL)
-            {   //a coord must fall between +/-180 and tl or br
-                if(tl.x<coordsLeft && coordsLeft<180)
+                if(coordsLeft<=tl.x && tl.x<=coordsRight)
                     intersects=true;
-//                if(tl.x<coordsRight && coordsRight<180)
-//                    intersects=true;
-//                if(br.x>coordsLeft && coordsLeft>-180)
-//                    intersects=true;
-                if(br.x>coordsRight && coordsRight>-180)
+                if(coordsLeft<=br.x && br.x<=coordsRight)
+                    intersects=true;
+                if(tl.x<=coordsLeft && coordsLeft<=br.x)
+                    intersects=true;
+                if(tl.x<=coordsRight && coordsRight<=br.x)
                     intersects=true;
             }
-            else if(coordSpanIDL && !boxSpanIDL)
-            {   //a box coord must fall between +/-180 and coordsleft or coordsRight
-                if(coordsLeft<tl.x && tl.x<180)
+            else if(!coordSpanIDL && boxSpanIDL)    //box spans IDL and coords do not
+            {   
+                if(tl.x<coordsRight && coordsRight<180)
                     intersects=true;
-//                if(coordsRight>tl.x && tl.x>-180)
-//                    intersects=true;
-//                if(coordsLeft<br.x && br.x<180)
-//                    intersects=true;
-                if(coordsRight>br.x && br.x>-180)
+                if(-180<coordsLeft && coordsLeft<br.x)
+                    intersects=true;
+            }
+            else if(coordSpanIDL && !boxSpanIDL)    //coords span IDL and box does not
+            {   
+                if(coordsLeft<br.x && br.x<180)
+                    intersects=true;
+                if(-180<tl.x && tl.x<coordsRight)
                     intersects=true;
             }
             return intersects;
