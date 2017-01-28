@@ -1245,17 +1245,33 @@ public final class clsRenderer {
             double coordsTop=tg.LatLongs.get(0).y;
             double coordsBottom=coordsTop;
             boolean intersects=false;
+            double minx=tg.LatLongs.get(0).x,maxx=minx,maxNegX=0;
             for (j = 0; j < tg.LatLongs.size(); j++)
             {                
                 POINT2 pt=tg.LatLongs.get(j);
-                if (pt.x < coordsLeft)
-                    coordsLeft = pt.x;
-                if (pt.x > coordsRight)
-                    coordsRight = pt.x;
+                if (pt.x < minx)
+                    minx = pt.x;
+                if (pt.x > maxx)
+                    maxx = pt.x;
+                if(maxNegX==0 && pt.x<0)
+                    maxNegX=pt.x;
+                if(maxNegX<0 && pt.x<0 && pt.x>maxNegX)
+                    maxNegX=pt.x;
                 if (pt.y < coordsBottom)
                     coordsBottom = pt.y;
                 if (pt.y > coordsTop)
-                    coordsTop = pt.y;
+                    coordsTop = pt.y;                
+            }
+            boolean coordSpanIDL = false;
+            if(maxx-minx>=180)
+            {
+                coordSpanIDL=true;
+                coordsLeft=maxx;
+                coordsRight=maxNegX;
+            }else
+            {
+                coordsLeft=minx;
+                coordsRight=maxx;
             }
             if(canClipPoints)
             {                
@@ -1272,17 +1288,17 @@ public final class clsRenderer {
             //the longitude range
             //the min and max coords longitude
             boolean boxSpanIDL = false;
-            boolean coordSpanIDL = false;
+            //boolean coordSpanIDL = false;
             if (Math.abs(br.x - tl.x) > 180)
                 boxSpanIDL = true;
             
-            if (coordsRight - coordsLeft > 180)
-            {
-                double temp = coordsLeft;
-                coordsLeft = coordsRight;
-                coordsRight = temp;
-                coordSpanIDL=true;
-            }
+//            if (coordsRight - coordsLeft > 180)
+//            {
+//                double temp = coordsLeft;
+//                coordsLeft = coordsRight;
+//                coordsRight = temp;
+//                coordSpanIDL=true;
+//            }
             //boolean intersects=false;
             if(coordSpanIDL && boxSpanIDL)
                 intersects=true;
