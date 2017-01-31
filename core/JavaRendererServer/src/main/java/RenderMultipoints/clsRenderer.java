@@ -1351,7 +1351,7 @@ public final class clsRenderer {
             ArrayList<ShapeInfo> shapeInfos = new ArrayList();
             ArrayList<ShapeInfo> modifierShapeInfos = new ArrayList();
             double scale = getScale(tg, converter, clipArea);
-            if (intersectsClipArea(tg, converter, clipArea))
+            //if (intersectsClipArea(tg, converter, clipArea))
                 render_GE(tg, shapeInfos, modifierShapeInfos, converter, clipArea);
             mss.setSymbolShapes(shapeInfos);
             mss.setModifierShapes(modifierShapeInfos);

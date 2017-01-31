@@ -1746,7 +1746,7 @@ public final class clsUtilityCPOF {
                 //case TacticalLines.FIX:
                 //case TacticalLines.FOLLA:
                 //case TacticalLines.FOLSP:
-//                case TacticalLines.BOUNDARY:
+                case TacticalLines.BOUNDARY:
                 case TacticalLines.FLOT:
                 case TacticalLines.LC:
                 case TacticalLines.PL:
@@ -1884,7 +1884,7 @@ public final class clsUtilityCPOF {
                 //case TacticalLines.TORPEDO:
                 case TacticalLines.TGMF:
                     return true;
-                case TacticalLines.BOUNDARY:    //post clip these so there are identical points regardless whether segment data is set
+                //case TacticalLines.BOUNDARY:    //post clip these so there are identical points regardless whether segment data is set
                 case TacticalLines.MSR:
                 case TacticalLines.ASR:
                     return false;
