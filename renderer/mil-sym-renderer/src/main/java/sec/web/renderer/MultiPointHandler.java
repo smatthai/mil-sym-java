@@ -1127,7 +1127,7 @@ public class MultiPointHandler {
     {
         MilStdSymbol mSymbol = null;
         //System.out.println("MultiPointHandler.RenderSymbol()");
-        boolean normalize = false;
+        boolean normalize = true;
         Double controlLat = 0.0;
         Double controlLong = 0.0;
         //Double metPerPix = GeoPixelConversion.metersPerPixel(scale);
@@ -1258,21 +1258,21 @@ public class MultiPointHandler {
                 rightX = (int)temp.getX();
                 //////////////////
                 //diagnostic clipping does not work at large scales
-                if(scale>10e6)
-                {
-                    //get widest point in the AOI
-                    double midLat=0;
-                    if(bottom<0 && top >0)
-                        midLat=0;
-                    else if(bottom<0 && top<0)
-                        midLat=top;
-                    else if(bottom>0 && top>0)
-                        midLat=bottom;
-                    //temp = ipc.GeoToPixels(new Point2D.Double(right, midLat));
-                    Point2D rightMidLat=new Point2D.Double(right, midLat);
-                    temp = ipc.GeoToPixels(rightMidLat);
-                    rightX = (int)temp.getX();
-                }
+//                if(scale>10e6)
+//                {
+//                    //get widest point in the AOI
+//                    double midLat=0;
+//                    if(bottom<0 && top >0)
+//                        midLat=0;
+//                    else if(bottom<0 && top<0)
+//                        midLat=top;
+//                    else if(bottom>0 && top>0)
+//                        midLat=bottom;
+//                    //temp = ipc.GeoToPixels(new Point2D.Double(right, midLat));
+//                    Point2D rightMidLat=new Point2D.Double(right, midLat);
+//                    temp = ipc.GeoToPixels(rightMidLat);
+//                    rightX = (int)temp.getX();
+//                }
                 //end section
 
                 width = (int) Math.abs(rightX - leftX);
@@ -1307,16 +1307,16 @@ public class MultiPointHandler {
         }
         
         //if(crossesIDL(geoCoords)==true)
-        if(Math.abs(right-left)>180)
-        {
-            normalize=true;
-            ((PointConverter)ipc).set_normalize(true);
-        }
-        else      
-        {
-            normalize=false;
-            ((PointConverter)ipc).set_normalize(false);
-        }
+//        if(Math.abs(right-left)>180)
+//        {
+//            normalize=true;
+//            ((PointConverter)ipc).set_normalize(true);
+//        }
+//        else      
+//        {
+//            normalize=false;
+//            ((PointConverter)ipc).set_normalize(false);
+//        }
 
         //seems to work ok at world view
         //if(normalize)
