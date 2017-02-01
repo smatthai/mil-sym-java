@@ -565,7 +565,7 @@ public class MultiPointHandler {
         }
         
         //System.out.println("MultiPointHandler.RenderSymbol()");
-        boolean normalize = false;
+        boolean normalize = true;
         Double controlLat = 0.0;
         Double controlLong = 0.0;
         //Double metPerPix = GeoPixelConversion.metersPerPixel(scale);
@@ -1657,7 +1657,7 @@ public class MultiPointHandler {
             int rightX;
             int width;
             int height;
-            boolean normalize = false;
+            boolean normalize = true;
 //            if(Math.abs(right-left)>180)
 //            {
 //                ((PointConversion)ipc).set_normalize(true);                

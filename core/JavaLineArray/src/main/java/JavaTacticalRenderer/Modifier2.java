@@ -3325,6 +3325,18 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, tg.get_DTG() + dash + tg.get_DTG1(), area, 1 * csFactor, ptCenter, ptCenter, true, "W+W1");
                     break;
                 case TacticalLines.FSA:
+                    AddIntegralAreaModifier(tg, label + " " + tg.get_Name(), area, 0, ptCenter, ptCenter, false);
+                    //AddIntegralAreaModifier(tg, tg.get_Name(), area, 1 * csFactor, ptCenter, ptCenter, false);
+                    GetMBR(tg, ul, ur, lr, ll);
+                    POINT2 ptLeftFSA = ul;
+                    POINT2 ptRightFSA = ur;
+                    if (tg.get_Client().equalsIgnoreCase("ge")) {
+                        ptLeftFSA.x -= font.getSize() / 2;
+                        ptRightFSA.x -= font.getSize() / 2;
+                    }
+                    AddIntegralAreaModifier(tg, tg.get_DTG(), toEnd, 0.5 * csFactor, ptLeftFSA, ptRightFSA, false, "W");
+                    AddIntegralAreaModifier(tg, tg.get_DTG1(), toEnd, 1.5 * csFactor, ptLeftFSA, ptRightFSA, false, "W1");
+                    break;
                 case TacticalLines.ATI:
                 case TacticalLines.CFFZ:
                 case TacticalLines.CFZ:
@@ -3448,8 +3460,10 @@ public class Modifier2 {
                         AddIntegralModifier(tg, "DTG Start: " + tg.get_DTG(), aboveMiddle, -3 * csFactor - dist, middleSegment, middleSegment + 1, false);
                         AddIntegralModifier(tg, "DTG End: " + tg.get_DTG1(), aboveMiddle, -2 * csFactor - dist, middleSegment, middleSegment + 1, false);
                     } else {
-                        AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, -0.5 * csFactor - dist, middleSegment, middleSegment + 1, false);
-                        AddIntegralModifier(tg, tg.get_T1(), aboveMiddle, 0.5 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        //AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, -0.5 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        //AddIntegralModifier(tg, tg.get_T1(), aboveMiddle, 0.5 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, -1.0 * csFactor - dist, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, tg.get_T1(), aboveMiddle, 1.0 * csFactor - dist, middleSegment, middleSegment + 1, false);
                     }
                     break;
                 case TacticalLines.MRR_USAS:
