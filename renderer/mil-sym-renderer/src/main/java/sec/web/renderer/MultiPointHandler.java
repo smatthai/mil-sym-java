@@ -754,16 +754,16 @@ public class MultiPointHandler {
         }
         
         //if(crossesIDL(geoCoords)==true)
-        if(Math.abs(right-left)>180)
-        {
-            normalize=true;
-            ((PointConverter)ipc).set_normalize(true);
-        }
-        else      
-        {
-            normalize=false;
-            ((PointConverter)ipc).set_normalize(false);
-        }
+//        if(Math.abs(right-left)>180)
+//        {
+//            normalize=true;
+//            ((PointConverter)ipc).set_normalize(true);
+//        }
+//        else      
+//        {
+//            normalize=false;
+//            ((PointConverter)ipc).set_normalize(false);
+//        }
 
         //seems to work ok at world view
         //if(normalize)
@@ -1658,15 +1658,15 @@ public class MultiPointHandler {
             int width;
             int height;
             boolean normalize = false;
-            if(Math.abs(right-left)>180)
-            {
-                ((PointConversion)ipc).set_normalize(true);                
-                normalize=true;
-            }
-            else      
-            {
-                ((PointConversion)ipc).set_normalize(false);
-            }
+//            if(Math.abs(right-left)>180)
+//            {
+//                ((PointConversion)ipc).set_normalize(true);                
+//                normalize=true;
+//            }
+//            else      
+//            {
+//                ((PointConversion)ipc).set_normalize(false);
+//            }
             if(ShouldClipSymbol(symbolCode) || crossesIDL(geoCoords))
             {
                 temp = ipc.GeoToPixels(new Point2D.Double(left, top));
