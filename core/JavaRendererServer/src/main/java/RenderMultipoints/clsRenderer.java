@@ -1239,7 +1239,6 @@ public final class clsRenderer {
             br = clsUtility.PointPixelsToLatLong(br, converter);
             //the latitude range
             //boolean ptInside = false, ptAbove = false, ptBelow = false;
-            boolean canClipPoints=clsUtilityCPOF.canClipPoints(tg);
             double coordsLeft = tg.LatLongs.get(0).x;
             double coordsRight = coordsLeft;
             double coordsTop=tg.LatLongs.get(0).y;
@@ -1273,15 +1272,15 @@ public final class clsRenderer {
                 coordsLeft=minx;
                 coordsRight=maxx;
             }
-            if(canClipPoints)
-            {                
+            //if(canClipPoints)
+            //{                
                 if(br.y<=coordsBottom && coordsBottom <= tl.y)
                     intersects=true;
                 else if(coordsBottom<=br.y && br.y <=coordsTop)
                     intersects=true;
                 else
                     return false;
-            }
+            //}
             //if it gets this far then the latitude ranges intersect
             //re-initialize intersects for the longitude ranges
             intersects=false;
@@ -1302,7 +1301,7 @@ public final class clsRenderer {
             //boolean intersects=false;
             if(coordSpanIDL && boxSpanIDL)
                 intersects=true;
-            else if(!coordSpanIDL && !boxSpanIDL && canClipPoints)
+            else if(!coordSpanIDL && !boxSpanIDL)   //was && canclipPoints
             {
                 if(coordsLeft<=tl.x && tl.x<=coordsRight)
                     intersects=true;
@@ -1351,7 +1350,7 @@ public final class clsRenderer {
             ArrayList<ShapeInfo> shapeInfos = new ArrayList();
             ArrayList<ShapeInfo> modifierShapeInfos = new ArrayList();
             double scale = getScale(tg, converter, clipArea);
-            //if (intersectsClipArea(tg, converter, clipArea))
+            if (intersectsClipArea(tg, converter, clipArea))
                 render_GE(tg, shapeInfos, modifierShapeInfos, converter, clipArea);
             mss.setSymbolShapes(shapeInfos);
             mss.setModifierShapes(modifierShapeInfos);
