@@ -2644,6 +2644,51 @@ public class SinglePointRenderer {
                     }
 
                 }
+                else if(basicSymbolID.charAt(0) == 'W' && modifierName.equals(ModifiersTG.X_ALTITUDE_DEPTH))
+                {
+                    String strText = modifierValue;
+                    
+                    if(basicSymbolID.equals("WAS-WSF-LVP----"))//Freezing Level
+                    {
+                        strText = "0" + (char)(176) + ":" + modifierValue;
+
+                        text = new TextLayout(strText, labelFont, frc);
+                        labelBounds = text.getPixelBounds(frc, 0, 0);
+                        labelWidth = labelBounds.width;
+                        
+                        //One modifier symbols and modifier goes in center
+                        x = bounds.x + (bounds.width * 0.5);
+                        x = x - (labelWidth * 0.5);
+                        y = bounds.y + (bounds.height * 0.5);
+                        y = y + (labelHeight * 0.5);
+
+                    }
+                    else if(basicSymbolID.equals("WAS-WST-LVP----"))//tropopause Level
+                    {
+                        //One modifier symbols and modifier goes in center
+                        x = bounds.x + (bounds.width * 0.5);
+                        x = x - (labelWidth * 0.5);
+                        y = bounds.y + (bounds.height * 0.5);
+                        y = y + (labelHeight * 0.5);
+                    }
+                    else if(basicSymbolID.equals("WAS-PLT---P----"))//tropopause Low
+                    {
+                        //One modifier symbols and modifier goes just above center
+                        x = bounds.x + (bounds.width * 0.5);
+                        x = x - (labelWidth * 0.5);
+                        y = bounds.y + (bounds.height * 0.5);
+                        y = y - descent;
+
+                    }
+                    else if(basicSymbolID.equals("WAS-PHT---P----"))//tropopause High
+                    {
+                        //One modifier symbols and modifier goes just below of center
+                        x = bounds.x + (bounds.width * 0.5);
+                        x = x - (labelWidth * 0.5);
+                        y = bounds.y + (bounds.height * 0.5);
+                        y = y + (labelHeight);
+                    }
+                }
                 else
                     return null;
 

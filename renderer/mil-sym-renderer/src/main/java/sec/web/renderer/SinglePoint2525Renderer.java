@@ -16,9 +16,11 @@ import ArmyC2.C2SD.Utilities.ImageInfo;
 import ArmyC2.C2SD.Utilities.MilStdAttributes;
 import ArmyC2.C2SD.Utilities.MilStdSymbol;
 import ArmyC2.C2SD.Utilities.PointConversionDummy;
+import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.SymbolDef;
 import ArmyC2.C2SD.Utilities.SymbolDefTable;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
+import java.awt.Color;
 import java.util.Map;
 import java.util.logging.Level;
 import sec.web.renderer.utilities.JavaRendererUtilities;
@@ -54,28 +56,48 @@ public class SinglePoint2525Renderer implements ISinglePointRenderer {
     @Override
     public ISinglePointInfo render(String symbolID, Map<String, String> params) 
     {
-        MilStdSymbol ms = JavaRendererUtilities.createMilstdSymbol(symbolID, params);
+        
         // prepare implement IPointConversion or use our basic point
         // conversion class
         IPointConversion pConverter = new PointConversionDummy();
         ImageInfo ii = null;
         SymbolDef sd = null;
         ISinglePointInfo spi = null;
+        MilStdSymbol ms = null;
+        
+        int symStd = RendererSettings.getInstance().getSymbologyStandard();
+        
+        if(params.containsKey(MilStdAttributes.SymbologyStandard))
+        {
+            symStd = Integer.parseInt(params.get(MilStdAttributes.SymbologyStandard));
+        }
+        
         
         try
         {
-            if(SymbolUtilities.isTacticalGraphic(ms.getSymbolID()))
+            if(SymbolUtilities.isTacticalGraphic(symbolID))
             {
-                sd = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(ms.getSymbolID()),ms.getSymbologyStandard());
+                sd = SymbolDefTable.getInstance().getSymbolDef(SymbolUtilities.getBasicSymbolID(symbolID),symStd);
             }
             
             if(sd != null && sd.getDrawCategory() != SymbolDef.DRAW_CATEGORY_POINT)
             {
+                int size = 35;
+                Color lineColor = SymbolUtilities.getLineColorOfAffiliation(symbolID);
+                if(params.containsKey(MilStdAttributes.PixelSize))
+                {
+                    size = Integer.parseInt(params.get(MilStdAttributes.PixelSize));
+                }
+                if(params.containsKey(MilStdAttributes.LineColor))
+                {
+                    lineColor = SymbolUtilities.getColorFromHexString(params.get(MilStdAttributes.LineColor));
+                }
                 //call TG icon renderer for multipoints
-                ii = tgir.getIcon(ms.getSymbolID(),ms.getUnitSize(),ms.getLineColor());
+                ii = tgir.getIcon(symbolID,size,lineColor,symStd);
             }
             else
             {
+                ms = JavaRendererUtilities.createMilstdSymbol(symbolID, params);
                 jr.Render(ms, pConverter, null);
                 ii = ms.toImageInfo();
             }
@@ -83,6 +105,8 @@ public class SinglePoint2525Renderer implements ISinglePointRenderer {
             //in case rendering on the given symbolID fails.
             if(ii == null)
             {
+                if(ms == null)
+                    ms = JavaRendererUtilities.createMilstdSymbol(symbolID, params);
                 String tempID = "S" + symbolID.charAt(1) + "Z" + symbolID.charAt(3) + symbolID.substring(4);
                 tempID = SymbolUtilities.reconcileSymbolID(tempID, false);
                 ms.setSymbolID(tempID);

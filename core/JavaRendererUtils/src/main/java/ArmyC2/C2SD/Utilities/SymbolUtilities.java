@@ -2883,7 +2883,11 @@ public class SymbolUtilities {
         || (temp.equals("G*M*NEB---****X"))//BIOLOGICAL
         || (temp.equals("G*M*NEC---****X"))//CHEMICAL
         || (temp.equals("G*G*GPRI--****X"))//Point of Interest
-        || (temp.equals("G*M*OFS---****X"));//Minefield
+        || (temp.equals("G*M*OFS---****X"))//Minefield
+        || (temp.equals("WAS-WSF-LVP----"))//Freezing Level
+        || (temp.equals("WAS-PLT---P----"))//Tropopause Low
+        || (temp.equals("WAS-PHT---P----"))//Tropopause High
+        || (temp.equals("WAS-WST-LVP----"));//Tropopause Level
       return blRetVal;//blRetVal;
   }
 

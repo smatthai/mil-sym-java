@@ -418,8 +418,7 @@ public class JavaRenderer implements IJavaRenderer {
      * @return 
      */
     public BufferedImage RenderMilStdSymbolAsIcon(String symbolID, int iconSize, 
-            Boolean showDisplayModifiers,
-            int symStd)
+            Boolean showDisplayModifiers, int symStd)
     {
         BufferedImage returnVal = null;
         try
@@ -446,7 +445,7 @@ public class JavaRenderer implements IJavaRenderer {
                 if(sd!=null && (sd.getDrawCategory() != SymbolDef.DRAW_CATEGORY_POINT))
                 {
                     //call TG icon renderer for multipoints
-                    ii = _TGIR.getIcon(symbolID,iconSize);
+                    ii = _TGIR.getIcon(symbolID,iconSize,null,symbol.getSymbologyStandard());
                 }
                 else
                 {

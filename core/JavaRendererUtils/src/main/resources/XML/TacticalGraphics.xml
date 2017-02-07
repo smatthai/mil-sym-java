@@ -250,15 +250,14 @@
     <MAPPING>2051</MAPPING>
     <DESCRIPTION>Tactical Graphics_Command And Control And General Maneuver_Aviation_Areas_Restricted Operations Zone (ROZ)</DESCRIPTION>
   </SYMBOL>
-  <SYMBOL>
-    <SYMBOLID>G*G*AAF---****X</SYMBOLID>
+    <SYMBOLID>G*G*AAF---2525C</SYMBOLID>
     <MAPPING>2052</MAPPING>
-    <DESCRIPTION>Tactical Graphics_Command And Control And General Maneuver_Aviation_Areas_Forward Area Ari Defense Zone (FAADEZ)</DESCRIPTION>
+    <DESCRIPTION>Tactical Graphics_Command And Control And General Maneuver_Aviation_Areas_SHORT-RANGE_AIR_DEFENSE_ENGAGEMENT_ZONE (SHORADEZ)</DESCRIPTION>
   </SYMBOL>
   <SYMBOL>
-    <SYMBOLID>G*G*AAF---2525C</SYMBOLID>
+    <SYMBOLID>G*G*AAF---****X</SYMBOLID>
     <MAPPING>2053</MAPPING>
-    <DESCRIPTION>Tactical Graphics_Command And Control And General Maneuver_Aviation_Areas_SHORT-RANGE_AIR_DEFENSE_ENGAGEMENT_ZONE (SHORADEZ)</DESCRIPTION>
+    <DESCRIPTION>Tactical Graphics_Command And Control And General Maneuver_Aviation_Areas_Forward Area Ari Defense Zone (FAADEZ)</DESCRIPTION>
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>G*G*AAH---****X</SYMBOLID>
@@ -1017,7 +1016,7 @@
   </SYMBOL>
   <SYMBOL>
     <SYMBOLID>G*F*AZFC--****X</SYMBOLID>
-    <MAPPING>2219</MAPPING>
+    <MAPPING>1052</MAPPING>
     <DESCRIPTION>CFZ_Circular</DESCRIPTION>
   </SYMBOL>
   <SYMBOL>

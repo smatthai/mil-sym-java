@@ -90,7 +90,8 @@ public class TacticalGraphicIconRenderer {
      */
     public ImageInfo getIcon(String symbolID)
     {
-        return getIcon(symbolID, 25, null);
+        int symStd = RendererSettings.getInstance().getSymbologyStandard();
+        return getIcon(symbolID, 25, null, symStd);
     }
     
     /**
@@ -101,9 +102,14 @@ public class TacticalGraphicIconRenderer {
      */
     public ImageInfo getIcon(String symbolID, int iconHeightWidth)
     {
-        Color color = null;
-        
-        return getIcon(symbolID, iconHeightWidth, null);
+        int symStd = RendererSettings.getInstance().getSymbologyStandard();
+        return getIcon(symbolID, iconHeightWidth, null, symStd);
+    }
+    
+    public ImageInfo getIcon(String symbolID, int iconHeightWidth, Color color)
+    {
+        int symStd = RendererSettings.getInstance().getSymbologyStandard();
+        return getIcon(symbolID, iconHeightWidth, color, symStd);
     }
     
     /**
@@ -113,9 +119,10 @@ public class TacticalGraphicIconRenderer {
      * (i.e. 25 = 25x25 icon)
      * @param color overrides the default affiliation line color. If null,
      * will use default.
+     * @param symStd 0 for 2525B, 1 for 2525C.
      * @return 
      */
-    public ImageInfo getIcon(String symbolID, int iconHeightWidth, Color color)
+    public ImageInfo getIcon(String symbolID, int iconHeightWidth, Color color, int symStd)
     {
         try
         {
@@ -143,7 +150,7 @@ public class TacticalGraphicIconRenderer {
                     ms.setLineColor(temp);
             }
             
-            int charSymbolIndex = TacticalGraphicLookup.getInstance().getCharCodeFromSymbol(id);
+            int charSymbolIndex = TacticalGraphicLookup.getInstance().getCharCodeFromSymbol(id,symStd);
             
             if(charSymbolIndex >= 0)
             {
