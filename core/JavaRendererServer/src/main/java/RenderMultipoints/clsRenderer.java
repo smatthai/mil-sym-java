@@ -1262,7 +1262,9 @@ public final class clsRenderer {
                     coordsTop = pt.y;                
             }
             boolean coordSpanIDL = false;
-            if(maxx-minx>=180)
+            if(maxx==180 || minx==-180)
+                coordSpanIDL=true;
+            else if(maxx-minx>=180)
             {
                 coordSpanIDL=true;
                 coordsLeft=maxx;
@@ -1288,7 +1290,9 @@ public final class clsRenderer {
             //the min and max coords longitude
             boolean boxSpanIDL = false;
             //boolean coordSpanIDL = false;
-            if (Math.abs(br.x - tl.x) > 180)
+            if(tl.x==180 || tl.x==-180 || br.x==180 || br.x==-180)
+                boxSpanIDL=true;
+            else if (Math.abs(br.x - tl.x) > 180)
                 boxSpanIDL = true;
             
 //            if (coordsRight - coordsLeft > 180)
