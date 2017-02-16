@@ -32,6 +32,8 @@ public class PortableWrapper {
                     message += "\n\t-mpon\t\tstarts the multi point service. (default true)";
                     message += "\n\t-mpport\t\tdesired port for the multi point service. (default 6790)";
                     message += "\n\t-mpbacklog\tdesired backlog for the single point service.  (default 0, lets system decide)";
+                    message += "\n\t-acmodifiers\tfire support areas will only show identifying label and labels that fit the area.\n";
+                    message += "(default true, set false and all labels are shown all the time)";
                     System.out.println(message);
                     return;
                 }
@@ -42,6 +44,7 @@ public class PortableWrapper {
                 
                 Boolean spOn = true;
                 Boolean mpOn = true;
+                Boolean acModifiers = true;
                 String spPort = null;
                 String mpPort = null;
                 String spBacklog = null;
@@ -101,6 +104,15 @@ public class PortableWrapper {
                         if(parts.length == 2)
                         {
                             mpOn = Boolean.parseBoolean(parts[1]);
+                        }
+                    }
+                    
+                    if(args[i].startsWith("-acmodifiers"))
+                    {
+                        parts = args[i].split(":");
+                        if(parts.length == 2)
+                        {
+                            acModifiers = Boolean.parseBoolean(parts[1]);
                         }
                     }
                     
@@ -164,6 +176,11 @@ public class PortableWrapper {
                 if(symStd >=0)
                 {
                     sr.setDefaultSymbologyStandard(symStd);
+                }
+                
+                if(acModifiers == false)
+                {
+                    RendererSettings.getInstance().setAutoCollapseModifiers(acModifiers);
                 }
 		
 		// System tray
