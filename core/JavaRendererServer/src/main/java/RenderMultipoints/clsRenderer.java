@@ -806,6 +806,11 @@ public final class clsRenderer {
                     String strH2 = Double.toString(AN.get(0));
                     tg.set_H2(strH2);
                 }
+                if(AM.size()>2)
+                {
+                    String strH1 = Double.toString(AM.get(2));     //buffer size
+                    tg.set_H1(strH1);
+                }
             }
             //set rev D properties            
             //render_GE does this

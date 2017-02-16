@@ -831,6 +831,8 @@ public final class clsUtility {
                                 shape.setFillColor(tg.get_FillColor());
                                 break;
                             case TacticalLines.BBS_RECTANGLE:
+                            case TacticalLines.PBS_RECTANGLE:
+                            case TacticalLines.PBS_SQUARE:
                                 shape.setFillColor(null);
                                 break;
                             default:

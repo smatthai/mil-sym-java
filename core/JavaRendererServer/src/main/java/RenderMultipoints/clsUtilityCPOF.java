@@ -346,6 +346,9 @@ public final class clsUtilityCPOF {
                     if (SymbolUtilities.isNumber(tg.get_H())) {
                         width.value[0] = Double.parseDouble(tg.get_H());
                     }
+                    if (SymbolUtilities.isNumber(tg.get_H1())) {
+                        radius.value[0] = Double.parseDouble(tg.get_H1());
+                    }
                     //assume that attitude was passed in mils
                     //so we must multiply by 360/6400 to convert to degrees                    
                     if (SymbolUtilities.isNumber(tg.get_H2())) {
@@ -714,7 +717,7 @@ public final class clsUtilityCPOF {
                 ArrayList<POINT2> tempPixels = new ArrayList();
                 tempPixels.addAll((ArrayList) tg.Pixels);
                 clsUtilityCPOF.postSegmentFSA(tg, converter);
-                Change1PixelsToShapes(tg, shapes);
+                Change1PixelsToShapes(tg, shapes, false);
                 //reuse the original pixels for the subsequent call to AddModifier2
                 tg.Pixels = tempPixels;
                 //end section
@@ -723,11 +726,11 @@ public final class clsUtilityCPOF {
                 //set tg.Pixels to the left shapes for the call to Change1PixelsToShapes
                 tg.Pixels = farLeftPixels;
                 //Modifier2.AddModifiers2(tg);
-                Change1PixelsToShapes(tg, shapesLeft);
+                Change1PixelsToShapes(tg, shapesLeft, false);
                 //set tg.Pixels to the right shapes for the call to Change1PixelsToShapes
                 tg.Pixels = farRightPixels;
                 //Modifier2.AddModifiers2(tg);
-                Change1PixelsToShapes(tg, shapesRight);
+                Change1PixelsToShapes(tg, shapesRight, false);
                 //load left and right shapes into shapes
                 shapes.addAll(shapesLeft);
                 shapes.addAll(shapesRight);
@@ -740,6 +743,34 @@ public final class clsUtilityCPOF {
                 ptCenter.y += 1;
                 shape.lineTo(ptCenter);
                 shapes.add(shape);
+            }
+            if (lineType == TacticalLines.PBS_RECTANGLE || lineType == TacticalLines.PBS_SQUARE) 
+            {
+                double dist = radius.value[0];//Double.parseDouble(strH1);
+                pt0 = new POINT2(tg.LatLongs.get(0));
+                pt1 = mdlGeodesic.geodesic_coordinate(pt0, dist, 45);//45 is arbitrary
+                Point2D pt02d = new Point2D.Double(pt0.x, pt0.y);
+                Point2D pt12d = new Point2D.Double(pt1.x, pt1.y);
+                pt02d = converter.GeoToPixels(pt02d);
+                pt12d = converter.GeoToPixels(pt12d);
+                pt0.x = pt02d.getX();
+                pt0.y = pt02d.getY();
+                pt1.x = pt12d.getX();
+                pt1.y = pt12d.getY();
+                dist = lineutility.CalcDistanceDouble(pt0, pt1);    //pixels distance
+                //tg.Pixels.get(0).style=(int)dist;
+                ArrayList<POINT2> tempPixels = new ArrayList();
+                tempPixels.addAll((ArrayList) tg.Pixels);
+                POINT2[]pts=tempPixels.toArray(new POINT2[tempPixels.size()]);
+                pts[0].style=(int)dist;
+                lineutility.getExteriorPoints(pts, pts.length, lineType, false);
+                tg.Pixels.clear();
+                for(j=0;j<pts.length;j++)
+                    tg.Pixels.add(new POINT2(pts[j].x,pts[j].y));
+
+                Change1PixelsToShapes(tg, shapes, true);
+                //reuse the original pixels for the subsequent call to AddModifier2
+                tg.Pixels = tempPixels;                
             }
             //end section
             //general symbols which require fill
@@ -757,7 +788,7 @@ public final class clsUtilityCPOF {
      * @param tg
      * @param shapes - OUT - caller instantiates the arraylist
      */
-    private static void Change1PixelsToShapes(TGLight tg, ArrayList<Shape2> shapes) {
+    private static void Change1PixelsToShapes(TGLight tg, ArrayList<Shape2> shapes, boolean fill) {
         Shape2 shape = null;
         boolean beginLine = true;
         POINT2 currentPt = null, lastPt = null;
@@ -766,8 +797,12 @@ public final class clsUtilityCPOF {
         //a loop for the outline shapes
         for (k = 0; k < tg.Pixels.size(); k++) {
             //use shapes instead of pixels
-            if (shape == null) {
-                shape = new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
+            if (shape == null) 
+            {
+                if(!fill)
+                    shape = new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
+                else if(fill)
+                    shape = new Shape2(Shape2.SHAPE_TYPE_FILL);
             }
 
             currentPt = tg.Pixels.get(k);
