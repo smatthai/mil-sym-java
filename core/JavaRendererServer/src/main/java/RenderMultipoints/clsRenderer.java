@@ -338,6 +338,21 @@ public final class clsRenderer {
                     tg.Pixels.add(pt1);   
                     tg.Pixels.add(ptAzimuth);
                 }
+                if(AM != null && AM.size()>2)
+                {
+                    //use AM[2] for the buffer, so PBS_CIRCLE requires AM size 3 like PBS_ELLIPSE to use a buffer
+                    double dist=AM.get(2);
+                    POINT2 pt0=mdlGeodesic.geodesic_coordinate(tg.LatLongs.get(0), dist, 45);   //azimuth 45 is arbitrary
+                    Point2D pt02d = new Point2D.Double(tg.LatLongs.get(0).x,tg.LatLongs.get(0).y);
+                    Point2D pt12d = new Point2D.Double(pt0.x, pt0.y);
+                    pt02d = converter.GeoToPixels(pt02d);
+                    pt12d = converter.GeoToPixels(pt12d);
+                    pt0=new POINT2(pt02d.getX(),pt02d.getY());
+                    POINT2 pt1=new POINT2(pt12d.getX(),pt12d.getY());                   
+                    dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                    //arraysupport will use line style to create the buffer shape
+                    tg.Pixels.get(0).style=(int)dist;
+                }
             }
             //construct the H1 and H2 modifiers for sector from the mss AM, AN, and X arraylists            
             if (lineType == TacticalLines.RANGE_FAN_SECTOR) {
