@@ -837,7 +837,10 @@ public final class clsUtilityCPOF {
             }
             if (k == tg.Pixels.size() - 1) //non-LC should only have one shape
             {
-                shapes.add(shape);
+                if(shape.getShapeType()==ShapeInfo.SHAPE_TYPE_FILL)
+                    shapes.add(0,shape);
+                else
+                    shapes.add(shape);
             }
         }   //end for
 
