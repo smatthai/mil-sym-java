@@ -4740,7 +4740,7 @@ public final class lineutility {
         return null;
     }
 
-    protected static void getExteriorPoints(POINT2[] pLinePoints,
+    public static void getExteriorPoints(POINT2[] pLinePoints,
             int vblCounter,
             int lineType,
             boolean interior
