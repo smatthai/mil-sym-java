@@ -3235,6 +3235,15 @@ public final class arraysupport {
                             lastCircleSize = currentCircleSize;
                             lastCirclePoint = pOriginalLinePoints[j];
                         }
+                        //get the middle line for Rev B AC, MRR, UAV, and LLTR
+                        if(rev == RendererSettings.Symbology_2525Bch2_USAS_13_14 && lineType != TacticalLines.SAAFR)
+                        {
+                            pts=lineutility.GetSAAFRMiddleLine(pOriginalLinePoints);
+                            for(j=0;j<pts.length;j++)
+                            {
+                                pLinePoints[acCounter++] = new POINT2(pts[j]);
+                            }
+                        }
                     }
                     //acPoints = null;
                     break;

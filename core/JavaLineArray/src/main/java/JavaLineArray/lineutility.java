@@ -338,13 +338,13 @@ public final class lineutility {
             double deltaX = 0, deltaY = 0;
             deltaX = firstLinePoint.x - lastLinePoint.x;
             //if (deltaX == 0) //infinite slope
-            if (Math.abs(deltaX)<1) 
-            {
+            if (Math.abs(deltaX) < 1) {
                 //deltaX = 1;
-                if(deltaX>=0)
-                    deltaX=1;
-                else
-                    deltaX=-1;
+                if (deltaX >= 0) {
+                    deltaX = 1;
+                } else {
+                    deltaX = -1;
+                }
                 result = 1;
             }
             deltaY = firstLinePoint.y - lastLinePoint.y;
@@ -437,13 +437,13 @@ public final class lineutility {
             double deltaX = 0, deltaY = 0;
             deltaX = (double) (firstLinePoint.x) - (double) (lastLinePoint.x);
             //if (deltaX == 0) //infinite slope
-            if (Math.abs(deltaX)<1)
-            {
+            if (Math.abs(deltaX) < 1) {
                 //deltaX = 1;
-                if(deltaX>=0)
-                    deltaX=1;
-                else
-                    deltaX=-1;
+                if (deltaX >= 0) {
+                    deltaX = 1;
+                } else {
+                    deltaX = -1;
+                }
                 result = false;
             }
 
@@ -2158,6 +2158,51 @@ public final class lineutility {
         }
         return dResult;
     }
+    /**
+     * gets the middle line for Rev B air corridors AC, LLTR, MRR, UAV
+     * Middle line is handled separately now because the line may have been segmented
+     * @param pLinePoints
+     * @return 
+     */
+    protected static POINT2[] GetSAAFRMiddleLine(POINT2[] pLinePoints) {
+        POINT2[] pts = null;
+        try {
+            int j = 0, count = 0;
+            for (j = 0; j < pLinePoints.length-1; j++) {
+                if (pLinePoints[j].style > 0) {
+                    count++;
+                }
+            }
+            pts = new POINT2[count*2];
+            count=0;
+            double dMRR=0;
+            POINT2 firstSegPt=null,lastSegPt=null,pt0=null,pt1=null;
+            for (j = 0; j < pLinePoints.length; j++) {
+                if(pLinePoints[j].style>=0 || j==pLinePoints.length-1)
+                {
+                    if(lastSegPt != null)
+                    {
+                        firstSegPt=new POINT2(lastSegPt);
+                        lastSegPt=new POINT2(pLinePoints[j]);
+                        dMRR=firstSegPt.style;
+                        pt0 = ExtendLine2Double(lastSegPt, firstSegPt, -dMRR, 0);
+                        pt1 = ExtendLine2Double(firstSegPt, lastSegPt, -dMRR, 5);                        
+                        pts[count++]=pt0;
+                        pts[count++]=pt1;
+                    }
+                    else
+                    {
+                        lastSegPt=new POINT2(pLinePoints[j]);
+                    }
+                }
+            }
+            
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "GetSAAFRMiddleLine",
+                    new RendererException("Failed inside GetSAAFRMiddleLine", exc));
+        }
+        return pts;
+    }
 
     /**
      * Computes the points for a SAAFR segment
@@ -2217,24 +2262,27 @@ public final class lineutility {
             pLinePoints[4] = new POINT2(pt4);
             pLinePoints[5] = new POINT2(pt5);
             pLinePoints[5].style = 5;
-            if (lineType == TacticalLines.SAAFR) {
-                pLinePoints[0].style = 5;
-            }
-            if (rev == RendererSettings.Symbology_2525C) {
-                pLinePoints[0].style = 5;
-            }
+//            if (lineType == TacticalLines.SAAFR) {
+//                pLinePoints[0].style = 5;
+//            }
+//            if (rev == RendererSettings.Symbology_2525C) {
+//                pLinePoints[0].style = 5;
+//            }
+            pLinePoints[0].style = 5;
         } catch (Exception exc) {
             ErrorLogger.LogException(_className, "GetSAAFRSegment",
                     new RendererException("Failed inside GetSAAFRSegment", exc));
         }
         return;
     }
+
     /**
      * fill segments for SAAFR and AC
+     *
      * @param pLinePoints
      * @param lineType
      * @param dMRR
-     * @param rev 
+     * @param rev
      */
     protected static void GetSAAFRFillSegment(POINT2[] pLinePoints,
             double dMRR) {
@@ -2450,17 +2498,14 @@ public final class lineutility {
             pArcLinePoints = new POINT2[numarcpts];
             InitializePOINT2Array(pArcLinePoints);
             increment = (endangle - startangle) / (numarcpts - 1);
-            if(dRadius != 0 && length != 0)
-            {
+            if (dRadius != 0 && length != 0) {
                 C.x = (int) ((double) e.x - (dRadius / length)
                         * ((double) a.x - (double) e.x));
                 C.y = (int) ((double) e.y - (dRadius / length)
                         * ((double) a.y - (double) e.y));
-            }
-            else
-            {
-                C.x=e.x;
-                C.y=e.y;
+            } else {
+                C.x = e.x;
+                C.y = e.y;
             }
             for (j = 0; j < numarcpts; j++) {
                 //pArcLinePoints[j]=pResultLinePoints[0];	//initialize
@@ -4866,23 +4911,21 @@ public final class lineutility {
         }
         return;
     }
-    public static ArrayList<POINT2> getDeepCopy(ArrayList<POINT2>pts)
-    {
-        ArrayList<POINT2>deepCopy=null;
-        try
-        {
-            if(pts == null || pts.isEmpty())
+
+    public static ArrayList<POINT2> getDeepCopy(ArrayList<POINT2> pts) {
+        ArrayList<POINT2> deepCopy = null;
+        try {
+            if (pts == null || pts.isEmpty()) {
                 return pts;
-            deepCopy=new ArrayList();
-            int j=0;
-            POINT2 pt=null;
-            for(j=0;j<pts.size();j++)
-            {                
-                pt=new POINT2(pts.get(j).x,pts.get(j).y,pts.get(j).style);
+            }
+            deepCopy = new ArrayList();
+            int j = 0;
+            POINT2 pt = null;
+            for (j = 0; j < pts.size(); j++) {
+                pt = new POINT2(pts.get(j).x, pts.get(j).y, pts.get(j).style);
                 deepCopy.add(pt);
             }
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             ErrorLogger.LogException(_className, "getDeepCopy",
                     new RendererException("Failed inside getDeepCopy", exc));
         }
