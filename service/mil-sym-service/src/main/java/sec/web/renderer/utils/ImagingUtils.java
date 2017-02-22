@@ -5,6 +5,7 @@ import ArmyC2.C2SD.Utilities.SymbolUtilities;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.awt.Color;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -187,8 +188,17 @@ public class ImagingUtils {
 	}
 
 	public static byte[] getKml(String url, String symbolId, HashMap<String, String> symbolInfoMap) {
-		String kmlInfo = sr.getSymbolImageKML(url, symbolId, symbolInfoMap);		
-		return kmlInfo.getBytes();
+		String kmlInfo = sr.getSymbolImageKML(url, symbolId, symbolInfoMap);
+                byte[] kmlBytes = null;
+                try
+                {
+                    kmlBytes = kmlInfo.getBytes("UTF-8");
+                }
+                catch(UnsupportedEncodingException uee)
+                {
+                    kmlBytes = kmlInfo.getBytes();
+                }
+		return kmlBytes;
 	}
         
 	public static String getKmlString(String url, String symbolId, HashMap<String, String> symbolInfoMap) {
