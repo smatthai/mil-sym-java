@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.RendererException;
 import java.awt.Rectangle;
-import JavaLineArray.lineutility;
+//import JavaLineArray.lineutility;
 /**
  * Class to calculate the geodesic based shapes for the Fire Support Areas
  *

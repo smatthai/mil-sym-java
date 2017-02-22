@@ -1244,7 +1244,8 @@ public final class clsRenderer {
                 } else if (clipArea.getClass().isAssignableFrom(Rectangle.class)) {
                     clipBounds = (Rectangle2D) clipArea;
                 } else if (clipArea.getClass().isAssignableFrom(ArrayList.class)) {
-                    clipPoints = (ArrayList<Point2D>) clipArea;
+                    clipPoints = (ArrayList<Point2D>) clipArea;                    
+                    clipBounds = (Rectangle2D)clsUtility.getMBR(clipPoints);
                 }
             }
             //assumes we are using clipBounds
