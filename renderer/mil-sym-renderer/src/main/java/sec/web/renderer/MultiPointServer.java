@@ -5,12 +5,6 @@
 
 package sec.web.renderer;
 
-import java.awt.Color;
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -19,28 +13,7 @@ import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
-import javax.imageio.ImageIO;
-
-import sec.web.renderer.utilities.JavaRendererUtilities;
-import ArmyC2.C2SD.RendererPluginInterface.ISinglePointInfo;
-import ArmyC2.C2SD.Rendering.IJavaRenderer;
-import ArmyC2.C2SD.Rendering.JavaRenderer;
-import ArmyC2.C2SD.Rendering.TacticalGraphicIconRenderer;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
-import ArmyC2.C2SD.Utilities.IPointConversion;
-import ArmyC2.C2SD.Utilities.ImageInfo;
-import ArmyC2.C2SD.Utilities.MilStdAttributes;
-import ArmyC2.C2SD.Utilities.MilStdSymbol;
-import ArmyC2.C2SD.Utilities.PointConversionDummy;
-import ArmyC2.C2SD.Utilities.RendererException;
-import ArmyC2.C2SD.Utilities.RendererSettings;
-import ArmyC2.C2SD.Utilities.SinglePointFont;
-import ArmyC2.C2SD.Utilities.SinglePointLookup;
-import ArmyC2.C2SD.Utilities.SymbolDef;
-import ArmyC2.C2SD.Utilities.SymbolDefTable;
-import ArmyC2.C2SD.Utilities.SymbolUtilities;
-import ArmyC2.C2SD.Utilities.UnitDefTable;
-import ArmyC2.C2SD.Utilities.UnitFontLookup;
 import com.sun.net.httpserver.Filter;
 
 import com.sun.net.httpserver.Headers;
@@ -54,13 +27,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.BindException;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 
@@ -367,7 +337,7 @@ public class MultiPointServer {
                     
                     if(kml != null && kml.equals("")==false)
                     {
-                        byteArray = kml.getBytes();
+                        byteArray = kml.getBytes("UTF-8");
                     }
                 }
                 catch(UnsupportedEncodingException uee)
@@ -412,7 +382,7 @@ public class MultiPointServer {
 
 					try {
 						Headers headers = exchange.getResponseHeaders();
-						headers.set("Content-Type", "text/plain");
+						headers.set("Content-Type", "text/plain;charset=UTF-8");
                                                 if(allowOrigin.contains("127.0.0.1"))
                                                     headers.set("Access-Control-Allow-Origin", "*");
 						exchange.sendResponseHeaders(503, 0);
@@ -430,7 +400,7 @@ public class MultiPointServer {
 					OutputStream responseBody = null;
 					try {
 						Headers headers = exchange.getResponseHeaders();
-						headers.set("Content-Type", "text/xml");
+						headers.set("Content-Type", "text/xml;charset=UTF-8");
                                                 if(allowOrigin.contains("127.0.0.1"))
                                                     headers.set("Access-Control-Allow-Origin", "*");//127.0.0.1
 						exchange.sendResponseHeaders(200, 0);

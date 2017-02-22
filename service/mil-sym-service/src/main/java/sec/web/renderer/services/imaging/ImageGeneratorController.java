@@ -12,12 +12,14 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import javax.servlet.ServletOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -186,13 +188,15 @@ public class ImageGeneratorController {
 		}
                 else if(kml != null){ // write kml response
 			
-                    response.setContentType("application/xml");
+                    response.setContentType("application/xml");//                    //response.setContentType("application/xml");//
                     boolean gzip = false;
                     String acceptEncoding = request.getHeader("Accept-Encoding");
                     // System.out.println(String.valueOf(acceptEncoding));
                     if (acceptEncoding != null && acceptEncoding.contains("gzip"))
                             gzip = true;
                     // disable compression for now. maybe use when we create a batch call.
+                    //for local testing
+                    response.setHeader("Access-Control-Allow-Origin", "*");//headers.set("Access-Control-Allow-Origin", "*")
                     gzip = false;
                     if (gzip == true) {
                             kml = compress(kml);
@@ -252,28 +256,77 @@ public class ImageGeneratorController {
 				break;
 			}
 
-			if (kml.startsWith("<")) {
-				response.setContentType("application/xml");
-			} else if (kml.startsWith("{")) {
-				response.setContentType("application/json");
-			}
-
 			boolean gzip = false;
 			String acceptEncoding = request.getHeader("Accept-Encoding");
 
 			if (acceptEncoding != null && acceptEncoding.contains("gzip"))
 				gzip = true;
+                        
+                        //gzip = false;
+			if (gzip == true) 
+                        {
+                            int gzipMethod = 1;//0 string, 1 byte array
+                            //0 method doesn't work with special characters
+                            if(gzipMethod == 0)//gzip string
+                            {
+                                if (kml.startsWith("<")) {
+                                        response.setContentType("application/xml");
+                                } else if (kml.startsWith("{")) {
+                                        response.setContentType("application/json");
+                                }
+                                kml = compress(kml);
+                                response.setHeader("Content-Length",Integer.toString(kml.length()));
+                                response.setHeader("Content-Encoding", "gzip");
+                                PrintWriter out = response.getWriter();
+                                out.print(kml);
+                                out.close();//*/
+                            }
+                            else//gzip byte array
+                            {
+                                if (kml.startsWith("<")) 
+                                {
+                                    //response.setContentType("application/xml");
+                                    response.setContentType("application/xml; charset=utf-8");
+                                } 
+                                else if (kml.startsWith("{")) 
+                                {
+                                    //response.setContentType("application/json");
+                                    response.setContentType("application/json; charset=utf-8");
+                                }
+                                //response.setHeader("Content-Length",Integer.toString(kml.length()));
+                                response.setHeader("Content-Encoding", "gzip");//*/
 
-			if (gzip == true) {
-				kml = compress(kml);
-				response.setHeader("Content-Length",
-						Integer.toString(kml.length()));
-				response.setHeader("Content-Encoding", "gzip");
-			}// */
-
-			PrintWriter out = response.getWriter();
-			out.print(kml);
-			out.close();
+                                ServletOutputStream sos = response.getOutputStream();
+                                compressBinary(kml, sos);
+                            }
+			}
+                        else 
+                        {
+                            //plain string//////////////////////////////////////
+                            /*if (kml.startsWith("<")) 
+                            {
+				response.setContentType("application/xml; charset=utf-8");
+                            } else if (kml.startsWith("{")) 
+                            {
+                                response.setContentType("application/json; charset=utf-8");
+                            }
+                            PrintWriter out = response.getWriter();
+                            out.print(kml);
+                            out.close();//*/
+                            
+                            //byte array////////////////////////////////////////
+                            if (kml.startsWith("<")) 
+                            {
+				response.setContentType("application/xml; charset=utf-8");
+                            } else if (kml.startsWith("{")) 
+                            {
+                                response.setContentType("application/json; charset=utf-8");
+                            }
+                            ServletOutputStream sos = response.getOutputStream();
+                            sos.write(kml.getBytes("UTF-8"));
+                            sos.flush();
+                            sos.close();
+                        }
 
 		} catch (Exception exc) {
 			System.err.println(exc.getMessage());
@@ -315,6 +368,7 @@ public class ImageGeneratorController {
 				json = compress(json);
 				response.setHeader("Content-Length", Integer.toString(json.length()));
 				response.setHeader("Content-Encoding", "gzip");
+                                response.setHeader("Content-Charset", "gzip");
 			}
 
 			PrintWriter out = response.getWriter();
@@ -331,22 +385,50 @@ public class ImageGeneratorController {
          * Compress a regular string into a GZIP compressed string.
          * @param str
          * @return 
+         * function kills special characters.  Haven't figured out how to 
+         * prevent that.
          */
 	private String compress(String str) {
-		if (str == null || str.length() == 0) {
-			return str;
-		}
-		String outStr = null;
-		try {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			GZIPOutputStream gzip = new GZIPOutputStream(out);
-			gzip.write(str.getBytes());
-			gzip.close();
-			outStr = out.toString("ISO-8859-1");
-		} catch (Exception exc) {
+            if (str == null || str.length() == 0) {
+                    return str;
+            }
+            String outStr = null;
+            try {
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    GZIPOutputStream gzip = new GZIPOutputStream(out);
+                    gzip.write(str.getBytes(""));//()
+                    gzip.close();
+                    outStr = out.toString("ISO-8859-1");//ISO-8859-1
+            } catch (Exception exc) {
 
-		}
-		return outStr;
+            }
+            return outStr;
+	}
+        
+        /**
+         * Compress a string into a byte array
+         * @param str
+         * @param os 
+         */
+        private void compressBinary(String str, OutputStream os) {
+            
+            try 
+            {
+                if (str == null || str.length() == 0) 
+                {
+                    os.close();
+                    return;
+                }
+                GZIPOutputStream gzip = new GZIPOutputStream(os);//out
+                gzip.write(str.getBytes("UTF-8"));//UTF-8
+                gzip.flush();
+                gzip.close();
+            } 
+            catch (Exception exc) 
+            {
+
+            }
+            //return outStr;
 	}
         
         /**
