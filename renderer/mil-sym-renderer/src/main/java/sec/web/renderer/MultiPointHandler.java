@@ -314,7 +314,7 @@ public class MultiPointHandler {
                 //the existing value for top. Then the left value will be the least positive x value
                 //left=geoCoords.get(0).x;
                 left = 180;
-                for (j = 1; j < geoCoords.size(); j++) {
+                for (j = 0; j < geoCoords.size(); j++) {
                     pt = geoCoords.get(j);
                     if (pt.getX() > 0 && pt.getX() < left) {
                         left = pt.getX();
