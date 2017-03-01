@@ -1,111 +1,23 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>mil.army.missioncommand</groupId>
+        <artifactId>mil-sym-java</artifactId>
+        <version>0.1.20</version>
+        <relativePath>..</relativePath>
+    </parent>
 
-	<modelVersion>4.0.0</modelVersion>
+    <artifactId>mil-sym-java-core-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>mil-sym-java :: Core</name>
+    <description>mil-sym-java Core</description>
 
-	<groupId>sec.web.renderer</groupId>
-	<artifactId>sec-core-parent</artifactId>
-	<version>0.1.20</version>
-	<packaging>pom</packaging>
-	
-	<name>sec-core-parent</name>
-	<description>SEC Core jars parent pom</description>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<core.jar.version>${project.version}</core.jar.version>
-	</properties>	
-
-	<modules>
-		<module>JavaRendererUtils</module>
-		<module>JavaLineArray</module>
-		<module>JavaRendererServer</module>
-		<module>JavaRenderer</module>
-	</modules>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>						
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-				<configuration>
-					<archive>
-						<index>false</index>
-						<manifest>
-							<addClasspath>false</addClasspath>
-						</manifest>
-						<manifestEntries>
-							<!-- <Trusted-Library>true</Trusted-Library> -->
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<autoVersionSubModules>true</autoVersionSubModules>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<dependencyManagement>
-		<dependencies>
-  			<dependency>
-				<groupId>sec.web.renderer</groupId>
-  				<artifactId>JavaRenderer</artifactId>
-				<version>${project.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>sec.web.renderer</groupId>
-				<artifactId>JavaRendererServer</artifactId>
-				<version>${project.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>sec.web.renderer</groupId>	
-				<artifactId>JavaLineArray</artifactId>
-				<version>${project.version}</version>
-				<scope>compile</scope>				
-			</dependency>
-			<dependency>
-				<groupId>sec.web.renderer</groupId>
-				<artifactId>JavaRendererUtils</artifactId>
-				<version>${project.version}</version>
-				<scope>compile</scope>
-			</dependency> 
-			<!-- TEST -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.2</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>	
-	
-	
-	
-	<scm>
-		<connection>scm:git:https://github.com/missioncommand/mil-sym-java.git</connection>
-		<developerConnection>scm:git:https://github.com/missioncommand/mil-sym-java.git</developerConnection>
-		<url>https://github.com/missioncommand/mil-sym-java</url>
-	</scm>
-	
+    <modules>
+        <module>JavaRendererUtils</module>
+        <module>JavaLineArray</module>
+        <module>JavaRendererServer</module>
+        <module>JavaRenderer</module>
+    </modules>
+    
 </project>

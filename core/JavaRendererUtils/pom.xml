@@ -1,48 +1,23 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-		 
-		
-	<parent>
-		<groupId>sec.web.renderer</groupId>
-		<artifactId>sec-core-parent</artifactId>
-		<version>0.1.20</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>JavaRendererUtils</artifactId>
-	<packaging>jar</packaging>
-	<name>JavaRendererUtils</name>	
+    <parent>
+        <groupId>mil.army.missioncommand</groupId>
+        <artifactId>mil-sym-java</artifactId>
+        <version>0.1.20</version>
+        <relativePath>../..</relativePath>
+    </parent>
 
-	<build>
-		<!-- <finalName>${project.artifactId}</finalName> -->
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>attached</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRefs>jar-with-dependencies</descriptorRefs>
-					</descriptorRefs>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <artifactId>JavaRendererUtils</artifactId>
+    <packaging>jar</packaging>
+    <name>mil-sym-java :: Core :: JavaRendererUtils</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
 </project>

@@ -1,52 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">		 		 				 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>sec.web.renderer</groupId>
-		<artifactId>sec-core-parent</artifactId>
-		<version>0.1.20</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-	
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>JavaRenderer</artifactId>
-	<packaging>jar</packaging>
-	<name>JavaRenderer</name>
+    <parent>
+        <groupId>mil.army.missioncommand</groupId>
+        <artifactId>mil-sym-java</artifactId>
+        <version>0.1.20</version>
+        <relativePath>../..</relativePath>
+    </parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<source.directory>${project.build.directory}/src</source.directory>
-	</properties>
+    <artifactId>JavaRenderer</artifactId>
+    <packaging>jar</packaging>
+    <name>mil-sym-java :: Core :: JavaRenderer</name>
 
-	<build>
-		<!-- <finalName>${project.artifactId}</finalName> -->
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>attached</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRefs>jar-with-dependencies</descriptorRefs>
-					</descriptorRefs>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <dependencies>
+        <dependency>
+            <groupId>mil.army.missioncommand</groupId>
+            <artifactId>JavaRendererServer</artifactId>
+        </dependency>
+    </dependencies>
 
-	<dependencies>
-		<dependency>
-			<groupId>sec.web.renderer</groupId>
-			<artifactId>JavaRendererServer</artifactId>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
 </project>

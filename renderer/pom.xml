@@ -1,32 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>mil.army.missioncommand</groupId>
+        <artifactId>mil-sym-java</artifactId>
+        <version>0.1.20</version>
+        <relativePath>..</relativePath>
+    </parent>
 
-	<modelVersion>4.0.0</modelVersion>
+    <artifactId>mil-sym-java-renderer-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>mil-sym-java :: Renderer</name>
+    <description>mil-sym-java Renderer</description>
 
-	<groupId>sec.web.renderer</groupId>
-	<artifactId>mil-sym-renderer-parent</artifactId>
-	<version>0.1.20</version>
-	<packaging>pom</packaging>
-	
-	<name>mil-sym-renderer Parent Pom</name>
-	<description>mil-sym-renderer Parent Pom</description>
+    <modules>
+        <module>RendererPluginInterface</module>
+        <module>mil-sym-renderer</module>
+    </modules>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sec.core.version>${project.version}</sec.core.version>
-        <zip.assembly>${project.basedir}/src/main/resources/assembly/zip.xml</zip.assembly>
-        <webapp.path>${project.basedir}/src/main/webapp/</webapp.path>	
-        <wro4j.version>1.6.0</wro4j.version>
-		<spring.version>3.1.2.RELEASE</spring.version>
-	</properties>	
-
-	<modules>
-		<module>RendererPluginInterface</module>
-		<module>mil-sym-renderer</module>
-	</modules>
-
-	<build>
-	</build>
-		
 </project>
