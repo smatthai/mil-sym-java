@@ -9,6 +9,20 @@
     <name>mil-sym-java</name>
     <description>mil-sym-java build POM</description>
 
+    <scm>
+        <connection>scm:git:https://github.com/missioncommand/mil-sym-java.git</connection>
+        <developerConnection>scm:git:https://github.com/missioncommand/mil-sym-java.git</developerConnection>
+        <url>https://github.com/missioncommand/mil-sym-java</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-missioncommand-maven</id>
+            <name>missioncommand-maven</name>
+            <url>https://api.bintray.com/maven/missioncommand/maven/mil-sym-java/;publish=0</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
         <maven.enforcer.mavenVer>3.3.9</maven.enforcer.mavenVer>
         <maven.enforcer.javaVer>[1.7,)</maven.enforcer.javaVer>
@@ -36,7 +50,8 @@
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-war-plugin.version>2.1.1</maven-war-plugin.version>
         <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
-        <eclipse-lifecycle-mapping.version>1.0.0</eclipse-lifecycle-mapping.version>
+        <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
+        <maven-source-plugin.version>2.4</maven-source-plugin.version>
         <webstart-maven-plugin.version>1.0-beta-6</webstart-maven-plugin.version>
     </properties>
 
@@ -196,12 +211,6 @@
         <module>samples</module>
     </modules>
 
-    <scm>
-        <connection>scm:git:https://github.com/missioncommand/mil-sym-java.git</connection>
-        <developerConnection>scm:git:https://github.com/missioncommand/mil-sym-java.git</developerConnection>
-        <url>https://github.com/missioncommand/mil-sym-java</url>
-    </scm>
-
     <build>
         <defaultGoal>install</defaultGoal>
 
@@ -258,38 +267,23 @@
                     <version>${maven-enforcer-plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>${eclipse-lifecycle-mapping.version}</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
                     <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-dependency-plugin</artifactId>
-                                        <versionRange>[2.4,)</versionRange>
-                                        <goals>
-                                            <goal>unpack-dependencies</goal>
-                                            <goal>unpack</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
+                        <encoding>${project.build.sourceEncoding}</encoding>
                     </configuration>
                 </plugin>
-
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>webstart-maven-plugin</artifactId>
                     <version>${webstart-maven-plugin.version}</version>
                 </plugin>
-
-
             </plugins>
         </pluginManagement>
 
@@ -319,7 +313,64 @@
                 </executions>
             </plugin>
         </plugins>
-
     </build>
+
+    <profiles>
+        <profile>
+            <id>doclint-java8-disable</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none -quiet</additionalparam>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>include-sources</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>include-javadocs</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

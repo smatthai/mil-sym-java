@@ -1,0 +1,44 @@
+sudo: false
+language: java
+
+jdk:
+  - oraclejdk8
+
+env:
+  global:
+    - secure: KFePqeS7LybLDrMZjMofn4reP5E15SaAQCEkcwPQSf80SeHC2cDQqI0EfRIZJeWgU3jezuGP8fbo6bfCNoLyC2IFzOoE2pd9zZ9WiImMzG+nNBdBvI3OeH6qDtygrC23lUGh8Um2GxrR5g5iAZUGqOsoosp2yr4YS3qRLw8eOWDDiyIBy+DYiEp6bnDzqqtuCyVpHhkD5nrYSx2lIaVwsahweJU9vtHrXN84SbrDq/mEbLA7QposVdj8NGGcp2jM8syKR/TRZGCLo1Z46+TGmOPFnNcSYqYqNsCUKYMqo0Pfi6gTS/dlXmKzhrSkpXRKl81SklkyYvqieyh9cm4FQORnc8hhCFihXraltjTOUlZ+S58xSyQ2ZIGoQpWM5KsmvFgdJ0/+fcckSnb7Vk+boOnMvJcbXsFeoJRFU+kMmZRFYM9xANG7wMfxNmuXvOdZEIwrS3Z3J/LkJpGo3KAzoXwdFZaX9Hwl6o61g/BQKCq5I5ngBd6T39q+9om+TEGHEC7GLcsPenSF7lPiI84M9+lMpNNNLLMYfdnr+zvKfGI0qhj6iomqUc7QE1Am1WhwLBzLrQtqS9tCWiwHqrnxwQind4W7022YY0pPUdpZbVlqYbQanzZN4TSQVo8wbAsWfzLyyeHmrKHz5w/cCAPMJpix9wRnYP2muv99+0X5OcE=
+    - secure: EK5rtN8rN4i7+84gmWOQlskn1IiREFDIi9pgEzkAYRVWgg3tMnGT+7niO8+OKWWdsGn4btOBvAQgPImP/1H3JhBTXk+25LNlZOAcY7LFDmmpiNHtYf0AY3CL8WKBaqNpYOwbArwqyFLW0wik83DsZboujc43kHkZoYwLaPFXydl3fQChLNcNmoGTfHAzEigGazv5ZoT8o03puBlaG8MI7ArI5Dr19cpKFU0u8NlUwq6dQ0yOfhIUzyX1rJ12SNLFlEPLwK4kyP6uUheTSgTuOKjdPM4pXpulKrduYWta73vvTS4S76IoPSg4vEOh2oxvK/s2BfWwYKuTQhm98I2IWQdy4GgmtsTX8vTyNxC/PxYKhaeauRvL3I/Dh5k6AW1CenlqqAyX4eBOMDaAquqkT6LWhMAgxNjRFAyhIWxScGUnFHtCaClPlVSdVhWckaHFtvPgLCCpnFaFYo/FORjmrGd+zpiCUQjaVJ18BKnVQzLdW3acvcyOlQS/wA6ieeRk04OgR3PIFMLniEwz7TuDhw27+fT9q2QKfVg/UTZZ2yvDC62OGE2SMTDiU8hf4+jDumxtqaJ+ftc218ubCamgmLnmdBerxxX9sv8uQzWMR173KcSPP7Dv/cEDwyKKwkr8z3emGYqsUjbx3bVfhGFB55AoqHvXcqP51qRchqC11CY=
+
+cache:
+  directories:
+    - "$HOME/.m2"
+
+before_install:
+  - wget https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip
+  - unzip -qq apache-maven-3.3.9-bin.zip
+  - export M2_HOME=$PWD/apache-maven-3.3.9
+  - export PATH=$M2_HOME/bin:$PATH
+
+
+install:
+  - mvn clean install --settings travis/settings.xml -e
+
+deploy: # travis by default will not invoke this step for PRs
+  - provider: releases
+    skip_cleanup: true
+    api_key: 
+      secure: T3iHm37PiONulKrrF7SdQMbm424YDe2sRwYl6eIkxoG0wBhFhWLVjFu/Xw4IVCgtdmGSCbtUHzLHN/gqhzvxilCtH1Mt9gTm3Mxr/xGY9iXTWn9PC/9+hZx/45XTQ7Ev8MufpUud1Y6yyPttXSIswCtL5SeXeQjYi2quwRcxd4V304lX/t8ap/3vezFsWaQ6AD/5ChNAlmiJchIA2TDA/CRy9aDQBCKMmADMORhTHkzcTmxxAFqTFEbfuHCVtnxiygdoIFFY5bHwton1EXrbzYIiModbY3/z+ZZcXt526EuEDpAn5GIA+RcQVI4cK8zWcpzWi+0+Xx7UzmuA8yiq0D8ZsQJ0Z4m3TVXELvOjipv3mdyHw4wIugIrJMtS8YKc5LWzmdeK+xBB4NXyeRo0LQvUrVexMlnR6G59qpEn9DLnPzirTXtNoMXGwb1t2kwGGVGp7LYrTxJIbRJLm6qBygwjrekc6+kegJ9r2GsjR4L3w2/JOlctJEJusMk1iMiVOuBUnkb2BxWCFBfqF0j6X3IpC4eew6htZ+KNCQGe7EnWbdGrUoqzHoF7pi/Dze2NwcIrkDfu5TS+Uo55cV4iodWuMGBqqTYO+4IvOr5lcug6kC4Z+xVVsB+8KDBICkHS8NZ/RgofDKnngStqVRkD0TQ+uCni8beZnltUCgLV44Q=
+    file_glob: true
+    file:
+      - renderer/mil-sym-renderer/target/mil-sym-renderer-*.zip
+      - service/mil-sym-service/target/mil-sym-java-service-*.war
+    on:
+      tags: true
+      condition: "$TRAVIS_TAG =~ ^v[0-9]+.[0-9]+.[0-9]+$"
+  - provider: script
+    skip_cleanup: true
+    script: travis/release.sh
+    on:
+      tags: true
+      condition: "$TRAVIS_TAG =~ ^v[0-9]+.[0-9]+.[0-9]+$"
+
