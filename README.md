@@ -1,5 +1,10 @@
-mil-sym-java
-=========
+# mil-sym-java
+
+[![Build Status](https://travis-ci.org/missioncommand/mil-sym-java.svg?branch=master)](https://travis-ci.org/missioncommand/mil-sym-java)
+
+
+About
+-----------
 mil-sym-java is a well worn set of java libraries that have been used in US Army Mission Command software for years.  In November 2013 Mission Command was given the approval to release and maintain these libraries as public open source.  
 
 [Web Service Developer's Guide Wiki](https://github.com/missioncommand/mil-sym-java/wiki/Developer's-Guide)  
@@ -47,8 +52,7 @@ will output:![Service call for symbol SHGP-----------]()  - service discontinued
 Version
 ----
 
-- **Current Development Version** - 0.0.36-SNAPSHOT
-- **Latest Release Version** - 0.0.35
+- **Latest Release Version** - [ ![Download](https://api.bintray.com/packages/missioncommand/maven/mil-sym-java/images/download.svg) ](https://bintray.com/missioncommand/maven/mil-sym-java/_latestVersion)
  
 
 Tech
@@ -66,7 +70,6 @@ This project builds with Maven.  The output of the core and renderer project is 
 Open a command prompt to the root folder of the repository on your local machine and enter:
 ```sh
 mvn clean install
-
 ```
 
 License

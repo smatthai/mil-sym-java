@@ -33,10 +33,8 @@ Libraries Used include:
 <table>
 	<tr>
 		<th>Dependency Name</th>
-		<th>Version</th>
 	</tr>
 	<tr>
-		<td>sec.web.renderer.mil-sym-renderer</td>
-		<td>0.0.31-SNAPSHOT or higher</td>
+		<td>mil.army.missioncommand.mil-sym-renderer</td>
 	</tr>
 </table>
