@@ -8,9 +8,9 @@
         <relativePath>../..</relativePath>
     </parent>
 
-    <artifactId>mil-sym-java-service</artifactId>
+    <artifactId>mil-sym-service</artifactId>
     <packaging>war</packaging>
-    <name>mil-sym-java :: Service :: mil-sym-java-service</name>
+    <name>mil-sym-java :: Service :: mil-sym-service</name>
 
     <properties>
         <webapp.path>${project.basedir}/src/main/webapp/</webapp.path>

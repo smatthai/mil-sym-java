@@ -8,7 +8,7 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>mil-sym-java-renderer-parent</artifactId>
+    <artifactId>mil-sym-renderer-parent</artifactId>
     <packaging>pom</packaging>
     <name>mil-sym-java :: Renderer</name>
     <description>mil-sym-java Renderer</description>

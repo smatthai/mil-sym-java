@@ -8,7 +8,7 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>mil-sym-java-service-parent</artifactId>
+    <artifactId>mil-sym-service-parent</artifactId>
     <packaging>pom</packaging>
     <name>mil-sym-java :: Service</name>
     <description>mil-sym-java Service</description>
