@@ -19,7 +19,7 @@
         <repository>
             <id>bintray-missioncommand-maven</id>
             <name>missioncommand-maven</name>
-            <url>https://api.bintray.com/maven/missioncommand/maven/mil-sym-java/;publish=0</url>
+            <url>https://api.bintray.com/maven/missioncommand/maven/mil-sym-java/;publish=1</url>
         </repository>
     </distributionManagement>
 
@@ -45,7 +45,6 @@
 
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
         <maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
-        <maven-source-plugin.version>2.2</maven-source-plugin.version>
         <maven-assembly-plugin.version>2.3</maven-assembly-plugin.version>
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-war-plugin.version>2.1.1</maven-war-plugin.version>
@@ -240,11 +239,6 @@
                             </manifest>
                         </archive>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>${maven-source-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
