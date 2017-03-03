@@ -18,9 +18,8 @@ public interface ISinglePointInfo {
 	public BufferedImage getImage();
 
 	/**
-	 * Center point of the symbol within the image. OR, if the symbol should be
-	 * centered on a point that is not the actual center of the image, you'd
-	 * return that pixel value here.
+	 * Anchor point of the symbol within the image. Typically the center
+         * but not always.
 	 * 
 	 * @return
 	 */

@@ -1100,7 +1100,52 @@ public class JavaRendererUtilities {
         }
         if(params.containsKey(MilStdAttributes.SymbologyStandard))
         {
-            iconInfo.put(MilStdAttributes.SymbologyStandard,params.get(MilStdAttributes.SymbologyStandard));
+            String symStd = params.get(MilStdAttributes.SymbologyStandard);
+            if(symStd.length() != 1)
+            {
+                if(symStd.startsWith("2525") && symStd.length()==5)
+                {
+                    char version = symStd.charAt(4);
+                    switch(version)
+                    {
+                        case 'B':
+                        case 'b':
+                            symStd = "0";
+                            break;
+                        case 'C':
+                        case 'c':
+                            symStd = "1";
+                            break;
+                        case 'D':
+                        case 'd':
+                            symStd = "2";
+                            break;
+                        default:
+                            symStd = String.valueOf(RendererSettings.getInstance().getSymbologyStandard());
+                            break;
+                    }                    
+                }
+                else
+                {
+                    symStd = String.valueOf(RendererSettings.getInstance().getSymbologyStandard());
+                }   
+            }
+            else
+            {
+                char version = symStd.charAt(0);
+                switch(version)
+                {
+                    case '0':
+                    case '1':
+                    case '2':
+                        break;
+                    default:
+                        symStd = String.valueOf(RendererSettings.getInstance().getSymbologyStandard());
+                        break;
+                } 
+            }
+            //System.err.println("SYMSTD: " + symStd);
+            iconInfo.put(MilStdAttributes.SymbologyStandard,symStd);
         }
         if(params.containsKey(MilStdAttributes.KeepUnitRatio))
         {
