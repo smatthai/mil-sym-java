@@ -69,7 +69,50 @@ public class SinglePoint2525Renderer implements ISinglePointRenderer {
         
         if(params.containsKey(MilStdAttributes.SymbologyStandard))
         {
-            symStd = Integer.parseInt(params.get(MilStdAttributes.SymbologyStandard));
+            String ss = params.get(MilStdAttributes.SymbologyStandard);
+            if(ss.length() != 1)
+            {
+                if(ss.startsWith("2525") && ss.length()==5)
+                {
+                    char version = ss.charAt(4);
+                    switch(version)
+                    {
+                        case 'B':
+                        case 'b':
+                            symStd = 0;
+                            break;
+                        case 'C':
+                        case 'c':
+                            symStd = 1;
+                            break;
+                        case 'D':
+                        case 'd':
+                            symStd = 2;
+                            break;
+                        default:
+                            symStd = RendererSettings.getInstance().getSymbologyStandard();
+                            break;
+                    }                    
+                }
+                else
+                {
+                    symStd = RendererSettings.getInstance().getSymbologyStandard();
+                }   
+            }
+            else
+            {
+                char version = ss.charAt(0);
+                switch(version)
+                {
+                    case '0':
+                    case '1':
+                    case '2':
+                        break;
+                    default:
+                        symStd = RendererSettings.getInstance().getSymbologyStandard();
+                        break;
+                } 
+            }
         }
         
         
