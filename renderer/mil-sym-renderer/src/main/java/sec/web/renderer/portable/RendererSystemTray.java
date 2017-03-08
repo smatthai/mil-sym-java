@@ -119,7 +119,7 @@ public class RendererSystemTray {
             int symstd = RendererSettings.getInstance().getSymbologyStandard();
             switch(symstd)
             {
-                case RendererSettings.Symbology_2525Bch2_USAS_13_14:
+                case RendererSettings.Symbology_2525B:
                     std = "2525B";
                     break;
                 case RendererSettings.Symbology_2525C:

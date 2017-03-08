@@ -3127,7 +3127,7 @@ public final class arraysupport {
                     break;
                 case TacticalLines.UAV:
                 case TacticalLines.MRR:
-                    if (rev == RendererSettings.Symbology_2525Bch2_USAS_13_14) {
+                    if (rev == RendererSettings.Symbology_2525B) {
                         dMRR = pOriginalLinePoints[0].style;
                         if (dMRR <= 0) {
                             dMRR = 1;//was 14
@@ -3236,7 +3236,7 @@ public final class arraysupport {
                             lastCirclePoint = pOriginalLinePoints[j];
                         }
                         //get the middle line for Rev B AC, MRR, UAV, and LLTR
-                        if(rev == RendererSettings.Symbology_2525Bch2_USAS_13_14 && lineType != TacticalLines.SAAFR)
+                        if(rev == RendererSettings.Symbology_2525B && lineType != TacticalLines.SAAFR)
                         {
                             pts=lineutility.GetSAAFRMiddleLine(pOriginalLinePoints);
                             for(j=0;j<pts.length;j++)

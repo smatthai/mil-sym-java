@@ -513,7 +513,7 @@ public class SinglePointRenderer {
                 if(symbol.getSymbolID().charAt(2) == 'U' &&
                                 symbol.getSymbolID().substring(4, 6).equals("WM"))
                 {
-                    if(symStd == RendererSettings.Symbology_2525Bch2_USAS_13_14)
+                    if(symStd == RendererSettings.Symbology_2525B)
                     {
                         siFill.setLineColor(symbol.getFillColor());
                         siSymbol1.setLineColor(symbol.getLineColor());
@@ -818,7 +818,7 @@ public class SinglePointRenderer {
             else if(affiliation==('A') ||
                     affiliation==('S'))
             {
-                if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+                if(symStd==RendererSettings.Symbology_2525B)
                     textChar = "?";
                 else
                     textChar=null;
@@ -834,7 +834,7 @@ public class SinglePointRenderer {
                 textChar = "X";
             else if(affiliation==('M'))
             {
-                if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+                if(symStd==RendererSettings.Symbology_2525B)
                     textChar = "X?";
                 else
                     textChar = "X";
@@ -3516,7 +3516,7 @@ public class SinglePointRenderer {
                 //gvText1 = labelFont.createGlyphVector(frc, "D");
                 descent = text1.getDescent();
                 labelBounds1 = text1.getPixelBounds(null, 0, 0);
-                if(symStd == RendererSettings.Symbology_2525Bch2_USAS_13_14)
+                if(symStd == RendererSettings.Symbology_2525B)
                 {
                     y = symbolBounds.getY() + symbolBounds.getHeight();
                     x = symbolBounds.getX() - labelBounds1.getWidth() - bufferXL;

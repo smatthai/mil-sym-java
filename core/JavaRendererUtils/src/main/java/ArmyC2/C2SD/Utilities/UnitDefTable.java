@@ -77,7 +77,7 @@ public class UnitDefTable {
     String lookupXmlB = FileHandler.InputStreamToString(xmlStreamB);
     String lookupXmlC = FileHandler.InputStreamToString(xmlStreamC);
     //String lookupXml = FileHandler.fileToString("C:\\UnitFontMappings.xml");
-    populateLookup(lookupXmlB, RendererSettings.Symbology_2525Bch2_USAS_13_14);
+    populateLookup(lookupXmlB, RendererSettings.Symbology_2525B);
     populateLookup(lookupXmlC, RendererSettings.Symbology_2525C);
   }
 
@@ -115,7 +115,7 @@ public class UnitDefTable {
 
       boolean isMCSSpecificFE = SymbolUtilities.isMCSSpecificForceElement(ud);
       
-      if(symStd == RendererSettings.Symbology_2525Bch2_USAS_13_14)
+      if(symStd == RendererSettings.Symbology_2525B)
       {
         if(_UnitDefinitionsB.containsKey(symbolID)==false && isMCSSpecificFE==false)
             _UnitDefinitionsB.put(symbolID, ud);//EMS have dupe symbols with same code
@@ -146,7 +146,7 @@ public class UnitDefTable {
     public UnitDef getUnitDef(String basicSymbolID, int symStd)
     {
         UnitDef returnVal = null;
-        if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+        if(symStd==RendererSettings.Symbology_2525B)
         {
             returnVal = (UnitDef)_UnitDefinitionsB.get(basicSymbolID);
             if(returnVal == null)
@@ -175,7 +175,7 @@ public class UnitDefTable {
      */
     public Map<String, UnitDef> GetAllUnitDefs(int symStd)
     {
-        if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+        if(symStd==RendererSettings.Symbology_2525B)
             return _UnitDefinitionsB;
         else
             return _UnitDefinitionsC;
@@ -183,7 +183,7 @@ public class UnitDefTable {
     
     public ArrayList<UnitDef> GetUnitDefDups(int symStd)
     {
-        if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+        if(symStd==RendererSettings.Symbology_2525B)
             return _UnitDefDupsB;
         else
             return _UnitDefDupsC;
@@ -200,7 +200,7 @@ public class UnitDefTable {
     {
         if(basicSymbolID != null && basicSymbolID.length() == 15)
         {
-            if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+            if(symStd==RendererSettings.Symbology_2525B)
                 return _UnitDefinitionsB.containsKey(basicSymbolID);
             else if(symStd==RendererSettings.Symbology_2525C)
                 return _UnitDefinitionsC.containsKey(basicSymbolID);

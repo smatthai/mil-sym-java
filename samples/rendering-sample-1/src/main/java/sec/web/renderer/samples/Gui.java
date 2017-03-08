@@ -360,7 +360,7 @@ public class Gui extends JFrame {
             //var format = formatKML;
 
 			// Let's user choose between 2525Bch2 and 2525C.
-			int ms2525Bch2 = RendererSettings.Symbology_2525Bch2_USAS_13_14;// 0;
+			int ms2525Bch2 = RendererSettings.Symbology_2525B;// 0;
 			int ms2525C = RendererSettings.Symbology_2525C;// 1;
 			int symStd = ms2525C;
 
@@ -400,7 +400,7 @@ public class Gui extends JFrame {
             //var format = formatKML;
 
 			// Let's user choose between 2525Bch2 and 2525C.
-			int ms2525Bch2 = RendererSettings.Symbology_2525Bch2_USAS_13_14;// 0;
+			int ms2525Bch2 = RendererSettings.Symbology_2525B;// 0;
 			int ms2525C = RendererSettings.Symbology_2525C;// 1;
 			int symStd = ms2525Bch2;
 
@@ -442,7 +442,7 @@ public class Gui extends JFrame {
             //var format = formatKML;
 
 			// Let's user choose between 2525Bch2 and 2525C.
-			int ms2525Bch2 = RendererSettings.Symbology_2525Bch2_USAS_13_14;// 0;
+			int ms2525Bch2 = RendererSettings.Symbology_2525B;// 0;
 			int ms2525C = RendererSettings.Symbology_2525C;// 1;
 			int symStd = ms2525C;
 

@@ -102,7 +102,7 @@ public class UnitFontLookup {
     String lookupXmlB = FileHandler.InputStreamToString(xmlStreamB);
     String lookupXmlC = FileHandler.InputStreamToString(xmlStreamC);
 
-    populateLookup(lookupXmlB,RendererSettings.Symbology_2525Bch2_USAS_13_14);
+    populateLookup(lookupXmlB,RendererSettings.Symbology_2525B);
     populateLookup(lookupXmlC,RendererSettings.Symbology_2525C);
   }
 
@@ -137,7 +137,7 @@ public class UnitFontLookup {
 
         if(uflTemp != null)
         {
-            if(SymbologyStandard == RendererSettings.Symbology_2525Bch2_USAS_13_14)
+            if(SymbologyStandard == RendererSettings.Symbology_2525B)
                 hashMapB.put(ID, uflTemp);
             else if(SymbologyStandard == RendererSettings.Symbology_2525C)
                 hashMapC.put(ID, uflTemp);
@@ -221,6 +221,7 @@ public class UnitFontLookup {
    * 2525C
    * returns the character index for the fill frame based on the symbol code.
    * @param SymbolID 15 character symbol ID
+   * @param symStd 0 for 2525B, 1 for 2525C
    * @return fill character index
    */
   public static int getFillCode(String SymbolID, int symStd)
@@ -285,7 +286,10 @@ public class UnitFontLookup {
                       }
                       else if(battleDimension=='P')//space
                       {
-                          returnVal = 843;
+                        if(symStd == 0)
+                            returnVal = 819;
+                        else
+                            returnVal = 843;
                       }
                       else//if(battleDimension=='Z')//unknown
                       {
@@ -610,7 +614,7 @@ public class UnitFontLookup {
       else//P, C, D, X, F
           returnVal = FillCode + 1;
       
-      if(symStd > RendererSettings.Symbology_2525Bch2_USAS_13_14 && status != 'A')
+      if(symStd > RendererSettings.Symbology_2525B && status != 'A')
       {
           char affiliation = SymbolID.charAt(1);
           switch(affiliation)
@@ -911,7 +915,7 @@ public class UnitFontLookup {
         String code = SymbolUtilities.getBasicSymbolIDStrict(SymbolID);
 
         UnitFontLookupInfo data = null;
-        if(symbologyStandard == RendererSettings.Symbology_2525Bch2_USAS_13_14)
+        if(symbologyStandard == RendererSettings.Symbology_2525B)
         {
             data = hashMapB.get(code);
         }

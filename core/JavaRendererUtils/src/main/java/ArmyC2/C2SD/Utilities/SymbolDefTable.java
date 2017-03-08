@@ -83,7 +83,7 @@ public class SymbolDefTable {
         InputStream xmlStreamC = this.getClass().getClassLoader().getResourceAsStream(xmlPathC);
         String lookupXmlC = FileHandler.InputStreamToString(xmlStreamC);
         
-        populateLookup(lookupXmlB, RendererSettings.Symbology_2525Bch2_USAS_13_14);
+        populateLookup(lookupXmlB, RendererSettings.Symbology_2525B);
         populateLookup(lookupXmlC, RendererSettings.Symbology_2525C);
     }
 
@@ -119,7 +119,7 @@ public class SymbolDefTable {
 
 
       boolean isMCSSpecific = SymbolUtilities.isMCSSpecificTacticalGraphic(sd);
-      if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+      if(symStd==RendererSettings.Symbology_2525B)
       {
         if(_SymbolDefinitionsB.containsKey(symbolID)==false && isMCSSpecific==false)
             _SymbolDefinitionsB.put(symbolID, sd);
@@ -151,7 +151,7 @@ public class SymbolDefTable {
     public SymbolDef getSymbolDef(String basicSymbolID, int symStd)
     {
         SymbolDef returnVal = null;
-        if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+        if(symStd==RendererSettings.Symbology_2525B)
             returnVal = (SymbolDef)_SymbolDefinitionsB.get(basicSymbolID);
         else if(symStd==RendererSettings.Symbology_2525C)
             returnVal = (SymbolDef)_SymbolDefinitionsC.get(basicSymbolID);
@@ -167,7 +167,7 @@ public class SymbolDefTable {
      */
     public Map<String, SymbolDef> GetAllSymbolDefs(int symStd)
     {
-        if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+        if(symStd==RendererSettings.Symbology_2525B)
             return _SymbolDefinitionsB;
         else if(symStd==RendererSettings.Symbology_2525C)
             return _SymbolDefinitionsC;
@@ -184,7 +184,7 @@ public class SymbolDefTable {
      */
     public ArrayList GetAllSymbolDefDups(int symStd)
     {
-        if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+        if(symStd==RendererSettings.Symbology_2525B)
             return _SymbolDefDupsB;
         else if(symStd==RendererSettings.Symbology_2525C)
             return _SymbolDefDupsC;
@@ -204,7 +204,7 @@ public class SymbolDefTable {
     {
         if(basicSymbolID != null && basicSymbolID.length() == 15)
         {
-            if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+            if(symStd==RendererSettings.Symbology_2525B)
                 return _SymbolDefinitionsB.containsKey(basicSymbolID);
             else if(symStd==RendererSettings.Symbology_2525C)
                 return _SymbolDefinitionsC.containsKey(basicSymbolID);

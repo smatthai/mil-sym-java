@@ -122,13 +122,13 @@ public class PortableWrapper {
                         if(parts.length == 2)
                         {
                             if(parts[1].equalsIgnoreCase("2525B"))
-                                symStd = RendererSettings.Symbology_2525Bch2_USAS_13_14;
+                                symStd = RendererSettings.Symbology_2525B;
                             else if(parts[1].equalsIgnoreCase("2525C"))
                                 symStd = RendererSettings.Symbology_2525C;
                             else if(parts[1].equalsIgnoreCase("2525D"))
                                 symStd = RendererSettings.Symbology_2525D;
                             else if(parts[1].equals("0"))
-                                symStd = RendererSettings.Symbology_2525Bch2_USAS_13_14;
+                                symStd = RendererSettings.Symbology_2525B;
                             else if(parts[1].equals("1"))
                                 symStd = RendererSettings.Symbology_2525C;
                             else if(parts[1].equals("2"))

@@ -400,7 +400,7 @@ public class JavaRendererUtilities {
                 if(symbologyStandard != null)
                 {
                     if(symbologyStandard.equalsIgnoreCase("2525B"))
-                        symbol.setSymbologyStandard(RendererSettings.Symbology_2525Bch2_USAS_13_14);
+                        symbol.setSymbologyStandard(RendererSettings.Symbology_2525B);
                     else
                         symbol.setSymbologyStandard(RendererSettings.Symbology_2525C);
                 }

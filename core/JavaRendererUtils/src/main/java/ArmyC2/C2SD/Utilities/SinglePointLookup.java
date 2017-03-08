@@ -79,7 +79,7 @@ public class SinglePointLookup {
         String lookupXmlB = FileHandler.InputStreamToString(xmlStreamB);
         String lookupXmlC = FileHandler.InputStreamToString(xmlStreamC);
         
-        populateLookup(lookupXmlB, RendererSettings.Symbology_2525Bch2_USAS_13_14);
+        populateLookup(lookupXmlB, RendererSettings.Symbology_2525B);
         populateLookup(lookupXmlC, RendererSettings.Symbology_2525C);
   }
 
@@ -122,7 +122,7 @@ public class SinglePointLookup {
 
         spli = new SinglePointLookupInfo(basicID,description,mappingP,mappingA,width,height);
 
-        if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+        if(symStd==RendererSettings.Symbology_2525B)
             hashMapB.put(basicID, spli);
         else if(symStd==RendererSettings.Symbology_2525C)
             hashMapC.put(basicID, spli);
@@ -161,7 +161,7 @@ public class SinglePointLookup {
           
           Map<String, SinglePointLookupInfo> hashMap = null;
           
-          if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+          if(symStd==RendererSettings.Symbology_2525B)
               hashMap=hashMapB;
           else if(symStd==RendererSettings.Symbology_2525C)
               hashMap=hashMapC;
@@ -235,7 +235,7 @@ public class SinglePointLookup {
   public SinglePointLookupInfo getSPLookupInfo(String basicSymbolID, int symStd)
   {
       SinglePointLookupInfo spli = null;
-      if(symStd==RendererSettings.Symbology_2525Bch2_USAS_13_14)
+      if(symStd==RendererSettings.Symbology_2525B)
         spli = hashMapB.get(basicSymbolID);
       else if(symStd==RendererSettings.Symbology_2525C)
         spli = hashMapC.get(basicSymbolID);
