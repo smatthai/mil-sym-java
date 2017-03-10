@@ -303,6 +303,22 @@ public final class clsRenderer {
             double x_alt = 0;
             int n_alt = 0;
             String strXAlt = "";
+            //implement two point belt
+            if(lineType==TacticalLines.BELT && tg.Pixels.size()==2)
+            {
+                POINT2 pt0=tg.Pixels.get(0);
+                POINT2 pt1=tg.Pixels.get(1);
+                POINT2 p0=lineutility.ExtendDirectedLine(pt0,pt1,pt0,5,2);
+                POINT2 p1=lineutility.ExtendDirectedLine(pt0,pt1,pt1,5,2);
+                POINT2 p2=lineutility.ExtendDirectedLine(pt0,pt1,pt1,5,3);
+                POINT2 p3=lineutility.ExtendDirectedLine(pt0,pt1,pt0,5,3);
+                tg.Pixels.clear();
+                tg.Pixels.add(p0);
+                tg.Pixels.add(p1);
+                tg.Pixels.add(p2);
+                tg.Pixels.add(p3);
+                tg.LatLongs = clsUtility.PixelsToLatLong(tg.Pixels, converter);            
+            }            
             if(lineType==TacticalLines.BS_ELLIPSE || lineType==TacticalLines.PBS_ELLIPSE || lineType==TacticalLines.PBS_CIRCLE)
             {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
