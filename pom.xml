@@ -24,7 +24,7 @@
     </distributionManagement>
 
     <properties>
-        <maven.enforcer.mavenVer>3.3.9</maven.enforcer.mavenVer>
+        <maven.enforcer.mavenVer>3.2.5</maven.enforcer.mavenVer>
         <maven.enforcer.javaVer>[1.7,)</maven.enforcer.javaVer>
 
         <maven.compiler.source>1.6</maven.compiler.source>
