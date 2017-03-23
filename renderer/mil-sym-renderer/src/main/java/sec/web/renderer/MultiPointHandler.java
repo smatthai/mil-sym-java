@@ -827,6 +827,7 @@ public class MultiPointHandler {
         if (ShouldClipSymbol(symbolCode) == false) {
             if (crossesIDL(geoCoords) == false) {
                 rect = null;
+                bboxCoords = null;
             }
         }
 
@@ -1347,6 +1348,7 @@ public class MultiPointHandler {
         if (ShouldClipSymbol(symbolCode) == false) {
             if (crossesIDL(geoCoords) == false) {
                 rect = null;
+                bboxCoords = null;
             }
         }
 
