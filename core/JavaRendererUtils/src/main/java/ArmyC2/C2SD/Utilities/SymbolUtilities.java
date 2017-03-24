@@ -2439,11 +2439,22 @@ public class SymbolUtilities {
    */
   public static boolean isHQ(String strSymbolID)
   {
+    boolean blRetVal = false;
+    char hq = strSymbolID.charAt(10);
     try
     {
-      boolean blRetVal = ((strSymbolID.substring(10, 11).equals("A"))
-        || (strSymbolID.substring(10, 11).equals("B"))
-        || (strSymbolID.substring(10, 11).equals("C")) || (strSymbolID.substring(10, 11).equals("D")));
+        if(hq != '-' && hq != '*')
+        {
+            blRetVal = ((strSymbolID.substring(10, 11).equals("A"))
+                || (strSymbolID.substring(10, 11).equals("B"))
+                || (strSymbolID.substring(10, 11).equals("C")) 
+                || (strSymbolID.substring(10, 11).equals("D")));
+        }
+        else
+        {
+            blRetVal = (strSymbolID.charAt(0) == 'S' && strSymbolID.substring(4,6).equals("UH"));
+        }
+      
       return blRetVal;
     }
     catch(Throwable t)
