@@ -1995,7 +1995,11 @@ public class SinglePointRenderer {
                 ArrayList<ShapeInfo> symbolOutlines = 
                 SymbolDraw.createSinglePointOutline(siFrame, symbol.getOutlineWidth(), symbol.getOutlineColor());
                 
-                shapes.addAll(0, symbolOutlines);
+                if(siFill != null)
+                    shapes.addAll(1, symbolOutlines);
+                else
+                    shapes.addAll(0, symbolOutlines);
+                    
             }
 
             symbol.setSymbolShapes(shapes);
