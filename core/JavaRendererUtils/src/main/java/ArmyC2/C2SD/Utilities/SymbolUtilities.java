@@ -1899,13 +1899,7 @@ public class SymbolUtilities {
   public static boolean isNumber(String text)
   {
       return pIsNumber.matcher(text).matches();
-      /*if(text != null && text.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+"))
-        return true;
-      else
-        return false;*/
   }
-
- 
   
   private static String convert(int integer)
   {
