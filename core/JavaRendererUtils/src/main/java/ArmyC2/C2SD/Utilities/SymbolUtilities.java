@@ -1174,9 +1174,8 @@ public class SymbolUtilities {
                                                 retColor = new Color(255,250, 205); //0xfffacd;	// LemonChiffon 255 250 205
                                         }
                                         else
-
                                         {
-                                                retColor = null;
+                                                retColor = AffiliationColors.UnknownGraphicFillColor;
                                         }
                                     }
                             }	// End if(SymbolUtilities.IsTacticalGraphic(this._strSymbolID))
