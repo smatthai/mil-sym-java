@@ -1108,8 +1108,8 @@ public class SECWebRenderer extends Applet {
             int altitudeDepthLength = 0;
             int distanceLength = 0;
             int azimuthLength = 0;
-            String lineColor = "";
-            String fillColor = "";
+            String lineColor = null;
+            String fillColor = null;
             
             lumpCrabJSON = new JSONObject(modifiers);
             
@@ -1143,7 +1143,8 @@ public class SECWebRenderer extends Applet {
                 else
                 {   
                     Color c = SymbolUtilities.getLineColorOfAffiliation(symbolCode);
-                    lineColor = Integer.toHexString(c.getRGB());
+                    if(c != null)
+                        lineColor = Integer.toHexString(c.getRGB());
                     //color = JavaRendererUtilities.getAffiliationFillColor(symbolCode);
                     // ensure that some color is selected.  If no color can be
                     // found, use black.
@@ -1160,7 +1161,8 @@ public class SECWebRenderer extends Applet {
                 else
                 {   
                     Color c = SymbolUtilities.getFillColorOfAffiliation(symbolCode);
-                    fillColor = Integer.toHexString(c.getRGB());
+                    if(c != null)
+                        fillColor = Integer.toHexString(c.getRGB());
                     //color = JavaRendererUtilities.getAffiliationFillColor(symbolCode);
                     // ensure that some color is selected.  If no color can be
                     // found, use black.
