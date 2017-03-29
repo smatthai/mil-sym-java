@@ -711,7 +711,7 @@ public class SECWebRenderer extends Applet {
                 spsPortNumber = sps.getPortNumber();
             }
             //if (JavaRendererUtilities.is3dSymbol(symbolCode, modifiers))
-            if (altitudeMode != "clampToGround" && format == 0 && JavaRendererUtilities.is3dSymbol(symbolCode, modifiers))
+            if (altitudeMode.equals("clampToGround") == false && format == 0 && JavaRendererUtilities.is3dSymbol(symbolCode, modifiers))
             {        
                 if (altitudeMode.isEmpty())
                     altitudeMode = "absolute";
