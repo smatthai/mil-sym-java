@@ -3260,7 +3260,7 @@ public class MultiPointHandler {
         String googleLineColor = null;
         String googleFillColor = null;
 
-        String lineStyleId = "lineColor";
+        //String lineStyleId = "lineColor";
 
         BasicStroke stroke = null;
         int lineWidth = 4;
@@ -3272,7 +3272,8 @@ public class MultiPointHandler {
 
         kml.append("<Placemark>");//("<Placemark id=\"" + id + "_mg" + "\">");
         kml.append("<description>" + cdataStart + "<b>" + name + "</b><br/>" + "\n" + description + cdataEnd + "</description>");
-        kml.append("<Style id=\"" + lineStyleId + "\">");
+        //kml.append("<Style id=\"" + lineStyleId + "\">");
+        kml.append("<Style>");
 
         lineColor = shapeInfo.getLineColor();
         if (lineColor != null) {
