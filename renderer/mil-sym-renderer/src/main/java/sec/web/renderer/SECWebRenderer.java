@@ -710,9 +710,12 @@ public class SECWebRenderer extends Applet {
             {
                 spsPortNumber = sps.getPortNumber();
             }
-            if (JavaRendererUtilities.is3dSymbol(symbolCode, modifiers))
-            {
-        
+            //if (JavaRendererUtilities.is3dSymbol(symbolCode, modifiers))
+            if (altitudeMode != "clampToGround" && format == 0 && JavaRendererUtilities.is3dSymbol(symbolCode, modifiers))
+            {        
+                if (altitudeMode.isEmpty())
+                    altitudeMode = "absolute";
+                
                 output = RenderMilStd3dSymbol(name, id, symbolCode, description, altitudeMode, controlPoints,
                         modifiers);
 //                System.out.println("old kml without modifiers: ");
