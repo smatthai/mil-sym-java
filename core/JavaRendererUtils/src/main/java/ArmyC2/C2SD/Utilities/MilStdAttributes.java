@@ -96,6 +96,9 @@ public class MilStdAttributes {
     
     public static final String UsePatternFill = "USEPATTERNFILL";
     
+    public static final String PatternFillType = "PATTERNFILLTYPE";
+    
+    
     /**
      * for singlepoints, if set to "true", no labels will be drawn and you
      * will just get the core symbol.
