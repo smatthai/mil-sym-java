@@ -108,6 +108,17 @@ public class TGLight {
     public void set_Fillstyle(int value) {
         fillStyle = value;
     }
+    
+    private int patternFillType = 0;
+    
+    public int get_PatternFillType() {
+        return patternFillType;
+    }
+
+    public void set_PatternFillType(int value) {
+        patternFillType = value;
+    }
+    
     private Color fillColor;
 
     public Color get_FillColor() {

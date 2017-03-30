@@ -242,6 +242,9 @@ public final class clsRenderer {
             tg.set_LineThickness(milStd.getLineWidth());
             tg.set_TexturePaint(milStd.getFillStyle());
             
+            if(JavaTacticalRenderer.clsUtility.isBasicShape(lineType))            
+                tg.set_PatternFillType(milStd.getPatternFillType());
+            
             if(milStd.getTextColor()!=null)
                 tg.set_TextColor(milStd.getTextColor());
             else
