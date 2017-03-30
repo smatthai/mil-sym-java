@@ -65,6 +65,7 @@ public class MilStdSymbol {
     Color _TextColor = null;
     Color _TextBackgroundColor = null;
     TexturePaint _FillStyle = null;
+    int _PatternFillType = 0;
     boolean _usePatternFill = false;
     double _Rotation = 0.0;//DEGREES
 
@@ -536,7 +537,21 @@ public class MilStdSymbol {
     public TexturePaint getFillStyle() {
         return _FillStyle;
     }
-    
+    /**
+     * 
+     * @param value 
+     */
+    public void setPatternFillType(int value) {
+        _PatternFillType = value;
+    }
+    /**
+     * 
+     * @return 
+     */
+    public int getPatternFillType()
+    {
+        return _PatternFillType;
+    }    
         /**
      *
      * @param value
