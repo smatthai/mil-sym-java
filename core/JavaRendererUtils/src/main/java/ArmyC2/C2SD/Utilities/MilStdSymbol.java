@@ -1446,7 +1446,26 @@ public class MilStdSymbol {
                         //HQ, we must center on the bottom of the staff
 
                         centerX = bounds.x - boundsFull.x;//0;//offsetX;
-                        centerY = offsetY + boundsFull.height;// + offsetY;
+                        //centerY = offsetY + boundsFull.height;// + offsetY;
+                        ///////////////////////////////////////////////////////////////////////////////////////////////
+                        String affiliation = this.getSymbolID().substring(1, 2);
+                        if(affiliation.equals("F") ||
+                                affiliation.equals("A") ||
+                                affiliation.equals("D") ||
+                                affiliation.equals("M") ||
+                                affiliation.equals("J") ||
+                                affiliation.equals("K") ||
+                                affiliation.equals("N") ||
+                                affiliation.equals("L"))
+                        {
+                            centerY = (int)((bounds.y - boundsFull.y + (bounds.height / 2)) + bounds.height * 1.5);
+                        }
+                        else
+                        {
+                            centerY = (int)((bounds.y - boundsFull.y + (bounds.height / 2)) + bounds.height);
+                        }
+                        
+                        
                     } else {//else center of the symbol in the image
                         centerX = offsetX + bounds.x - boundsFull.x + (bounds.width / 2);
                         centerY = offsetY + bounds.y - boundsFull.y + (bounds.height / 2);

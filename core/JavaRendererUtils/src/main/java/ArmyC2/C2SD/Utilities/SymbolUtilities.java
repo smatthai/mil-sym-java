@@ -1816,7 +1816,8 @@ public class SymbolUtilities {
   {
       if(symbolID != null && symbolID.length() >= 2)
       {
-          if(symbolID.startsWith("BS_"))
+          char scheme = symbolID.charAt(0);
+          if(scheme == 'B' || scheme == 'P')
               return true;
           else
               return false;
