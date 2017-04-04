@@ -815,6 +815,10 @@ public final class clsUtility {
                                 case TacticalLines.RANGE_FAN_SECTOR:
                                 case TacticalLines.BBS_AREA:
                                 case TacticalLines.BBS_RECTANGLE:
+                                case TacticalLines.PBS_RECTANGLE:
+                                case TacticalLines.PBS_SQUARE:
+                                case TacticalLines.PBS_CIRCLE:
+                                case TacticalLines.PBS_ELLIPSE:
                                     shape.setFillColor(null);
                                     break;
                                 default:
@@ -834,6 +838,9 @@ public final class clsUtility {
                                 shape.setFillColor(tg.get_FillColor());
                                 break;
                             case TacticalLines.BBS_RECTANGLE:
+                            case TacticalLines.BBS_AREA:
+                            case TacticalLines.BBS_LINE:
+                            case TacticalLines.BBS_POINT:
                             case TacticalLines.PBS_RECTANGLE:
                             case TacticalLines.PBS_SQUARE:
                             case TacticalLines.PBS_ELLIPSE:

@@ -39,6 +39,7 @@ import java.awt.Rectangle;
 import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.SymbolDraw;
 //import java.awt.font.TextLayout;
+
 /**
  * Rendering class
  *
@@ -169,13 +170,13 @@ public final class clsRenderer {
             if (symbolId.length() > 15) //rev D
             {
                 //String setA = Modifier2.getSetA(symbolId);
-                String setA=symbolId.substring(0,10);
+                String setA = symbolId.substring(0, 10);
                 //String setB = Modifier2.getSetB(symbolId);
-                String setB=symbolId.substring(10);
+                String setB = symbolId.substring(10);
                 //String code = Modifier2.getCode(setB);
-                String code=setB.substring(0,6);
+                String code = setB.substring(0, 6);
                 //String symbolSet = Modifier2.getSymbolSet(setA);
-                String symbolSet=setA.substring(4,6);
+                String symbolSet = setA.substring(4, 6);
                 int nSymbol = Integer.parseInt(symbolSet);
                 if (nSymbol == 25) {
                     linetype = getCMLineType(symbolSet, code);
@@ -241,23 +242,27 @@ public final class clsRenderer {
             tg.set_LineColor(milStd.getLineColor());
             tg.set_LineThickness(milStd.getLineWidth());
             tg.set_TexturePaint(milStd.getFillStyle());
-            if(JavaTacticalRenderer.clsUtility.isBasicShape(lineType))            
-                tg.set_Fillstyle(milStd.getPatternFillType());            
-            
-            if(JavaTacticalRenderer.clsUtility.isBasicShape(lineType))            
+            if (JavaTacticalRenderer.clsUtility.isBasicShape(lineType)) {
+                tg.set_Fillstyle(milStd.getPatternFillType());
+            }
+
+            if (JavaTacticalRenderer.clsUtility.isBasicShape(lineType)) {
                 tg.set_PatternFillType(milStd.getPatternFillType());
-            
-            if(milStd.getTextColor()!=null)
+            }
+
+            if (milStd.getTextColor() != null) {
                 tg.set_TextColor(milStd.getTextColor());
-            else
+            } else {
                 tg.set_TextColor(tg.get_LineColor());
-            
+            }
+
             //tg.set_FontBackColor(Color.WHITE);
-            if(milStd.getTextBackgroundColor()!=null)
+            if (milStd.getTextBackgroundColor() != null) {
                 tg.set_FontBackColor(milStd.getTextBackgroundColor());
-            else
+            } else {
                 tg.set_FontBackColor(SymbolDraw.getIdealTextBackgroundColor(tg.get_TextColor()));
-            
+            }
+
             //tg.set_LineStyle(1);
             if (milStd.getModifier(ModifiersTG.W_DTG_1) != null) {
                 tg.set_DTG(milStd.getModifier(ModifiersTG.W_DTG_1));
@@ -292,26 +297,25 @@ public final class clsRenderer {
             tg.set_UseHatchFill(milStd.getUsePatternFill());
 //            tg.set_UsePatternFill(milStd.getUsePatternFill());
             tg.set_HideOptionalLabels(milStd.getHideOptionalLabels());
-                //int lineType=CELineArray.CGetLinetypeFromString(tg.get_SymbolId());
+            //int lineType=CELineArray.CGetLinetypeFromString(tg.get_SymbolId());
             //int lineType=JavaTacticalRenderer.clsUtility.GetLinetypeFromString(tg,null);
             boolean isClosedArea = JavaTacticalRenderer.clsUtility.isClosedPolygon(lineType);
 
             //implement two point belt
-            if(lineType==TacticalLines.BELT && tg.Pixels.size()==2)
-            {
-                POINT2 pt0=tg.Pixels.get(0);
-                POINT2 pt1=tg.Pixels.get(1);
-                POINT2 p0=lineutility.ExtendDirectedLine(pt0,pt1,pt0,2,5);
-                POINT2 p1=lineutility.ExtendDirectedLine(pt0,pt1,pt1,2,5);
-                POINT2 p2=lineutility.ExtendDirectedLine(pt0,pt1,pt1,3,5);
-                POINT2 p3=lineutility.ExtendDirectedLine(pt0,pt1,pt0,3,5);
+            if (lineType == TacticalLines.BELT && tg.Pixels.size() == 2) {
+                POINT2 pt0 = tg.Pixels.get(0);
+                POINT2 pt1 = tg.Pixels.get(1);
+                POINT2 p0 = lineutility.ExtendDirectedLine(pt0, pt1, pt0, 2, 5);
+                POINT2 p1 = lineutility.ExtendDirectedLine(pt0, pt1, pt1, 2, 5);
+                POINT2 p2 = lineutility.ExtendDirectedLine(pt0, pt1, pt1, 3, 5);
+                POINT2 p3 = lineutility.ExtendDirectedLine(pt0, pt1, pt0, 3, 5);
                 tg.Pixels.clear();
                 tg.Pixels.add(p0);
                 tg.Pixels.add(p1);
                 tg.Pixels.add(p2);
                 tg.Pixels.add(p3);
-                tg.LatLongs = clsUtility.PixelsToLatLong(tg.Pixels, converter);            
-            }            
+                tg.LatLongs = clsUtility.PixelsToLatLong(tg.Pixels, converter);
+            }
             if (isClosedArea) {
                 JavaTacticalRenderer.clsUtility.ClosePolygon(tg.Pixels);
                 JavaTacticalRenderer.clsUtility.ClosePolygon(tg.LatLongs);
@@ -324,55 +328,70 @@ public final class clsRenderer {
             double x_alt = 0;
             int n_alt = 0;
             String strXAlt = "";
-            if(lineType==TacticalLines.BS_ELLIPSE || lineType==TacticalLines.PBS_ELLIPSE || lineType==TacticalLines.PBS_CIRCLE)
-            {
+            if (lineType == TacticalLines.BS_ELLIPSE || lineType == TacticalLines.PBS_ELLIPSE || lineType == TacticalLines.PBS_CIRCLE) {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
-                if(AN==null)
-                    AN=new ArrayList<Double>();
-                if(AN.size()<1)
-                    AN.add(new Double(0));
-                if(lineType==TacticalLines.PBS_CIRCLE)
+                //ensure array length 3
+                double r=0;
+                double b=0;
+                if(AM.size()==1)
                 {
-                    double am0=AM.get(0);
-                    if(AM.size()<2)
-                        AM.add(am0);
-                    else
-                        AM.set(1, am0);
+                    r=AM.get(0);
+                    AM.add(r);                
+                    AM.add(0d);
                 }
-                if(AM != null && AM.size()>=2 && AN != null && AN.size()>=1)
+                else if(AM.size()==2)
                 {
-                    POINT2 ptAzimuth=new POINT2(0,0);
-                    ptAzimuth.x=AN.get(0);
-                    POINT2 ptCenter=tg.Pixels.get(0);
+                    r=AM.get(0);
+                    b=AM.get(1);
+                    AM.set(1, r);
+                    AM.add(b);
+                }
+                if (AN == null) {
+                    AN = new ArrayList<Double>();
+                }
+                if (AN.size() < 1) {
+                    AN.add(new Double(0));
+                }
+                if (lineType == TacticalLines.PBS_CIRCLE) {
+                    double am0 = AM.get(0);
+                    if (AM.size() < 2) {
+                        AM.add(am0);
+                    } else {
+                        AM.set(1, am0);
+                    }
+                }
+                if (AM != null && AM.size() >= 2 && AN != null && AN.size() >= 1) {
+                    POINT2 ptAzimuth = new POINT2(0, 0);
+                    ptAzimuth.x = AN.get(0);
+                    POINT2 ptCenter = tg.Pixels.get(0);
                     POINT2 pt0 = mdlGeodesic.geodesic_coordinate(tg.LatLongs.get(0), AM.get(0), 90);//semi-major axis
                     POINT2 pt1 = mdlGeodesic.geodesic_coordinate(tg.LatLongs.get(0), AM.get(1), 0);//semi-minor axis
                     Point2D pt02d = new Point2D.Double(pt0.x, pt0.y);
                     Point2D pt12d = new Point2D.Double(pt1.x, pt1.y);
                     pt02d = converter.GeoToPixels(pt02d);
                     pt12d = converter.GeoToPixels(pt12d);
-                    pt0=new POINT2(pt02d.getX(),pt02d.getY());
-                    pt1=new POINT2(pt12d.getX(),pt12d.getY());
-                    tg.Pixels=new ArrayList<POINT2>();
+                    pt0 = new POINT2(pt02d.getX(), pt02d.getY());
+                    pt1 = new POINT2(pt12d.getX(), pt12d.getY());
+                    tg.Pixels = new ArrayList<POINT2>();
                     tg.Pixels.add(ptCenter);
                     tg.Pixels.add(pt0);
-                    tg.Pixels.add(pt1);   
+                    tg.Pixels.add(pt1);
                     tg.Pixels.add(ptAzimuth);
                 }
-                if(AM != null && AM.size()>2)
-                {
+                if (AM != null && AM.size() > 2) {
                     //use AM[2] for the buffer, so PBS_CIRCLE requires AM size 3 like PBS_ELLIPSE to use a buffer
-                    double dist=AM.get(2);
-                    POINT2 pt0=mdlGeodesic.geodesic_coordinate(tg.LatLongs.get(0), dist, 45);   //azimuth 45 is arbitrary
-                    Point2D pt02d = new Point2D.Double(tg.LatLongs.get(0).x,tg.LatLongs.get(0).y);
+                    double dist = AM.get(2);
+                    POINT2 pt0 = mdlGeodesic.geodesic_coordinate(tg.LatLongs.get(0), dist, 45);   //azimuth 45 is arbitrary
+                    Point2D pt02d = new Point2D.Double(tg.LatLongs.get(0).x, tg.LatLongs.get(0).y);
                     Point2D pt12d = new Point2D.Double(pt0.x, pt0.y);
                     pt02d = converter.GeoToPixels(pt02d);
                     pt12d = converter.GeoToPixels(pt12d);
-                    pt0=new POINT2(pt02d.getX(),pt02d.getY());
-                    POINT2 pt1=new POINT2(pt12d.getX(),pt12d.getY());                   
-                    dist=lineutility.CalcDistanceDouble(pt0, pt1);
+                    pt0 = new POINT2(pt02d.getX(), pt02d.getY());
+                    POINT2 pt1 = new POINT2(pt12d.getX(), pt12d.getY());
+                    dist = lineutility.CalcDistanceDouble(pt0, pt1);
                     //arraysupport will use line style to create the buffer shape
-                    tg.Pixels.get(0).style=(int)dist;
+                    tg.Pixels.get(0).style = (int) dist;
                 }
             }
             //construct the H1 and H2 modifiers for sector from the mss AM, AN, and X arraylists            
@@ -493,27 +512,28 @@ public final class clsRenderer {
                         H2 = AM.get(0).toString();
                         tg.set_H2(H2);
                     }
-                    if(H2 != null && !H2.isEmpty())
-                    for (j = 0; j < tg.LatLongs.size(); j++) {
-                        if (tg.LatLongs.size() > j) {
-                            if (!Double.isNaN(Double.parseDouble(H2))) {
-                                if (j == 0) {
-                                    dist = Double.parseDouble(H2);
-                                    pt0 = new POINT2(tg.LatLongs.get(0));
-                                    pt1 = mdlGeodesic.geodesic_coordinate(pt0, dist, 45);//45 is arbitrary
-                                    Point2D pt02d = new Point2D.Double(pt0.x, pt0.y);
-                                    Point2D pt12d = new Point2D.Double(pt1.x, pt1.y);
-                                    pt02d = converter.GeoToPixels(pt02d);
-                                    pt12d = converter.GeoToPixels(pt12d);
-                                    pt0.x = pt02d.getX();
-                                    pt0.y = pt02d.getY();
-                                    pt1.x = pt12d.getX();
-                                    pt1.y = pt12d.getY();
-                                    dist = lineutility.CalcDistanceDouble(pt0, pt1);
+                    if (H2 != null && !H2.isEmpty()) {
+                        for (j = 0; j < tg.LatLongs.size(); j++) {
+                            if (tg.LatLongs.size() > j) {
+                                if (!Double.isNaN(Double.parseDouble(H2))) {
+                                    if (j == 0) {
+                                        dist = Double.parseDouble(H2);
+                                        pt0 = new POINT2(tg.LatLongs.get(0));
+                                        pt1 = mdlGeodesic.geodesic_coordinate(pt0, dist, 45);//45 is arbitrary
+                                        Point2D pt02d = new Point2D.Double(pt0.x, pt0.y);
+                                        Point2D pt12d = new Point2D.Double(pt1.x, pt1.y);
+                                        pt02d = converter.GeoToPixels(pt02d);
+                                        pt12d = converter.GeoToPixels(pt12d);
+                                        pt0.x = pt02d.getX();
+                                        pt0.y = pt02d.getY();
+                                        pt1.x = pt12d.getX();
+                                        pt1.y = pt12d.getY();
+                                        dist = lineutility.CalcDistanceDouble(pt0, pt1);
+                                    }
+                                    tg.Pixels.get(j).style = Math.round((float) dist);
+                                } else {
+                                    tg.Pixels.get(j).style = 0;
                                 }
-                                tg.Pixels.get(j).style = Math.round((float) dist);
-                            } else {
-                                tg.Pixels.get(j).style = 0;
                             }
                         }
                     }
@@ -646,7 +666,7 @@ public final class clsRenderer {
                                         if (!Double.isNaN(Double.parseDouble(strRadii[j]))) {
                                             pixels = Double.parseDouble(strRadii[j]) * pixelsPerMeter / 2;
                                             tg.Pixels.get(j).style = (int) pixels;
-                                            tg.LatLongs.get(j).style = (int)pixels;
+                                            tg.LatLongs.get(j).style = (int) pixels;
                                         } else {
                                             tg.Pixels.get(j).style = (int) maxWidth;
                                             tg.LatLongs.get(j).style = (int) maxWidth;
@@ -750,14 +770,14 @@ public final class clsRenderer {
                 tg.set_H2(strH2);
                 tg.set_H1(strH1);
             }
-            switch(lineType)
-            {
+            switch (lineType) {
                 case TacticalLines.BBS_AREA:
                 case TacticalLines.BBS_LINE:
                 case TacticalLines.BBS_POINT:
                 case TacticalLines.BBS_RECTANGLE:
-                    if(tg.get_FillColor()==null)
+                    if (tg.get_FillColor() == null) {
                         tg.set_FillColor(Color.LIGHT_GRAY);
+                    }
                     break;
                 default:
                     break;
@@ -815,22 +835,40 @@ public final class clsRenderer {
                     break;
             }
             //Mil-std-2525C
-            if (lineType == TacticalLines.RECTANGULAR || lineType==TacticalLines.PBS_RECTANGLE || lineType==TacticalLines.PBS_SQUARE) {
+            if (lineType == TacticalLines.RECTANGULAR || lineType == TacticalLines.PBS_RECTANGLE || lineType == TacticalLines.PBS_SQUARE) {
                 ArrayList<Double> AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
                 ArrayList<Double> AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);
-                if(lineType==TacticalLines.PBS_SQUARE)
+                if (lineType == TacticalLines.PBS_SQUARE) //for square
                 {
-                    double am0=AM.get(0);
-                    if(AM.size()<2)
-                        AM.add(am0);
-                    else
-                        AM.set(1,am0);
+                    double r=AM.get(0);
+                    double b=0;
+                    if(AM.size()==1)
+                    {
+                        AM.add(r);
+                        AM.add(b);
+                    }
+                    else if(AM.size()==2)
+                    {
+                        b=AM.get(1);
+                        AM.set(1,r);
+                        AM.add(b);
+                    }
                 }
-                if(AN==null)                
-                    AN=new ArrayList();
-                
-                if(AN.isEmpty())
+                if (lineType == TacticalLines.PBS_SQUARE) {
+                    double am0 = AM.get(0);
+                    if (AM.size() < 2) {
+                        AM.add(am0);
+                    } else {
+                        AM.set(1, am0);
+                    }
+                }
+                if (AN == null) {
+                    AN = new ArrayList();
+                }
+
+                if (AN.isEmpty()) {
                     AN.add(0d);
+                }
                 //if all these conditions are not met we do not want to set any tg modifiers
                 if (AM != null && AM.size() > 1 && AN != null && AN.size() > 0) {
                     String strT1 = Double.toString(AM.get(0));    //width
@@ -842,10 +880,13 @@ public final class clsRenderer {
                     String strH2 = Double.toString(AN.get(0));
                     tg.set_H2(strH2);
                 }
-                if(AM.size()>2)
-                {
+                if (AM.size() > 2) {
                     String strH1 = Double.toString(AM.get(2));     //buffer size
                     tg.set_H1(strH1);
+                }
+                if (AM.size() <= 2) //need to set the buffer to 0 if the client did not set it.
+                {
+                    tg.set_H1("0");   //buffer
                 }
             }
             //set rev D properties            
@@ -952,7 +993,7 @@ public final class clsRenderer {
                         //in case it needs the corresponding geo point
                         Point2D ptGeo2d = converter.PixelsToGeo(pt);
                         //POINT2 ptGeo = clsUtility.Point2DToPOINT2(ptGeo2d);
-                        POINT2 ptGeo = new POINT2(ptGeo2d.getX(),ptGeo2d.getY());
+                        POINT2 ptGeo = new POINT2(ptGeo2d.getX(), ptGeo2d.getY());
                         tg.LatLongs.add(ptGeo);
                         //}
                         break;
@@ -1241,32 +1282,34 @@ public final class clsRenderer {
         pt0 = clipPoints.get(0);
         Point2D ptLast = clipPoints.get(clipPoints.size() - 1);
     }
+
     /**
-     * Added function to handle when coords or display area spans IDL but not both, it prevents the symbol from rendering
-     * if the bounding rectangles don't intersect.
+     * Added function to handle when coords or display area spans IDL but not
+     * both, it prevents the symbol from rendering if the bounding rectangles
+     * don't intersect.
+     *
      * @param tg
      * @param converter
      * @param clipArea
-     * @return 
+     * @return
      */
-    public static boolean intersectsClipArea(TGLight tg, IPointConversion converter, Object clipArea)
-    {
-        boolean result=false;
-        try
-        {
-            if (clipArea==null || tg.LatLongs.size() < 2)
+    public static boolean intersectsClipArea(TGLight tg, IPointConversion converter, Object clipArea) {
+        boolean result = false;
+        try {
+            if (clipArea == null || tg.LatLongs.size() < 2) {
                 return true;
+            }
             Rectangle2D clipBounds = null;
             ArrayList<Point2D> clipPoints = null;
-            
+
             if (clipArea != null) {
                 if (clipArea.getClass().isAssignableFrom(Rectangle2D.Double.class)) {
                     clipBounds = (Rectangle2D.Double) clipArea;
                 } else if (clipArea.getClass().isAssignableFrom(Rectangle.class)) {
                     clipBounds = (Rectangle2D) clipArea;
                 } else if (clipArea.getClass().isAssignableFrom(ArrayList.class)) {
-                    clipPoints = (ArrayList<Point2D>) clipArea;                    
-                    clipBounds = (Rectangle2D)clsUtility.getMBR(clipPoints);
+                    clipPoints = (ArrayList<Point2D>) clipArea;
+                    clipBounds = (Rectangle2D) clsUtility.getMBR(clipPoints);
                 }
             }
             //assumes we are using clipBounds
@@ -1283,60 +1326,66 @@ public final class clsRenderer {
             //boolean ptInside = false, ptAbove = false, ptBelow = false;
             double coordsLeft = tg.LatLongs.get(0).x;
             double coordsRight = coordsLeft;
-            double coordsTop=tg.LatLongs.get(0).y;
-            double coordsBottom=coordsTop;
-            boolean intersects=false;
-            double minx=tg.LatLongs.get(0).x,maxx=minx,maxNegX=0;
-            for (j = 0; j < tg.LatLongs.size(); j++)
-            {                
-                POINT2 pt=tg.LatLongs.get(j);
-                if (pt.x < minx)
+            double coordsTop = tg.LatLongs.get(0).y;
+            double coordsBottom = coordsTop;
+            boolean intersects = false;
+            double minx = tg.LatLongs.get(0).x, maxx = minx, maxNegX = 0;
+            for (j = 0; j < tg.LatLongs.size(); j++) {
+                POINT2 pt = tg.LatLongs.get(j);
+                if (pt.x < minx) {
                     minx = pt.x;
-                if (pt.x > maxx)
+                }
+                if (pt.x > maxx) {
                     maxx = pt.x;
-                if(maxNegX==0 && pt.x<0)
-                    maxNegX=pt.x;
-                if(maxNegX<0 && pt.x<0 && pt.x>maxNegX)
-                    maxNegX=pt.x;
-                if (pt.y < coordsBottom)
+                }
+                if (maxNegX == 0 && pt.x < 0) {
+                    maxNegX = pt.x;
+                }
+                if (maxNegX < 0 && pt.x < 0 && pt.x > maxNegX) {
+                    maxNegX = pt.x;
+                }
+                if (pt.y < coordsBottom) {
                     coordsBottom = pt.y;
-                if (pt.y > coordsTop)
-                    coordsTop = pt.y;                
+                }
+                if (pt.y > coordsTop) {
+                    coordsTop = pt.y;
+                }
             }
             boolean coordSpanIDL = false;
-            if(maxx==180 || minx==-180)
-                coordSpanIDL=true;
-            if(maxx-minx>=180)
-            {
-                coordSpanIDL=true;
-                coordsLeft=maxx;
-                coordsRight=maxNegX;
-            }else
-            {
-                coordsLeft=minx;
-                coordsRight=maxx;
+            if (maxx == 180 || minx == -180) {
+                coordSpanIDL = true;
+            }
+            if (maxx - minx >= 180) {
+                coordSpanIDL = true;
+                coordsLeft = maxx;
+                coordsRight = maxNegX;
+            } else {
+                coordsLeft = minx;
+                coordsRight = maxx;
             }
             //if(canClipPoints)
             //{                
-                if(br.y<=coordsBottom && coordsBottom <= tl.y)
-                    intersects=true;
-                else if(coordsBottom<=br.y && br.y <=coordsTop)
-                    intersects=true;
-                else
-                    return false;
+            if (br.y <= coordsBottom && coordsBottom <= tl.y) {
+                intersects = true;
+            } else if (coordsBottom <= br.y && br.y <= coordsTop) {
+                intersects = true;
+            } else {
+                return false;
+            }
             //}
             //if it gets this far then the latitude ranges intersect
             //re-initialize intersects for the longitude ranges
-            intersects=false;
+            intersects = false;
             //the longitude range
             //the min and max coords longitude
             boolean boxSpanIDL = false;
             //boolean coordSpanIDL = false;
-            if(tl.x==180 || tl.x==-180 || br.x==180 || br.x==-180)
-                boxSpanIDL=true;
-            else if (Math.abs(br.x - tl.x) > 180)
+            if (tl.x == 180 || tl.x == -180 || br.x == 180 || br.x == -180) {
                 boxSpanIDL = true;
-            
+            } else if (Math.abs(br.x - tl.x) > 180) {
+                boxSpanIDL = true;
+            }
+
 //            if (coordsRight - coordsLeft > 180)
 //            {
 //                double temp = coordsLeft;
@@ -1345,42 +1394,48 @@ public final class clsRenderer {
 //                coordSpanIDL=true;
 //            }
             //boolean intersects=false;
-            if(coordSpanIDL && boxSpanIDL)
-                intersects=true;
-            else if(!coordSpanIDL && !boxSpanIDL)   //was && canclipPoints
+            if (coordSpanIDL && boxSpanIDL) {
+                intersects = true;
+            } else if (!coordSpanIDL && !boxSpanIDL) //was && canclipPoints
             {
-                if(coordsLeft<=tl.x && tl.x<=coordsRight)
-                    intersects=true;
-                if(coordsLeft<=br.x && br.x<=coordsRight)
-                    intersects=true;
-                if(tl.x<=coordsLeft && coordsLeft<=br.x)
-                    intersects=true;
-                if(tl.x<=coordsRight && coordsRight<=br.x)
-                    intersects=true;
-            }
-            else if(!coordSpanIDL && boxSpanIDL)    //box spans IDL and coords do not
-            {   
-                if(tl.x<coordsRight && coordsRight<180)
-                    intersects=true;
-                if(-180<coordsLeft && coordsLeft<br.x)
-                    intersects=true;
-            }
-            else if(coordSpanIDL && !boxSpanIDL)    //coords span IDL and box does not
-            {   
-                if(coordsLeft<br.x && br.x<180)
-                    intersects=true;
-                if(-180<tl.x && tl.x<coordsRight)
-                    intersects=true;
+                if (coordsLeft <= tl.x && tl.x <= coordsRight) {
+                    intersects = true;
+                }
+                if (coordsLeft <= br.x && br.x <= coordsRight) {
+                    intersects = true;
+                }
+                if (tl.x <= coordsLeft && coordsLeft <= br.x) {
+                    intersects = true;
+                }
+                if (tl.x <= coordsRight && coordsRight <= br.x) {
+                    intersects = true;
+                }
+            } else if (!coordSpanIDL && boxSpanIDL) //box spans IDL and coords do not
+            {
+                if (tl.x < coordsRight && coordsRight < 180) {
+                    intersects = true;
+                }
+                if (-180 < coordsLeft && coordsLeft < br.x) {
+                    intersects = true;
+                }
+            } else if (coordSpanIDL && !boxSpanIDL) //coords span IDL and box does not
+            {
+                if (coordsLeft < br.x && br.x < 180) {
+                    intersects = true;
+                }
+                if (-180 < tl.x && tl.x < coordsRight) {
+                    intersects = true;
+                }
             }
             return intersects;
-            
-        }
-        catch (Exception exc) {
+
+        } catch (Exception exc) {
             ErrorLogger.LogException("clsRenderer", "intersectsClipArea",
                     new RendererException("Failed inside intersectsClipArea", exc));
-        }    
+        }
         return result;
     }
+
     /**
      * GoogleEarth renderer uses polylines for rendering
      *
@@ -1396,8 +1451,9 @@ public final class clsRenderer {
             ArrayList<ShapeInfo> shapeInfos = new ArrayList();
             ArrayList<ShapeInfo> modifierShapeInfos = new ArrayList();
             double scale = getScale(tg, converter, clipArea);
-            if (intersectsClipArea(tg, converter, clipArea))
+            if (intersectsClipArea(tg, converter, clipArea)) {
                 render_GE(tg, shapeInfos, modifierShapeInfos, converter, clipArea);
+            }
             mss.setSymbolShapes(shapeInfos);
             mss.setModifierShapes(modifierShapeInfos);
             mss.set_WasClipped(tg.get_WasClipped());
@@ -1473,8 +1529,10 @@ public final class clsRenderer {
                     new RendererException("Failed inside renderWithPolylines", exc));
         }
     }
+
     /**
      * truncate pixels to integer values
+     *
      * @param tg
      * @return shallow copy of the original pixels
      */
@@ -1528,7 +1586,7 @@ public final class clsRenderer {
             Object clipArea) //was Rectangle2D
     {
         try {
-            setTGProperties(tg);                        
+            setTGProperties(tg);
             double scale = getScale(tg, converter, clipArea);
             Rectangle2D clipBounds = null;
             //diagnostic 1-9-13
@@ -1560,7 +1618,7 @@ public final class clsRenderer {
                     clipPoints = (ArrayList<Point2D>) clipArea;
                 }
             }
-            double zoomFactor=clsUtilityGE.getZoomFactor(clipBounds, clipPoints, tg.Pixels);
+            double zoomFactor = clsUtilityGE.getZoomFactor(clipBounds, clipPoints, tg.Pixels);
             //add sub-section to test clipArea if client passes the rectangle
             boolean useClipPoints = false;
             if (useClipPoints == true && clipBounds != null) {
@@ -1622,13 +1680,12 @@ public final class clsRenderer {
 //                    clipArea = null;
 //                }
 //            }
-
             JavaTacticalRenderer.clsUtility.InterpolatePixels(tg);
 
             tg.modifiers = new ArrayList();
             BufferedImage bi = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = bi.createGraphics();
-            
+
             Modifier2.AddModifiersGeo2(tg, g2d, clipArea, converter);
             clsUtilityCPOF.FilterPoints2(tg, converter);
             JavaTacticalRenderer.clsUtility.FilterVerticalSegments(tg);
@@ -1639,7 +1696,7 @@ public final class clsRenderer {
 
             ArrayList<POINT2> savePixels = tg.Pixels;
             tg.Pixels = origFillPixels;
-            
+
             //check assignment
             if (clipBounds != null) {
                 linesWithFillShapes = clsClipPolygon2.LinesWithFill(tg, clipBounds);
@@ -1649,7 +1706,7 @@ public final class clsRenderer {
                 linesWithFillShapes = clsClipPolygon2.LinesWithFill(tg, clipBounds);
             }
             tg.Pixels = savePixels;
-            
+
             //diagnostic
 //            HashMap<Integer, Color> hmap = JavaTacticalRenderer.clsUtility.getMSRSegmentColors(tg);
 //            if(hmap==null || hmap.isEmpty())
@@ -1664,7 +1721,6 @@ public final class clsRenderer {
 //                }
 //            }
             //end section
-
             ArrayList rangeFanFillShapes = null;
             //do not fill the original shapes for circular range fans
             int savefillStyle = tg.get_FillStyle();
@@ -1724,7 +1780,7 @@ public final class clsRenderer {
             } else if (clsUtilityCPOF.canClipPoints(tg) == false && clipPoints != null) {
                 shapes = clsUtilityCPOF.postClipShapes(tg, shapes, clipPoints);
             }
-
+            resolvePostClippedShapes(tg,shapes);
             if (modifierShapeInfos != null) {
                 ArrayList<Shape2> textSpecs = new ArrayList();
                 //dblPixels=truncatePixels(tg);
@@ -1750,6 +1806,37 @@ public final class clsRenderer {
 
         }
         //return;
+    }
+
+    private static void resolvePostClippedShapes(TGLight tg, ArrayList<Shape2> shapes) {
+        try {
+            //resolve the PBS and BBS shape properties after the post clip, regardless whether they were clipped
+            switch (tg.get_LineType()) {
+                case TacticalLines.BBS_RECTANGLE:
+                case TacticalLines.BBS_POINT:
+                case TacticalLines.BBS_LINE:
+                case TacticalLines.BBS_AREA:
+                case TacticalLines.PBS_RECTANGLE:
+                case TacticalLines.PBS_SQUARE:
+                case TacticalLines.PBS_CIRCLE:
+                case TacticalLines.PBS_ELLIPSE:
+                    break;
+                default:
+                    return;
+            }
+            Color fillColor = tg.get_FillColor();
+            shapes.get(0).setFillColor(fillColor);
+            shapes.get(1).setFillColor(null);
+            int fillStyle = tg.get_FillStyle();
+            shapes.get(0).set_Fillstyle(0);
+            shapes.get(1).set_Fillstyle(fillStyle);
+            return;
+
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "render_GE",
+                    new RendererException("Failed inside resolvePostClippedShapes", exc));
+
+        }
     }
 
     /**
@@ -1975,7 +2062,7 @@ public final class clsRenderer {
             BufferedImage bi = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = bi.createGraphics();
 
-            clsUtilityCPOF.SegmentGeoPoints(tg, converter,1);
+            clsUtilityCPOF.SegmentGeoPoints(tg, converter, 1);
             clsUtility.FilterAXADPoints(tg, converter);
 
             //prevent vertical segments for oneway, twoway, alt
@@ -2818,13 +2905,13 @@ public final class clsRenderer {
             String setA = tg.get_SymbolId().substring(0, 10);
             String setB = tg.get_SymbolId().substring(10);
             //String symbolSet = getSymbolSet(setA);
-            String symbolSet=setA.substring(4,6);
+            String symbolSet = setA.substring(4, 6);
             int nSymbolSet = Integer.parseInt(symbolSet);
             if (nSymbolSet != 25) {
                 return;
             }
             //String code = Modifier2.getCode(setB);
-            String code = setB.substring(0,6);
+            String code = setB.substring(0, 6);
             int nCode = Integer.parseInt(code);
             switch (nCode) {
                 case 140101:    //friendly present flot
