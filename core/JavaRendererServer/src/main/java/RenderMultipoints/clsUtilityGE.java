@@ -1165,9 +1165,23 @@ public final class clsUtilityGE {
             Shape2 shape2=null;
             int index=0;
             if(JavaTacticalRenderer.clsUtility.isClosedPolygon(lineType)==false)
+            {
                 if(JavaTacticalRenderer.clsUtility.IsChange1Area(lineType, null)==false)
-                    return;
-
+                {
+                    //return;
+                    switch(lineType)
+                    {
+                        case TacticalLines.PBS_CIRCLE:
+                        case TacticalLines.PBS_ELLIPSE:
+                        case TacticalLines.BBS_AREA:
+                        case TacticalLines.BBS_LINE:
+                        case TacticalLines.BBS_RECTANGLE:
+                            break;
+                        default:
+                            return;
+                    }
+                }
+            }
             switch(lineType)
             {
                 case TacticalLines.NFA:
