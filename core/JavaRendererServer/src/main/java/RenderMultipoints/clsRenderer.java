@@ -853,6 +853,8 @@ public final class clsRenderer {
                         AM.set(1,r);
                         AM.add(b);
                     }
+                    else if(AM.size()>2)
+                        AM.set(1, r);
                 }
                 if (lineType == TacticalLines.PBS_SQUARE) {
                     double am0 = AM.get(0);
