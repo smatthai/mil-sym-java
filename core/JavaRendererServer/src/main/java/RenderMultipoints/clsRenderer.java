@@ -38,7 +38,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.Rectangle;
 import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.SymbolDraw;
-//import java.awt.font.TextLayout;
+import java.awt.BasicStroke;
 
 /**
  * Rendering class
@@ -1808,6 +1808,110 @@ public final class clsRenderer {
 
         }
         //return;
+    }
+    /**
+     * creates a shape for known symbols. The intent is to use client points for
+     * the shape and is intended for use with ellipse. If hatch > 1 it creates 2 shapes
+     * one for the hatch pattern, the second one is for the outline.
+     *
+     * @param milStd
+     * @param ipc
+     * @param clipArea
+     * @param shapeType
+     * @param lineColor
+     * @param fillColor
+     * @param hatch
+     */
+    public static void render_Shape(MilStdSymbol milStd,
+            IPointConversion ipc,
+            Object clipArea,
+            int shapeType,
+            Color lineColor,
+            Color fillColor,
+            int hatch) {
+        try {
+            Rectangle2D clipBounds = null;
+            //CELineArray.setClient("ge");
+            ArrayList<Point2D> clipPoints = null;
+
+            if (clipArea != null) {
+                if (clipArea.getClass().isAssignableFrom(Rectangle2D.Double.class)) {
+                    clipBounds = (Rectangle2D.Double) clipArea;
+                } else if (clipArea.getClass().isAssignableFrom(Rectangle.class)) {
+                    clipBounds = (Rectangle2D) clipArea;
+                } else if (clipArea.getClass().isAssignableFrom(ArrayList.class)) {
+                    clipPoints = (ArrayList<Point2D>) clipArea;
+                }
+            }
+            
+            //can't use following line because it resets the pixels
+            //TGLight tg = createTGLightFromMilStdSymbol(milStd, ipc);
+            TGLight tg = new TGLight();
+            tg.set_SymbolId(milStd.getSymbolID());
+            //tg.set_VisibleModifiers(true);
+            //set tg latlongs and pixels
+            setClientCoords(milStd, tg);
+            //build tg.Pixels
+            tg.Pixels = clsUtility.LatLongToPixels(tg.LatLongs, ipc);            
+            
+            //int fillStyle = milStd.getPatternFillType();
+            Shape2 shape = new Shape2(shapeType);
+            shape.setFillColor(fillColor);
+            if (lineColor != null) {
+                shape.setLineColor(lineColor);
+                shape.setStroke(new BasicStroke(milStd.getLineWidth()));
+            }
+            //the client has already set the coordinates for the shape
+            POINT2 pt;
+            for (int j = 0; j < tg.Pixels.size(); j++) {
+                pt = tg.Pixels.get(j);
+                if (j == 0) {
+                    shape.moveTo(pt);
+                } else {
+                    shape.lineTo(pt);
+                }
+            }
+
+            //post clip the shape and set the polylines
+            ArrayList<Shape2> shapes = new ArrayList();
+            shapes.add(shape);
+            //post-clip the shape
+            if (clsUtilityCPOF.canClipPoints(tg) == false && clipBounds != null) {
+                shapes = clsUtilityCPOF.postClipShapes(tg, shapes, clipBounds);
+            } else if (clsUtilityCPOF.canClipPoints(tg) == false && clipPoints != null) {
+                shapes = clsUtilityCPOF.postClipShapes(tg, shapes, clipPoints);
+            }
+            shape=shapes.get(0);
+            if (hatch > 1) 
+            {
+                shape = clsUtilityGE.buildHatchFill(tg, shape, hatch);
+                shape.setLineColor(lineColor);
+                shape.setStroke(new BasicStroke(1));
+                //shapes.clear();
+                shapes.add(shape);
+            }
+            ArrayList<ShapeInfo> shapeInfos = new ArrayList();
+            Shape2ToShapeInfo(shapeInfos, shapes);
+            //set the shapeInfo polylines
+            if (clipBounds != null) {
+                clsUtilityGE.SetShapeInfosPolylines(tg, shapeInfos, clipBounds);
+            } else if (clipPoints != null) {
+                clsUtilityGE.SetShapeInfosPolylines(tg, shapeInfos, clipPoints);
+            } else if (clipArea == null) {
+                clsUtilityGE.SetShapeInfosPolylines(tg, shapeInfos, clipBounds);
+            }
+            //set milStd symbol shapes
+            if (milStd.getSymbolShapes() == null) {
+                milStd.setSymbolShapes(shapeInfos);
+            } else {
+                milStd.getSymbolShapes().addAll(shapeInfos);
+            }
+            return;
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "render_Shape",
+                    new RendererException("Failed inside render_Shape", exc));
+
+        }
     }
 
     private static void resolvePostClippedShapes(TGLight tg, ArrayList<Shape2> shapes) {

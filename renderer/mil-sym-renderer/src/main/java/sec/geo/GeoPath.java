@@ -203,4 +203,9 @@ public class GeoPath implements Shape {
 	protected GlobalCoordinates toGlobalCoord(GeoPoint point) {
 		return new GlobalCoordinates(point.getLatitude(), point.getLongitude());
 	}
+        //added path accessor for use by Ellipse only
+        public Path2D getPath()
+        {
+            return path;
+        }
 }

@@ -1283,7 +1283,7 @@ public final class clsUtilityGE {
     /*
      * GE has no hatch utility, we need to create a shape the client can use as hatch fill
      */
-    private static Shape2 buildHatchFill(TGLight tg,ShapeInfo shape,int hatch)
+    protected static Shape2 buildHatchFill(TGLight tg,ShapeInfo shape,int hatch)
     {
         Shape2 hatchLineShape=null;
         try

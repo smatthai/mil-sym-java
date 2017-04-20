@@ -44,7 +44,9 @@ import JavaTacticalRenderer.mdlGeodesic;
 import RenderMultipoints.clsClipPolygon2;
 import java.awt.Font;
 import java.util.logging.Level;
-
+import sec.geo.GeoPoint;
+import sec.geo.kml.KmlOptions;
+import sec.geo.kml.XsltCoordinateWrapper;
 @SuppressWarnings({"unused", "rawtypes", "unchecked"})
 public class MultiPointHandler {
 
@@ -875,12 +877,27 @@ public class MultiPointHandler {
 //          clsRenderer.render_GE(tgl, shapes, modifiers, ipc, rect);
             //new interface
             IMultiPointRenderer mpr = MultiPointRenderer.getInstance();
+//            if (bboxCoords == null) {
+//                mpr.renderWithPolylines(mSymbol, ipc, rect);
+//            } else {
+//                mpr.renderWithPolylines(mSymbol, ipc, bboxCoords);
+//            }
+            boolean isBasicShape = false;
             if (bboxCoords == null) {
-                mpr.renderWithPolylines(mSymbol, ipc, rect);
+                //mpr.renderWithPolylines(mSymbol, ipc, rect);
+                isBasicShape = getBasicShapes(mSymbol, rect, ipc, symStd);
             } else {
-                mpr.renderWithPolylines(mSymbol, ipc, bboxCoords);
+                //mpr.renderWithPolylines(mSymbol, ipc, bboxCoords);
+                isBasicShape = getBasicShapes(mSymbol, bboxCoords, ipc, symStd);
             }
-
+            if (!isBasicShape) {
+                if (bboxCoords == null) {
+                    mpr.renderWithPolylines(mSymbol, ipc, rect);
+                } else {
+                    mpr.renderWithPolylines(mSymbol, ipc, bboxCoords);
+                }
+            }
+            
             shapes = mSymbol.getSymbolShapes();
             modifiers = mSymbol.getModifierShapes();
 
@@ -1123,6 +1140,105 @@ public class MultiPointHandler {
 
         return pi;
 
+    }
+    private static boolean getBasicShapes(MilStdSymbol milStd,
+            Object clipArea,
+            IPointConversion ipc,
+            int symStd) {
+        //String symbolId=mss.getSymbolID();
+        int linetype = JavaLineArray.CELineArray.CGetLinetypeFromString(milStd.getSymbolID(), symStd);
+        ArrayList<Double> AM = null;
+        ArrayList<Double> AN = null;
+        double buffer=0,r=0;
+        boolean result = false;
+        switch (linetype) {
+            case JavaLineArray.TacticalLines.PBS_CIRCLE:
+                AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
+                AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);                
+                if(AM.size()==1)
+                {
+                    r=AM.get(0);
+                    AM.add(r);
+                    buffer=0;
+                    AM.add(buffer);
+                }
+                else if(AM.size()==2)
+                {
+                    r=AM.get(0);
+                    buffer=AM.get(1);
+                    AM.set(1, r);
+                    AM.add(buffer);
+                }
+                else if(AM.size()==3)
+                {
+                    r=AM.get(0);
+                    AM.set(1, r);
+                }
+                result = true;
+                break;
+            case JavaLineArray.TacticalLines.BS_ELLIPSE:
+            case JavaLineArray.TacticalLines.PBS_ELLIPSE:
+                AM = milStd.getModifiers_AM_AN_X(ModifiersTG.AM_DISTANCE);
+                AN = milStd.getModifiers_AM_AN_X(ModifiersTG.AN_AZIMUTH);                
+                if(AM.size()==1)
+                {
+                    r=AM.get(0);
+                    AM.add(r);
+                    buffer=0;
+                    AM.add(buffer);
+                }                
+                if(AM.size()==2)
+                {
+                    AM.add(0d);
+                }                
+                result = true;
+                break;
+            default:
+                return false;
+        }
+        //there must be an AN array with an element
+        if (AN == null) {
+            AN = new ArrayList<Double>();
+        }
+        if (AN.isEmpty() ){
+            AN.add(new Double(0));
+        }
+        ArrayList coords = milStd.getCoordinates();
+        double pivotX = ((Point2D.Double) coords.get(0)).x;
+        double pivotY = ((Point2D.Double) coords.get(0)).y;
+        double semiMajor = AM.get(0);
+        double semiMinor = AM.get(1);
+        double rotation = AN.get(0);
+        buffer=AM.get(2);
+        String strAltitudeMode = milStd.getAltitudeMode();
+        if (strAltitudeMode.isEmpty()) {
+            strAltitudeMode = "clampToGround";
+        }
+        KmlOptions.AltitudeMode altitudeMode = KmlOptions.AltitudeMode.fromString(strAltitudeMode);
+        //get buffer fill shape from JavaRendererServer, pass the GeoPoints
+        ArrayList<GeoPoint> geoPts = XsltCoordinateWrapper.getEllipsePoints(pivotX, pivotY, altitudeMode, semiMajor+buffer, semiMinor+buffer, 0, 0, rotation);
+        ArrayList<Point2D.Double> coordinates = new ArrayList();
+        double x = 0, y = 0;
+        for (int j = 0; j < geoPts.size(); j++) {
+            x = geoPts.get(j).x;
+            y = geoPts.get(j).y;
+            coordinates.add(new Point2D.Double(x, y));
+        }
+        milStd.setCoordinates(coordinates);
+        clsRenderer.render_Shape(milStd, ipc, clipArea, ShapeInfo.SHAPE_TYPE_FILL, null, milStd.getFillColor(), 0);
+        //get the outline and hatch shapes
+        ArrayList<GeoPoint> geoPts2 = XsltCoordinateWrapper.getEllipsePoints(pivotX, pivotY, altitudeMode, semiMajor, semiMinor, 0, 0, rotation);
+        ArrayList<Point2D.Double> coordinates2 = new ArrayList();
+        for (int j = 0; j < geoPts2.size(); j++) {
+            x = geoPts2.get(j).x;
+            y = geoPts2.get(j).y;
+            coordinates2.add(new Point2D.Double(x, y));
+        }            
+        milStd.setCoordinates(coordinates2);
+        clsRenderer.render_Shape(milStd, ipc, clipArea, ShapeInfo.SHAPE_TYPE_POLYLINE, milStd.getLineColor(), null, milStd.getPatternFillType());
+        
+        milStd.setModifierShapes(new ArrayList<ShapeInfo>());
+        return result;
     }
 
     /**
@@ -1388,12 +1504,27 @@ public class MultiPointHandler {
 //            clsRenderer.render_GE(tgl, shapes, modifiers, ipc, rect);
             //new interface
             IMultiPointRenderer mpr = MultiPointRenderer.getInstance();
+//            if (bboxCoords == null) {
+//                mpr.renderWithPolylines(mSymbol, ipc, rect);
+//            } else {
+//                mpr.renderWithPolylines(mSymbol, ipc, bboxCoords);
+//            }
+            boolean isBasicShape = false;
             if (bboxCoords == null) {
-                mpr.renderWithPolylines(mSymbol, ipc, rect);
+                //mpr.renderWithPolylines(mSymbol, ipc, rect);
+                isBasicShape = getBasicShapes(mSymbol, rect, ipc, symStd);
             } else {
-                mpr.renderWithPolylines(mSymbol, ipc, bboxCoords);
+                //mpr.renderWithPolylines(mSymbol, ipc, bboxCoords);
+                isBasicShape = getBasicShapes(mSymbol, bboxCoords, ipc, symStd);
             }
-
+            if (!isBasicShape) {
+                if (bboxCoords == null) {
+                    mpr.renderWithPolylines(mSymbol, ipc, rect);
+                } else {
+                    mpr.renderWithPolylines(mSymbol, ipc, bboxCoords);
+                }
+            }
+            
             shapes = mSymbol.getSymbolShapes();
             modifiers = mSymbol.getModifierShapes();
 

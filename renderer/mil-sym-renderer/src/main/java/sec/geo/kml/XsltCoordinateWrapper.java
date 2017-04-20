@@ -11,7 +11,8 @@ import sec.geo.shape.Polyarc;
 import sec.geo.shape.Polygon;
 import sec.geo.shape.Radarc;
 import sec.geo.shape.Route;
-
+import sec.geo.shape.Ellipse;
+import java.util.ArrayList;
 public class XsltCoordinateWrapper {
 	public static Line getLine(String[] points, KmlOptions.AltitudeMode altitudeMode, double minAltitude, double maxAltitude) {
 		Line line = new Line();
@@ -35,6 +36,16 @@ public class XsltCoordinateWrapper {
 		circle.setMaxAltitude(maxAltitude);
 
 		return circle;
+	}
+	public static Ellipse getEllipse(double pivotX, double pivotY, KmlOptions.AltitudeMode altitudeMode, double semiMajor, double semiMinor, double minAltitude,
+			double maxAltitude, double rotation) {
+
+		Ellipse ellipse = new Ellipse(semiMajor,semiMinor,rotation);
+		ellipse.setAltitudeMode(altitudeMode);
+		ellipse.setPivot(new GeoPoint(pivotX, pivotY));
+		ellipse.setMinAltitude(minAltitude);
+		ellipse.setMaxAltitude(maxAltitude);
+		return ellipse;
 	}
 	
 	public static Orbit getOrbit(double point1X, double point1Y, double point2X, double point2Y, KmlOptions.AltitudeMode altitudeMode, double width,
@@ -119,6 +130,14 @@ public class XsltCoordinateWrapper {
 		KmlRenderer renderer = new KmlRenderer();
 		return renderer.getKml(getCircle(pivotX, pivotY, altitudeMode, radius, minAltitude, maxAltitude), id, name, description, lineColor, fillColor);
 	}
+        
+        public static ArrayList<GeoPoint> getEllipsePoints(double pivotX, double pivotY, KmlOptions.AltitudeMode altitudeMode, double semiMajor, double semiMinor, double minAltitude,
+			double maxAltitude, double rotation)
+        {
+                Ellipse ellipse=getEllipse(pivotX, pivotY, altitudeMode, semiMajor, semiMinor, minAltitude, maxAltitude, rotation); 
+                ArrayList<GeoPoint> pts=ellipse.getEllipsePoints();
+                return pts;
+        }
 	
 	public static String getOrbitKml(double point1X, double point1Y, double point2X, double point2Y, String id, String name, String description, String lineColor, String fillColor, KmlOptions.AltitudeMode altitudeMode, double width,
 			double minAltitude, double maxAltitude) {
