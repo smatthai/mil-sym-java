@@ -2637,8 +2637,8 @@ public final class lineutility {
             CirclePoints[numpts - 1] = new POINT2(CirclePoints[0]);
 
         } catch (Exception exc) {
-            ErrorLogger.LogException(_className, "CalcCircleDouble",
-                    new RendererException("Failed inside CalcCircleDouble", exc));
+            ErrorLogger.LogException(_className, "CalcCircleDouble2",
+                    new RendererException("Failed inside CalcCircleDouble2", exc));
         }
         return;
     }
