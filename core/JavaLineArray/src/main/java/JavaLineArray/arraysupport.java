@@ -3269,23 +3269,29 @@ public final class arraysupport {
                 case TacticalLines.MSDZ:
                     lineutility.InitializePOINT2Array(circlePoints);
                     pt3 = new POINT2(pLinePoints[3]);
-                    dRadius = lineutility.CalcDistanceDouble(pt0, pt1);
-                    lineutility.CalcCircleDouble(pt0, dRadius, 100,
-                            circlePoints, 0);
+                    //dRadius = lineutility.CalcDistanceDouble(pt0, pt1);
+                    //lineutility.CalcCircleDouble(pt0, dRadius, 100,
+                      //      circlePoints, 0);
+                    lineutility.CalcCircleDouble2(pt0, pt1, 100,
+                            circlePoints, converter);
                     for (j = 0; j < 100; j++) {
                         pLinePoints[j] = new POINT2(circlePoints[j]);
                     }
                     pLinePoints[99].style = 5;
-                    dRadius = lineutility.CalcDistanceDouble(pt0, pt2);
-                    lineutility.CalcCircleDouble(pt0, dRadius, 100,
-                            circlePoints, 0);
+                    //dRadius = lineutility.CalcDistanceDouble(pt0, pt2);
+                    //lineutility.CalcCircleDouble(pt0, dRadius, 100,
+                      //      circlePoints, 0);
+                    lineutility.CalcCircleDouble2(pt0, pt2, 100,
+                            circlePoints, converter);
                     for (j = 0; j < 100; j++) {
                         pLinePoints[100 + j] = new POINT2(circlePoints[j]);
                     }
                     pLinePoints[199].style = 5;
-                    dRadius = lineutility.CalcDistanceDouble(pt0, pt3);
-                    lineutility.CalcCircleDouble(pt0, dRadius, 100,
-                            circlePoints, 0);
+                    //dRadius = lineutility.CalcDistanceDouble(pt0, pt3);
+                    //lineutility.CalcCircleDouble(pt0, dRadius, 100,
+                      //      circlePoints, 0);
+                    lineutility.CalcCircleDouble2(pt0, pt3, 100,
+                            circlePoints, converter);
                     for (j = 0; j < 100; j++) {
                         pLinePoints[200 + j] = new POINT2(circlePoints[j]);
                     }
