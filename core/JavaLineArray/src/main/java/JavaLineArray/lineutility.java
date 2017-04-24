@@ -20,7 +20,9 @@ import ArmyC2.C2SD.Utilities.RendererSettings;
 import java.awt.geom.Path2D;
 import java.io.*;
 import java.awt.Point;
-
+import java.awt.geom.Point2D;
+import JavaTacticalRenderer.mdlGeodesic;
+import ArmyC2.C2SD.Utilities.IPointConversion;
 public final class lineutility {
 
     private static String _className = "lineutility";
@@ -2395,7 +2397,8 @@ public final class lineutility {
     protected static POINT2[] ArcArrayDouble(POINT2[] pResultLinePoints,
             int vblCounter,
             double dRadius,
-            int linetype) {
+            int linetype,
+            IPointConversion converter) {
         try {
             //declarations
             double startangle = 0, //start of pArcLinePoints
@@ -2425,7 +2428,31 @@ public final class lineutility {
                     M = Math.PI / 2;
                 }
             }
-            length = CalcDistanceDouble(a, e);
+            //length = CalcDistanceDouble(a, e);
+            if(converter != null)
+            {
+                Point2D pt02d=new Point2D.Double(pResultLinePoints[0].x,pResultLinePoints[0].y);
+                Point2D pt12d=new Point2D.Double(pResultLinePoints[1].x,pResultLinePoints[1].y);
+                //boolean reverseM=false;
+                pt02d=converter.PixelsToGeo(pt02d);
+                pt12d=converter.PixelsToGeo(pt12d);
+                //M=mdlGeodesic.GetAzimuth(pt02d,pt12d);
+                M=mdlGeodesic.GetAzimuth(new POINT2(pt02d.getX(),pt02d.getY()),new POINT2(pt12d.getX(),pt12d.getY()  )  );
+                M*=(Math.PI/180);
+                if(M<0)
+                    M+=Math.PI;
+            }
+            length = lineutility.CalcDistanceDouble(a, e);
+            if(converter != null)
+            {
+                Point2D pt02d=new Point2D.Double(pResultLinePoints[0].x,pResultLinePoints[0].y);
+                Point2D pt12d=new Point2D.Double(pResultLinePoints[1].x,pResultLinePoints[1].y);
+                pt02d=converter.PixelsToGeo(pt02d);
+                pt12d=converter.PixelsToGeo(pt12d);
+                //length=mdlGeodesic.geodesic_distance(pt02d,pt12d,null,null);
+                length=mdlGeodesic.geodesic_distance(new POINT2(pt02d.getX(),pt02d.getY()),new POINT2(pt12d.getX(),pt12d.getY()),null,null);
+            }
+            
             switch (linetype) {
                 case TacticalLines.CLUSTER:
                     startangle = M - 90 * Math.PI / 180.0;
@@ -2503,21 +2530,44 @@ public final class lineutility {
                         * ((double) a.x - (double) e.x));
                 C.y = (int) ((double) e.y - (dRadius / length)
                         * ((double) a.y - (double) e.y));
-            } else {
+            } 
+            else 
+            {
                 C.x = e.x;
                 C.y = e.y;
             }
-            for (j = 0; j < numarcpts; j++) {
-                //pArcLinePoints[j]=pResultLinePoints[0];	//initialize
-                pArcLinePoints[j].x = (int) (dRadius * Math.cos(startangle + j * increment));
-                pArcLinePoints[j].y = (int) (dRadius * Math.sin(startangle + j * increment));
+            if (converter != null)
+            {
+                Point2D C2d=new Point2D.Double(pResultLinePoints[0].x,pResultLinePoints[0].y);
+                C2d=converter.PixelsToGeo(C2d);    
+                double az=0;
+                Point2D ptGeo2d=null;
+                POINT2 ptGeo=null;
+                POINT2 ptPixels=null;
+                for (j = 0; j < numarcpts; j++) {
+                    az=startangle*180/Math.PI+j*increment*180/Math.PI;
+                    //ptGeo=mdlGeodesic.geodesic_coordinate(C2d,length,az);
+                    ptGeo=mdlGeodesic.geodesic_coordinate(new POINT2(C2d.getX(),C2d.getY()),length,az);
+                    ptGeo2d=new Point2D.Double(ptGeo.x,ptGeo.y);
+                    ptGeo2d=converter.GeoToPixels(ptGeo2d);
+                    ptPixels=new POINT2(ptGeo2d.getX(),ptGeo2d.getY());
+                    pArcLinePoints[j].x = ptPixels.x;
+                    pArcLinePoints[j].y = ptPixels.y;                            
+                }
             }
+            else
+            {
+                for (j = 0; j < numarcpts; j++) {
+                    //pArcLinePoints[j]=pResultLinePoints[0];	//initialize
+                    pArcLinePoints[j].x = (int) (dRadius * Math.cos(startangle + j * increment));
+                    pArcLinePoints[j].y = (int) (dRadius * Math.sin(startangle + j * increment));
+                }
 
-            for (j = 0; j < numarcpts; j++) {
-                pArcLinePoints[j].x += C.x;
-                pArcLinePoints[j].y += C.y;
+                for (j = 0; j < numarcpts; j++) {
+                    pArcLinePoints[j].x += C.x;
+                    pArcLinePoints[j].y += C.y;
+                }
             }
-
             switch (linetype) {
                 case TacticalLines.ISOLATE:
                 case TacticalLines.CORDONKNOCK:

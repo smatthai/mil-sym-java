@@ -332,7 +332,7 @@ public final class clsRenderer2 {
                     }
                     else if(lineType !=TacticalLines.BELT1)
                     {
-                        tg.Pixels=arraysupport.GetLineArray2(lineType, tg.Pixels,shapes, clipBounds2,rev);
+                        tg.Pixels=arraysupport.GetLineArray2(lineType, tg.Pixels,shapes, clipBounds2,rev,converter);
                     }
                     else if(lineType==TacticalLines.BELT1)
                     {
@@ -351,7 +351,7 @@ public final class clsRenderer2 {
                             {
                                 pixels.add(tg.Pixels.get(k));
                             }
-                            pixels=arraysupport.GetLineArray2(lineType, pixels, tempShapes, clipBounds2,rev);
+                            pixels=arraysupport.GetLineArray2(lineType, pixels, tempShapes, clipBounds2,rev,converter);
                             shapes.addAll(tempShapes);
                         }
                     }

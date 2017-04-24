@@ -1128,7 +1128,7 @@ public final class clsRenderer {
             } else {
                 if (CELineArray.CIsChannel(lineType) == 0) {
                     if (lineType != TacticalLines.BELT1) {
-                        tg.Pixels = arraysupport.GetLineArray2(lineType, tg.Pixels, shapes, null, rev);
+                        tg.Pixels = arraysupport.GetLineArray2(lineType, tg.Pixels, shapes, null, rev,converter);
                         Modifier2.GetIntegralTextShapes(tg, g2d, shapes);
                     }
                     //points = arraysupport.points;
@@ -1145,7 +1145,7 @@ public final class clsRenderer {
                             for (k = partitions.get(l).start; k <= partitions.get(l).end_Renamed + 1; k++) {
                                 pixels.add(tg.Pixels.get(k));
                             }
-                            pixels = arraysupport.GetLineArray2(lineType, pixels, tempShapes, null, rev);
+                            pixels = arraysupport.GetLineArray2(lineType, pixels, tempShapes, null, rev,converter);
                             shapes.addAll(tempShapes);
                         }
                     }
