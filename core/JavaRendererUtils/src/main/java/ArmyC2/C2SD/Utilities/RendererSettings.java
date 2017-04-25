@@ -133,6 +133,8 @@ public class RendererSettings {
     private static int _MPModifierFontType = Font.BOLD;
     private static int _MPModifierFontSize = 12;
     private static float _KMLLabelScale = 1.0f;
+    
+    private static int _DPI = 90;
 
     private RendererSettings()
     {
@@ -245,6 +247,20 @@ public class RendererSettings {
     public boolean getUseLineInterpolation()
     {
         return _UseLineInterpolation;
+    }
+    
+    /**
+     * set the screen DPI so the renderer can take DPI into account when 
+     * rendering for things like dashed lines and decorated lines.
+     * @param value 
+     */
+    public void setDeviceDPI(int value)
+    {
+        _DPI = value;
+    }
+    public int getDeviceDPI()
+    {
+        return _DPI;
     }
     /**
      * Collapse Modifiers for fire support areas when the symbol isn't large enough to show all
