@@ -15,6 +15,7 @@ import JavaLineArray.Shape2;
 import JavaLineArray.lineutility;
 import ArmyC2.C2SD.Utilities.ErrorLogger;
 import ArmyC2.C2SD.Utilities.RendererException;
+import ArmyC2.C2SD.Utilities.RendererSettings;
 import java.awt.Shape;
 import java.awt.geom.PathIterator;
 import ArmyC2.C2SD.Utilities.ShapeInfo;
@@ -209,6 +210,11 @@ public final class clsUtilityGE {
             double dist=0;
             double patternLength=0;
             int numSegments=0;
+            //high resolution devices
+            double dashMultiplier=(double)RendererSettings.getInstance().getDeviceDPI()/96.0;
+            for(j=0;j<dash.length;j++)
+                dash[j]*=dashMultiplier;
+            //end section
             for(j=0;j<dash.length;j++)
                 patternLength+=dash[j];
             //sum is the end length of eash dash element
