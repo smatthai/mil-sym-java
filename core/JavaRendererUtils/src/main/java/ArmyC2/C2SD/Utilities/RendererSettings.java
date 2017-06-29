@@ -116,7 +116,10 @@ public class RendererSettings {
     
     private static int _SymbologyStandard = 0;
 
-
+    public static int OperationalConditionModifierType_SLASH = 0;
+    public static int OperationalConditionModifierType_BAR = 1;
+    private static int _OCMType = 1;
+    
     private static boolean _UseLineInterpolation = true;
 
     //private static Font _ModifierFont = new Font("arial", Font.TRUETYPE_FONT, 12);
@@ -224,6 +227,20 @@ public class RendererSettings {
     public int getSymbologyStandard()
     {
         return _SymbologyStandard;
+    }
+    
+        /**
+     * Set the operational condition modifier to be slashes or bars
+     * @param value like RendererSettings.OperationalConditionModifierType_SLASH
+     */
+    public void setOperationalConditionModifierType(int value)
+    {
+        _OCMType = value;
+    }
+
+    public int getOperationalConditionModifierType()
+    {
+        return _OCMType;
     }
     
     /**

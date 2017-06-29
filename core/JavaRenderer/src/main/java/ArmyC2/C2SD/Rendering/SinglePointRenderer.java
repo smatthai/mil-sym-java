@@ -37,6 +37,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
@@ -1330,7 +1331,7 @@ public class SinglePointRenderer {
     private ArrayList<ShapeInfo> CreateOperationalConditionIndicator(String SymbolID, Rectangle2D symbolBounds, double pixelSize)
     {
         ArrayList<ShapeInfo> bars = null;
-        String status = "";
+        char status = ' ';
         Color statusColor = Color.GREEN;
         ShapeInfo siOCIF = null;
         ShapeInfo siOCIB = null;
@@ -1345,48 +1346,91 @@ public class SinglePointRenderer {
 
         try
         {
-            //set color
-            if(symbolBounds != null && SymbolID.length() > 4)
+            status = SymbolID.charAt(3);
+            if(RendererSettings.getInstance().getOperationalConditionModifierType() == RendererSettings.OperationalConditionModifierType_BAR)
             {
-                bars = new ArrayList<ShapeInfo>();
-                status = SymbolID.substring(3, 4);
-                if(status.equalsIgnoreCase("C"))//Fully Capable
-                    statusColor = Color.GREEN;
-                else if(status.equalsIgnoreCase("D"))//Damage
-                    statusColor = Color.YELLOW;
-                else if(status.equalsIgnoreCase("X"))
-                    statusColor = Color.RED;
-                else if(status.equalsIgnoreCase("F"))//full to capacity(hospital)
-                    statusColor = Color.BLUE;
+                //set color
+                if(symbolBounds != null && SymbolID.length() > 4)
+                {
+                    bars = new ArrayList<ShapeInfo>();
+                    if(status == 'C')//Fully Capable
+                        statusColor = Color.GREEN;
+                    else if(status == 'D')//Damage
+                        statusColor = Color.YELLOW;
+                    else if(status == 'X')
+                        statusColor = Color.RED;
+                    else if(status == 'F')//full to capacity(hospital)
+                        statusColor = Color.BLUE;
+                    else
+                        return null; //no valid color, return null
+                }
                 else
-                    return null; //no valid color, return null
+                    return null;
+
+                bars = new ArrayList<ShapeInfo>();
+                double barSize = 0;
+                if(pixelSize > 0)
+                    barSize = pixelSize/5;
+
+                if(barSize < 2)
+                    barSize = 2;
+
+                sOCIForeground = new Rectangle2D.Double(symbolBounds.getX()+widthAdjust, symbolBounds.getY() + symbolBounds.getHeight() + 2, symbolBounds.getWidth()-(widthAdjust*2), barSize);
+                sOCIBackground = new Rectangle2D.Double(sOCIForeground.getX()-outlineSize, sOCIForeground.getY() - outlineSize, sOCIForeground.getWidth()+(outlineSize*2), barSize+(outlineSize*2));
+
+
+                siOCIF = new ShapeInfo(sOCIForeground, ShapeInfo.SHAPE_TYPE_UNIT_DISPLAY_MODIFIER);
+                siOCIF.setFillColor(statusColor);
+                siOCIF.setStroke(stroke);
+                siOCIB = new ShapeInfo(sOCIBackground, ShapeInfo.SHAPE_TYPE_UNIT_DISPLAY_MODIFIER);
+                siOCIB.setFillColor(Color.BLACK);
+                siOCIB.setStroke(stroke);
+
+                bars.add(siOCIB);
+                bars.add(siOCIF);
             }
-            else
-                return null;
+            else //slash
+            {
+                //create Operational Condition Indicator 
+                GeneralPath path = null;
+                if (status == 'D' || status == 'X')
+                {
+                    bars = new ArrayList<ShapeInfo>();
+                    path = new GeneralPath();
+                    int fillCode = UnitFontLookup.getFillCode(SymbolID,RendererSettings.Symbology_2525C);
+                    double widthRatio = UnitFontLookup.getUnitRatioWidth(fillCode);
+                    double heightRatio = UnitFontLookup.getUnitRatioHeight(fillCode);
 
-            double barSize = 0;
-            if(pixelSize > 0)
-                barSize = pixelSize/5;
+                    double slashHeight = (symbolBounds.getHeight() / heightRatio * 1.47);
+                    double slashWidth = (symbolBounds.getWidth()/ widthRatio * 0.85);
+                    double centerX = symbolBounds.getCenterX();
+                    double centerY = symbolBounds.getCenterY();
 
-            if(barSize < 2)
-                barSize = 2;
-
-            sOCIForeground = new Rectangle2D.Double(symbolBounds.getX()+widthAdjust, symbolBounds.getY() + symbolBounds.getHeight() + 2, symbolBounds.getWidth()-(widthAdjust*2), barSize);
-            sOCIBackground = new Rectangle2D.Double(sOCIForeground.getX()-outlineSize, sOCIForeground.getY() - outlineSize, sOCIForeground.getWidth()+(outlineSize*2), barSize+(outlineSize*2));
-
-
-            siOCIF = new ShapeInfo(sOCIForeground, ShapeInfo.SHAPE_TYPE_UNIT_DISPLAY_MODIFIER);
-            siOCIF.setFillColor(statusColor);
-            siOCIF.setStroke(stroke);
-            siOCIB = new ShapeInfo(sOCIBackground, ShapeInfo.SHAPE_TYPE_UNIT_DISPLAY_MODIFIER);
-            siOCIB.setFillColor(Color.BLACK);
-            siOCIB.setStroke(stroke);
-
-            bars.add(siOCIB);
-            bars.add(siOCIF);
-
-
-
+                    if(status == 'D')//Damaged /
+                    {
+                        path.moveTo(centerX - (slashWidth/2),centerY+(slashHeight/2));
+                        path.lineTo(centerX + (slashWidth/2),centerY-(slashHeight/2));
+                    }
+                    else if(status == 'X')//Destroyed X
+                    {
+                        path.moveTo(centerX - (slashWidth/2),centerY+(slashHeight/2));
+                        path.lineTo(centerX + (slashWidth/2),centerY-(slashHeight/2));
+                        path.moveTo(centerX - (slashWidth/2),centerY-(slashHeight/2));
+                        path.lineTo(centerX + (slashWidth/2),centerY+(slashHeight/2));
+                    }
+                    ShapeInfo siOCMS = new ShapeInfo(path,ShapeInfo.SHAPE_TYPE_UNIT_OPERATIONAL_CONDITION);
+                    siOCMS.setLineColor(Color.BLACK);
+                    double size = symbolBounds.getWidth();
+                    float ociStrokeWidth = 3f;
+                    ociStrokeWidth = (float)size/20f;
+                    if(ociStrokeWidth < 1f)
+                        ociStrokeWidth = 1f;
+                    stroke = new BasicStroke(ociStrokeWidth);
+                    siOCMS.setStroke(stroke);
+                    if(siOCMS != null)
+                        bars.add(siOCMS);
+                }
+            }
         }
         catch(Exception exc)
         {

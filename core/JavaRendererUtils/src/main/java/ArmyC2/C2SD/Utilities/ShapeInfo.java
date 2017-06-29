@@ -49,6 +49,7 @@ public class ShapeInfo {
     public static int SHAPE_TYPE_TG_SP_OUTLINE=15;
     public static int SHAPE_TYPE_SINGLE_POINT_OUTLINE=16;
     public static int SHAPE_TYPE_UNIT_OUTLINE=17;
+    public static int SHAPE_TYPE_UNIT_OPERATIONAL_CONDITION=18;
 
     public static int justify_left=0;
     public static int justify_center=1;
@@ -60,7 +61,7 @@ public class ShapeInfo {
     private GeneralPath gp;
     private int fillStyle;
     private TexturePaint texturePaint;
-    private int shapeType=-1;
+    private int _ShapeType=-1;
     private Color lineColor = null;
     private Color fillColor = null;
     private Color textBackgoundColor = null;
@@ -112,6 +113,7 @@ public class ShapeInfo {
     public ShapeInfo(Shape shape, int shapeType)
     {
         _Shape = shape;
+        _ShapeType = shapeType;
     }
 
     public Shape getShape()
@@ -249,7 +251,7 @@ public class ShapeInfo {
             temp = _Shape.getBounds();
             if(_Shape instanceof GeneralPath)
             {
-                if(shapeType == SHAPE_TYPE_UNIT_OUTLINE)
+                if(_ShapeType == SHAPE_TYPE_UNIT_OUTLINE)
                 {
                     if(lineColor != null && stroke != null)
                     {
@@ -421,7 +423,7 @@ public class ShapeInfo {
      */
     public void setShapeType(int value)
     {
-        shapeType=value;
+        _ShapeType=value;
     }
     /**
      * For Internal Renderer use
@@ -430,7 +432,7 @@ public class ShapeInfo {
      */
     public int getShapeType()
     {
-        return shapeType;
+        return _ShapeType;
     }
 
     public ArrayList<ArrayList<Point2D>> getPolylines()
