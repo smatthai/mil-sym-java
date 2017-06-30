@@ -33,7 +33,8 @@ public class PortableWrapper {
                     message += "\n\t-mpport\t\tdesired port for the multi point service. (default 6790)";
                     message += "\n\t-mpbacklog\tdesired backlog for the single point service.  (default 0, lets system decide)";
                     message += "\n\t-acmodifiers\tfire support areas will only show identifying label and labels that fit the area.\n";
-                    message += "(default true, set false and all labels are shown all the time)";
+                    message += "(default true, set false and all labels are shown all the time)\n";
+                    message += "\n\t-ocmtype\tSpecifies if Operational Condition modifier will display as slahses(0) or bars(1,default).";
                     System.out.println(message);
                     return;
                 }
@@ -45,6 +46,7 @@ public class PortableWrapper {
                 Boolean spOn = true;
                 Boolean mpOn = true;
                 Boolean acModifiers = true;
+                String ocmType = null;
                 String spPort = null;
                 String mpPort = null;
                 String spBacklog = null;
@@ -116,6 +118,15 @@ public class PortableWrapper {
                         }
                     }
                     
+                    if(args[i].startsWith("-ocmtype"))
+                    {
+                        parts = args[i].split(":");
+                        if(parts.length == 2)
+                        {
+                            ocmType = parts[1];
+                        }
+                    }
+                    
                     if(args[i].startsWith("-symstd"))
                     {
                         parts = args[i].split(":");
@@ -181,6 +192,11 @@ public class PortableWrapper {
                 if(acModifiers == false)
                 {
                     RendererSettings.getInstance().setAutoCollapseModifiers(acModifiers);
+                }
+                
+                if(ocmType != null && SymbolUtilities.isNumber(ocmType))
+                {
+                    RendererSettings.getInstance().setOperationalConditionModifierType(Integer.parseInt(ocmType));
                 }
 		
 		// System tray

@@ -50,7 +50,7 @@ public class ImageGeneratorController {
 	
 	public ImageGeneratorController() {
 		try 
-                {
+                {//READ PROPERTIES
                     Properties props = ResourceUtils.loadResource("properties/prop.properties", this.getClass().getClassLoader());
                     //get rendering standard////////////////////////////////////
                     String symStd = props.getProperty("symStd");
@@ -74,6 +74,10 @@ public class ImageGeneratorController {
                     System.out.println("autoCollapseModifiers:  " + autoCollapseModifiers);
                     RendererSettings.getInstance().setAutoCollapseModifiers(Boolean.parseBoolean(autoCollapseModifiers));
                     
+                    //autoCollapseModifiers/////////////////////////////////////
+                    String operationalConditionModifierType = props.getProperty("operationalConditionModifierType");
+                    System.out.println("operationalConditionModifierType:  " + operationalConditionModifierType);
+                    RendererSettings.getInstance().setOperationalConditionModifierType(Integer.parseInt(operationalConditionModifierType));
                     
                     SECRenderer.getInstance().printManifestInfo();
                     
