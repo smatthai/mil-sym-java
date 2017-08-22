@@ -2842,9 +2842,10 @@ public class SinglePointRenderer {
         
 
         line.moveTo(x1, y1);
-
+        char scheme = symbolCode.charAt(0);
         if(SymbolUtilities.isNBC(symbolCode) ||
-                (symbolCode.startsWith("S") && symbolCode.substring(2, 3).equals("G")))
+                ((scheme == 'S') && symbolCode.substring(2, 3).equals("G")) ||
+                    scheme == 'O' || scheme == 'E')
         {
             //drawStaff = true;
             y1 = bounds.getY() + bounds.getHeight();
