@@ -336,7 +336,7 @@ public class MilStdSymbol {
         if (value.equals("") == false) {
             if (!(modifier.equalsIgnoreCase(ModifiersTG.AM_DISTANCE)
                     || modifier.equalsIgnoreCase(ModifiersTG.AN_AZIMUTH)
-                    || modifier.equalsIgnoreCase(ModifiersTG.X_ALTITUDE_DEPTH))) {
+                    || modifier.equalsIgnoreCase(ModifiersTG.X_ALTITUDE_DEPTH)) || this.getSymbolID().charAt(0) == 'W') {
                 _Properties.put(modifier, value);
             } else {
                 setModifier(modifier, value, 0);
