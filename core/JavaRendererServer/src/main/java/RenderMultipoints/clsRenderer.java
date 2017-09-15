@@ -680,7 +680,7 @@ public final class clsRenderer {
                         }
                     }
                     //now set tg.H2 to the max value so that the H2 modifier will display as the max vaule;
-                    tg.set_H2(Double.toString(maxWidthMeters));
+                    tg.set_H2(Double.toString(maxWidthMeters) + "m");
                     //use X, X1 to set tg.H, tg.H1
                     X = milStd.getModifiers_AM_AN_X(ModifiersTG.X_ALTITUDE_DEPTH);
                     if (X != null && X.size() > 0) {
