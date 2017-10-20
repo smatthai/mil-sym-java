@@ -3460,7 +3460,7 @@ public class SymbolUtilities {
           if(strSymbolID.charAt(0)=='E')
           {
             if(strSymbolID.charAt(2)=='O' &&
-                    strSymbolID.charAt(4)=='D' && strSymbolID.charAt(6)=='C')
+                    strSymbolID.charAt(4)=='D' && (strSymbolID.charAt(6)=='C' || strSymbolID.charAt(5)=='K'))
             {
                 blRetVal = true;
             }
