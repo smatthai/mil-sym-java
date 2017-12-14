@@ -55,6 +55,7 @@ public class Modifier2 {
     public static final String _className = "Modifier2";
     public boolean isIntegral = false;
     public boolean fitsMBR = true;        //added 7-9-12 M. Deutch
+    private static RendererSettings rendererSettings = RendererSettings.getInstance();
 
     Modifier2() {
         textPath = new POINT2[2];
@@ -2713,6 +2714,10 @@ public class Modifier2 {
             double csFactor = 1d, dist = 0, dist2 = 0;//this will be used for text spacing the 3d map (CommandCight)
             POINT2 midPt = null;
             boolean isChange1Area = clsUtility.IsChange1Area(tg.get_LineType(), null);
+            int northestPtIndex = 0;
+            int southestPtIndex = 0;
+            POINT2 northestPt = null;
+            POINT2 southestPt = null;
             if (isChange1Area) {
                 return;
             }
@@ -2941,6 +2946,7 @@ public class Modifier2 {
             }
 
             int middleSegment = (tg.Pixels.size() + 1) / 2 - 1;
+            int middleSegment2 = 0;
 
             if (clipRect != null) {
                 middleSegment = getVisibleMiddleSegment(tg, clipRect);
@@ -3069,6 +3075,8 @@ public class Modifier2 {
                     }
 
                     foundSegment = false;
+                    //acevedo - 11/30/2017 - adding option to render only 2 labels.
+                    if (rendererSettings.getTwoLabelOnly() == false) {
                     for (j = 0; j < tg.Pixels.size() - 1; j++) {
                         pt0 = tg.Pixels.get(j);
                         pt1 = tg.Pixels.get(j + 1);
@@ -3097,6 +3105,54 @@ public class Modifier2 {
                             AddIntegralModifier(tg, "ALT", aboveMiddle, 0.7 * csFactor, middleSegment, middleSegment + 1, true);
                         }
                     }
+                   }
+                     else {
+                        // 2 labels one to the north and the other to the south of graphic.
+                        for (j = 0; j < tg.Pixels.size(); j++) {
+                            pt0 = tg.Pixels.get(j);
+
+                            if (northestPt == null)
+                            {
+                                northestPt = pt0;
+                                northestPtIndex = j;
+                            }
+                            if (southestPt == null)
+                            {
+                                southestPt = pt0;
+                                southestPtIndex = j;
+                            }
+                            if (pt0.y >= northestPt.y)
+                            {
+                                northestPt = pt0;
+                                northestPtIndex = j;
+                            }
+
+                            if (pt0.y <= southestPt.y)
+                            {
+                                southestPt = pt0;
+                                southestPtIndex = j;
+                            }
+                        }//for
+
+                        middleSegment = northestPtIndex;
+                        middleSegment2 = southestPtIndex;
+
+                        if (middleSegment  == tg.Pixels.size() -1) {
+                            middleSegment-=1;
+                        }
+                        if (middleSegment2  == tg.Pixels.size() -1) {
+                            middleSegment2-=1;
+                       }
+                        if (middleSegment == middleSegment2) {
+                            middleSegment2-=1;
+                        }
+
+                        AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
+                        AddIntegralModifier(tg, "ALT", aboveMiddle, -1.5 * factor * csFactor, middleSegment, middleSegment + 1, false);
+
+                        AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, 0, middleSegment2, middleSegment2 + 1, false);
+                        AddIntegralModifier(tg, "ALT", aboveMiddle, -1.5 * factor * csFactor, middleSegment2, middleSegment2 + 1, false);
+                    }//else
                     break;
                 case TacticalLines.ONEWAY:
 //                    pt0 = tg.Pixels.get(middleSegment);
@@ -3111,6 +3167,8 @@ public class Modifier2 {
 //                    }                                        
                     stringWidth = (int) (1.5 * (double) metrics.stringWidth(label + tg.get_Name()));
                     foundSegment = false;
+                     //acevedo - 11/30/2017 - adding option to render only 2 labels.
+                    if (rendererSettings.getTwoLabelOnly() == false) {
                     for (j = 0; j < tg.Pixels.size() - 1; j++) {
                         pt0 = tg.Pixels.get(j);
                         pt1 = tg.Pixels.get(j + 1);
@@ -3135,6 +3193,53 @@ public class Modifier2 {
                             AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, -2 * factor * csFactor, middleSegment, middleSegment + 1, false);
                         }
                     }
+                     }
+                    else {
+                        // 2 labels one to the north and the other to the south of graphic.
+                        for (j = 0; j < tg.Pixels.size(); j++) {
+                            pt0 = tg.Pixels.get(j);
+
+                            if (northestPt == null)
+                            {
+                                northestPt = pt0;
+                                northestPtIndex = j;
+                            }
+                            if (southestPt == null)
+                            {
+                                southestPt = pt0;
+                                southestPtIndex = j;
+                            }
+                            if (pt0.y >= northestPt.y)
+                            {
+                                northestPt = pt0;
+                                northestPtIndex = j;
+                            }
+
+                            if (pt0.y <= southestPt.y)
+                            {
+                                southestPt = pt0;
+                                southestPtIndex = j;
+                            }
+                        }//for
+                        middleSegment = northestPtIndex;
+                        middleSegment2 = southestPtIndex;
+
+                        if (middleSegment  == tg.Pixels.size() -1) {
+                            middleSegment-=1;
+                        }
+                        if (middleSegment2  == tg.Pixels.size() -1) {
+                            middleSegment2-=1;
+                        }
+                        if (middleSegment == middleSegment2) {
+                            middleSegment2-=1;
+                        }
+
+
+                        AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
+
+                        AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, 0, middleSegment2, middleSegment2 + 1, false);
+
+                    }//else
                     break;
                 case TacticalLines.TWOWAY:
 //                    pt0 = tg.Pixels.get(middleSegment);
@@ -3149,6 +3254,8 @@ public class Modifier2 {
 //                    }                                        
                     stringWidth = (int) (1.5 * (double) metrics.stringWidth(label + tg.get_Name()));
                     foundSegment = false;
+                     //acevedo - 11/30/2017 - adding option to render only 2 labels.
+                    if (rendererSettings.getTwoLabelOnly() == false) {
                     for (j = 0; j < tg.Pixels.size() - 1; j++) {
                         pt0 = tg.Pixels.get(j);
                         pt1 = tg.Pixels.get(j + 1);
@@ -3173,6 +3280,52 @@ public class Modifier2 {
                             AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, -2 * factor * csFactor, middleSegment, middleSegment + 1, false);
                         }
                     }
+                     }
+                    else {
+                        // 2 labels one to the north and the other to the south of graphic.
+                        for (j = 0; j < tg.Pixels.size()  ; j++) {
+                            pt0 = tg.Pixels.get(j);
+
+                            if (northestPt == null)
+                            {
+                                northestPt = pt0;
+                                northestPtIndex = j;
+                            }
+                            if (southestPt == null)
+                            {
+                                southestPt = pt0;
+                                southestPtIndex = j;
+                            }
+                            if (pt0.y >= northestPt.y)
+                            {
+                                northestPt = pt0;
+                                northestPtIndex = j;
+                            }
+
+                            if (pt0.y <= southestPt.y)
+                            {
+                                southestPt = pt0;
+                                southestPtIndex = j;
+                            }
+                        }//for
+                        middleSegment = northestPtIndex;
+                        middleSegment2 = southestPtIndex;
+
+                        if (middleSegment  == tg.Pixels.size() -1) {
+                            middleSegment-=1;
+                        }
+                        if (middleSegment2  == tg.Pixels.size() -1) {
+                            middleSegment2-=1;
+                        }
+                        if (middleSegment == middleSegment2) {
+                            middleSegment2-=1;
+                        }
+
+                        AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
+
+                        AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, 0, middleSegment2, middleSegment2 + 1, false);
+
+                    }//else
                     break;
                 case TacticalLines.DHA:
                     AddIntegralAreaModifier(tg, "DETAINEE", area, -1.5 * csFactor, ptCenter, ptCenter, false);
@@ -3216,6 +3369,8 @@ public class Modifier2 {
                 case TacticalLines.ASR:
                     //AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, -1*csFactor, middleSegment, middleSegment + 1,false);
                     foundSegment = false;
+                    //acevedo - 11/30/2017 - adding option to render only 2 labels.
+                    if ( rendererSettings.getTwoLabelOnly() == false) {
                     for (j = 0; j < tg.Pixels.size() - 1; j++) {
                         pt0 = tg.Pixels.get(j);
                         pt1 = tg.Pixels.get(j + 1);
@@ -3232,6 +3387,53 @@ public class Modifier2 {
                     if (foundSegment == false) {
                         AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, -1 * csFactor, middleSegment, middleSegment + 1, false);
                     }
+                    }
+                     else {
+                        // 2 labels one to the north and the other to the south of graphic.
+                        for (j = 0; j < tg.Pixels.size()  ; j++) {
+                            pt0 = tg.Pixels.get(j);
+
+                            if (northestPt == null)
+                            {
+                                northestPt = pt0;
+                                northestPtIndex = j;
+                            }
+                            if (southestPt == null)
+                            {
+                                southestPt = pt0;
+                                southestPtIndex = j;
+                            }
+                            if (pt0.y >= northestPt.y)
+                            {
+                                northestPt = pt0;
+                                northestPtIndex = j;
+                            }
+
+                            if (pt0.y <= southestPt.y)
+                            {
+                                southestPt = pt0;
+                                southestPtIndex = j;
+                            }
+                        }//for
+                        middleSegment = northestPtIndex;
+                        middleSegment2 = southestPtIndex;
+
+                        if (middleSegment  == tg.Pixels.size() -1) {
+                            middleSegment-=1;
+                        }
+                        if (middleSegment2  == tg.Pixels.size() -1) {
+                            middleSegment2-=1;
+                        }
+                        if (middleSegment == middleSegment2) {
+                            middleSegment2-=1;
+                        }
+
+                       // if (middleSegment != middleSegment2) {
+                        AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
+                        //}
+                        AddIntegralModifier(tg, label + tg.get_Name(), aboveMiddle, 0, middleSegment2, middleSegment2 + 1, false);
+
+                    }//else
                     break;
                 case TacticalLines.LINTGT:
                     AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, -0.8 * csFactor, middleSegment, middleSegment + 1, false);
