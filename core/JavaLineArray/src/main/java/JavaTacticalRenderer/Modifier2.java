@@ -1928,25 +1928,69 @@ public class Modifier2 {
             boolean foundLongSegment = false;
             double dist = 0;
             POINT2 pt0 = null, pt1 = null;
+            
+            int northestPtIndex = 0;
+            int southestPtIndex = 0;
+            POINT2 northestPt = null;
+            POINT2 southestPt = null;
+            
+            //acevedo - 11/30/2017 - adding option to render only 2 labels.
+            if (rendererSettings.getInstance().getTwoLabelOnly() == false) {
 
-            for (j = startIndex; j < tg.Pixels.size() - 1; j++) {
-                pt0 = tg.Pixels.get(j);
-                pt1 = tg.Pixels.get(j + 1);
-                dist = lineutility.CalcDistanceDouble(pt0, pt1);
-                if (dist > 1.5 * stringWidth) {
-                    foundLongSegment = true;
-                    AddIntegralAreaModifier(tg, label, aboveMiddle, 0, pt0, pt1, true);
+                for (j = startIndex; j < tg.Pixels.size() - 1; j++) {
+                    pt0 = tg.Pixels.get(j);
+                    pt1 = tg.Pixels.get(j + 1);
+                    dist = lineutility.CalcDistanceDouble(pt0, pt1);
+                    if (dist > 1.5 * stringWidth) {
+                        foundLongSegment = true;
+                        AddIntegralAreaModifier(tg, label, aboveMiddle, 0, pt0, pt1, true);
+                    }
+                }
+                if (foundLongSegment == false)//we did not find a long enough segment
+                {
+                    if (middleSegment != startIndex) {
+                        AddIntegralModifier(tg, label, aboveMiddle, 0, middleSegment, middleSegment + 1, true);
+                    }
+
+                    AddIntegralModifier(tg, label, aboveMiddle, 0, middleSegment2, middleSegment2 + 1, true);
+
                 }
             }
-            if (foundLongSegment == false)//we did not find a long enough segment
-            {
-                if (middleSegment != startIndex) {
-                    AddIntegralModifier(tg, label, aboveMiddle, 0, middleSegment, middleSegment + 1, true);
-                }
+            else {
+                // 2 labels one to the north and the other to the south of graphic.
+                for (j = startIndex; j < tg.Pixels.size() - 1; j++) {
+                    pt0 = tg.Pixels.get(j);
 
+        			if (northestPt == null)
+        			{
+        				northestPt = pt0;
+        				northestPtIndex = j;
+        			}
+        			if (southestPt == null)
+        			{
+        				southestPt = pt0;
+        				southestPtIndex = j;
+        			}
+        			if (pt0.y >= northestPt.y)
+        			{
+        				northestPt = pt0;
+        				northestPtIndex = j;
+        			}
+
+        			if (pt0.y <= southestPt.y)
+        			{
+        				southestPt = pt0;
+        				southestPtIndex = j;
+        			}
+                }//for
+
+        	middleSegment = northestPtIndex;
+        	middleSegment2 = southestPtIndex;
+                if (middleSegment != startIndex)
+                	AddIntegralModifier(tg, label, aboveMiddle, 0, middleSegment, middleSegment + 1, true);
                 AddIntegralModifier(tg, label, aboveMiddle, 0, middleSegment2, middleSegment2 + 1, true);
-
-            }
+            }//else
+            
         } catch (Exception exc) {
             ErrorLogger.LogException(_className, "areasWithENY",
                     new RendererException("Failed inside areasWithENY", exc));
