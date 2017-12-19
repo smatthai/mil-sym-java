@@ -68,6 +68,8 @@ public class SymbolUtilities {
 
   private static final Pattern pIsNumber = Pattern.compile(fpRegex);
   
+  private static RendererSettings rendererSettings = RendererSettings.getInstance();
+  
   /*if (Pattern.matches(fpRegex, myString))
       Double.valueOf(myString); // Will not throw NumberFormatException
   else {
@@ -1008,7 +1010,8 @@ public class SymbolUtilities {
                 {
                     if((symbolID.substring(0, 4).equals("ESRI")) || SymbolUtilities.isJWARN(symbolID))
                     {
-                        retColor = Color.BLACK;//0x000000;	// Black
+                        //retColor = Color.BLACK;//0x000000;	// Black
+                        retColor =  rendererSettings.getFriendlyGraphicLineColor();
                     }
                     else if (SymbolUtilities.isWeather(symbolID))
                     {
@@ -1016,18 +1019,21 @@ public class SymbolUtilities {
                     }
                     else if(SymbolUtilities.isEMSNaturalEvent(symbolID))
                     {
-                        retColor = Color.black;
+                        //retColor = Color.black;
+                        retColor =  rendererSettings.getFriendlyGraphicLineColor();
                     }
                     else if(SymbolUtilities.isObstacle(symbolID))
                     {
-                        retColor = Color.GREEN;	// Green
+                        //retColor = Color.GREEN;	// Green
+                        retColor =  rendererSettings.getNeutralGraphicLineColor();
                     }
                     else if ((SymbolUtilities.isNBC(symbolID)) && 
                             (basicSymbolID.equals("G*M*NR----****X")==true || //Radioactive Area
                             basicSymbolID.equals("G*M*NC----****X")==true || //Chemically Contaminated Area
                             basicSymbolID.equals("G*M*NB----****X")==true)) //Biologically Contaminated Area
                     {
-                        retColor = Color.BLACK;//0xffff00;
+                        //retColor = Color.BLACK;//0xffff00;
+                        retColor =  rendererSettings.getFriendlyGraphicLineColor();//
                     }
                     else
                     {
@@ -1037,7 +1043,7 @@ public class SymbolUtilities {
                                 switchChar.equals("D") ||
                                 switchChar.equals("M"))
                             {
-                                retColor = Color.BLACK;//0x000000;	// Black
+                                 retColor =  rendererSettings.getFriendlyGraphicLineColor();
                             }
                             else if(switchChar.equals("H") ||
                                 switchChar.equals("S") ||
@@ -1047,18 +1053,21 @@ public class SymbolUtilities {
 
                                 if (SymbolUtilities.getBasicSymbolID(symbolID).equals("G*G*GLC---****X"))	// Line of Contact
                                 {
-                                    retColor = Color.BLACK;//0x000000;	// Black
+                                    //retColor = Color.BLACK;//0x000000;	// Black
+                                    retColor = rendererSettings.getFriendlyGraphicLineColor();
                                 }
                                 else
                                 {
-                                    retColor = Color.RED;//0xff0000;	// Red
+                                    //retColor = Color.RED;//0xff0000;	// Red
+                                    retColor = rendererSettings.getHostileGraphicLineColor();
                                 }
 
                             }
                             else if(switchChar.equals("N") ||
                                     switchChar.equals("L"))	// Neutral:
                             {
-                                    retColor = Color.GREEN;//0x00ff00;	// Green
+                                    //retColor = Color.GREEN;//0x00ff00;	// Green
+                                    retColor = rendererSettings.getNeutralGraphicLineColor();
 
                             }
                             else if(switchChar.equals("U") ||
@@ -1073,13 +1082,16 @@ public class SymbolUtilities {
                                 }
                                 else
                                 {
-                                    retColor = Color.YELLOW;//0xffff00;	// Yellow
+                                    //retColor = Color.YELLOW;//0xffff00;	// Yellow
+                                    retColor =  rendererSettings.getUnknownGraphicLineColor();
                                 }
 
                             }
                             else
                             {
-                                    retColor = Color.black;//null;//0;//Color.Empty;
+                                    //retColor = Color.black;//null;//0;//Color.Empty;
+                                    //retColor = rendererSettings.getFriendlyGraphicLineColor();
+                                    retColor = rendererSettings.getFriendlyUnitLineColor();
 
                             }	// End default
 
@@ -1089,7 +1101,8 @@ public class SymbolUtilities {
                 {
                     //stopped doing check because all warfighting
                     //should have black for line color.
-                    retColor = Color.BLACK;
+                    //retColor = Color.BLACK;
+                    retColor = rendererSettings.getFriendlyUnitLineColor();
 
                 }	// End else
             }	// End try
@@ -1129,7 +1142,8 @@ public class SymbolUtilities {
                                 basicSymbolID.equals("G*M*NEB---****X") ||//biological
                                 basicSymbolID.equals("G*M*NEC---****X"))//chemical
                             {
-                                    retColor = AffiliationColors.UnknownUnitFillColor;//  Color.yellow;
+                                    //retColor = AffiliationColors.UnknownUnitFillColor;//  Color.yellow;
+                                    retColor = rendererSettings.getUnknownUnitFillColor();
                             }
                             else if(SymbolUtilities.isTacticalGraphic(symbolID) && !SymbolUtilities.isTGSPWithFill(symbolID))
                             {
@@ -1138,7 +1152,9 @@ public class SymbolUtilities {
                                     basicSymbolID.equals("G*M*NEB---****X") ||//biological
                                     basicSymbolID.equals("G*M*NEC---****X"))//chemical
                                     {
-                                        retColor = Color.yellow;
+                                        //retColor = Color.yellow;
+                                        retColor = rendererSettings.getUnknownUnitFillColor();
+                                        
                                     }
                                     else
                                     {
@@ -1148,7 +1164,8 @@ public class SymbolUtilities {
                                             switchChar.equals("D") ||
                                             switchChar.equals("M"))
                                         {
-                                                retColor = AffiliationColors.FriendlyGraphicFillColor;//0x00ffff;	// Cyan
+                                                //retColor = AffiliationColors.FriendlyGraphicFillColor;//0x00ffff;	// Cyan
+                                                retColor = rendererSettings.getFriendlyGraphicFillColor();
 
                                         }
                                         else if(switchChar.equals("H") ||
@@ -1156,13 +1173,15 @@ public class SymbolUtilities {
                                             switchChar.equals("J") ||
                                             switchChar.equals("K"))
                                         {
-                                                retColor = AffiliationColors.HostileGraphicFillColor;//0xfa8072;	// Salmon
+                                                //retColor = AffiliationColors.HostileGraphicFillColor;//0xfa8072;	// Salmon
+                                                retColor = rendererSettings.getHostileGraphicFillColor();
 
                                         }
                                         else if(switchChar.equals("N") ||
                                                 switchChar.equals("L"))
                                         {
-                                                retColor = AffiliationColors.NeutralGraphicFillColor;//0x7fff00;	// Light Green
+                                                //retColor = AffiliationColors.NeutralGraphicFillColor;//0x7fff00;	// Light Green
+                                                retColor = rendererSettings.getNeutralGraphicFillColor();
 
                                         }
                                         else if(switchChar.equals("U") ||
@@ -1175,7 +1194,8 @@ public class SymbolUtilities {
                                         }
                                         else
                                         {
-                                                retColor = AffiliationColors.UnknownGraphicFillColor;
+                                                //retColor = AffiliationColors.UnknownGraphicFillColor;
+                                                retColor = rendererSettings.getUnknownGraphicFillColor();
                                         }
                                     }
                             }	// End if(SymbolUtilities.IsTacticalGraphic(this._strSymbolID))
@@ -1187,7 +1207,8 @@ public class SymbolUtilities {
                                         switchChar.equals("D") ||
                                         switchChar.equals("M"))
                                     {
-                                            retColor = AffiliationColors.FriendlyUnitFillColor;//0x00ffff;	// Cyan
+                                            //retColor = AffiliationColors.FriendlyUnitFillColor;//0x00ffff;	// Cyan
+                                            retColor = rendererSettings.getFriendlyUnitFillColor();
 
                                     }
                                     else if(switchChar.equals("H") ||
@@ -1195,13 +1216,15 @@ public class SymbolUtilities {
                                         switchChar.equals("J") ||
                                         switchChar.equals("K"))
                                     {
-                                            retColor = AffiliationColors.HostileUnitFillColor;//0xfa8072;	// Salmon
+                                            //retColor = AffiliationColors.HostileUnitFillColor;//0xfa8072;	// Salmon
+                                            retColor = rendererSettings.getHostileUnitFillColor();
 
                                     }
                                     else if(switchChar.equals("N") ||
                                             switchChar.equals("L"))
                                     {
-                                            retColor = AffiliationColors.NeutralUnitFillColor;//0x7fff00;	// Light Green
+                                            //retColor = AffiliationColors.NeutralUnitFillColor;//0x7fff00;	// Light Green
+                                            retColor = rendererSettings.getNeutralUnitFillColor();
 
                                     }
                                     else if(switchChar.equals("U") ||
@@ -1210,12 +1233,14 @@ public class SymbolUtilities {
                                         switchChar.equals("G") ||
                                         switchChar.equals("W"))
                                     {
-                                            retColor = AffiliationColors.UnknownUnitFillColor;//new Color(255,250, 205); //0xfffacd;	// LemonChiffon 255 250 205
+                                            //retColor = AffiliationColors.UnknownUnitFillColor;//new Color(255,250, 205); //0xfffacd;	// LemonChiffon 255 250 205
+                                            retColor = rendererSettings.getUnknownUnitFillColor();
                                     }
                                     else
 
                                     {
-                                            retColor = AffiliationColors.UnknownUnitFillColor;//null;
+                                            //retColor = AffiliationColors.UnknownUnitFillColor;//null;
+                                            retColor = rendererSettings.getUnknownUnitFillColor();
                                     }
 
 
