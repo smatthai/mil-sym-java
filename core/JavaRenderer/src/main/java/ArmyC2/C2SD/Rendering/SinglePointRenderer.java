@@ -2991,7 +2991,7 @@ public class SinglePointRenderer {
 
 //            int y0 = 0;//W    E/F
 //            int y1 = 0;//X/Y  G
-//            int y2 = 0;//V    H
+//            int y2 = 0;//V/AD/AE    H/AF
 //            int y3 = 0;//T    M CC
 //            int y4 = 0;//Z    J/K/L/N/P
 //
@@ -3019,17 +3019,22 @@ public class SinglePointRenderer {
             
             cpofNameX = bounds.x + bounds.width + bufferXR;
 
-            if(modifiers.containsKey(ModifiersUnits.X_ALTITUDE_DEPTH) || modifiers.containsKey(ModifiersUnits.Y_LOCATION))
+            if(modifiers.containsKey(ModifiersUnits.X_ALTITUDE_DEPTH) 
+                    || modifiers.containsKey(ModifiersUnits.Y_LOCATION))
             {
                 String xm = modifiers.get(ModifiersUnits.X_ALTITUDE_DEPTH);
                 String ym = modifiers.get(ModifiersUnits.Y_LOCATION);
 
                 if(xm == null && ym != null)
                     modifierValue = ym;
-                else if(xm != null && ym == null)
-                    modifierValue = xm;
-                else if(xm != null && ym != null)
-                    modifierValue = xm + " " + ym;
+                else if(xm != null && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.X_ALTITUDE_DEPTH))
+                {
+                    if(ym == null)
+                        modifierValue = xm;
+                    else
+                        modifierValue = xm + " " + ym;    
+                }
+                
 
                 text = new TextLayout(modifierValue, labelFont, frc);
                 labelBounds = text.getPixelBounds(null, 0, 0);
@@ -3052,7 +3057,8 @@ public class SinglePointRenderer {
 
                 alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
-            if(modifiers.containsKey(ModifiersUnits.G_STAFF_COMMENTS))
+            if(modifiers.containsKey(ModifiersUnits.G_STAFF_COMMENTS) && 
+                    SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.G_STAFF_COMMENTS))
             {
 
                 modifierValue = modifiers.get(ModifiersUnits.G_STAFF_COMMENTS);
@@ -3084,41 +3090,89 @@ public class SinglePointRenderer {
 
 
             }
-            if(modifiers.containsKey(ModifiersUnits.V_EQUIP_TYPE))
+            if(modifiers.containsKey(ModifiersUnits.V_EQUIP_TYPE) ||
+                    modifiers.containsKey(ModifiersUnits.AD_PLATFORM_TYPE) ||
+                    modifiers.containsKey(ModifiersUnits.AE_EQUIPMENT_TEARDOWN_TIME))
             {
-                modifierValue = modifiers.get(ModifiersUnits.V_EQUIP_TYPE);
-                text = new TextLayout(modifierValue, labelFont, frc);
-                labelBounds = text.getPixelBounds(null, 0, 0);
-                labelWidth = labelBounds.width;
+                
+                String vm = null,
+                    adm = null,
+                    aem = null;
 
-                x = bounds.x - labelBounds.width - bufferXL;
+                if (modifiers.containsKey(ModifiersUnits.V_EQUIP_TYPE) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.V_EQUIP_TYPE))
+                {
+                    vm = modifiers.get(ModifiersUnits.V_EQUIP_TYPE);
+                }
+                if (modifiers.containsKey(ModifiersUnits.AD_PLATFORM_TYPE) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.AD_PLATFORM_TYPE))
+                {
+                    adm = modifiers.get(ModifiersUnits.AD_PLATFORM_TYPE);
+                }
+                if (modifiers.containsKey(ModifiersUnits.AE_EQUIPMENT_TEARDOWN_TIME) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.AE_EQUIPMENT_TEARDOWN_TIME))
+                {
+                    aem = modifiers.get(ModifiersUnits.AE_EQUIPMENT_TEARDOWN_TIME);
+                }
                 
-                y = (bounds.height );//checkpoint, get box above the point
-                y = ((y * 0.5) + (labelHeight * 0.5));
-                y = bounds.y + y;
+                modifierValue = "";
+                if(vm != null && vm.equals("") == false)
+                    modifierValue = vm;
+                if(adm != null && adm.equals("") == false)
+                    modifierValue += " " + adm;
+                if(aem != null && aem.equals("") == false)
+                    modifierValue += " " + aem;
                 
-                
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
+                modifierValue = modifierValue.trim();
+                if(modifierValue.equals("") == false)
+                {
+                    text = new TextLayout(modifierValue, labelFont, frc);
+                    labelBounds = text.getPixelBounds(null, 0, 0);
+                    //labelWidth = labelBounds.width;
+
+                    x = bounds.x - labelBounds.width - bufferXL;
+
+                    y = (bounds.height );//checkpoint, get box above the point
+                    y = ((y * 0.5) + (labelHeight * 0.5));
+                    y = bounds.y + y;
+
+                    alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));        
+                }
             }
-            if(modifiers.containsKey(ModifiersUnits.H_ADDITIONAL_INFO_1))
+            if(modifiers.containsKey(ModifiersUnits.H_ADDITIONAL_INFO_1) ||
+                    modifiers.containsKey(ModifiersUnits.AF_COMMON_IDENTIFIER))
             {
-                modifierValue = modifiers.get(ModifiersUnits.H_ADDITIONAL_INFO_1);
+                modifierValue = "";
+                String hm = "",
+                        afm = "";
+                hm = modifiers.get(ModifiersUnits.H_ADDITIONAL_INFO_1);
+                if (modifiers.containsKey(ModifiersUnits.H_ADDITIONAL_INFO_1))
+                {
+                    hm = modifiers.get(ModifiersUnits.H_ADDITIONAL_INFO_1);
+                }
+                if (modifiers.containsKey(ModifiersUnits.AF_COMMON_IDENTIFIER) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.AF_COMMON_IDENTIFIER))
+                {
+                    afm = modifiers.get(ModifiersUnits.AF_COMMON_IDENTIFIER);
+                }
                 
-                text = new TextLayout(modifierValue, labelFont, frc);
-                //labelBounds = text.getPixelBounds(null, 0, 0);
-                //labelWidth = labelBounds.width;
+                modifierValue = hm + " " + afm;
+                modifierValue = modifierValue.trim();
+                
+                if(modifierValue.equals("") == false)
+                {
+                    text = new TextLayout(modifierValue, labelFont, frc);
+                    //labelBounds = text.getPixelBounds(null, 0, 0);
+                    //labelWidth = labelBounds.width;
 
-                x = bounds.x + bounds.width + bufferXR;
-                
-                y = (bounds.height );//checkpoint, get box above the point
-                y = ((y * 0.5) + (labelHeight * 0.5));
-                y = bounds.y + y;
-                
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
-                
-                //Concession for cpof name label
-                if((x + text.getBounds().getWidth() + 3) > cpofNameX)
-                        cpofNameX = x + text.getBounds().getWidth() + 3;
+                    x = bounds.x + bounds.width + bufferXR;
+
+                    y = (bounds.height );//checkpoint, get box above the point
+                    y = ((y * 0.5) + (labelHeight * 0.5));
+                    y = bounds.y + y;
+
+                    alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
+
+                    //Concession for cpof name label
+                    if((x + text.getBounds().getWidth() + 3) > cpofNameX)
+                            cpofNameX = x + text.getBounds().getWidth() + 3;
+                }
             }
             if(modifiers.containsKey(ModifiersUnits.T_UNIQUE_DESIGNATION_1))
             {
@@ -3144,40 +3198,42 @@ public class SinglePointRenderer {
                        modifiers.containsKey(ModifiersUnits.CC_COUNTRY_CODE))
             {
                 modifierValue = "";
-                String mValue = modifiers.get(ModifiersUnits.M_HIGHER_FORMATION);
+                String mValue = "";
+                if(SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.M_HIGHER_FORMATION))
+                    mValue = modifiers.get(ModifiersUnits.M_HIGHER_FORMATION);
                 String ccValue = modifiers.get(ModifiersUnits.CC_COUNTRY_CODE);
                 
-                
-                modifierValue = "";
-                if(mValue != null)
-                    modifierValue += mValue;
+                modifierValue += mValue;
                 if(ccValue != null)
                 {
-                    if(mValue != null)
+                    if(mValue.equals("") == false)
                         modifierValue += " ";
                     modifierValue += ccValue;
                 }
                 
-                text = new TextLayout(modifierValue, labelFont, frc);
-
-                x = bounds.x + bounds.width + bufferXR;
-                if(!byLabelHeight)
-                    y = bounds.y + bounds.height;
-                else
+                if(modifierValue.equals("")==false)
                 {
-                    y = (bounds.height );
-                    y = ((y * 0.5) + (labelHeight * 0.5));
-                    
-                    y =  y + ((labelHeight + bufferText));
-                    y = bounds.y + y;
+                    text = new TextLayout(modifierValue, labelFont, frc);
+
+                    x = bounds.x + bounds.width + bufferXR;
+                    if(!byLabelHeight)
+                        y = bounds.y + bounds.height;
+                    else
+                    {
+                        y = (bounds.height );
+                        y = ((y * 0.5) + (labelHeight * 0.5));
+
+                        y =  y + ((labelHeight + bufferText));
+                        y = bounds.y + y;
+                    }
+                    alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
+
+                    //Concession for cpof name label
+                    if((x + text.getBounds().getWidth() + 3) > cpofNameX)
+                            cpofNameX = x + text.getBounds().getWidth() + 3;
                 }
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
-                
-                //Concession for cpof name label
-                if((x + text.getBounds().getWidth() + 3) > cpofNameX)
-                        cpofNameX = x + text.getBounds().getWidth() + 3;
             }
-            if(modifiers.containsKey(ModifiersUnits.Z_SPEED))
+            if(modifiers.containsKey(ModifiersUnits.Z_SPEED) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.Z_SPEED))
             {
                 modifierValue = modifiers.get(ModifiersUnits.Z_SPEED);
                 text = new TextLayout(modifierValue, labelFont, frc);
@@ -3203,46 +3259,84 @@ public class SinglePointRenderer {
                     modifiers.containsKey(ModifiersUnits.N_HOSTILE) ||
                     modifiers.containsKey(ModifiersUnits.P_IFF_SIF))
             {
-                String jm = modifiers.get(ModifiersUnits.J_EVALUATION_RATING);
-                String km = modifiers.get(ModifiersUnits.K_COMBAT_EFFECTIVENESS);
-                String lm = modifiers.get(ModifiersUnits.L_SIGNATURE_EQUIP);
-                String nm = modifiers.get(ModifiersUnits.N_HOSTILE);
-                String pm = modifiers.get(ModifiersUnits.P_IFF_SIF);
+                String jm = null,
+                    km = null,
+                    lm = null,
+                    nm = null,
+                    pm = null;
+
+                if (modifiers.containsKey(ModifiersUnits.J_EVALUATION_RATING))
+                {
+                    jm = modifiers.get(ModifiersUnits.J_EVALUATION_RATING);
+                }
+                if (modifiers.containsKey(ModifiersUnits.K_COMBAT_EFFECTIVENESS) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.K_COMBAT_EFFECTIVENESS))
+                {
+                    km = modifiers.get(ModifiersUnits.K_COMBAT_EFFECTIVENESS);
+                }
+                if (modifiers.containsKey(ModifiersUnits.L_SIGNATURE_EQUIP) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.L_SIGNATURE_EQUIP))
+                {
+                    lm = modifiers.get(ModifiersUnits.L_SIGNATURE_EQUIP);
+                }
+                if (modifiers.containsKey(ModifiersUnits.N_HOSTILE) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.N_HOSTILE))
+                {
+                    nm = modifiers.get(ModifiersUnits.N_HOSTILE);
+                }
+                if (modifiers.containsKey(ModifiersUnits.P_IFF_SIF) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.P_IFF_SIF))
+                {
+                    pm = modifiers.get(ModifiersUnits.P_IFF_SIF);
+                }
 
                 modifierValue = "";
-                if(jm != null && jm.equals("")==false)
+                if (jm != null && jm.equals("") == false)
+                {
                     modifierValue = modifierValue + jm;
-                if(km != null && km.equals("")==false)
+                }
+                if (km != null && km.equals("") == false)
+                {
                     modifierValue = modifierValue + " " + km;
-                if(lm != null && lm.equals("")==false)
+                }
+                if (lm != null && lm.equals("") == false)
+                {
                     modifierValue = modifierValue + " " + lm;
-                if(nm != null && nm.equals("")==false)
+                }
+                if (nm != null && nm.equals("") == false)
+                {
                     modifierValue = modifierValue + " " + nm;
-                if(pm != null && pm.equals("")==false)
+                }
+                if (pm != null && pm.equals("") == false)
+                {
                     modifierValue = modifierValue + " " + pm;
+                }
 
+                if (modifierValue.length() > 2 && modifierValue.charAt(0) == ' ')
+                {
+                    modifierValue = modifierValue.substring(1);
+                }
                 modifierValue = modifierValue.trim();
 
-                text = new TextLayout(modifierValue, labelFont, frc);
-                labelBounds = text.getPixelBounds(null, 0, 0);
-                labelWidth = labelBounds.width;
-
-                x = bounds.x + bounds.width + bufferXR;
-                if(!byLabelHeight)
-                    y = bounds.y + bounds.height + labelHeight + bufferText;
-                else
+                if(modifierValue.equals("")==false)
                 {
-                    y = (bounds.height );
-                    y = ((y * 0.5) + (labelHeight * 0.5));
-                    
-                    y = y + ((labelHeight + bufferText)*2);
-                    y = bounds.y + y;
+                    text = new TextLayout(modifierValue, labelFont, frc);
+                    labelBounds = text.getPixelBounds(null, 0, 0);
+                    labelWidth = labelBounds.width;
+
+                    x = bounds.x + bounds.width + bufferXR;
+                    if(!byLabelHeight)
+                        y = bounds.y + bounds.height + labelHeight + bufferText;
+                    else
+                    {
+                        y = (bounds.height );
+                        y = ((y * 0.5) + (labelHeight * 0.5));
+
+                        y = y + ((labelHeight + bufferText)*2);
+                        y = bounds.y + y;
+                    }
+                    alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
+
+                    //Concession for cpof name label
+                    if((x + text.getBounds().getWidth() + 3) > cpofNameX)
+                            cpofNameX = x + text.getBounds().getWidth() + 3;
                 }
-                alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
-                
-                //Concession for cpof name label
-                if((x + text.getBounds().getWidth() + 3) > cpofNameX)
-                        cpofNameX = x + text.getBounds().getWidth() + 3;
             }
             if(modifiers.containsKey(ModifiersUnits.W_DTG_1))
             {
@@ -3272,12 +3366,13 @@ public class SinglePointRenderer {
             {
                 modifierValue = null;
                 String E = modifiers.get(ModifiersUnits.E_FRAME_SHAPE_MODIFIER);
-                String F = modifiers.get(ModifiersUnits.F_REINFORCED_REDUCED);
+                String F = "";
                 
                 if(E != null && E.equals("")==false)
                     modifierValue = E;
                 
-                F = modifiers.get(ModifiersUnits.F_REINFORCED_REDUCED);
+                if(SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.F_REINFORCED_REDUCED))
+                    F = modifiers.get(ModifiersUnits.F_REINFORCED_REDUCED);
                 if(F!= null && F.equals("")==false)
                 {
                     if(F.toUpperCase().equals("R"))
@@ -3340,7 +3435,8 @@ public class SinglePointRenderer {
                             cpofNameX = x + text.getBounds().getWidth() + 3;
                 }
             }
-            if(modifiers.containsKey(ModifiersUnits.C_QUANTITY))
+            if(modifiers.containsKey(ModifiersUnits.C_QUANTITY) &&
+                    SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.C_QUANTITY))
             {
                 modifierValue = modifiers.get(ModifiersUnits.C_QUANTITY);
                 text = new TextLayout(modifierValue, labelFont, frc);
@@ -3350,7 +3446,8 @@ public class SinglePointRenderer {
                 y = bounds.y - bufferY - descent;
                 alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
-            if(modifiers.containsKey(ModifiersUnits.AA_SPECIAL_C2_HQ))
+            if(modifiers.containsKey(ModifiersUnits.AA_SPECIAL_C2_HQ) &&
+                    SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.AA_SPECIAL_C2_HQ))
             {
                 modifierValue = modifiers.get(ModifiersUnits.AA_SPECIAL_C2_HQ);
                 text = new TextLayout(modifierValue, labelFont, frc);
@@ -3383,7 +3480,7 @@ public class SinglePointRenderer {
                 
                 alTemp.add(SymbolDraw.CreateModifierShapeInfo(text, modifierValue, x, y, TextColor, TextBackgroundColor));
             }
-            if(modifiers.containsKey(ModifiersUnits.SCC_SONAR_CLASSIFICATION_CONFIDENCE))
+            if(modifiers.containsKey(ModifiersUnits.SCC_SONAR_CLASSIFICATION_CONFIDENCE) && SymbolUtilities.canUnitHaveModifier(symbolID, ModifiersUnits.SCC_SONAR_CLASSIFICATION_CONFIDENCE))
             {
                 modifierValue = modifiers.get(ModifiersUnits.SCC_SONAR_CLASSIFICATION_CONFIDENCE);
                 

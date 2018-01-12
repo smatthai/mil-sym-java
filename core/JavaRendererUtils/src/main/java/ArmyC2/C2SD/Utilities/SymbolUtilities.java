@@ -734,9 +734,7 @@ public class SymbolUtilities {
                }
                else if(unitModifier.equals(ModifiersUnits.P_IFF_SIF))
                {
-                   return (SymbolUtilities.isUnit(symbolID) ||
-                           SymbolUtilities.isEquipment(symbolID) ||
-                           (SymbolUtilities.hasInstallationModifier(symbolID) && SymbolUtilities.isEMS(symbolID)==false) ||
+                   return (symbolID.charAt(0) == 'S' ||
                            SymbolUtilities.isSTBOPS(symbolID));
                }
                else if(unitModifier.equals(ModifiersUnits.Q_DIRECTION_OF_MOVEMENT))
