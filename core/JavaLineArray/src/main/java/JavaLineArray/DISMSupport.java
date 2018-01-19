@@ -3751,44 +3751,48 @@ public final class DISMSupport
 
     private static boolean ReverseDelayArc(POINT2[] points) {
         try {
-            ref<double[]> m = new ref();
-            boolean bolVertical = lineutility.CalcTrueSlopeDouble2(points[0], points[1], m);
-            if (bolVertical == true) //line not vertical
-            {
-                if (points[0].x < points[1].x) {
-                    if (points[2].y < points[1].y) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                } else {
-                    if (points[2].y < points[1].y) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            } else {
-                if (points[1].y < points[0].y) {
-                    if (points[1].x < points[2].x) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if (points[1].x < points[2].x) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-            }
-            //return false;
-        } catch (Exception exc) {
+           POINT2 pt1 = points[0];
+        POINT2 pt2 = points[1];
+        POINT2 pt3 = points[2];
+
+        float lineAngle = getAngleBetweenPoints(pt1.x, pt1.y, pt2.x, pt2.y);
+        float curveAngle = getAngleBetweenPoints(pt2.x, pt2.y, pt3.x, pt3.y);
+
+        float upperBound = curveAngle + 180;
+        return !isInRange(curveAngle, upperBound, lineAngle);
+        
+        } 
+        catch (Exception exc) {
             ErrorLogger.LogException(_className ,"ReverseDelayArc",
                     new RendererException("Failed inside GetDelayArc", exc));
         }
         return false;
+    }
+    
+        private static boolean isInRange(float min, float max, float targetAngle) {
+        targetAngle = normalizeAngle(targetAngle);
+        min = normalizeAngle(min);
+        max = normalizeAngle(max);
+
+        if (min < max) {
+            return min <= targetAngle && targetAngle <= max;
+        }
+        return min <= targetAngle || targetAngle <= max;
+
+    }
+
+    private static float getAngleBetweenPoints(double x1, double y1, double x2, double y2) {
+        return (float) Math.toDegrees(Math.atan2(y2 - y1, x2 - x1));
+    }
+
+    /**
+     * Returns an angle from 0 to 360
+     *
+     * @param angle the angle to normalize
+     * @return an angle in range from 0 to 360
+     */
+    public static float normalizeAngle(float angle) {
+        return (3600000 + angle) % 360;
     }
 
     private static void DrawEndpieceDeltasDouble(POINT2 point,
