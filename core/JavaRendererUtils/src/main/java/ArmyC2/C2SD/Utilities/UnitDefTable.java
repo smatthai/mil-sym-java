@@ -181,6 +181,13 @@ public class UnitDefTable {
             return _UnitDefinitionsC;
     }
     
+    /**
+     * SymbolIDs are no longer unique thanks to 2525C and some EMS symbols.
+     * Here are the EMS symbols that reused symbol IDs.
+     * Like how EMS.INCDNT.CVDIS.DISPOP uses the same symbol code as STBOPS.ITM.RFG (O*I*R-----*****)
+     * @param symStd
+     * @return 
+     */
     public ArrayList<UnitDef> GetUnitDefDups(int symStd)
     {
         if(symStd==RendererSettings.Symbology_2525B)

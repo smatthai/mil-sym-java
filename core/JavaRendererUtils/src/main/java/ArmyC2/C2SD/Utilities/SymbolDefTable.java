@@ -176,7 +176,9 @@ public class SymbolDefTable {
     }
     
     /**
-     * SymbolIDs are no longer unique.  
+     * SymbolIDs are no longer unique thanks to 2525C and some EMS symbols.
+     * Here are the EMS symbols that reused symbol IDs.
+     * Like how EMS.INCDNT.CVDIS.DISPOP uses the same symbol code as STBOPS.ITM.RFG (O*I*R-----*****)
      * @param symStd 0 or 1.  
      * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525Bch2_USAS_13_14 
      * @see ArmyC2.C2SD.Utilities.RendererSettings#Symbology_2525C

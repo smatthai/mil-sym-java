@@ -3038,7 +3038,7 @@ public class SinglePointRenderer {
 
                 text = new TextLayout(modifierValue, labelFont, frc);
                 labelBounds = text.getPixelBounds(null, 0, 0);
-                labelWidth = labelBounds.width;
+                //labelWidth = labelBounds.width;
                 if(!byLabelHeight)
                 {
                     x = bounds.x - labelBounds.width - bufferXL;
