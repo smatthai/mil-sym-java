@@ -2894,10 +2894,10 @@ public class SymbolUtilities {
   {
     try
     {
-      boolean blRetVal = ((strSymbolID.substring(0, 1).equals("S")) && 
+      boolean isGrounUnit = ((strSymbolID.substring(0, 1).equals("S")) && 
                             (strSymbolID.substring(2, 3).equals("G")) &&
                             (strSymbolID.substring(4,5).equals("U")));
-      return blRetVal;
+      return isGrounUnit || isSOF(strSymbolID);
     }
     catch(Throwable t)
     {
