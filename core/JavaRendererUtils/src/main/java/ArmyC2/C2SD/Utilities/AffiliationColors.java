@@ -16,19 +16,19 @@ public class AffiliationColors {
     /// <summary>
 		/// Friendly Unit Fill Color.
 		/// </summary>
-		public static Color FriendlyUnitFillColor = Color.CYAN;
+		public static Color FriendlyUnitFillColor = new Color(128,224,255);
 		/// <summary>
 		/// Hostile Unit Fill Color.
 		/// </summary>
-		public static Color HostileUnitFillColor = Color.RED;//new Color(255,130,132);//Color.RED;
+		public static Color HostileUnitFillColor = new Color(255,128,128);//new Color(255,130,132);//Color.RED;
 		/// <summary>
 		/// Neutral Unit Fill Color.
 		/// </summary>
-		public static Color NeutralUnitFillColor = Color.GREEN;//new Color(144,238,144);//Color.GREEN;//new Color(0,255,0);//new Color(144,238,144);//light green//Color.GREEN;new Color(0,226,0);
+		public static Color NeutralUnitFillColor = new Color(170,255,170);//new Color(144,238,144);//Color.GREEN;//new Color(0,255,0);//new Color(144,238,144);//light green//Color.GREEN;new Color(0,226,0);
 		/// <summary>
 		/// Unknown Unit Fill Color.
 		/// </summary>
-		public static Color UnknownUnitFillColor = Color.YELLOW;// new Color(255,255,128);//Color.YELLOW;
+		public static Color UnknownUnitFillColor = new Color(255,255,128);// new Color(255,255,128);//Color.YELLOW;
 
 		/// <summary>
 		/// Friendly Graphic Fill Color.
