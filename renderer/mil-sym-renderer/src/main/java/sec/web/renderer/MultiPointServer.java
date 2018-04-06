@@ -363,6 +363,20 @@ public class MultiPointServer {
 
 
 			if (exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+                            //get format
+                            int format = -1;
+                            String contentType = "text/plain;charset=UTF-8";
+                            Map<String,String> params = (Map<String,String>)exchange.getAttribute("parameters");
+                            if(params != null && params.containsKey("FORMAT"))
+                            {
+                                format = Integer.parseInt(params.get("FORMAT"));
+                                if(format == 0)
+                                   contentType = "text/xml;charset=UTF-8"; 
+                                else if(format == 1 || format == 2)
+                                   contentType = "application/json;charset=UTF-8"; 
+                            }
+                                
+                            
 				String url = null;
 				// String url = exchange.getRequestURI().getPath();
 				// String url = exchange.getRequestURI().toString();
@@ -400,7 +414,7 @@ public class MultiPointServer {
 					OutputStream responseBody = null;
 					try {
 						Headers headers = exchange.getResponseHeaders();
-						headers.set("Content-Type", "text/xml;charset=UTF-8");
+						headers.set("Content-Type", contentType);
                                                 if(allowOrigin.contains("127.0.0.1"))
                                                     headers.set("Access-Control-Allow-Origin", "*");//127.0.0.1
 						exchange.sendResponseHeaders(200, 0);

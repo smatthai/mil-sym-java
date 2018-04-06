@@ -753,15 +753,32 @@ public class JavaRendererUtilities {
             {                        
 
                 try {
+                    JSONObject jsonModifiersString = null;
+                    JSONObject jsonModifiersArray = null;
                     if (modifiers != null && modifiers.equals("") == false) {
-                        JSONObject jsonModifiersString = new JSONObject(modifiers);
-                        JSONObject jsonModifiersArray =
-                                jsonModifiersString.getJSONObject("modifiers");
-
+                        jsonModifiersString = new JSONObject(modifiers);
+                        if (jsonModifiersString.has("modifiers"))
+                        {
+                            jsonModifiersArray = jsonModifiersString.getJSONObject("modifiers");
+                        }
+                        else
+                        {
+                            jsonModifiersArray = jsonModifiersString;
+                        }
+                    }
+                    
+                    if(jsonModifiersArray != null){
+                        
+                        JSONArray jsonAltitudeArray = null;
                         // These guys store array values.  Put in appropriate data strucutre
                         // for MilStdSymbol.
                         if (jsonModifiersArray.has("altitudeDepth") && !jsonModifiersArray.isNull("altitudeDepth")) {
-                            JSONArray jsonAltitudeArray = jsonModifiersArray.getJSONArray("altitudeDepth");
+                            jsonAltitudeArray = jsonModifiersArray.getJSONArray("altitudeDepth");
+                        }
+                        else if (jsonModifiersArray.has("X") && !jsonModifiersArray.isNull("X")) {
+                            jsonAltitudeArray = jsonModifiersArray.getJSONArray("X");
+                        }
+                        if(jsonAltitudeArray != null){
                             if (jsonAltitudeArray.length() < 2)
                             {
                                 if((jsonAltitudeArray.length() == 1) && (symbolId.equals("AKPC--") || // Kill box circular

@@ -277,11 +277,7 @@ function callWebService(url, params, format){
 	var http = new XMLHttpRequest();
 	http.open("POST",url,true);
 
-	//First 2 header lines critical!
 	http.setRequestHeader("Content-type","application/x-www-form-urlencoded; charset=UTF-8");
-	http.setRequestHeader("Content-length",params.length);
-	//Not sure about this line
-	http.setRequestHeader("Connection","Close");
 	
 	
 	http.onreadystatechange = function(){
@@ -409,7 +405,7 @@ function getKML(dimension)
 	var formatKML = 0;
 	var format = $("#format").val();
 	
-	
+	var altMode = $("#altMode").val();
 	//Not meant to be changed on the fly.
 	//Let's user choose between 2525Bch2 and 2525C.
 	var ms2525Bch2 = 0;
@@ -438,7 +434,7 @@ function getKML(dimension)
 	//for rendering on 3d google earth//////////////////////////////////////////////////
 	var url = "renderer/mp3d/" + symbolCode;
 	if(dimension === 3)
-		var params = BuildParams3D("ID","Name","Description", symbolCode,controlPoints, "clampToGround",scale, bbox, modifiers,format,symStd);
+		var params = BuildParams3D("ID","Name","Description", symbolCode,controlPoints, altMode, scale, bbox, modifiers,format,symStd);
 	else
 		var params = BuildParams2D("ID","Name","Description", symbolCode,controlPoints, pixelWidth, pixelHeight, bbox, modifiers,format,symStd);
 	<!-- document.getElementById("contentSpan").innerHTML += "<br/><br/>Ambush KML:   <br/>"; -->
@@ -460,9 +456,15 @@ function getKML(dimension)
 		Lon <input type="number" step="any" value="66.25654247497746" id="cclon2">, Lat <input type="number" id="cclat2" value="30.64632704801704" step="any"><br>		
 		Lon <input type="number" step="any" id="cclon3">, Lat <input type="number" id="cclat3" step="any"><br>		
 		<p>
-		scale <input type="number" id="scale" value="50000.0" step="any"/> (for 3D)<br>
-		pixel width <input type="number" id="pixelWidth" value="800"/ step="any"> (for 2D)<br>
-		pixel hight <input type="number" id="pixelHeight" value="600"/ step="any"> (for 2D)<br>
+		Scale <input type="number" id="scale" value="50000.0" step="any"/> (for 3D)<br>
+                Altitude Mode <select id="altMode">
+                                    <option value="clampToGround">Clamp To Ground</option>
+                                    <option value="absolute">Absolute (Sea Level)</option>
+                                    <!-- <option value="relativeToGround">Relative To Ground (from earth surface)</option>
+                                    <option value="relativeToSeaFloor">Relative To Sea Floor (from bottom of major bodies of water)</option> -->
+                                </select> (for 3D and KML only and only for a subset of symbols)<br>
+		pixel width <input type="number" id="pixelWidth" value="800" step="any"/> (for 2D)<br>
+		pixel hight <input type="number" id="pixelHeight" value="600" step="any"/> (for 2D)<br>
 		Symbology Standard <select id="standard">
 							<option value="1">2525C</option>
 							<option value="0">2525B</option>

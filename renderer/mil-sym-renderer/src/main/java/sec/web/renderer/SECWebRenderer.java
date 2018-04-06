@@ -1115,27 +1115,49 @@ public class SECWebRenderer extends Applet {
             String fillColor = null;
             
             lumpCrabJSON = new JSONObject(modifiers);
-            
-            
             if (lumpCrabJSON.has("modifiers"))
             {
                 modifiersJSON = lumpCrabJSON.getJSONObject("modifiers");
+            }
+            else
+            {
+                modifiersJSON = lumpCrabJSON;
+            }
+            
+            
+            if (modifiersJSON != null)
+            {
 
                 if (modifiersJSON.has("altitudeDepth") && !modifiersJSON.isNull("altitudeDepth"))
                 {
                     altitudeDepthJSON = modifiersJSON.getJSONArray("altitudeDepth");
                     altitudeDepthLength = altitudeDepthJSON.length();
                 }                
+                else if (modifiersJSON.has("X") && !modifiersJSON.isNull("X"))
+                {
+                    altitudeDepthJSON = modifiersJSON.getJSONArray("X");
+                    altitudeDepthLength = altitudeDepthJSON.length();
+                }
 
                 if (modifiersJSON.has("azimuth") && !modifiersJSON.isNull("azimuth"))
                 {
                     azimuthJSON = modifiersJSON.getJSONArray("azimuth");
                     azimuthLength = azimuthJSON.length();
                 }
+                else if (modifiersJSON.has("AN") && !modifiersJSON.isNull("AN"))
+                {
+                    azimuthJSON = modifiersJSON.getJSONArray("AN");
+                    azimuthLength = azimuthJSON.length();
+                }
 
                 if (modifiersJSON.has("distance") && !modifiersJSON.isNull("distance"))
                 {
                     distanceJSON = modifiersJSON.getJSONArray("distance");
+                    distanceLength = distanceJSON.length();
+                } 
+                else if (modifiersJSON.has("AM") && !modifiersJSON.isNull("AM"))
+                {
+                    distanceJSON = modifiersJSON.getJSONArray("AM");
                     distanceLength = distanceJSON.length();
                 } 
                 
