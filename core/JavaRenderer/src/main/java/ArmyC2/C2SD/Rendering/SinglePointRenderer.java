@@ -3206,7 +3206,7 @@ public class SinglePointRenderer {
                 modifierValue += mValue;
                 if(ccValue != null)
                 {
-                    if(mValue.equals("") == false)
+                    if(mValue != null && mValue.equals("") == false)
                         modifierValue += " ";
                     modifierValue += ccValue;
                 }
