@@ -1,5 +1,7 @@
 package ArmyC2.C2SD.RendererPluginInterface;
 
+import org.apache.batik.svggen.SVGGraphics2D;
+
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -13,6 +15,7 @@ public class SinglePointInfo implements ISinglePointInfo {
 	private BufferedImage _Image = null;
 	private Point2D _centerPoint = null;
 	Rectangle2D _symbolBounds = null;
+	private SVGGraphics2D svgGraphics;
 
 	public SinglePointInfo(BufferedImage bi) {
 		_Image = bi;
@@ -41,4 +44,13 @@ public class SinglePointInfo implements ISinglePointInfo {
 		return _centerPoint;
 	}
 
+	@Override
+	public SVGGraphics2D getSvgGraphics() {
+		return svgGraphics;
+	}
+
+	@Override
+	public void setSvgGraphics(SVGGraphics2D svgGraphics) {
+		this.svgGraphics = svgGraphics;
+	}
 }

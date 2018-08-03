@@ -4,12 +4,13 @@
  */
 package ArmyC2.C2SD.Utilities;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.TexturePaint;
+import org.apache.batik.dom.svg12.SVG12DOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
@@ -1365,8 +1366,7 @@ public class MilStdSymbol {
      * @return
      */
     private ImageInfo ConvertShapesToImageInfo(int type, Boolean addBuffer) {
-
-        ImageInfo returnVal = null;
+        ImageInfo imageInfo = null;
         int widthBuffer = 0;//2;
         int heightBuffer = 0;//2;
         int offsetX = 0;//1;
@@ -1381,6 +1381,8 @@ public class MilStdSymbol {
 
                 bounds = getSymbolExtent();
                 boundsFull = getSymbolExtentFull();
+
+                SVGGraphics2D svgG2d = createSvgGraphic(boundsFull);
 
                     //System.out.println("bounds: " + bounds.toString());
                 //System.out.println("full bounds: " + boundsFull.toString());
@@ -1420,7 +1422,9 @@ public class MilStdSymbol {
                 //BufferedImage image = new BufferedImage(Math.round(boundsFull.width+boundsFull.x) + widthBuffer, Math.round(boundsFull.height+boundsFull.y) + heightBuffer, type);
                 BufferedImage image = new BufferedImage(Math.round(boundsFull.width) + widthBuffer, Math.round(boundsFull.height) + heightBuffer, type);
                 Graphics2D g2d = (Graphics2D) image.createGraphics();
-                    //set antialiasing. if not, buffers & offsets should be 0
+                svgG2d.create();
+
+                //set antialiasing. if not, buffers & offsets should be 0
                 //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 //AffineTransform oldTransform = g2d.getTransform(); 
 
@@ -1431,9 +1435,9 @@ public class MilStdSymbol {
                     //test
 //                    g2d.setColor(Color.white);
 //                    g2d.fill(boundsFull);
-                    //draw symbol to bufferedImage
-                //SymbolDraw.Draw(this, g2d, 0, 0);
-                SymbolDraw.Draw(this, g2d, -(newX), -(newY));
+                //draw symbol to bufferedImage
+                SymbolDraw.Draw(this, g2d,    -(newX), -(newY));
+                SymbolDraw.Draw(this, svgG2d, -(newX), -(newY));
 
                     //System.out.println("image dimensions: width " + String.valueOf(image.getWidth()) + " height " + String.valueOf(image.getHeight()));
                 //create ImageInfo which holds image and coords to draw at
@@ -1470,7 +1474,9 @@ public class MilStdSymbol {
                         centerX = offsetX + bounds.x - boundsFull.x + (bounds.width / 2);
                         centerY = offsetY + bounds.y - boundsFull.y + (bounds.height / 2);
                     }
-                    returnVal = new ImageInfo(image, newX, newY, centerX, centerY, new Rectangle2D.Double(bounds.getX() - newX, bounds.getY() - newY, bounds.getWidth(), bounds.getHeight()));
+                    imageInfo = new ImageInfo(image, newX, newY, centerX, centerY, new Rectangle2D.Double(bounds.getX() - newX, bounds.getY() - newY, bounds.getWidth(), bounds.getHeight()));
+                    imageInfo.setSvgGraphics(svgG2d);
+
                 } else//is tactical graphic
                 {
                     ShapeInfo temp = null;
@@ -1496,10 +1502,12 @@ public class MilStdSymbol {
                     if (isMultiPoint) {
                         bounds = boundsFull;
                     }
-                    returnVal = new ImageInfo(image, newX, newY, centerX, centerY, new Rectangle2D.Double(bounds.getX() - newX, bounds.getY() - newY, bounds.getWidth(), bounds.getHeight()));
+                    imageInfo = new ImageInfo(image, newX, newY, centerX, centerY, new Rectangle2D.Double(bounds.getX() - newX, bounds.getY() - newY, bounds.getWidth(), bounds.getHeight()));
+                    imageInfo.setSvgGraphics(svgG2d);
                 }
 
-                g2d.dispose();
+                // we will defer releasing this resource
+                //g2d.dispose();
 
             } else {
                 return null;
@@ -1507,7 +1515,20 @@ public class MilStdSymbol {
         } catch (Exception exc) {
             ErrorLogger.LogException("MilStdSymbol", "ConvertShapesToImageInfo()", exc);
         }
-        return returnVal;
+        return imageInfo;
     }
 
+    private SVGGraphics2D createSvgGraphic(Rectangle bounds) {
+        String svgNS = "http://www.w3.org/2000/svg";
+        DOMImplementation domImpl = SVG12DOMImplementation.getDOMImplementation();
+        Document doc = domImpl.createDocument(svgNS, "svg", null);
+        SVGGraphics2D svgG2d = new SVGGraphics2D(doc);
+        svgG2d.setSVGCanvasSize(new Dimension(bounds.width,bounds.height));
+
+        Element svgRoot = svgG2d.getRoot();
+        String svgViewPort = String.format("%d %d %d %d", bounds.x, bounds.y, bounds.width, bounds.height);
+        svgRoot.setAttributeNS(null, svgG2d.SVG_VIEW_BOX_ATTRIBUTE, svgViewPort);
+
+        return svgG2d;
+    }
 }

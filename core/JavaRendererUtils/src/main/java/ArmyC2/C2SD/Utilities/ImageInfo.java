@@ -5,17 +5,9 @@
 
 package ArmyC2.C2SD.Utilities;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.StringReader;
-import java.util.Iterator;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.w3c.dom.Node;
+
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageTypeSpecifier;
@@ -25,7 +17,14 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
-import org.w3c.dom.Node;
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.StringReader;
+import java.util.Iterator;
 
 /**
  * Object that holds an image of the symbol and all the information
@@ -43,6 +42,7 @@ public class ImageInfo {
     private int _symbolCenterX = 0;
     private int _symbolCenterY = 0;
     Rectangle2D _symbolBounds = null;
+    private SVGGraphics2D svgGraphics;
 
 
     /**
@@ -488,4 +488,11 @@ public class ImageInfo {
         return ret;
     }
 
+    public SVGGraphics2D getSvgGraphics() {
+        return svgGraphics;
+    }
+
+    public void setSvgGraphics(SVGGraphics2D svgGraphics) {
+        this.svgGraphics = svgGraphics;
+    }
 }

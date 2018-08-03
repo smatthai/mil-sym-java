@@ -1,5 +1,7 @@
 package ArmyC2.C2SD.RendererPluginInterface;
 
+import org.apache.batik.svggen.SVGGraphics2D;
+
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -33,4 +35,6 @@ public interface ISinglePointInfo {
 	 */
 	public Rectangle2D getSymbolBounds();
 
+	SVGGraphics2D getSvgGraphics();
+	void setSvgGraphics(SVGGraphics2D svgGraphics);
 }

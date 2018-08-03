@@ -20,10 +20,11 @@ import ArmyC2.C2SD.Utilities.RendererSettings;
 import ArmyC2.C2SD.Utilities.SymbolDef;
 import ArmyC2.C2SD.Utilities.SymbolDefTable;
 import ArmyC2.C2SD.Utilities.SymbolUtilities;
-import java.awt.Color;
+import sec.web.renderer.utilities.JavaRendererUtilities;
+
+import java.awt.*;
 import java.util.Map;
 import java.util.logging.Level;
-import sec.web.renderer.utilities.JavaRendererUtilities;
 
 /**
  *
@@ -171,6 +172,7 @@ public class SinglePoint2525Renderer implements ISinglePointRenderer {
 
             //ImageInfo ii = jr.RenderSinglePointAsImageInfo(symbolID, params, ms.getUnitSize(), ms.getKeepUnitRatio());
             spi = new SinglePointInfo(ii.getImage(), ii.getSymbolCenterPoint(), ii.getSymbolBounds());
+            spi.setSvgGraphics(ii.getSvgGraphics());
         }
         catch(Exception exc)
         {

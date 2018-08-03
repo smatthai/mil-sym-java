@@ -1,9 +1,11 @@
 package sec.web.renderer.utils;
 
-import ArmyC2.C2SD.Utilities.MilStdAttributes;
-import ArmyC2.C2SD.Utilities.SymbolUtilities;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-import java.awt.Color;
+import sec.web.renderer.SECRenderer;
+import sec.web.renderer.utilities.JavaRendererUtilities;
+import sec.web.renderer.utilities.PNGInfo;
+import sec.web.renderer.utilities.SVGInfo;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -11,12 +13,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-
-import sec.web.renderer.SECRenderer;
-import sec.web.renderer.utilities.JavaRendererUtilities;
-import sec.web.renderer.utilities.PNGInfo;
 
 @SuppressWarnings("unused")
 public class ImagingUtils {
@@ -53,6 +49,22 @@ public class ImagingUtils {
 
 		return params;
 	}
+
+    /**
+     * @param symbolId id of milstd 2525
+     * @param symbolInfoMap additional information for rendering images
+     * @return {@link SVGInfo}
+     */
+    public static SVGInfo getMilStd2525SVG(String symbolId, Map<String, String> symbolInfoMap) {
+        Boolean icon = symbolInfoMap.containsKey("ICON") && Boolean.parseBoolean(symbolInfoMap.get("ICON"));
+        if (icon) {
+            // Strip unwanted modifiers
+            symbolInfoMap = JavaRendererUtilities.parseIconParameters(symbolId, symbolInfoMap);
+            symbolId = JavaRendererUtilities.sanitizeSymbolID(symbolId);
+        }
+
+        return sr.getSVGSymbol(symbolId, symbolInfoMap);
+    }
 	
 	public static byte[] getMilStd2525Png(String url, String queryString) {
 		String symbolID = url.substring(url.lastIndexOf("/"));				

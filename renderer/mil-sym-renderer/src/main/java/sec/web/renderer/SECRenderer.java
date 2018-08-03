@@ -7,25 +7,28 @@ package sec.web.renderer;
 import ArmyC2.C2SD.RendererPluginInterface.ISinglePointInfo;
 import ArmyC2.C2SD.Rendering.IJavaRenderer;
 import ArmyC2.C2SD.Rendering.JavaRenderer;
-import ArmyC2.C2SD.Utilities.*;
-import java.awt.Color;
-import java.awt.Font;
+import ArmyC2.C2SD.Utilities.ErrorLogger;
+import ArmyC2.C2SD.Utilities.IPointConversion;
+import ArmyC2.C2SD.Utilities.ImageInfo;
+import ArmyC2.C2SD.Utilities.MilStdSymbol;
+import ArmyC2.C2SD.Utilities.PointConversionDummy;
+import ArmyC2.C2SD.Utilities.RendererSettings;
+import ArmyC2.C2SD.Utilities.SymbolDefTable;
+import ArmyC2.C2SD.Utilities.SymbolUtilities;
+import sec.web.renderer.utilities.JavaRendererUtilities;
+import sec.web.renderer.utilities.PNGInfo;
+import sec.web.renderer.utilities.SVGInfo;
+import sec.web.renderer.utilities.SinglePointServerTester;
+
+import javax.print.DocFlavor.BYTE_ARRAY;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.logging.Level;
-import javax.print.DocFlavor.BYTE_ARRAY;
-import sec.web.renderer.utilities.JavaRendererUtilities;
-import sec.web.renderer.utilities.PNGInfo;
-import sec.web.renderer.utilities.SinglePointServerTester;
 
 /**
  *
@@ -549,8 +552,44 @@ public class SECRenderer {
             else
                 return null;
 	}
-	
-	
+
+	public SVGInfo getSVGSymbol(String symbolId, Map<String, String> symbolInfoMap) {
+		SVGInfo svgInfo = null;
+		ISinglePointInfo spi;
+		String rendererId = "";
+		try {
+			if (symbolInfoMap.containsKey("renderer")) {
+				rendererId = symbolInfoMap.get("renderer");
+			} else if (symbolInfoMap.containsKey("RENDERER")) {
+				rendererId = symbolInfoMap.get("RENDERER");
+			}
+
+			// check if plugin renderer was requested
+			if (rendererId == null || rendererId.equals("")) {
+				rendererId = SinglePoint2525Renderer.RENDERER_ID;
+			}
+			if (!sprs.hasRenderer(rendererId)) {
+				// if renderer id doesn't exist or is no good, set to default plugin.
+				rendererId = SinglePoint2525Renderer.RENDERER_ID;
+			}
+
+			if (sprs.hasRenderer(rendererId)) {
+				spi = sprs.render(rendererId, symbolId, symbolInfoMap);
+				if (spi != null) {
+					svgInfo = new SVGInfo(spi);
+				}
+			} else {
+				String message = "Lookup for 2525 renderer plugin failed.";
+				ErrorLogger.LogMessage("SECRenderer", "getSymbolImage", message, Level.WARNING);
+			}
+
+		} catch (Exception exc) {
+			ErrorLogger.LogException("SECRenderer", "getSymbolImage", exc);
+		}
+
+		return svgInfo;
+	}
+
 	/**
 	 * Generates an image for a milstd symbol
 	 * 
